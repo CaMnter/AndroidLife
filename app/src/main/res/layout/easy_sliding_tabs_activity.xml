@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <com.camnter.easyslidingtabs.widget.EasySlidingTabs
+        android:id="@+id/easy_sliding_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:easyIndicatorColor="#ff57C1CC"
+        app:easyUnderlineColor="#ffdddddd"
+        app:easyTabTextColor="#ffFF4081"
+        app:easySelectedTagTextColor="#ff57C1CC"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/easy_vp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="themeColor">#ff3E55AE</color>
+    <color name="fern">#5BC15B</color>
+    <color name="tabLayoutBackground">#ffe5e5e5</color>
+    <color name="red">#ffFF4081</color>
+    <color name="black">#ff000000</color>
+    <color name="yellow">#ffFDD706</color>
+</resources>

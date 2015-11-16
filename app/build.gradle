@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+
+
+repositories {
+//    maven { url 'http://uk.maven.org/maven2' }
+//    maven { url 'http://maven.51haoyayi.com:18081/nexus/content/groups/public/' }
+//    maven { url 'https://raw.githubusercontent.com/umeng/mvn-repo-umeng/master/repository' }
+    jcenter()
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        minSdkVersion 9
+        applicationId "com.zyy.camnter.newlife"
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    //渠道Flavors
+    productFlavors {
+        APPTest {
+            applicationId "com.zyy.camnter.newlife"
+            manifestPlaceholders = [DEBUG         : "debug"]
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:support-v4:23.0.1'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.android.support:design:23.0.1'
+    compile 'com.android.support:recyclerview-v7:23.0.1'
+
+    compile 'com.camnter.easyslidingtabs:easyslidingtabs:0.2'
+    compile 'com.camnter.easyrecyclerview:easyrecyclerview:0.1'
+    compile 'com.camnter.robotlegs4android:robotlegs4android:0.8'
+}

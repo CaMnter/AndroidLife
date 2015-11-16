@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffffff"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/first_iv"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:src="@mipmap/mm_1"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/first_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/first_iv"
+        android:layout_centerInParent="true"
+        android:padding="6dp" />
+
+    <Button
+        android:id="@+id/first_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/first_tv"
+        android:layout_centerInParent="true"
+        android:text="Login" />
+
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/first_controller_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/first_bt"
+        android:layout_centerInParent="true"
+        android:padding="6dp"
+        android:text="Controller call me show" />
+
+</RelativeLayout>

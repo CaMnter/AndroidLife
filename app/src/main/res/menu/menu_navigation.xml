@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_sub_setting"
+        android:icon="@mipmap/icon_clinic_manager"
+        android:title="设置" />
+    <item
+        android:id="@+id/navigation_subheader"
+        android:title="CaMnter">
+        <menu>
+            <item
+                android:id="@+id/navigation_sub_plan"
+                android:icon="@mipmap/icon_list_book"
+                android:title="计划" />
+
+            <item
+                android:id="@+id/navigation_sub_share"
+                android:icon="@mipmap/icon_share"
+                android:title="分享" />
+            <item
+                android:id="@+id/navigation_sub_time"
+                android:icon="@mipmap/icon_time"
+                android:title="时钟" />
+            <item
+                android:id="@+id/navigation_sub_clear"
+                android:icon="@mipmap/icon_clean"
+                android:title="清空缓存" />
+        </menu>
+    </item>
+</menu>

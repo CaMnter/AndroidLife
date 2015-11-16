@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.camnter.newlife">
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:name="com.camnter.newlife.robotlegsapplication.MainApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/zzmbs_2"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="com.camnter.newlife.activity.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.camnter.newlife.activity.ImageScaleTypesActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.AsyncTaskActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.design.TextInputLayoutActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.RefreshUIActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.design.NavigationViewActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.util.DeviceUtilActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.design.FloatingActionButtonActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.design.SnackbarActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.util.DateUtilActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.EasySlidingTabsActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.AutoAdjustSizeEditTextActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.AutoAdjustSizeTextViewActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.DownloadImageToGalleryActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.SensorManagerActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.design.EasyRecyclerViewActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.design.tablayout.NormalTabLayoutActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.design.tablayout.SetIconTabLayoutActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.design.tablayout.ImageSpanTabLayoutActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.design.tablayout.CustomViewTabLayoutActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.design.CoordinatorActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.singletask.AActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.singletask.VActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.singletask.LActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.singletask.MActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.singletask.SingleTaskActivity"
+            android:label="@string/app_label"
+            android:launchMode="singleTask"
+            android:taskAffinity="" />
+
+        <meta-data
+            android:name="DEBUG"
+            android:label="@string/app_label"
+            android:value="${DEBUG}" />
+
+        <activity
+            android:name="com.camnter.newlife.mvp.MvpActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.SQLiteActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.robotlegs4android.view.activity.Robotlegs4AndroidActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.CustomContentProviderActivity"
+            android:label="@string/app_label" />
+
+        <provider
+            android:name="com.camnter.newlife.contentprovider.MessageContentProvider"
+            android:authorities="com.camnter.content.provider" />
+
+    </application>
+
+</manifest>
