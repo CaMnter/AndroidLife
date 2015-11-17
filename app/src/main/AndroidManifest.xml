@@ -118,7 +118,11 @@
         <activity
             android:name="com.camnter.newlife.activity.CustomContentProviderActivity"
             android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.DownloadServiceActivity"
+            android:label="@string/app_label" />
 
+        <service android:name="com.camnter.newlife.service.DownloadService" />
         <provider
             android:name="com.camnter.newlife.contentprovider.MessageContentProvider"
             android:authorities="com.camnter.content.provider" />

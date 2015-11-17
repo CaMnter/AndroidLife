@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         classes.add(SQLiteActivity.class);
         classes.add(Robotlegs4AndroidActivity.class);
         classes.add(CustomContentProviderActivity.class);
+        classes.add(DownloadServiceActivity.class);
 
         MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter();
         adapter.setList(classes);

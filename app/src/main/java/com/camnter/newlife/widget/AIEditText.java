@@ -1,4 +1,4 @@
-package com.camnter.newlife.views;
+package com.camnter.newlife.widget;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
