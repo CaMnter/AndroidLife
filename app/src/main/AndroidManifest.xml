@@ -101,11 +101,6 @@
             android:launchMode="singleTask"
             android:taskAffinity="" />
 
-        <meta-data
-            android:name="DEBUG"
-            android:label="@string/app_label"
-            android:value="${DEBUG}" />
-
         <activity
             android:name="com.camnter.newlife.mvp.MvpActivity"
             android:label="@string/app_label" />
@@ -121,11 +116,28 @@
         <activity
             android:name="com.camnter.newlife.activity.DownloadServiceActivity"
             android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.AIDLActivity"
+            android:label="@string/app_label" />
 
         <service android:name="com.camnter.newlife.service.DownloadService" />
+        <service
+            android:name=".aidl.PushMessageService"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="com.camnter.newlife.aidl.IPushMessage" />
+            </intent-filter>
+
+        </service>
+
         <provider
             android:name="com.camnter.newlife.contentprovider.MessageContentProvider"
             android:authorities="com.camnter.content.provider" />
+
+        <meta-data
+            android:name="DEBUG"
+            android:label="@string/app_label"
+            android:value="${DEBUG}" />
 
     </application>
 
