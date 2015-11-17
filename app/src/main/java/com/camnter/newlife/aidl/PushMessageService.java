@@ -6,6 +6,8 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 
+import java.util.UUID;
+
 /**
  * Description：
  * Created by：CaMnter
@@ -39,7 +41,7 @@ public class PushMessageService extends Service {
 
         @Override
         public String onMessage() throws RemoteException {
-            return "Save you from anything";
+            return UUID.randomUUID().toString();
         }
 
     }
