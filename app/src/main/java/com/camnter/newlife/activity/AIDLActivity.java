@@ -16,7 +16,7 @@ import com.camnter.newlife.aidl.IPushMessage;
 import com.camnter.newlife.aidl.PushMessageService;
 
 /**
- * Description：
+ * Description：AIDLActivity
  * Created by：CaMnter
  * Time：2015-11-17 16:28
  */
