@@ -14,7 +14,7 @@ import java.lang.ref.WeakReference;
 
 
 /**
- * Description：
+ * Description：RefreshUIActivity
  * Created by：CaMnter
  * Time：2015-09-21 11:13
  */
