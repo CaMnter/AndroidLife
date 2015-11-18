@@ -11,8 +11,6 @@ import com.camnter.newlife.R;
 
 import java.lang.ref.WeakReference;
 
-
-
 /**
  * Description：RefreshUIActivity
  * Created by：CaMnter
@@ -22,6 +20,7 @@ public class RefreshUIActivity extends Activity {
 
     private TextView handlerTV;
     private static final int HANDLER_SUCCESS = 206;
+
     private static class RefreshHandler extends Handler {
 
         private final WeakReference<RefreshUIActivity> mActivity;
@@ -29,6 +28,7 @@ public class RefreshUIActivity extends Activity {
         public RefreshHandler(RefreshUIActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
+
         /**
          * Subclasses must implement this to receive messages.
          *
@@ -113,7 +113,7 @@ public class RefreshUIActivity extends Activity {
         @Override
         protected void onProgressUpdate(Integer... values) {
             int value = values[0];
-            this.textview.setText(value+"%");
+            this.textview.setText(value + "%");
         }
 
         /**
@@ -167,7 +167,8 @@ public class RefreshUIActivity extends Activity {
             RefreshUIActivity.this.runOnUiThreadTV.setText("runOnUiThread");
         }
     };
-    private class MThread extends Thread{
+
+    private class MThread extends Thread {
 
         /**
          * Calls the <code>run()</code> method of the Runnable object the receiver
@@ -185,6 +186,7 @@ public class RefreshUIActivity extends Activity {
             RefreshUIActivity.this.runOnUiThread(RefreshUIActivity.this.uiRunnable);
         }
     }
+
     private final MThread runThread = new MThread();
 
 

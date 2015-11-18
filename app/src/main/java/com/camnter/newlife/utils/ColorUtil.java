@@ -6,7 +6,7 @@ import android.graphics.Color;
 import java.util.regex.Pattern;
 
 /**
- * Description：
+ * Description：ColorUtil
  * Created by：CaMnter
  * Time：2015-09-29 11:13
  */

@@ -11,7 +11,7 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
 /**
- * Description：
+ * Description：ImageSpanTabLayoutFragmentAdapter
  * Created by：CaMnter
  * Time：2015-10-24 12:34
  */

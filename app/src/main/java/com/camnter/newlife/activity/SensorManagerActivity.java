@@ -19,7 +19,7 @@ import java.util.List;
 
 
 /**
- * Description：
+ * Description：SensorManagerActivity
  * Created by：CaMnter
  * Time：2015-10-27 15:54
  */

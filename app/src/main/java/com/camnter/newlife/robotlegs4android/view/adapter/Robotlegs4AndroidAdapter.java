@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 /**
- * Description：
+ * Description：Robotlegs4AndroidAdapter
  * Created by：CaMnter
  * Time：2015-11-06 17:05
  */

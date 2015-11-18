@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 /**
- * Description：
+ * Description：CustomViewTabLayoutFragmentAdapter
  * Created by：CaMnter
  * Time：2015-10-24 12:34
  */

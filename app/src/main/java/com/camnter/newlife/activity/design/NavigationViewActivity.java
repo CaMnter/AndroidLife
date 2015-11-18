@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import com.camnter.newlife.R;
 
 /**
- * Description：
+ * Description：NavigationViewActivity
  * Created by：CaMnter
  * Time：2015-10-12 22:18
  */

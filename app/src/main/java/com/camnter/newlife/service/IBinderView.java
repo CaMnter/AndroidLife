@@ -1,7 +1,7 @@
 package com.camnter.newlife.service;
 
 /**
- * Description：
+ * Description：IBinderView
  * Created by：CaMnter
  * Time：2015-11-16 17:17
  */

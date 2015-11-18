@@ -10,7 +10,7 @@ import com.camnter.newlife.mvp.model.impl.TopicModel;
 import java.util.List;
 
 /**
- * Description：
+ * Description：MvpPresenter
  * Created by：CaMnter
  * Time：2015-11-02 23:52
  */

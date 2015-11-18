@@ -11,7 +11,7 @@ import com.camnter.newlife.R;
 
 
 /**
- * Description：
+ * Description：SnackbarActivity
  * Created by：CaMnter
  * Time：2015-10-15 22:39
  */

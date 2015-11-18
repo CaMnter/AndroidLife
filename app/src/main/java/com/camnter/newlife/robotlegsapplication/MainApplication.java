@@ -6,7 +6,7 @@ import com.camnter.robotlegs4android.views.RobotlegsApplication;
 
 
 /**
- * Description：
+ * Description：MainApplication
  * Created by：CaMnter
  * Time：2015-10-19 13:49
  */

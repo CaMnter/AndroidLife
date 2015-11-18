@@ -17,7 +17,7 @@ import java.util.List;
 
 
 /**
- * Description：
+ * Description：CoordinatorActivity
  * Created by：CaMnter
  * Time：2015-10-24 11:55
  */

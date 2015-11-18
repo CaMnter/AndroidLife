@@ -1,7 +1,7 @@
 package com.camnter.newlife.bean;
 
 /**
- * Description：
+ * Description：ProviderData
  * Created by：CaMnter
  * Time：2015-11-13 14:56
  */

@@ -13,6 +13,11 @@ import com.camnter.newlife.mvp.presenter.MvpPresenter;
 import java.util.List;
 
 
+/**
+ * Description：MvpActivity
+ * Created by：CaMnter
+ * Time：2015-11-02 23:34
+ */
 public class MvpActivity extends AppCompatActivity implements IMvpView {
 
     private TextView addTV;

@@ -13,7 +13,7 @@ import com.camnter.newlife.R;
 
 
 /**
- * Description：
+ * Description：AActivity
  * Created by：CaMnter
  * Time：2015-09-23 15:28
  */

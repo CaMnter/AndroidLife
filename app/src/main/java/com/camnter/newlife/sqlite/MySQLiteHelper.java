@@ -14,7 +14,7 @@ import java.util.UUID;
 
 
 /**
- * Description：
+ * Description：MySQLiteHelper
  * Created by：CaMnter
  * Time：2015-11-04 12:01
  */

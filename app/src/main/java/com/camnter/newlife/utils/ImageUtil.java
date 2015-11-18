@@ -36,7 +36,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 
 /**
- * Description：
+ * Description：ImageUtil
  * Created by：CaMnter
  * Time：2015-10-19 14:06
  */

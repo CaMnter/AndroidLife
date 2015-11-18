@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 
 /**
- * Description：
+ * Description：ListViewLayout
  * Created by：CaMnter
  * Time：2015-09-28 17:13
  */

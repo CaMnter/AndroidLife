@@ -1,7 +1,7 @@
 package com.camnter.newlife.bean;
 
 /**
- * Description：
+ * Description：SQLiteData
  * Created by：CaMnter
  * Time：2015-11-04 12:20
  */

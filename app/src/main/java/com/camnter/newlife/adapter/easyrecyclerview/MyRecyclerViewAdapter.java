@@ -10,7 +10,7 @@ import com.camnter.newlife.bean.RecyclerViewData;
 
 
 /**
- * Description：
+ * Description：MyRecyclerViewAdapter
  * Created by：CaMnter
  * Time：2015-10-21 17:00
  */

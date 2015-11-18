@@ -3,7 +3,7 @@ package com.camnter.newlife.bean;
 import java.io.Serializable;
 
 /**
- * Description：
+ * Description：RecyclerViewData
  * Created by：CaMnter
  * Time：2015-10-21 22:55
  */

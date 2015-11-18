@@ -8,6 +8,11 @@ import android.view.MenuItem;
 import com.camnter.newlife.R;
 
 
+/**
+ * Description：ImageScaleTypesActivity
+ * Created by：CaMnter
+ * Time：2015-10-10 12:02
+ */
 public class ImageScaleTypesActivity extends AppCompatActivity {
 
     @Override

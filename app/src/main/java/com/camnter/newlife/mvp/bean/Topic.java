@@ -1,7 +1,7 @@
 package com.camnter.newlife.mvp.bean;
 
 /**
- * Description：
+ * Description：Topic
  * Created by：CaMnter
  * Time：2015-11-02 23:55
  */

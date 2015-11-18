@@ -13,7 +13,7 @@ import com.camnter.newlife.sqlite.MySQLiteHelper;
 import java.util.List;
 
 /**
- * Description：
+ * Description：SQLiteRecyclerViewAdapter
  * Created by：CaMnter
  * Time：2015-11-04 11:47
  */

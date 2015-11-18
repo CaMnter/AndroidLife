@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 
 /**
- * Description：
+ * Description：EasyRecyclerViewActivity
  * Created by：CaMnter
  * Time：2015-10-21 22:19
  */

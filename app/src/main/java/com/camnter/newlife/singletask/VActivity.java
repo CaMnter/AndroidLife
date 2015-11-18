@@ -10,7 +10,7 @@ import com.camnter.newlife.R;
 
 
 /**
- * Description：
+ * Description：VActivity
  * Created by：CaMnter
  * Time：2015-09-23 15:29
  */

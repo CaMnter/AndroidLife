@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.widget.ListView;
 
 /**
- * Description：
+ * Description：SVListView
  * Created by：CaMnter
  * Time：2015-09-28 17:35
  */

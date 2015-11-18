@@ -11,7 +11,7 @@ import com.camnter.easyslidingtabs.widget.EasySlidingTabs;
 import java.util.List;
 
 /**
- * Description：
+ * Description：EasySlidingTabsFragmentAdapter
  * Created by：CaMnter
  * Time：2015-10-15 14:58
  */

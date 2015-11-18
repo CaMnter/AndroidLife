@@ -7,7 +7,7 @@ import com.camnter.newlife.R;
 
 
 /**
- * Description：
+ * Description：FloatingActionButtonActivity
  * Created by：CaMnter
  * Time：2015-10-14 22:22
  */

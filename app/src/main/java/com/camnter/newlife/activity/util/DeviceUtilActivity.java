@@ -9,7 +9,7 @@ import com.camnter.newlife.utils.DeviceUtil;
 
 
 /**
- * Description：
+ * Description：DeviceUtilActivity
  * Created by：CaMnter
  * Time：2015-10-13 17:48
  */

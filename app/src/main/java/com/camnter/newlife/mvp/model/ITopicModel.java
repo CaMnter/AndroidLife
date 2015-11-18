@@ -4,7 +4,7 @@ package com.camnter.newlife.mvp.model;
 import com.camnter.newlife.mvp.bean.Topic;
 
 /**
- * Description：
+ * Description：ITopicModel
  * Created by：CaMnter
  * Time：2015-11-02 23:45
  */
