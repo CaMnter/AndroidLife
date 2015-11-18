@@ -30,6 +30,11 @@ public class AIDLActivity extends AppCompatActivity {
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            /*
+             * 这里的 service 不是 Binder对象
+             * 而是 BinderProxy对象
+             * 不能 直接转为Binder（ (Binder)service ），是错误的。
+             */
             AIDLActivity.this.iPushMessage = IPushMessage.Stub.asInterface(service);
             try {
                 AIDLActivity.this.pushMessage = AIDLActivity.this.iPushMessage.onMessage();
@@ -50,7 +55,15 @@ public class AIDLActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_aidl);
         this.aidlTV = (TextView) this.findViewById(R.id.aidl_tv);
-        this.bindService(new Intent(this, PushMessageService.class), this.connection, Context.BIND_AUTO_CREATE);
+        Intent intent = new Intent(this, PushMessageService.class);
+        this.startService(intent);
+        this.bindService(intent, this.connection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        this.unbindService(this.connection);
+        super.onDestroy();
     }
 
 }

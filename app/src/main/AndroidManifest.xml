@@ -121,13 +121,14 @@
             android:label="@string/app_label" />
 
         <service android:name="com.camnter.newlife.service.DownloadService" />
+
+        <!-- action 写上 aidl生成类的所在包 -->
         <service
             android:name=".aidl.PushMessageService"
             android:process=":remote">
             <intent-filter>
                 <action android:name="com.camnter.newlife.aidl.IPushMessage" />
             </intent-filter>
-
         </service>
 
         <provider

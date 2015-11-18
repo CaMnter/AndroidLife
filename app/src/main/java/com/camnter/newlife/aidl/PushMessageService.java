@@ -21,6 +21,7 @@ public class PushMessageService extends Service {
 
     /**
      * AIDL implement
+     * 实现AIDL生成静态抽象类 IPushMessage.Stub
      */
     private class IPushMessageImpl extends IPushMessage.Stub {
         /**
@@ -55,9 +56,16 @@ public class PushMessageService extends Service {
         this.binder = new IPushMessageImpl();
     }
 
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return super.onStartCommand(intent, flags, startId);
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return this.binder;
     }
+
 }
