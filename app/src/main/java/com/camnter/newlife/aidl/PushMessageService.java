@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import java.util.UUID;
 
 /**
- * Description：
+ * Description：PushMessageService
  * Created by：CaMnter
  * Time：2015-11-17 15:44
  */
