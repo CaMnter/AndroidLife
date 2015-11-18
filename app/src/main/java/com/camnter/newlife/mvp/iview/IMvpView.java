@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * Description：
+ * Description：IMvpView
  * Created by：CaMnter
  * Time：2015-11-02 23:53
  */
