@@ -48,6 +48,7 @@ public class Robotlegs4AndroidActivityMediator extends Mediator {
     private void initViews() {
         this.tabLayout = (TabLayout) this.activity.findViewById(R.id.tab_layout_tl);
         this.viewPager = (ViewPager) this.activity.findViewById(R.id.view_pager_vp);
+        this.viewPager.setOffscreenPageLimit(4);
     }
 
     private void initData() {
