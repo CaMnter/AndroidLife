@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/reflection_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="16dp"
+        android:text="反射取资源" />
+
+    <ImageView
+        android:id="@+id/reflection_iv"
+        android:layout_width="366dp"
+        android:layout_height="366dp"
+        android:layout_below="@id/reflection_bt"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop" />
+
+</RelativeLayout>

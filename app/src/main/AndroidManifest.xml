@@ -119,6 +119,9 @@
         <activity
             android:name="com.camnter.newlife.activity.AIDLActivity"
             android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.newlife.activity.util.ReflectionUtilActivity"
+            android:label="@string/app_label" />
 
         <service android:name="com.camnter.newlife.service.DownloadService" />
 

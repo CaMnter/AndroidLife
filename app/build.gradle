@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         minSdkVersion 9
-        applicationId "com.zyy.camnter.newlife"
+        applicationId "com.camnter.newlife"
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -29,7 +29,7 @@ android {
     //渠道Flavors
     productFlavors {
         APPTest {
-            applicationId "com.zyy.camnter.newlife"
+            applicationId "com.camnter.newlife"
             manifestPlaceholders = [DEBUG         : "debug"]
         }
     }

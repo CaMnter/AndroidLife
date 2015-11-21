@@ -25,6 +25,7 @@ import com.camnter.newlife.activity.design.tablayout.NormalTabLayoutActivity;
 import com.camnter.newlife.activity.design.tablayout.SetIconTabLayoutActivity;
 import com.camnter.newlife.activity.util.DateUtilActivity;
 import com.camnter.newlife.activity.util.DeviceUtilActivity;
+import com.camnter.newlife.activity.util.ReflectionUtilActivity;
 import com.camnter.newlife.mvp.MvpActivity;
 import com.camnter.newlife.robotlegs4android.view.activity.Robotlegs4AndroidActivity;
 import com.camnter.newlife.singletask.AActivity;
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         classes.add(CustomContentProviderActivity.class);
         classes.add(DownloadServiceActivity.class);
         classes.add(AIDLActivity.class);
+        classes.add(ReflectionUtilActivity.class);
 
         MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter();
         adapter.setList(classes);
