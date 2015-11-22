@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.camnter.newlife.activity.MainActivity"
+            android:name=".view.activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -24,79 +24,79 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.camnter.newlife.activity.ImageScaleTypesActivity"
+            android:name=".view.activity.ImageScaleTypesActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.AsyncTaskActivity"
+            android:name=".view.activity.AsyncTaskActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.design.TextInputLayoutActivity"
+            android:name=".view.activity.design.TextInputLayoutActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.RefreshUIActivity"
+            android:name=".view.activity.RefreshUIActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.design.NavigationViewActivity"
+            android:name=".view.activity.design.NavigationViewActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.util.DeviceUtilActivity"
+            android:name=".view.activity.util.DeviceUtilActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.design.FloatingActionButtonActivity"
+            android:name=".view.activity.design.FloatingActionButtonActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.design.SnackbarActivity"
+            android:name=".view.activity.design.SnackbarActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.util.DateUtilActivity"
+            android:name=".view.activity.util.DateUtilActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.EasySlidingTabsActivity"
+            android:name=".view.activity.EasySlidingTabsActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.AutoAdjustSizeEditTextActivity"
+            android:name=".view.activity.AutoAdjustSizeEditTextActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.AutoAdjustSizeTextViewActivity"
+            android:name=".view.activity.AutoAdjustSizeTextViewActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.DownloadImageToGalleryActivity"
+            android:name=".view.activity.DownloadImageToGalleryActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.SensorManagerActivity"
+            android:name=".view.activity.SensorManagerActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.design.EasyRecyclerViewActivity"
+            android:name=".view.activity.design.EasyRecyclerViewActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.design.tablayout.NormalTabLayoutActivity"
+            android:name=".view.activity.design.tablayout.NormalTabLayoutActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.design.tablayout.SetIconTabLayoutActivity"
+            android:name=".view.activity.design.tablayout.SetIconTabLayoutActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.design.tablayout.ImageSpanTabLayoutActivity"
+            android:name=".view.activity.design.tablayout.ImageSpanTabLayoutActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.design.tablayout.CustomViewTabLayoutActivity"
+            android:name=".view.activity.design.tablayout.CustomViewTabLayoutActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.design.CoordinatorActivity"
+            android:name=".view.activity.design.CoordinatorActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.singletask.AActivity"
+            android:name=".view.activity.singletask.AActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.singletask.VActivity"
+            android:name=".view.activity.singletask.VActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.singletask.LActivity"
+            android:name=".view.activity.singletask.LActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.singletask.MActivity"
+            android:name=".view.activity.singletask.MActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.singletask.SingleTaskActivity"
+            android:name=".view.activity.singletask.SingleTaskActivity"
             android:label="@string/app_label"
             android:launchMode="singleTask"
             android:taskAffinity="" />
@@ -105,22 +105,22 @@
             android:name="com.camnter.newlife.mvp.MvpActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.SQLiteActivity"
+            android:name=".view.activity.SQLiteActivity"
             android:label="@string/app_label" />
         <activity
             android:name="com.camnter.newlife.robotlegs4android.view.activity.Robotlegs4AndroidActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.CustomContentProviderActivity"
+            android:name=".view.activity.CustomContentProviderActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.DownloadServiceActivity"
+            android:name=".view.activity.DownloadServiceActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.AIDLActivity"
+            android:name=".view.activity.AIDLActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.activity.util.ReflectionUtilActivity"
+            android:name=".view.activity.util.ReflectionUtilActivity"
             android:label="@string/app_label" />
 
         <service android:name="com.camnter.newlife.service.DownloadService" />
