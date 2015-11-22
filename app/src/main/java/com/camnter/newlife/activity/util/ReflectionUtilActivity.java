@@ -9,7 +9,7 @@ import com.camnter.newlife.R;
 import com.camnter.newlife.utils.ReflectionUtil;
 
 /**
- * Description：
+ * Description：ReflectionUtilActivity
  * Created by：CaMnter
  * Time：2015-11-20 12:17
  */
@@ -35,6 +35,9 @@ public class ReflectionUtilActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.reflection_bt:
+                /*
+                 * 获取资源名为mm_1的mipmap类型文件
+                 */
                 this.imageView.setImageResource(ReflectionUtil.getResourceId(this, "mm_1", ReflectionUtil.ResourcesType.mipmap));
                 break;
         }
