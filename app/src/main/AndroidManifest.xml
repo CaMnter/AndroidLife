@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.camnter.newlife" >
+    package="com.camnter.newlife">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,11 +12,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/zzmbs_2"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".view.activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -127,13 +127,18 @@
         <activity
             android:name=".view.activity.DynamicReceiverActivity"
             android:label="@string/app_label" />
+        <activity
+            android:name=".view.activity.DownloadReceiverActivity"
+            android:label="@string/app_label" />
 
         <service android:name=".service.DownloadService" />
+
+        <service android:name=".service.DownloadIntentService" />
 
         <!-- action 写上 aidl生成类的所在包 -->
         <service
             android:name=".aidl.PushMessageService"
-            android:process=":remote" >
+            android:process=":remote">
             <intent-filter>
                 <action android:name="com.camnter.newlife.aidl.IPushMessage" />
             </intent-filter>
@@ -146,7 +151,7 @@
         <receiver
             android:name=".broadcastreceiver.StaticReceiver"
             android:exported="true"
-            android:process=":remotereceiver" >
+            android:process=":remotereceiver">
             <intent-filter>
                 <action android:name="com.camnter.android.intent.static" />
             </intent-filter>
@@ -157,10 +162,6 @@
             android:label="@string/app_label"
             android:value="${DEBUG}" />
 
-        <service
-            android:name=".service.DownloadIntentService"
-            android:exported="false" >
-        </service>
     </application>
 
 </manifest>

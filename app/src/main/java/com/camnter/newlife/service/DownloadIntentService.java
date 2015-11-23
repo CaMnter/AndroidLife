@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 
-import com.camnter.newlife.broadcastreceiver.DownloadReceiver;
+import com.camnter.newlife.view.activity.DownloadReceiverActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,8 +31,6 @@ public class DownloadIntentService extends IntentService {
 
     // TODO: Rename parameters
     private static final String IMAGE_URL = "com.camnter.newlife.service.extra.image.url";
-
-    private Context context;
 
     /**
      * Starts this service to perform action Foo with the given parameters. If
@@ -70,6 +68,7 @@ public class DownloadIntentService extends IntentService {
      */
     private void handleActionDownload(String url) {
         // TODO: Handle action Download
+        new DownloadImageAsyncTask(this).execute(url);
     }
 
     /**
@@ -156,10 +155,16 @@ public class DownloadIntentService extends IntentService {
         @Override
         protected void onPostExecute(String string) {
             super.onPostExecute(string);
-            Intent intent = new Intent(DownloadReceiver.INTENT_ACTION);
-            intent.putExtra(DownloadReceiver.INTENT_TYPE, DownloadReceiver.TYPE_DOWNLOAD_SUCCESS);
-            intent.putExtra(DownloadReceiver.INTENT_DATA_IMAGE_URL, this.localFilePath);
-            DownloadIntentService.this.context.sendBroadcast(intent);
+            Intent intent = new Intent(DownloadReceiverActivity.DownloadReceiver.INTENT_ACTION);
+            intent.putExtra(
+                    DownloadReceiverActivity.DownloadReceiver.INTENT_TYPE,
+                    DownloadReceiverActivity.DownloadReceiver.TYPE_DOWNLOAD_SUCCESS
+            );
+            intent.putExtra(
+                    DownloadReceiverActivity.DownloadReceiver.INTENT_DATA_IMAGE_PATH,
+                    this.localFilePath
+            );
+            DownloadIntentService.this.sendBroadcast(intent);
         }
 
         /**
@@ -202,9 +207,12 @@ public class DownloadIntentService extends IntentService {
         @Override
         protected void onCancelled() {
             super.onCancelled();
-            Intent intent = new Intent(DownloadReceiver.INTENT_ACTION);
-            intent.putExtra(DownloadReceiver.INTENT_TYPE, DownloadReceiver.TYPE_DOWNLOAD_FAILURE);
-            DownloadIntentService.this.context.sendBroadcast(intent);
+            Intent intent = new Intent(DownloadReceiverActivity.DownloadReceiver.INTENT_ACTION);
+            intent.putExtra(
+                    DownloadReceiverActivity.DownloadReceiver.INTENT_TYPE,
+                    DownloadReceiverActivity.DownloadReceiver.TYPE_DOWNLOAD_FAILURE
+            );
+            DownloadIntentService.this.sendBroadcast(intent);
         }
 
     }

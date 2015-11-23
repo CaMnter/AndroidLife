@@ -271,7 +271,7 @@ public class DownloadImageToGalleryActivity extends AppCompatActivity implements
              * 保存图片到相册
              */
             String imageName = System.currentTimeMillis() + ".jpg";
-            MediaStore.Images.Media.insertImage(DownloadImageToGalleryActivity.this.getApplicationContext().getContentResolver(), bitmap, imageName, "牙医助理");
+            MediaStore.Images.Media.insertImage(DownloadImageToGalleryActivity.this.getApplicationContext().getContentResolver(), bitmap, imageName, "camnter");
             Toast.makeText(this.activity, "已保存：" + imageName, Toast.LENGTH_LONG).show();
         }
 

@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
         android:padding="16dp"
-        android:text="启动服务下载" />
+        android:text="发送广播启动服务下载" />
 
     <ImageView
         android:id="@+id/down_broadcast_image_iv"

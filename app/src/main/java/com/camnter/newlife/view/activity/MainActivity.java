@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         classes.add(ReflectionUtilActivity.class);
         classes.add(StaticReceiverActivity.class);
         classes.add(DynamicReceiverActivity.class);
+        classes.add(DownloadReceiverActivity.class);
 
         MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter();
         adapter.setList(classes);
