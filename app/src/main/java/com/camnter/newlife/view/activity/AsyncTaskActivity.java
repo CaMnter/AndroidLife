@@ -20,7 +20,6 @@ public class AsyncTaskActivity extends AppCompatActivity implements View.OnClick
 
     private ProgressBar progressBar;
     private TextView textview;
-    private Button start;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +27,8 @@ public class AsyncTaskActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_asynctask);
         this.textview = (TextView) this.findViewById(R.id.textview);
         this.progressBar = (ProgressBar) this.findViewById(R.id.progressBar);
-        this.start = (Button) this.findViewById(R.id.start);
-        this.start.setOnClickListener(this);
+        Button start = (Button) this.findViewById(R.id.start);
+        start.setOnClickListener(this);
     }
 
     /**

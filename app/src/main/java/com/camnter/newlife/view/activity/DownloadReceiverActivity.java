@@ -20,7 +20,7 @@ import com.camnter.newlife.service.DownloadIntentService;
 import com.camnter.newlife.utils.ImageUtil;
 
 /**
- * Description：
+ * Description：DownloadReceiverActivity
  * Created by：CaMnter
  * Time：2015-11-22 22:54
  */
@@ -76,6 +76,9 @@ public class DownloadReceiverActivity extends AppCompatActivity implements View.
         }
     }
 
+    /**
+     * 下载广播
+     */
     public class DownloadReceiver extends BroadcastReceiver {
 
         public static final String INTENT_ACTION = "com.camnter.android.intent.download";
