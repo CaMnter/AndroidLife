@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.camnter.newlife">
+    package="com.camnter.newlife" >
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -8,15 +8,15 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.camnter.newlife.robotlegsapplication.MainApplication"
+        android:name=".robotlegsapplication.MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/zzmbs_2"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".view.activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -100,15 +100,14 @@
             android:label="@string/app_label"
             android:launchMode="singleTask"
             android:taskAffinity="" />
-
         <activity
-            android:name="com.camnter.newlife.mvp.MvpActivity"
+            android:name=".mvp.MvpActivity"
             android:label="@string/app_label" />
         <activity
             android:name=".view.activity.SQLiteActivity"
             android:label="@string/app_label" />
         <activity
-            android:name="com.camnter.newlife.robotlegs4android.view.activity.Robotlegs4AndroidActivity"
+            android:name=".robotlegs4android.view.activity.Robotlegs4AndroidActivity"
             android:label="@string/app_label" />
         <activity
             android:name=".view.activity.CustomContentProviderActivity"
@@ -122,27 +121,46 @@
         <activity
             android:name=".view.activity.util.ReflectionUtilActivity"
             android:label="@string/app_label" />
+        <activity
+            android:name=".view.activity.StaticReceiverActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name=".view.activity.DynamicReceiverActivity"
+            android:label="@string/app_label" />
 
-        <service android:name="com.camnter.newlife.service.DownloadService" />
+        <service android:name=".service.DownloadService" />
 
         <!-- action 写上 aidl生成类的所在包 -->
         <service
             android:name=".aidl.PushMessageService"
-            android:process=":remote">
+            android:process=":remote" >
             <intent-filter>
                 <action android:name="com.camnter.newlife.aidl.IPushMessage" />
             </intent-filter>
         </service>
 
         <provider
-            android:name="com.camnter.newlife.contentprovider.MessageContentProvider"
+            android:name=".contentprovider.MessageContentProvider"
             android:authorities="com.camnter.content.provider" />
+
+        <receiver
+            android:name=".broadcastreceiver.StaticReceiver"
+            android:exported="true"
+            android:process=":remotereceiver" >
+            <intent-filter>
+                <action android:name="com.camnter.android.intent.static" />
+            </intent-filter>
+        </receiver>
 
         <meta-data
             android:name="DEBUG"
             android:label="@string/app_label"
             android:value="${DEBUG}" />
 
+        <service
+            android:name=".service.DownloadIntentService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
