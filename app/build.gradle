@@ -28,7 +28,7 @@ android {
     }
     //渠道Flavors
     productFlavors {
-        APPTest {
+        AppTest {
             applicationId "com.camnter.newlife"
             manifestPlaceholders = [DEBUG         : "debug"]
         }
