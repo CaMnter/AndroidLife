@@ -34,6 +34,11 @@ public class DynamicReceiver extends BroadcastReceiver {
         return instance;
     }
 
+    /**
+     * 提供给外部注册广播
+     *
+     * @param context
+     */
     public static void register(Context context) {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(INTENT_ACTION);

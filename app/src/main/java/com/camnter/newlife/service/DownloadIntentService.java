@@ -217,5 +217,4 @@ public class DownloadIntentService extends IntentService {
 
     }
 
-
 }

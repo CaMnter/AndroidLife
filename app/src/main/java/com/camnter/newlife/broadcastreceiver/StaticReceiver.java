@@ -41,7 +41,6 @@ public class StaticReceiver extends BroadcastReceiver {
                 .setContentText(message)
                 .setSmallIcon(R.mipmap.zzmbs_2)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.zzmbs_2))
-
                 .setContentIntent(pendingIntent)
                 .build();
         notificationManager.notify(206, notification);

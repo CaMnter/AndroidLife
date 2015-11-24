@@ -137,6 +137,7 @@
 
         <!-- action 写上 aidl生成类的所在包 -->
         <service
+            android:enabled="true"
             android:name=".aidl.PushMessageService"
             android:process=":remote">
             <intent-filter>
