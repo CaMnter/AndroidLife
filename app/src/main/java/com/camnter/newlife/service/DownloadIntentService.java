@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 
-import com.camnter.newlife.view.activity.DownloadReceiverActivity;
+import com.camnter.newlife.views.activity.DownloadReceiverActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;

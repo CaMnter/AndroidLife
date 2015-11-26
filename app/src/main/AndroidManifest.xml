@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.activity.MainActivity"
+            android:name=".views.activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -24,79 +24,79 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activity.ImageScaleTypesActivity"
+            android:name=".views.activity.ImageScaleTypesActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.AsyncTaskActivity"
+            android:name=".views.activity.AsyncTaskActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.design.TextInputLayoutActivity"
+            android:name=".views.activity.design.TextInputLayoutActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.RefreshUIActivity"
+            android:name=".views.activity.RefreshUIActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.design.NavigationViewActivity"
+            android:name=".views.activity.design.NavigationViewActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.util.DeviceUtilActivity"
+            android:name=".views.activity.util.DeviceUtilActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.design.FloatingActionButtonActivity"
+            android:name=".views.activity.design.FloatingActionButtonActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.design.SnackbarActivity"
+            android:name=".views.activity.design.SnackbarActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.util.DateUtilActivity"
+            android:name=".views.activity.util.DateUtilActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.EasySlidingTabsActivity"
+            android:name=".views.activity.EasySlidingTabsActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.AutoAdjustSizeEditTextActivity"
+            android:name=".views.activity.AutoAdjustSizeEditTextActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.AutoAdjustSizeTextViewActivity"
+            android:name=".views.activity.AutoAdjustSizeTextViewActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.DownloadImageToGalleryActivity"
+            android:name=".views.activity.DownloadImageToGalleryActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.SensorManagerActivity"
+            android:name=".views.activity.SensorManagerActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.design.EasyRecyclerViewActivity"
+            android:name=".views.activity.design.EasyRecyclerViewActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.design.tablayout.NormalTabLayoutActivity"
+            android:name=".views.activity.design.tablayout.NormalTabLayoutActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.design.tablayout.SetIconTabLayoutActivity"
+            android:name=".views.activity.design.tablayout.SetIconTabLayoutActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.design.tablayout.ImageSpanTabLayoutActivity"
+            android:name=".views.activity.design.tablayout.ImageSpanTabLayoutActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.design.tablayout.CustomViewTabLayoutActivity"
+            android:name=".views.activity.design.tablayout.CustomViewTabLayoutActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.design.CoordinatorActivity"
+            android:name=".views.activity.design.CoordinatorActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.singletask.AActivity"
+            android:name=".views.activity.singletask.AActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.singletask.VActivity"
+            android:name=".views.activity.singletask.VActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.singletask.LActivity"
+            android:name=".views.activity.singletask.LActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.singletask.MActivity"
+            android:name=".views.activity.singletask.MActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.singletask.SingleTaskActivity"
+            android:name=".views.activity.singletask.SingleTaskActivity"
             android:label="@string/app_label"
             android:launchMode="singleTask"
             android:taskAffinity="" />
@@ -104,31 +104,31 @@
             android:name=".mvp.MvpActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.SQLiteActivity"
+            android:name=".views.activity.SQLiteActivity"
             android:label="@string/app_label" />
         <activity
             android:name=".robotlegs4android.view.activity.Robotlegs4AndroidActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.CustomContentProviderActivity"
+            android:name=".views.activity.CustomContentProviderActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.DownloadServiceActivity"
+            android:name=".views.activity.DownloadServiceActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.AIDLActivity"
+            android:name=".views.activity.AIDLActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.util.ReflectionUtilActivity"
+            android:name=".views.activity.util.ReflectionUtilActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.StaticReceiverActivity"
+            android:name=".views.activity.StaticReceiverActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.DynamicReceiverActivity"
+            android:name=".views.activity.DynamicReceiverActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".view.activity.DownloadReceiverActivity"
+            android:name=".views.activity.DownloadReceiverActivity"
             android:label="@string/app_label" />
 
         <service android:name=".service.DownloadService" />
