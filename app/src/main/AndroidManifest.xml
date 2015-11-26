@@ -130,6 +130,9 @@
         <activity
             android:name=".views.activity.DownloadReceiverActivity"
             android:label="@string/app_label" />
+        <activity
+            android:name=".views.activity.util.ResourcesUtilActivity"
+            android:label="@string/app_label" />
 
         <service android:name=".service.DownloadService" />
 
@@ -137,8 +140,8 @@
 
         <!-- action 写上 aidl生成类的所在包 -->
         <service
-            android:enabled="true"
             android:name=".aidl.PushMessageService"
+            android:enabled="true"
             android:process=":remote">
             <intent-filter>
                 <action android:name="com.camnter.newlife.aidl.IPushMessage" />

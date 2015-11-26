@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.newlife.R;
+import com.camnter.newlife.mvp.MvpActivity;
+import com.camnter.newlife.robotlegs4android.view.activity.Robotlegs4AndroidActivity;
 import com.camnter.newlife.views.activity.design.CoordinatorActivity;
 import com.camnter.newlife.views.activity.design.EasyRecyclerViewActivity;
 import com.camnter.newlife.views.activity.design.FloatingActionButtonActivity;
@@ -23,12 +25,11 @@ import com.camnter.newlife.views.activity.design.tablayout.CustomViewTabLayoutAc
 import com.camnter.newlife.views.activity.design.tablayout.ImageSpanTabLayoutActivity;
 import com.camnter.newlife.views.activity.design.tablayout.NormalTabLayoutActivity;
 import com.camnter.newlife.views.activity.design.tablayout.SetIconTabLayoutActivity;
+import com.camnter.newlife.views.activity.singletask.AActivity;
 import com.camnter.newlife.views.activity.util.DateUtilActivity;
 import com.camnter.newlife.views.activity.util.DeviceUtilActivity;
 import com.camnter.newlife.views.activity.util.ReflectionUtilActivity;
-import com.camnter.newlife.mvp.MvpActivity;
-import com.camnter.newlife.robotlegs4android.view.activity.Robotlegs4AndroidActivity;
-import com.camnter.newlife.views.activity.singletask.AActivity;
+import com.camnter.newlife.views.activity.util.ResourcesUtilActivity;
 import com.camnter.newlife.widget.decorator.DividerItemDecoration;
 
 import java.util.LinkedList;
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         this.menuRV = (RecyclerView) this.findViewById(R.id.menu_rv);
-
 
 
         this.classes = new LinkedList<>();
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         classes.add(StaticReceiverActivity.class);
         classes.add(DynamicReceiverActivity.class);
         classes.add(DownloadReceiverActivity.class);
+        classes.add(ResourcesUtilActivity.class);
 
         MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter();
         adapter.setList(classes);
