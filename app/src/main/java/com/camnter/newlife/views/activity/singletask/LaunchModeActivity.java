@@ -17,7 +17,7 @@ import com.camnter.newlife.R;
  * Created by：CaMnter
  * Time：2015-09-23 15:28
  */
-public class AActivity extends AppCompatActivity implements View.OnClickListener {
+public class LaunchModeActivity extends AppCompatActivity implements View.OnClickListener {
     private Button startBT;
 
     @Override

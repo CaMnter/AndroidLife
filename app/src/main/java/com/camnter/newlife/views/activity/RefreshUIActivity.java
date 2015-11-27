@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
@@ -16,7 +17,7 @@ import java.lang.ref.WeakReference;
  * Created by：CaMnter
  * Time：2015-09-21 11:13
  */
-public class RefreshUIActivity extends Activity {
+public class RefreshUIActivity extends AppCompatActivity {
 
     private TextView handlerTV;
     private static final int HANDLER_SUCCESS = 206;

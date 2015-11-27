@@ -15,7 +15,7 @@ import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.newlife.R;
 import com.camnter.newlife.mvp.MvpActivity;
 import com.camnter.newlife.robotlegs4android.view.activity.Robotlegs4AndroidActivity;
-import com.camnter.newlife.views.activity.design.CoordinatorActivity;
+import com.camnter.newlife.views.activity.design.CoordinatorLayoutActivity;
 import com.camnter.newlife.views.activity.design.EasyRecyclerViewActivity;
 import com.camnter.newlife.views.activity.design.FloatingActionButtonActivity;
 import com.camnter.newlife.views.activity.design.NavigationViewActivity;
@@ -25,7 +25,7 @@ import com.camnter.newlife.views.activity.design.tablayout.CustomViewTabLayoutAc
 import com.camnter.newlife.views.activity.design.tablayout.ImageSpanTabLayoutActivity;
 import com.camnter.newlife.views.activity.design.tablayout.NormalTabLayoutActivity;
 import com.camnter.newlife.views.activity.design.tablayout.SetIconTabLayoutActivity;
-import com.camnter.newlife.views.activity.singletask.AActivity;
+import com.camnter.newlife.views.activity.singletask.LaunchModeActivity;
 import com.camnter.newlife.views.activity.util.DateUtilActivity;
 import com.camnter.newlife.views.activity.util.DeviceUtilActivity;
 import com.camnter.newlife.views.activity.util.ReflectionUtilActivity;
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         classes.add(AsyncTaskActivity.class);
         classes.add(TextInputLayoutActivity.class);
         classes.add(RefreshUIActivity.class);
-        classes.add(AActivity.class);
+        classes.add(LaunchModeActivity.class);
         classes.add(NavigationViewActivity.class);
         classes.add(DeviceUtilActivity.class);
         classes.add(FloatingActionButtonActivity.class);
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         classes.add(SetIconTabLayoutActivity.class);
         classes.add(ImageSpanTabLayoutActivity.class);
         classes.add(CustomViewTabLayoutActivity.class);
-        classes.add(CoordinatorActivity.class);
+        classes.add(CoordinatorLayoutActivity.class);
         classes.add(SensorManagerActivity.class);
         classes.add(MvpActivity.class);
         classes.add(SQLiteActivity.class);

@@ -81,10 +81,10 @@
             android:name=".views.activity.design.tablayout.CustomViewTabLayoutActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".views.activity.design.CoordinatorActivity"
+            android:name=".views.activity.design.CoordinatorLayoutActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".views.activity.singletask.AActivity"
+            android:name=".views.activity.singletask.LaunchModeActivity"
             android:label="@string/app_label" />
         <activity
             android:name=".views.activity.singletask.VActivity"

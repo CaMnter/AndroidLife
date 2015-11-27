@@ -21,7 +21,7 @@ import java.util.List;
  * Created by：CaMnter
  * Time：2015-10-24 11:55
  */
-public class CoordinatorActivity extends Activity {
+public class CoordinatorLayoutActivity extends Activity {
 
     private RecyclerView coordinatorRV;
 
