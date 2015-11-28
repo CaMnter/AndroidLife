@@ -2,10 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.camnter.newlife">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".robotlegsapplication.MainApplication"
@@ -132,6 +135,9 @@
             android:label="@string/app_label" />
         <activity
             android:name=".views.activity.util.ResourcesUtilActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name=".views.activity.LocationManagerActivity"
             android:label="@string/app_label" />
 
         <service android:name=".service.DownloadService" />
