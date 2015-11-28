@@ -30,9 +30,10 @@ android {
     productFlavors {
         AppTest {
             applicationId "com.camnter.newlife"
-            manifestPlaceholders = [DEBUG         : "debug"]
+            manifestPlaceholders = [DEBUG: "debug"]
         }
     }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 
 dependencies {
