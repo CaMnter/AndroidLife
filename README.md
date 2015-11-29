@@ -191,3 +191,10 @@ Broadcastreceiver的demo
 Introduce the ResourcesUtil  
 介绍ResourcesUtil  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50056747)
+
+---
+
+### 27.LocationManagerActivity
+Introduce the LocationManager
+介绍LocationManager
+[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50097333)  
