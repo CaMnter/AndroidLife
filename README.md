@@ -195,6 +195,6 @@ Introduce the ResourcesUtil
 ---
 
 ### 27.LocationManagerActivity
-Introduce the LocationManager
-介绍LocationManager
+Introduce the LocationManager  
+介绍LocationManager  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50097333)  
