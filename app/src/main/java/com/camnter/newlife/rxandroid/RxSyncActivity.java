@@ -13,11 +13,11 @@ import rx.Observer;
 import rx.Subscriber;
 
 /**
- * Description：SyncRxActivity
+ * Description：RxSyncActivity
  * Created by：CaMnter
  * Time：2015-11-30 17:09
  */
-public class SyncRxActivity extends AppCompatActivity {
+public class RxSyncActivity extends AppCompatActivity {
 
     private ImageView syncRxIV;
 
@@ -35,9 +35,9 @@ public class SyncRxActivity extends AppCompatActivity {
             public void call(Subscriber<? super Drawable> subscriber) {
                 Drawable drawable;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    drawable = SyncRxActivity.this.getTheme().getDrawable(R.mipmap.mm_1);
+                    drawable = RxSyncActivity.this.getTheme().getDrawable(R.mipmap.mm_1);
                 } else {
-                    drawable = SyncRxActivity.this.getResources().getDrawable(R.mipmap.mm_1);
+                    drawable = RxSyncActivity.this.getResources().getDrawable(R.mipmap.mm_1);
                 }
 
                 subscriber.onNext(drawable);
@@ -56,7 +56,7 @@ public class SyncRxActivity extends AppCompatActivity {
 
             @Override
             public void onNext(Drawable drawable) {
-                SyncRxActivity.this.syncRxIV.setImageDrawable(drawable);
+                RxSyncActivity.this.syncRxIV.setImageDrawable(drawable);
             }
         });
     }
