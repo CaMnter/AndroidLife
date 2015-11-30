@@ -39,13 +39,21 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+
+    // Google
     compile 'com.android.support:support-v4:23.0.1'
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
 
+    // camnter
     compile 'com.camnter.easyslidingtabs:easyslidingtabs:0.2'
     compile 'com.camnter.easyrecyclerview:easyrecyclerview:0.1'
     compile 'com.camnter.robotlegs4android:robotlegs4android:0.8'
+
+    // Rx
+    compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'io.reactivex:rxjava:1.0.16'
+
 }
