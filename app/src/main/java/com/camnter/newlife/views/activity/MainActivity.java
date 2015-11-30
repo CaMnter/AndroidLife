@@ -15,6 +15,7 @@ import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.newlife.R;
 import com.camnter.newlife.mvp.MvpActivity;
 import com.camnter.newlife.robotlegs4android.view.activity.Robotlegs4AndroidActivity;
+import com.camnter.newlife.rxandroid.SyncRxActivity;
 import com.camnter.newlife.views.activity.design.CoordinatorLayoutActivity;
 import com.camnter.newlife.views.activity.design.EasyRecyclerViewActivity;
 import com.camnter.newlife.views.activity.design.FloatingActionButtonActivity;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         classes.add(DownloadReceiverActivity.class);
         classes.add(ResourcesUtilActivity.class);
         classes.add(LocationManagerActivity.class);
+        classes.add(SyncRxActivity.class);
 
         MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter();
         adapter.setList(classes);
