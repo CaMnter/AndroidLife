@@ -3,13 +3,13 @@ package com.camnter.newlife.rxandroid;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
+import com.camnter.newlife.utils.ThreadUtil;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -118,12 +118,8 @@ public class RxSyncActivity extends AppCompatActivity {
 
     }
 
-    private void checkThread(String info){
-        if(Thread.currentThread() == Looper.getMainLooper().getThread()){
-            Log.i(TAG,"MainThread-"+Thread.currentThread().getId()+": "+info);
-        }else {
-            Log.i(TAG,"ChildThread-"+Thread.currentThread().getId()+": "+info);
-        }
+    private void checkThread(String info) {
+        Log.i(TAG, ThreadUtil.getThreadMsg(info));
     }
 
 }
