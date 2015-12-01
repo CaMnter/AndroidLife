@@ -26,7 +26,7 @@ public class ThreadUtil {
      * Formatting information, formatting and thread information
      * 格式化信息，格式化后有线程信息
      *
-     * @param info
+     * @param info info
      * @return msg
      */
     public static String getThreadMsg(String info) {

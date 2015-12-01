@@ -1,8 +1,6 @@
 package com.camnter.newlife.views.activity;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,11 +9,7 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +17,7 @@ import android.widget.Toast;
 
 import com.camnter.newlife.R;
 import com.camnter.newlife.utils.ImageUtil;
+import com.camnter.newlife.widget.CustomProgressBarDialog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -111,62 +106,6 @@ public class DownloadImageToGalleryActivity extends AppCompatActivity implements
                 break;
             }
         }
-    }
-
-    /**
-     * 自定义进度条Dialog
-     */
-    public class CustomProgressBarDialog extends Dialog {
-
-        private LayoutInflater mInflater;
-        private Context mContext;
-        private WindowManager.LayoutParams params;
-        private View mView;
-        private TextView promptTV;
-
-        public CustomProgressBarDialog(Context context) {
-            super(context);
-            this.init(context);
-        }
-
-        public CustomProgressBarDialog(Context context, int themeResId) {
-            super(context, themeResId);
-            this.init(context);
-        }
-
-        protected CustomProgressBarDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
-            super(context, cancelable, cancelListener);
-            this.init(context);
-        }
-
-        private void init(Context context) {
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
-            this.mContext = context;
-            this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            this.mView = this.mInflater.inflate(R.layout.dialog_progressbar, null);
-            setContentView(this.mView);
-
-            // 设置window属性
-            this.params = getWindow().getAttributes();
-            this.params.gravity = Gravity.CENTER;
-            // 去背景遮盖
-            this.params.dimAmount = 0;
-            this.params.alpha = 1.0f;
-            // 不能关掉
-            this.setCancelable(false);
-            this.getWindow().setAttributes(this.params);
-            this.promptTV = (TextView) findViewById(R.id.load_info_text);
-        }
-
-        /**
-         * 设置内容
-         *
-         * @param prompt
-         */
-        public void setLoadPrompt(String prompt) {
-            this.promptTV.setText(prompt);
-        }
-
     }
 
     /**
