@@ -4,8 +4,16 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
+    <TextView
+        android:id="@+id/rx_sync_tv"
+        android:padding="16dp"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <ImageView
-        android:id="@+id/sync_rx_iv"
+        android:layout_below="@id/rx_sync_tv"
+        android:id="@+id/rx_sync_iv"
         android:layout_width="266dp"
         android:layout_height="266dp"
         android:layout_centerInParent="true" />
