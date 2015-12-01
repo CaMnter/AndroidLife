@@ -1,4 +1,4 @@
-package com.camnter.newlife.robotlegs4android.view.activity;
+package com.camnter.newlife.robotlegs.robotlegs4android.view.activity;
 
 import android.os.Bundle;
 

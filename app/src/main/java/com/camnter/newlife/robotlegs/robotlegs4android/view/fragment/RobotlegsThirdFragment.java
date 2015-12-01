@@ -1,4 +1,4 @@
-package com.camnter.newlife.robotlegs4android.view.fragment;
+package com.camnter.newlife.robotlegs.robotlegs4android.view.fragment;
 
 import com.camnter.newlife.R;
 import com.camnter.robotlegs4android.views.RobotlegsFragment;

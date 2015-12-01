@@ -1,18 +1,18 @@
-package com.camnter.newlife.robotlegscontext;
+package com.camnter.newlife.robotlegs.robotlegscontext;
 
-import com.camnter.newlife.robotlegs4android.controller.Login;
-import com.camnter.newlife.robotlegs4android.event.LoginEvent;
-import com.camnter.newlife.robotlegs4android.model.UserModel;
-import com.camnter.newlife.robotlegs4android.view.activity.Robotlegs4AndroidActivity;
-import com.camnter.newlife.robotlegs4android.view.activity.Robotlegs4AndroidActivityMediator;
-import com.camnter.newlife.robotlegs4android.view.fragment.RobotlegsFirstFragment;
-import com.camnter.newlife.robotlegs4android.view.fragment.RobotlegsFirstFragmentMediator;
-import com.camnter.newlife.robotlegs4android.view.fragment.RobotlegsFourthFragment;
-import com.camnter.newlife.robotlegs4android.view.fragment.RobotlegsFourthFragmentMediator;
-import com.camnter.newlife.robotlegs4android.view.fragment.RobotlegsSecondFragment;
-import com.camnter.newlife.robotlegs4android.view.fragment.RobotlegsSecondFragmentMediator;
-import com.camnter.newlife.robotlegs4android.view.fragment.RobotlegsThirdFragment;
-import com.camnter.newlife.robotlegs4android.view.fragment.RobotlegsThirdFragmentMediator;
+import com.camnter.newlife.robotlegs.robotlegs4android.controller.Login;
+import com.camnter.newlife.robotlegs.robotlegs4android.event.LoginEvent;
+import com.camnter.newlife.robotlegs.robotlegs4android.model.UserModel;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.activity.Robotlegs4AndroidActivity;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.activity.Robotlegs4AndroidActivityMediator;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.fragment.RobotlegsFirstFragment;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.fragment.RobotlegsFirstFragmentMediator;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.fragment.RobotlegsFourthFragment;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.fragment.RobotlegsFourthFragmentMediator;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.fragment.RobotlegsSecondFragment;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.fragment.RobotlegsSecondFragmentMediator;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.fragment.RobotlegsThirdFragment;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.fragment.RobotlegsThirdFragmentMediator;
 import com.camnter.robotlegs4android.mvcs.Context;
 
 

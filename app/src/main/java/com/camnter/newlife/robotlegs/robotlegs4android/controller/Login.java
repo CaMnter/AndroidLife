@@ -1,9 +1,9 @@
-package com.camnter.newlife.robotlegs4android.controller;
+package com.camnter.newlife.robotlegs.robotlegs4android.controller;
 
 import android.util.Log;
 
-import com.camnter.newlife.robotlegs4android.event.LoginEvent;
-import com.camnter.newlife.robotlegs4android.model.UserModel;
+import com.camnter.newlife.robotlegs.robotlegs4android.event.LoginEvent;
+import com.camnter.newlife.robotlegs.robotlegs4android.model.UserModel;
 import com.camnter.robotlegs4android.base.Inject;
 import com.camnter.robotlegs4android.mvcs.Command;
 

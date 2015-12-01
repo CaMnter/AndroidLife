@@ -1,4 +1,4 @@
-package com.camnter.newlife.robotlegs4android.view.activity;
+package com.camnter.newlife.robotlegs.robotlegs4android.view.activity;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -6,12 +6,12 @@ import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 
 import com.camnter.newlife.R;
-import com.camnter.newlife.robotlegs4android.event.LoginEvent;
-import com.camnter.newlife.robotlegs4android.view.adapter.Robotlegs4AndroidAdapter;
-import com.camnter.newlife.robotlegs4android.view.fragment.RobotlegsFirstFragment;
-import com.camnter.newlife.robotlegs4android.view.fragment.RobotlegsFourthFragment;
-import com.camnter.newlife.robotlegs4android.view.fragment.RobotlegsSecondFragment;
-import com.camnter.newlife.robotlegs4android.view.fragment.RobotlegsThirdFragment;
+import com.camnter.newlife.robotlegs.robotlegs4android.event.LoginEvent;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.adapter.Robotlegs4AndroidAdapter;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.fragment.RobotlegsFirstFragment;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.fragment.RobotlegsFourthFragment;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.fragment.RobotlegsSecondFragment;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.fragment.RobotlegsThirdFragment;
 import com.camnter.robotlegs4android.base.Event;
 import com.camnter.robotlegs4android.base.Listener;
 import com.camnter.robotlegs4android.core.IListener;

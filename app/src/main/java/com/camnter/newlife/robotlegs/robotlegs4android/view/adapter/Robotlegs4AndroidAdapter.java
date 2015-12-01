@@ -1,4 +1,4 @@
-package com.camnter.newlife.robotlegs4android.view.adapter;
+package com.camnter.newlife.robotlegs.robotlegs4android.view.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

@@ -1,6 +1,6 @@
-package com.camnter.newlife.robotlegsapplication;
+package com.camnter.newlife.robotlegs.robotlegsapplication;
 
-import com.camnter.newlife.robotlegscontext.MainContext;
+import com.camnter.newlife.robotlegs.robotlegscontext.MainContext;
 import com.camnter.robotlegs4android.mvcs.Context;
 import com.camnter.robotlegs4android.views.RobotlegsApplication;
 

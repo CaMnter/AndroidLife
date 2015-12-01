@@ -1,7 +1,7 @@
-package com.camnter.newlife.robotlegs4android.model;
+package com.camnter.newlife.robotlegs.robotlegs4android.model;
 
-import com.camnter.newlife.robotlegs4android.bean.User;
-import com.camnter.newlife.robotlegs4android.event.LoginEvent;
+import com.camnter.newlife.robotlegs.robotlegs4android.bean.User;
+import com.camnter.newlife.robotlegs.robotlegs4android.event.LoginEvent;
 import com.camnter.robotlegs4android.mvcs.Actor;
 
 

@@ -1,4 +1,4 @@
-package com.camnter.newlife.robotlegs4android.view.fragment;
+package com.camnter.newlife.robotlegs.robotlegs4android.view.fragment;
 
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
-import com.camnter.newlife.robotlegs4android.event.LoginEvent;
+import com.camnter.newlife.robotlegs.robotlegs4android.event.LoginEvent;
 import com.camnter.robotlegs4android.base.Event;
 import com.camnter.robotlegs4android.base.Listener;
 import com.camnter.robotlegs4android.core.IListener;

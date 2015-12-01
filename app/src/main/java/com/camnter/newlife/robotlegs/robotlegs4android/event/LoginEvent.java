@@ -1,6 +1,6 @@
-package com.camnter.newlife.robotlegs4android.event;
+package com.camnter.newlife.robotlegs.robotlegs4android.event;
 
-import com.camnter.newlife.robotlegs4android.bean.User;
+import com.camnter.newlife.robotlegs.robotlegs4android.bean.User;
 import com.camnter.robotlegs4android.base.Event;
 
 

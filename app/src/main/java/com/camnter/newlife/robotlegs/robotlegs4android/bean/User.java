@@ -1,4 +1,4 @@
-package com.camnter.newlife.robotlegs4android.bean;
+package com.camnter.newlife.robotlegs.robotlegs4android.bean;
 
 import java.io.Serializable;
 
