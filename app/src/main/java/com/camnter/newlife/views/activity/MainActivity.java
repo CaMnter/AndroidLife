@@ -14,8 +14,9 @@ import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.newlife.R;
 import com.camnter.newlife.mvp.MvpActivity;
-import com.camnter.newlife.robotlegs4android.view.activity.Robotlegs4AndroidActivity;
+import com.camnter.newlife.robotlegs.robotlegs4android.view.activity.Robotlegs4AndroidActivity;
 import com.camnter.newlife.rxandroid.RxAsyncActivity;
+import com.camnter.newlife.rxandroid.RxMapActivity;
 import com.camnter.newlife.rxandroid.RxSyncActivity;
 import com.camnter.newlife.views.activity.design.CoordinatorLayoutActivity;
 import com.camnter.newlife.views.activity.design.EasyRecyclerViewActivity;
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         classes.add(LocationManagerActivity.class);
         classes.add(RxSyncActivity.class);
         classes.add(RxAsyncActivity.class);
+        classes.add(RxMapActivity.class);
 
         MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter();
         adapter.setList(classes);
