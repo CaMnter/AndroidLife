@@ -143,6 +143,9 @@
         <activity
             android:name=".rxandroid.RxSyncActivity"
             android:label="@string/app_label" />
+        <activity
+            android:name=".rxandroid.RxAsyncActivity"
+            android:label="@string/app_label" />
 
         <service android:name=".service.DownloadService" />
 
