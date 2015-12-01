@@ -27,10 +27,13 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action1;
 
 /**
  * Description：RxSyncActivity
@@ -44,7 +47,8 @@ public class RxSyncActivity extends AppCompatActivity implements View.OnClickLis
 
     private static final int HANDLER_LOADING = 262;
 
-    private TextView syncRxTV;
+    private TextView syncRxJustTV;
+    private TextView syncRxFromTV;
     private ImageView syncRxIV;
     private Button syncRxSaveBT;
 
@@ -105,7 +109,8 @@ public class RxSyncActivity extends AppCompatActivity implements View.OnClickLis
         TextView syncRxSaveTV = (TextView) this.findViewById(R.id.rx_sync_save_tv);
         syncRxSaveTV.setText(OBJECT_IMAGE_URL);
         this.syncRxIV = (ImageView) this.findViewById(R.id.rx_sync_iv);
-        this.syncRxTV = (TextView) this.findViewById(R.id.rx_sync_tv);
+        this.syncRxJustTV = (TextView) this.findViewById(R.id.rx_sync_just_tv);
+        this.syncRxFromTV = (TextView) this.findViewById(R.id.rx_sync_from_tv);
         this.syncRxSaveBT = (Button) this.findViewById(R.id.rx_sync_save_bt);
     }
 
@@ -130,7 +135,7 @@ public class RxSyncActivity extends AppCompatActivity implements View.OnClickLis
          * 调用了3次onNext
          * 一次onCompleted
          */
-        Observable.just("Save", "you", "from", "anything")
+        Observable.just("Just","save", "you", "from", "anything")
                 .subscribe(new Subscriber<String>() {
                     @Override
                     public void onCompleted() {
@@ -145,11 +150,22 @@ public class RxSyncActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onNext(String s) {
                         RxSyncActivity.this.checkThread("just -> Subscriber.onNext()");
-                        String text = RxSyncActivity.this.syncRxTV.getText().toString();
+                        String text = RxSyncActivity.this.syncRxJustTV.getText().toString();
                         text += s + " ";
-                        RxSyncActivity.this.syncRxTV.setText(text);
+                        RxSyncActivity.this.syncRxJustTV.setText(text);
                     }
                 });
+
+        String[] sign = {"From","save", "you", "from", "anything"};
+        Observable.from(sign).subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                RxSyncActivity.this.checkThread("from -> Subscriber.onNext()");
+                String text = RxSyncActivity.this.syncRxFromTV.getText().toString();
+                text += s + " ";
+                RxSyncActivity.this.syncRxFromTV.setText(text);
+            }
+        });
 
     }
 

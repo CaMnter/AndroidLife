@@ -170,7 +170,6 @@ public class RxAsyncActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 FileOutputStream output = new FileOutputStream(downloadFile);
                 InputStream input = connection.getInputStream();
-                InputStream bitmapInput = connection.getInputStream();
                 //下载
                 byte[] buffer = new byte[1024];
                 int len;

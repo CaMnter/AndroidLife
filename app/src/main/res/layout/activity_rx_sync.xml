@@ -12,10 +12,18 @@
         android:padding="16dp" />
 
     <TextView
-        android:id="@+id/rx_sync_tv"
+        android:id="@+id/rx_sync_just_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/rx_sync_save_tv"
+        android:layout_centerHorizontal="true"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/rx_sync_from_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rx_sync_just_tv"
         android:layout_centerHorizontal="true"
         android:padding="16dp" />
 
@@ -23,7 +31,7 @@
         android:id="@+id/rx_sync_save_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rx_sync_tv"
+        android:layout_below="@id/rx_sync_from_tv"
         android:layout_centerHorizontal="true"
         android:layout_margin="6dp"
         android:padding="6dp"
