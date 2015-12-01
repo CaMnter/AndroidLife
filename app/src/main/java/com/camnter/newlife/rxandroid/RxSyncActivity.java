@@ -3,7 +3,9 @@ package com.camnter.newlife.rxandroid;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +20,8 @@ import rx.Subscriber;
  * Time：2015-11-30 17:09
  */
 public class RxSyncActivity extends AppCompatActivity {
+
+    private static final String TAG = "RxSyncActivity";
 
     private TextView syncRxTV;
     private ImageView syncRxIV;
@@ -50,7 +54,7 @@ public class RxSyncActivity extends AppCompatActivity {
                 } else {
                     drawable = RxSyncActivity.this.getResources().getDrawable(R.mipmap.mm_1);
                 }
-
+                RxSyncActivity.this.checkThread("create -> OnSubscribe.call()");
                 /*
                  * 通知订阅者
                  */
@@ -70,6 +74,7 @@ public class RxSyncActivity extends AppCompatActivity {
 
             @Override
             public void onNext(Drawable drawable) {
+                RxSyncActivity.this.checkThread("create -> Subscriber.onNext()");
                 RxSyncActivity.this.syncRxIV.setImageDrawable(drawable);
             }
         });
@@ -104,12 +109,21 @@ public class RxSyncActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(String s) {
+                        RxSyncActivity.this.checkThread("just -> Subscriber.onNext()");
                         String text = RxSyncActivity.this.syncRxTV.getText().toString();
                         text += s + " ";
                         RxSyncActivity.this.syncRxTV.setText(text);
                     }
                 });
 
+    }
+
+    private void checkThread(String info){
+        if(Thread.currentThread() == Looper.getMainLooper().getThread()){
+            Log.i(TAG,"MainThread-"+Thread.currentThread().getId()+": "+info);
+        }else {
+            Log.i(TAG,"ChildThread-"+Thread.currentThread().getId()+": "+info);
+        }
     }
 
 }
