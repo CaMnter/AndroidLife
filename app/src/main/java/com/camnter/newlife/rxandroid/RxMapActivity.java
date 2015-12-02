@@ -147,7 +147,7 @@ public class RxMapActivity extends AppCompatActivity {
             @Override
             public void onNext(RxChildData rxChildData) {
                 String text = RxMapActivity.this.rxFlatMapThrTV.getText().toString();
-                text += rxChildData.getChildContent()+" ";
+                text += rxChildData.getChildContent() + " ";
                 RxMapActivity.this.rxFlatMapThrTV.setText(text);
             }
         });
