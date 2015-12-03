@@ -151,7 +151,7 @@ public class ChineseUtil {
     }
 
     /**
-     * 单字解析
+     * 单字解析拼音
      *
      * @param chinese chinese
      * @return string
@@ -173,12 +173,12 @@ public class ChineseUtil {
     }
 
     /**
-     * 词组解析
+     * 词组解析成拼音
      *
      * @param chinese chinese
      * @return string
      */
-    public String getSelling(String chinese) {
+    public String getSpelling(String chinese) {
         if (chinese == null) return "";
         String key, value;
         StringBuilder buffer = new StringBuilder();
@@ -198,12 +198,32 @@ public class ChineseUtil {
     }
 
     /**
-     * 词组解析
+     * 词组解析成拼音
      *
      * @return string
      */
     public String getSpelling() {
-        return this.getSelling(this.getResource());
+        return this.getSpelling(this.getResource());
+    }
+
+    /**
+     * 词组解析成第一个字的大写字母
+     *
+     * @param chinese chinese
+     * @return upper letter
+     */
+    public String getSpellingFirstLetterUpper(String chinese) {
+        return this.getSpelling(chinese).toUpperCase().charAt(0) + "";
+    }
+
+    /**
+     * 词组解析成第一个字的小写字母
+     *
+     * @param chinese chinese
+     * @return lower letter
+     */
+    public String getSpellingFirstLetterLower(String chinese) {
+        return this.getSpelling(chinese).toLowerCase().charAt(0) + "";
     }
 
 }
