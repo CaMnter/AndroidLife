@@ -27,12 +27,11 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.functions.Action1;
 
 /**
@@ -51,6 +50,10 @@ public class RxSyncActivity extends AppCompatActivity implements View.OnClickLis
     private TextView syncRxFromTV;
     private ImageView syncRxIV;
     private Button syncRxSaveBT;
+
+    private Subscription justSubscription;
+    private Subscription fromSubscription;
+    private Subscription downloadSubscription;
 
     private CustomProgressBarDialog dialog;
 
@@ -135,7 +138,7 @@ public class RxSyncActivity extends AppCompatActivity implements View.OnClickLis
          * 调用了3次onNext
          * 一次onCompleted
          */
-        Observable.just("Just","save", "you", "from", "anything")
+        this.justSubscription = Observable.just("Just", "save", "you", "from", "anything")
                 .subscribe(new Subscriber<String>() {
                     @Override
                     public void onCompleted() {
@@ -156,8 +159,8 @@ public class RxSyncActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 });
 
-        String[] sign = {"From","save", "you", "from", "anything"};
-        Observable.from(sign).subscribe(new Action1<String>() {
+        String[] sign = {"From", "save", "you", "from", "anything"};
+        this.fromSubscription = Observable.from(sign).subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
                 RxSyncActivity.this.checkThread("from -> Subscriber.onNext()");
@@ -340,7 +343,7 @@ public class RxSyncActivity extends AppCompatActivity implements View.OnClickLis
                  * 失败会走到onError方法
                  * 成功的话，因为call方法有Subscriber对象，这是添加的订阅者，可以调用它的onNext或onCompleted
                  */
-                Observable.create(new Observable.OnSubscribe<String>() {
+                this.downloadSubscription = Observable.create(new Observable.OnSubscribe<String>() {
                     @Override
                     public void call(Subscriber<? super String> subscriber) {
                         RxSyncActivity.this.checkThread("create -> OnSubscribe.create()");
@@ -386,8 +389,11 @@ public class RxSyncActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        this.justSubscription.unsubscribe();
+        this.fromSubscription.unsubscribe();
+        this.downloadSubscription.unsubscribe();
         this.dialog.dismiss();
+        super.onDestroy();
     }
 
 }
