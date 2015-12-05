@@ -26,10 +26,12 @@ public class RxMapActivity extends AppCompatActivity {
     private TextView rxMapOneTV;
     private TextView rxMapTwoTV;
     private TextView rxFlatMapThrTV;
+    private TextView rxLiftFouTV;
 
     private Subscription rxOneSubscription;
     private Subscription rxTwoSubscription;
     private Subscription rxThrSubscription;
+    private Subscription rxFouSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class RxMapActivity extends AppCompatActivity {
         this.rxMapOneTV = (TextView) this.findViewById(R.id.rx_map_one_tv);
         this.rxMapTwoTV = (TextView) this.findViewById(R.id.rx_map_two_tv);
         this.rxFlatMapThrTV = (TextView) this.findViewById(R.id.rx_map_thr_tv);
+        this.rxLiftFouTV = (TextView) this.findViewById(R.id.rx_map_fou_tv);
     }
 
     private void initData() {
@@ -128,6 +131,19 @@ public class RxMapActivity extends AppCompatActivity {
         RxChildData[] childData = {childData1, childData2, childData3};
         parentData.setChildDatas(childData);
 
+        /**
+         * flatMap一对多的类型转换
+         * flatMap() 和 map() 有一个相同点：它也是把传入的参数转化之后返回另一个对象。
+         * 和 map() 不同的是， flatMap() 中返回的是个 Observable 对象，
+         * 并且这个 Observable 对象并不是被直接发送到了 Subscriber 的回调方法中。
+         * flatMap() 的原理是这样的：
+         * 1. 使用传入的事件对象创建一个 Observable 对象；
+         * 2. 并不发送这个 Observable, 而是将它激活，于是它开始发送事件；
+         * 3. 每一个创建出来的 Observable 发送的事件，都被汇入同一个 Observable，而
+         * 这个 Observable 负责将这些事件统一交给 Subscriber 的回调方法。这三个步骤，把
+         * 事件拆成了两级，通过一组新创建的 Observable 将初始的对象『铺平』之后通过统一路径
+         * 分发了下去。而这个『铺平』就是 flatMap() 所谓的 flat
+         */
         this.rxThrSubscription = Observable.from(new RxData[]{parentData}).flatMap(new Func1<RxData, Observable<RxChildData>>() {
             @Override
             public Observable<RxChildData> call(RxData rxData) {
@@ -152,6 +168,60 @@ public class RxMapActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * 当含有 lift() 时：
+         * 1.lift() 创建了一个 Observable 后，加上之前的原始 Observable，已经有两个 Observable 了；
+         * 2.而同样地，新 Observable 里的新 OnSubscribe 加上之前的原始 Observable 中的原始 OnSubscribe，也
+         * 就有了两个 OnSubscribe；
+         * 3.当用户调用经过 lift() 后的 Observable 的 subscribe() 的时候，使用的是 lift() 所返回的新
+         * 的 Observable ，于是它所触发的 onSubscribe.call(subscriber)，也是用的新 Observable 中的
+         * 新 OnSubscribe，即在 lift() 中生成的那个 OnSubscribe；
+         * 4.而这个新 OnSubscribe 的 call() 方法中的 onSubscribe ，就是指的原始 Observable 中的原始
+         * OnSubscribe ，在这个 call() 方法里，新 OnSubscribe 利用 operator.call(subscriber) 生成
+         * 了一个新的 Subscriber（Operator 就是在这里，通过自己的 call() 方法将新 Subscriber 和原始
+         * Subscriber 进行关联，并插入自己的『变换』代码以实现变换），然后利用这个新 Subscriber 向原始
+         * Observable 进行订阅。
+         * 这样就实现了 lift() 过程，有点像一种代理机制，通过事件拦截和处理实现事件序列的变换。
+         */
+        this.rxFouSubscription = Observable.from(new Integer[]{6, 7}).lift(new Observable.Operator<String, Integer>() {
+            @Override
+            public Subscriber<? super Integer> call(final Subscriber<? super String> subscriber) {
+                return new Subscriber<Integer>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        subscriber.onNext(integer + "");
+                    }
+                };
+            }
+        }).subscribe(new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+                String text = RxMapActivity.this.rxLiftFouTV.getText().toString();
+                text += s + " ";
+                RxMapActivity.this.rxLiftFouTV.setText(text);
+            }
+        });
+
     }
 
     @Override
@@ -159,6 +229,7 @@ public class RxMapActivity extends AppCompatActivity {
         this.rxOneSubscription.unsubscribe();
         this.rxTwoSubscription.unsubscribe();
         this.rxThrSubscription.unsubscribe();
+        this.rxFouSubscription.unsubscribe();
         super.onDestroy();
     }
 }
