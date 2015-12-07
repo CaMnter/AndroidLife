@@ -1,10 +1,8 @@
 package com.camnter.newlife.utils;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
-import android.widget.EditText;
 
 /**
  * Description：ViewUtil
@@ -31,17 +29,17 @@ public class ViewUtil {
     }
 
     /**
-     * 根据Android系统版本，调用版本API中的设置EditText背景的方法
-     * According to the Android version, calls the Settings in the EditText background method of version API
+     * 根据Android系统版本，调用版本API中的设置View背景的方法
+     * According to the Android version, calls the Settings in the View background method of version API
      *
-     * @param editText
-     * @param drawable
+     * @param view     view
+     * @param drawable drawable
      */
-    public static void setEditTextBackgroundDrawable(EditText editText,Drawable drawable){
+    public static void setViewBackgroundDrawable(View view, Drawable drawable) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            editText.setBackground(drawable);
+            view.setBackground(drawable);
         } else {
-            editText.setBackgroundDrawable(drawable);
+            view.setBackgroundDrawable(drawable);
         }
     }
 
