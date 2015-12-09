@@ -10,29 +10,27 @@ import java.security.MessageDigest;
 public class MD5Util {
 
     public static String getMD5String(String key) {
-        char hexDigits[] = { '0', '1', '2', '3', '4',
+        char hexDigits[] = {'0', '1', '2', '3', '4',
                 '5', '6', '7', '8', '9',
-                'A', 'B', 'C', 'D', 'E', 'F' };
+                'A', 'B', 'C', 'D', 'E', 'F'};
         try {
-            byte[] btInput = key.getBytes();
-            //获得MD5摘要算法的 MessageDigest 对象
-            MessageDigest mdInst = MessageDigest.getInstance("MD5");
-            //使用指定的字节更新摘要
-            mdInst.update(btInput);
-            //获得密文
-            byte[] md = mdInst.digest();
-            //把密文转换成十六进制的字符串形式
-            int j = md.length;
-            char str[] = new char[j * 2];
+            byte[] input = key.getBytes();
+            // MD5算法的 MessageDigest 对象
+            MessageDigest md5Digest = MessageDigest.getInstance("MD5");
+            // 转换
+            md5Digest.update(input);
+            // 密文
+            byte[] md5byte = md5Digest.digest();
+            // string 转 十六进制
+            int j = md5byte.length;
+            char md5char[] = new char[j * 2];
             int k = 0;
-            for (int i = 0; i < j; i++) {
-                byte byte0 = md[i];
-                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
-                str[k++] = hexDigits[byte0 & 0xf];
+            for (byte b : md5byte) {
+                md5char[k++] = hexDigits[b >>> 4 & 0xf];
+                md5char[k++] = hexDigits[b & 0xf];
             }
-            return new String(str);
-        }
-        catch (Exception e) {
+            return new String(md5char);
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -45,7 +43,6 @@ public class MD5Util {
             if (hex.length() == 1) {
                 sb.append('0');
             }
-
             sb.append(hex);
         }
         return sb.toString();

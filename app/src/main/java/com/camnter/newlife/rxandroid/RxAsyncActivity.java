@@ -41,7 +41,7 @@ import rx.schedulers.Schedulers;
  */
 public class RxAsyncActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "RxSyncActivity";
+    private static final String TAG = "RxAsyncActivity";
     private static final String OBJECT_IMAGE_URL = "http://img.blog.csdn.net/20150913233900119";
 
     private static final int HANDLER_LOADING = 262;

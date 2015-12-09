@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         // 使RecyclerView保持固定的大小，该信息被用于自身的优化
         this.menuRV.setHasFixedSize(true);
         this.menuRV.setAdapter(adapter);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
     }
 
     public class MainRecyclerViewAdapter extends EasyRecyclerViewAdapter {
