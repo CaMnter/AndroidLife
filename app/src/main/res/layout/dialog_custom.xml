@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/custom_dialog_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/dialog_custom_defalut"
+            android:drawableStart="@mipmap/dialog_custom_defalut"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="发送成功"
+            android:textColor="@color/gray_text"
+            android:textSize="18dp" />
+    </LinearLayout>
+</LinearLayout>

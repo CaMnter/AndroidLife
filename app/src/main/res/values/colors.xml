@@ -9,4 +9,10 @@
     <color name="red">#ffFF4081</color>
     <color name="black">#ff000000</color>
     <color name="yellow">#ffFDD706</color>
+
+    <color name="white">#ffffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="blank_color">#ff999999</color>
+    <color name="green">#ff5EBF60</color>
+    <color name="gray">#FFcccccc</color>
 </resources>

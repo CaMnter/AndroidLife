@@ -27,4 +27,9 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <style name="custom_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">#44000000</item>
+    </style>
+
 </resources>
