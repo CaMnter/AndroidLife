@@ -1,4 +1,4 @@
-package com.camnter.newlife.utils;
+package com.camnter.newlife.widget;
 
 import android.app.Dialog;
 import android.content.Context;
