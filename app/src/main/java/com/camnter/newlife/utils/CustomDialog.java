@@ -66,7 +66,7 @@ public class CustomDialog extends Dialog {
     public void show() {
         super.show();
         this.dialogTV.setText(TextUtils.isEmpty(this.content) ? DEFAULT_CONTENT : this.content);
-        long showDuration = this.duration >= 0L ? this.duration : DEFAULT_DURATION;
+        long showDuration = this.duration > 0L ? this.duration : DEFAULT_DURATION;
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 if (CustomDialog.this.isShowing()) {
@@ -87,37 +87,42 @@ public class CustomDialog extends Dialog {
         void onDismiss();
     }
 
-    public static class CustomDialogBuilder {
+    public static class DialogBuilder {
 
         private CustomDialog dialog;
-        public static CustomDialogBuilder ourInstance;
+        public static DialogBuilder ourInstance;
 
-        public static CustomDialogBuilder getInstance(Context context) {
-            if (ourInstance == null) ourInstance = new CustomDialogBuilder(context);
+        public static DialogBuilder getInstance(Context context) {
+            if (ourInstance == null) ourInstance = new DialogBuilder(context);
             return ourInstance;
         }
 
-        private CustomDialogBuilder(Context context) {
+        private DialogBuilder(Context context) {
             this.dialog = new CustomDialog(context);
         }
 
-        public CustomDialogBuilder setDuration(long duration) {
+        public DialogBuilder setDuration(long duration) {
             this.dialog.duration = duration;
             return this;
         }
 
-        public CustomDialogBuilder setContent(String content) {
+        public DialogBuilder setContent(String content) {
             this.dialog.content = content;
             return this;
         }
 
-        public CustomDialogBuilder setDrawable(Drawable drawable) {
+        public DialogBuilder setDrawable(Drawable drawable) {
             this.dialog.setTextDrawable(drawable);
             return this;
         }
 
-        public CustomDialogBuilder setCallback(DialogCallback callback) {
+        public DialogBuilder setCallback(DialogCallback callback) {
             this.dialog.callback = callback;
+            return this;
+        }
+
+        public DialogBuilder setCanceledOnTouchOutside(boolean cancel) {
+            this.dialog.setCanceledOnTouchOutside(cancel);
             return this;
         }
 
