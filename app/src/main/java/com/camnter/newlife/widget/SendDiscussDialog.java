@@ -84,6 +84,11 @@ public class SendDiscussDialog extends Dialog {
             return this;
         }
 
+        public DialogBuilder setCanceledOnTouchOutside(boolean cancel) {
+            this.dialog.setCanceledOnTouchOutside(cancel);
+            return this;
+        }
+
         public SendDiscussDialog getDialog() {
             return dialog;
         }
