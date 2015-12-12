@@ -10,6 +10,7 @@ import android.view.View;
  * Time：2015-12-04 22:33
  */
 public class ViewUtil {
+
     /**
      * Set view alpha
      * 设置透明度

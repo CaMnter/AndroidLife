@@ -6,6 +6,7 @@ package com.camnter.newlife.utils;
  * Time：2015-12-08 17:54
  */
 public class ClickUtil {
+
     private static long lastClickTime;
     private static long clickInterval = 500;
 
@@ -32,4 +33,5 @@ public class ClickUtil {
         lastClickTime = currentTime;
         return status;
     }
+
 }
