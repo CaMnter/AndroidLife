@@ -391,7 +391,7 @@ public class RxSyncActivity extends AppCompatActivity implements View.OnClickLis
     protected void onDestroy() {
         this.justSubscription.unsubscribe();
         this.fromSubscription.unsubscribe();
-        this.downloadSubscription.unsubscribe();
+        if (this.downloadSubscription != null) this.downloadSubscription.unsubscribe();
         this.dialog.dismiss();
         super.onDestroy();
     }

@@ -198,3 +198,9 @@ Introduce the ResourcesUtil
 Introduce the LocationManager  
 介绍LocationManager  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50097333)  
+
+---
+
+### 28.RxSyncActivity & RxAsyncActivity & RxMapActivity
+Introduce the [RxAndroid](https://github.com/ReactiveX/RxAndroid)  
+介绍RxAndroid  
