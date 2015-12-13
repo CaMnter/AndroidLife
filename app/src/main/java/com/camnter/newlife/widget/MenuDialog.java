@@ -19,7 +19,7 @@ public class MenuDialog extends Dialog {
     private TextView helpTV;
 
     public MenuDialog(Context context) {
-        super(context, R.style.send_discuss_dialog);
+        super(context, R.style.menu_dialog);
         this.initViews(context);
     }
 

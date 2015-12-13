@@ -27,21 +27,21 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="custom_dialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/transparent</item>
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowIsFloating">true</item>
-    </style>
+<style name="custom_dialog" parent="@android:style/Theme.Dialog">
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowBackground">@color/transparent</item>
+    <item name="android:windowIsTranslucent">false</item>
+    <item name="android:windowFullscreen">true</item>
+    <item name="android:windowIsFloating">true</item>
+</style>
 
-    <style name="send_discuss_dialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/transparent</item>
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowIsFloating">true</item>
-    </style>
+<style name="menu_dialog" parent="@android:style/Theme.Dialog">
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowBackground">@color/transparent</item>
+    <item name="android:windowIsTranslucent">false</item>
+    <item name="android:windowFullscreen">true</item>
+    <item name="android:windowIsFloating">true</item>
+</style>
 
     <style name="TextButton">
         <item name="android:background">@drawable/bg_text_button</item>
