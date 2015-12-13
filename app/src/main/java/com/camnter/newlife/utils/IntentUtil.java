@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Created by：CaMnter
  * Time：2015-12-12 18:22
  */
-public class IntentUtil {
+public class IntentUtil  {
 
     public static boolean hasIntent(Intent intent) {
         return intent != null;
@@ -28,22 +28,22 @@ public class IntentUtil {
         return intent.getBooleanExtra(name, defaultValue);
     }
 
-    public byte getByteExtra(Intent intent, String name, byte defaultValue) {
+    public static byte getByteExtra(Intent intent, String name, byte defaultValue) {
         if (!hasIntent(intent) || !hasExtra(intent, name)) return defaultValue;
         return intent.getByteExtra(name, defaultValue);
     }
 
-    public short getShortExtra(Intent intent, String name, short defaultValue) {
+    public static short getShortExtra(Intent intent, String name, short defaultValue) {
         if (!hasIntent(intent) || !hasExtra(intent, name)) return defaultValue;
         return intent.getShortExtra(name, defaultValue);
     }
 
-    public char getCharExtra(Intent intent, String name, char defaultValue) {
+    public static char getCharExtra(Intent intent, String name, char defaultValue) {
         if (!hasIntent(intent) || !hasExtra(intent, name)) return defaultValue;
         return intent.getCharExtra(name, defaultValue);
     }
 
-    public int getIntExtra(Intent intent, String name, int defaultValue) {
+    public static int getIntExtra(Intent intent, String name, int defaultValue) {
         if (!hasIntent(intent) || !hasExtra(intent, name)) return defaultValue;
         return intent.getIntExtra(name, defaultValue);
     }
@@ -53,12 +53,12 @@ public class IntentUtil {
         return intent.getLongExtra(name, defaultValue);
     }
 
-    public float getFloatExtra(Intent intent, String name, float defaultValue) {
+    public static float getFloatExtra(Intent intent, String name, float defaultValue) {
         if (!hasIntent(intent) || !hasExtra(intent, name)) return defaultValue;
         return intent.getFloatExtra(name, defaultValue);
     }
 
-    public double getDoubleExtra(Intent intent, String name, double defaultValue) {
+    public static double getDoubleExtra(Intent intent, String name, double defaultValue) {
         if (!hasIntent(intent) || !hasExtra(intent, name)) return defaultValue;
         return intent.getDoubleExtra(name, defaultValue);
     }
@@ -88,6 +88,8 @@ public class IntentUtil {
         return intent.getParcelableArrayListExtra(name);
     }
 
+    // ********** Serializable **********//
+
     public static Serializable getSerializableExtra(Intent intent, String name) {
         if (!hasIntent(intent) || !hasExtra(intent, name)) return null;
         return intent.getSerializableExtra(name);
@@ -107,6 +109,13 @@ public class IntentUtil {
         if (!hasIntent(intent) || !hasExtra(intent, name)) return null;
         return intent.getCharSequenceArrayListExtra(name);
     }
+
+    public static String[] getStringArrayExtra(Intent intent, String name) {
+        if (!hasIntent(intent) || !hasExtra(intent, name)) return null;
+        return intent.getStringArrayExtra(name);
+    }
+
+    // ********** Serializable **********//
 
 
     public static boolean[] getBooleanArrayExtra(Intent intent, String name) {
@@ -147,11 +156,6 @@ public class IntentUtil {
     public static double[] getDoubleArrayExtra(Intent intent, String name) {
         if (!hasIntent(intent) || !hasExtra(intent, name)) return null;
         return intent.getDoubleArrayExtra(name);
-    }
-
-    public static String[] getStringArrayExtra(Intent intent, String name) {
-        if (!hasIntent(intent) || !hasExtra(intent, name)) return null;
-        return intent.getStringArrayExtra(name);
     }
 
     public static CharSequence[] getCharSequenceArrayExtra(Intent intent, String name) {
