@@ -8,37 +8,37 @@
 
 
     <TextView
-        android:id="@+id/dialog_send_discuss_case_tv"
+        android:id="@+id/dialog_menu_case_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_dialog_send_discuss_menu_item"
+        android:background="@drawable/bg_dialog_menu_item"
         android:drawablePadding="13dp"
-        android:drawableTop="@mipmap/dialog_send_discuss_case"
+        android:drawableTop="@mipmap/dialog_menu_case"
         android:paddingBottom="13.5dp"
         android:paddingEnd="36dp"
         android:paddingLeft="36dp"
         android:paddingRight="36dp"
         android:paddingTop="20dp"
         android:gravity="center_horizontal"
-        android:text="晒病例"
+        android:text="Case"
         android:textColor="#ff666666"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/dialog_send_discuss_help_tv"
+        android:id="@+id/dialog_menu_help_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:background="@drawable/bg_dialog_send_discuss_menu_item"
+        android:background="@drawable/bg_dialog_menu_item"
         android:drawablePadding="13dp"
-        android:drawableTop="@mipmap/dialog_send_discuss_help"
+        android:drawableTop="@mipmap/dialog_menu_help"
         android:gravity="center_horizontal"
         android:paddingBottom="13.5dp"
-        android:paddingEnd="30.5dp"
-        android:paddingLeft="30.5dp"
-        android:paddingRight="30.5dp"
+        android:paddingEnd="36dp"
+        android:paddingLeft="36dp"
+        android:paddingRight="36dp"
         android:paddingTop="20dp"
-        android:text="提问求助"
+        android:text="Help"
         android:textColor="#ff666666"
         android:textSize="14sp" />
 

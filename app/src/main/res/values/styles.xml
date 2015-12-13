@@ -43,4 +43,11 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
+    <style name="TextButton">
+        <item name="android:background">@drawable/bg_text_button</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
 </resources>

@@ -141,6 +141,10 @@
             android:name=".views.activity.LocationManagerActivity"
             android:label="@string/app_label" />
         <activity
+            android:name=".views.activity.DialogActivity"
+            android:label="@string/app_label" />
+
+        <activity
             android:name=".rxandroid.RxSyncActivity"
             android:label="@string/app_label" />
         <activity
@@ -149,6 +153,7 @@
         <activity
             android:name=".rxandroid.RxMapActivity"
             android:label="@string/app_label" />
+
 
         <service android:name=".service.DownloadService" />
 

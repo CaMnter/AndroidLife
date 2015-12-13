@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- 点击时 -->
-    <item android:state_pressed="true" android:drawable="@mipmap/dialog_send_discuss_menu_item_onclick"/>
-    <!-- 选中时 -->
-    <item android:state_selected="true" android:drawable="@mipmap/dialog_send_discuss_menu_item_onclick"/>
-    <!-- 正常时 -->
-    <item android:drawable="@mipmap/dialog_send_discuss_menu_item_unclick"/>
-</selector>

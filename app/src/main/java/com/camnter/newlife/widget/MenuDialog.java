@@ -13,12 +13,12 @@ import com.camnter.newlife.R;
  * Created by：CaMnter
  * Time：2015-12-10 14:38
  */
-public class SendDiscussDialog extends Dialog {
+public class MenuDialog extends Dialog {
 
     private TextView caseTV;
     private TextView helpTV;
 
-    public SendDiscussDialog(Context context) {
+    public MenuDialog(Context context) {
         super(context, R.style.send_discuss_dialog);
         this.initViews(context);
     }
@@ -38,20 +38,20 @@ public class SendDiscussDialog extends Dialog {
      * @param themeResId a style resource describing the theme to use for the
      *                   window, or {@code 0} to use the default dialog theme
      */
-    public SendDiscussDialog(Context context, int themeResId) {
+    public MenuDialog(Context context, int themeResId) {
         super(context, themeResId);
         this.initViews(context);
     }
 
-    public SendDiscussDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+    public MenuDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
         this.initViews(context);
     }
 
     private void initViews(Context context) {
-        this.setContentView(R.layout.dialog_send_discuss);
-        this.caseTV = (TextView) this.findViewById(R.id.dialog_send_discuss_case_tv);
-        this.helpTV = (TextView) this.findViewById(R.id.dialog_send_discuss_help_tv);
+        this.setContentView(R.layout.dialog_menu);
+        this.caseTV = (TextView) this.findViewById(R.id.dialog_menu_case_tv);
+        this.helpTV = (TextView) this.findViewById(R.id.dialog_menu_help_tv);
     }
 
 
@@ -62,7 +62,7 @@ public class SendDiscussDialog extends Dialog {
 
     public static class DialogBuilder {
 
-        private SendDiscussDialog dialog;
+        private MenuDialog dialog;
         public static DialogBuilder ourInstance;
 
         public static DialogBuilder getInstance(Context context) {
@@ -71,7 +71,7 @@ public class SendDiscussDialog extends Dialog {
         }
 
         private DialogBuilder(Context context) {
-            this.dialog = new SendDiscussDialog(context);
+            this.dialog = new MenuDialog(context);
         }
 
         public DialogBuilder setCaseListenser(View.OnClickListener listener) {
@@ -89,7 +89,7 @@ public class SendDiscussDialog extends Dialog {
             return this;
         }
 
-        public SendDiscussDialog getDialog() {
+        public MenuDialog getDialog() {
             return dialog;
         }
 

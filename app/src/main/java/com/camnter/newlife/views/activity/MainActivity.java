@@ -1,5 +1,6 @@
 package com.camnter.newlife.views.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         classes.add(RxSyncActivity.class);
         classes.add(RxAsyncActivity.class);
         classes.add(RxMapActivity.class);
+        classes.add(DialogActivity.class);
 
         MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter();
         adapter.setList(classes);
