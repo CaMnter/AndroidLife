@@ -25,9 +25,9 @@ public class DeviceUtil {
     /**
      * dp 转化为 px
      *
-     * @param context
-     * @param dpValue
-     * @return
+     * @param context context
+     * @param dpValue dpValue
+     * @return int
      */
     public static int dp2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
@@ -37,8 +37,8 @@ public class DeviceUtil {
     /**
      * px 转化为 dp
      *
-     * @param context
-     * @param pxValue
+     * @param context context
+     * @param pxValue pxValue
      * @return
      */
     public static int px2dp(Context context, float pxValue) {
@@ -49,8 +49,8 @@ public class DeviceUtil {
     /**
      * 获取设备宽度（px）
      *
-     * @param context
-     * @return
+     * @param context context
+     * @return int
      */
     public static int deviceWidth(Context context) {
         return context.getResources().getDisplayMetrics().widthPixels;
@@ -69,7 +69,7 @@ public class DeviceUtil {
     /**
      * SD卡判断
      *
-     * @return
+     * @return boolean
      */
     public static boolean isSDCardAvailable() {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
@@ -78,8 +78,8 @@ public class DeviceUtil {
     /**
      * 是否有网
      *
-     * @param context
-     * @return
+     * @param context context
+     * @return boolean
      */
     public static boolean isNetworkConnected(Context context) {
         if (context != null) {
@@ -98,8 +98,8 @@ public class DeviceUtil {
      * 返回版本名字
      * 对应build.gradle中的versionName
      *
-     * @param context
-     * @return
+     * @param context context
+     * @return String
      */
     public static String getVersionName(Context context) {
         String versionName = "";
@@ -117,8 +117,8 @@ public class DeviceUtil {
      * 返回版本号
      * 对应build.gradle中的versionCode
      *
-     * @param context
-     * @return
+     * @param context context
+     * @return String
      */
     public static String getVersionCode(Context context) {
         String versionCode = "";
@@ -135,8 +135,8 @@ public class DeviceUtil {
     /**
      * 获取设备的唯一标识，deviceId
      *
-     * @param context
-     * @return
+     * @param context context
+     * @return String
      */
     public static String getDeviceId(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -151,7 +151,7 @@ public class DeviceUtil {
     /**
      * 获取手机品牌
      *
-     * @return
+     * @return String
      */
     public static String getPhoneBrand() {
         return android.os.Build.BRAND;
@@ -160,7 +160,7 @@ public class DeviceUtil {
     /**
      * 获取手机型号
      *
-     * @return
+     * @return String
      */
     public static String getPhoneModel() {
         return android.os.Build.MODEL;
@@ -169,7 +169,7 @@ public class DeviceUtil {
     /**
      * 获取手机Android API等级（22、23 ...）
      *
-     * @return
+     * @return int
      */
     public static int getBuildLevel() {
         return android.os.Build.VERSION.SDK_INT;
@@ -178,7 +178,7 @@ public class DeviceUtil {
     /**
      * 获取手机Android 版本（4.4、5.0、5.1 ...）
      *
-     * @return
+     * @return String
      */
     public static String getBuildVersion() {
         return android.os.Build.VERSION.RELEASE;
@@ -187,7 +187,7 @@ public class DeviceUtil {
     /**
      * 获取当前App进程的id
      *
-     * @return
+     * @return int
      */
     public static int getAppProcessId() {
         return android.os.Process.myPid();
@@ -196,9 +196,9 @@ public class DeviceUtil {
     /**
      * 获取当前App进程的Name
      *
-     * @param context
-     * @param processId
-     * @return
+     * @param context   context
+     * @param processId processId
+     * @return String
      */
     public static String getAppProcessName(Context context, int processId) {
         String processName = null;
@@ -226,9 +226,9 @@ public class DeviceUtil {
     /**
      * 创建App文件夹
      *
-     * @param appName
-     * @param application
-     * @return
+     * @param appName     appName
+     * @param application application
+     * @return String
      */
     public static String createAPPFolder(String appName, Application application) {
         return createAPPFolder(appName, application, null);
@@ -237,10 +237,10 @@ public class DeviceUtil {
     /**
      * 创建App文件夹
      *
-     * @param appName
-     * @param application
-     * @param folderName
-     * @return
+     * @param appName     appName
+     * @param application application
+     * @param folderName  folderName
+     * @return String
      */
     public static String createAPPFolder(String appName, Application application, String folderName) {
         File root = Environment.getExternalStorageDirectory();
@@ -275,9 +275,9 @@ public class DeviceUtil {
     /**
      * 通过Uri找到File
      *
-     * @param context
-     * @param uri
-     * @return
+     * @param context context
+     * @param uri     uri
+     * @return File
      */
     public static File uri2File(Activity context, Uri uri) {
         File file;
@@ -300,9 +300,9 @@ public class DeviceUtil {
     /**
      * 获取AndroidManifest.xml里 <meta-data>的值
      *
-     * @param context
-     * @param name
-     * @return
+     * @param context context
+     * @param name    name
+     * @return String
      */
     public static String getMetaData(Context context, String name) {
         String value = null;

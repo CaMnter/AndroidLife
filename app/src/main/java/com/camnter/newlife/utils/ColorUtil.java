@@ -1,6 +1,6 @@
 package com.camnter.newlife.utils;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Color;
 
 import java.util.regex.Pattern;
@@ -15,13 +15,13 @@ public class ColorUtil {
     /**
      * 根据颜色资源Id，取得颜色
      *
-     * @param colorId
+     * @param colorId colorId
      * @return color
      */
-    public static int getResourcesColor(Context context, int colorId) {
+    public static int getResourcesColor(Activity activity, int colorId) {
         int color = 0x00ffffff;
         try {
-            color = context.getResources().getColor(colorId);
+            color = ResourcesUtil.getColor(activity, colorId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,8 +45,8 @@ public class ColorUtil {
     /**
      * 设置颜色透明度
      *
-     * @param color
-     * @param alpha
+     * @param color color
+     * @param alpha alpha
      * @return color
      */
     public static int setColorAlpha(int color, int alpha) {
