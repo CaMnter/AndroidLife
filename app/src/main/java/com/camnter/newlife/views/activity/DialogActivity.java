@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.camnter.newlife.R;
+import com.camnter.newlife.utils.ToastUtil;
 import com.camnter.newlife.widget.CustomDialog;
 import com.camnter.newlife.widget.MenuDialog;
 
@@ -26,14 +27,15 @@ public class DialogActivity extends AppCompatActivity implements View.OnClickLis
                 .setCaseListenser(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(DialogActivity.this, "case", Toast.LENGTH_SHORT).show();
+                        ToastUtil.show(DialogActivity.this, "Case", Toast.LENGTH_SHORT);
                         DialogActivity.this.menuDialog.dismiss();
+
                     }
                 })
                 .setHelpListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(DialogActivity.this, "Help", Toast.LENGTH_SHORT).show();
+                        ToastUtil.show(DialogActivity.this, "Help", Toast.LENGTH_SHORT);
                         DialogActivity.this.menuDialog.dismiss();
                     }
                 })
@@ -62,7 +64,8 @@ public class DialogActivity extends AppCompatActivity implements View.OnClickLis
                         .setCallback(new CustomDialog.DialogCallback() {
                             @Override
                             public void onDismiss() {
-                                Toast.makeText(DialogActivity.this, "CustomDialog dismiss", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(DialogActivity.this, "CustomDialog dismiss", Toast.LENGTH_SHORT).show();
+                                ToastUtil.showCenter(DialogActivity.this,"CustomDialog dismiss");
                             }
                         })
                         .getDialog()
