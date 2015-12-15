@@ -62,30 +62,30 @@ public class MenuDialog extends Dialog {
 
     public static class DialogBuilder {
 
-        private MenuDialog dialog;
+        private static MenuDialog dialog;
         public static DialogBuilder ourInstance;
 
         public static DialogBuilder getInstance(Context context) {
             if (ourInstance == null) ourInstance = new DialogBuilder(context);
+            dialog = new MenuDialog(context);
             return ourInstance;
         }
 
         private DialogBuilder(Context context) {
-            this.dialog = new MenuDialog(context);
         }
 
         public DialogBuilder setCaseListenser(View.OnClickListener listener) {
-            this.dialog.caseTV.setOnClickListener(listener);
+            dialog.caseTV.setOnClickListener(listener);
             return this;
         }
 
         public DialogBuilder setHelpListener(View.OnClickListener listener) {
-            this.dialog.helpTV.setOnClickListener(listener);
+            dialog.helpTV.setOnClickListener(listener);
             return this;
         }
 
         public DialogBuilder setCanceledOnTouchOutside(boolean cancel) {
-            this.dialog.setCanceledOnTouchOutside(cancel);
+            dialog.setCanceledOnTouchOutside(cancel);
             return this;
         }
 

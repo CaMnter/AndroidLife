@@ -89,16 +89,16 @@ public class CustomDialog extends Dialog {
 
     public static class DialogBuilder {
 
-        private CustomDialog dialog;
+        private static CustomDialog dialog;
         public static DialogBuilder ourInstance;
 
         public static DialogBuilder getInstance(Context context) {
             if (ourInstance == null) ourInstance = new DialogBuilder(context);
+            dialog = new CustomDialog(context);
             return ourInstance;
         }
 
         private DialogBuilder(Context context) {
-            this.dialog = new CustomDialog(context);
         }
 
         public DialogBuilder setDuration(long duration) {
