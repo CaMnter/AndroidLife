@@ -204,3 +204,14 @@ Introduce the LocationManager
 ### 28.RxSyncActivity & RxAsyncActivity & RxMapActivity
 Introduce the [RxAndroid](https://github.com/ReactiveX/RxAndroid)  
 介绍RxAndroid  
+
+---
+
+### 29.DialogActivity
+Provide two sets of custom Dialog template.  
+The first kind, prompt Dialog, have disappeared.  
+Second, the menu Dialog for user interaction.  
+提供两套自定义Dialog模板。  
+第一种，提示Dialog，有消失时间。  
+第二种，菜单Dialog，用于用户交互。  
+[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50283987)
