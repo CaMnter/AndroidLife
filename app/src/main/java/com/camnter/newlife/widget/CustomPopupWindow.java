@@ -43,6 +43,7 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
 
         //设置弹出窗体动画效果
         // this.setAnimationStyle(R.style.AnimBottom);
+        this.setAnimationStyle(R.style.);
         //实例化一个ColorDrawable颜色为半透明
         ColorDrawable drawable = new ColorDrawable(0x4f000000);
         //设置弹出窗体的背景
@@ -51,20 +52,21 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
 
 
     public static class PopupWindowBuilder {
-        private CustomPopupWindow popupWindow;
+        private static CustomPopupWindow popupWindow;
         public static PopupWindowBuilder ourInstance;
 
         public static PopupWindowBuilder getInstance(Activity activity) {
             if (ourInstance == null) ourInstance = new PopupWindowBuilder(activity);
+            popupWindow = new CustomPopupWindow(activity);
             return ourInstance;
         }
 
         private PopupWindowBuilder(Activity activity) {
-            this.popupWindow = new CustomPopupWindow(activity);
+
         }
 
         public CustomPopupWindow getPopupWindow() {
-            return this.popupWindow;
+            return popupWindow;
         }
 
     }
