@@ -143,6 +143,9 @@
         <activity
             android:name=".views.activity.DialogActivity"
             android:label="@string/app_label" />
+        <activity
+            android:name=".views.activity.PopupWindowActivity"
+            android:label="@string/app_label" />
 
         <activity
             android:name=".rxandroid.RxSyncActivity"

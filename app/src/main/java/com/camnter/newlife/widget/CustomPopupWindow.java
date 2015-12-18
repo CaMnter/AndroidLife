@@ -32,9 +32,9 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
         this.popupWindowView = inflater.inflate(R.layout.popupwindow_topic_field, null);
         setContentView(popupWindowView);
         //设置弹出窗体的宽
-        this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        this.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         //设置弹出窗体的高
-        this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
+        this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         //设置弹出窗体可点击
         setTouchable(true);
         setFocusable(true);
@@ -42,8 +42,7 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
         setOutsideTouchable(true);
 
         //设置弹出窗体动画效果
-        // this.setAnimationStyle(R.style.AnimBottom);
-        this.setAnimationStyle(R.style.);
+        this.setAnimationStyle(R.style.PopupAnimation);
         //实例化一个ColorDrawable颜色为半透明
         ColorDrawable drawable = new ColorDrawable(0x4f000000);
         //设置弹出窗体的背景

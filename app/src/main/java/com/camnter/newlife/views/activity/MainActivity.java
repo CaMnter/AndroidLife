@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         classes.add(RxAsyncActivity.class);
         classes.add(RxMapActivity.class);
         classes.add(DialogActivity.class);
+        classes.add(PopupWindowActivity.class);
 
         MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter();
         adapter.setList(classes);

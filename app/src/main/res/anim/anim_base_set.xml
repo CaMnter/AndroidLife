@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        alpha 渐变动画
+        对应的 AlphaAnimation
+        AlphaAnimation alpha = (AlphaAnimation) AnimationUtils.loadAnimation(this, R.anim.alpha);
+        view.startAnimation(alpha);
+
+        duration 动画持续时间
+        fromAlpha 动画开始时透明度，默认值1.0，最小值0.0
+        toAlpha 动画结束时透明度，默认值1.0，最小值0.0
+     -->
+    <alpha
+        android:duration="500"
+        android:fromAlpha="0.0"
+        android:toAlpha="1.0" />
+
+    <!--
+        scale 缩放动画
+        对应的 ScaleAnimation
+        ScaleAnimation scale = (ScaleAnimation) AnimationUtils.loadAnimation(this, R.anim.scale);
+        view.startAnimation(scale);
+
+        duration 动画持续时间
+        fromXScale 动画开始时,x轴上（宽度）的缩放比例。0.0为没有大小，1.0为正常大小，大于1.0为放大，小于1.0为缩小。
+        fromYScale 动画开始时,y轴上（高度）的缩放比例。0.0为没有大小，1.0为正常大小，大于1.0为放大，小于1.0为缩小。
+        toXScale 动画结束时,x轴上（宽度）的缩放比例。0.0为没有大小，1.0为正常大小，大于1.0为放大，小于1.0为缩小。
+        toYScale 动画结束时,y轴上（高度）的缩放比例。0.0为没有大小，1.0为正常大小，大于1.0为放大，小于1.0为缩小。
+        pivotX 缩放时的固定不变的x坐标，0%为最左边，100%为最右边。
+        pivotY 缩放时的固定不变的y坐标，0%为最左边，100%为最右边。
+    -->
+    <scale
+        android:duration="500"
+        android:fromXScale="0.0"
+        android:fromYScale="0.0"
+        android:pivotX="0%"
+        android:pivotY="100%"
+        android:toXScale="1.0"
+        android:toYScale="1.0" />
+
+    <!--
+        translate 平移动画
+        对应的 TranslateAnimation
+        TranslateAnimation translate = (TranslateAnimation) AnimationUtils.loadAnimation(this, R.anim.translate);
+        view.startAnimation(translate);
+
+        duration 动画持续时间
+        fromXDelta 起始位置的X坐标的偏移量
+        fromYDelta 结束位置的X坐标的偏移量
+        toXDelta 起始位置的Y坐标的偏移量
+        toYDelta 结束位置的Y坐标的偏移量
+
+        1.-100到100，以"%"结束，表示相对于View本身的百分比位置；-100%表示控件左边或者上边，100%表示控件右边或者下边
+        2.以"%p"（parent）结束，表示相对于View的父View的百分比位置；
+        3.没有任何后缀，表示相对于View本身具体的像素值
+     -->
+    <translate
+        android:duration="500"
+        android:fromXDelta="100%"
+        android:fromYDelta="-100%"
+        android:toXDelta="-100%"
+        android:toYDelta="100%" />
+
+    <!--
+        rotate 旋转动画
+        对应的 RotateAnimation
+        RotateAnimation rotate = (RotateAnimation) AnimationUtils.loadAnimation(this, R.anim.rotate);
+        view.startAnimation(rotate);
+
+        duration 动画持续时间
+
+    -->
+    <rotate
+        android:duration="500"
+        android:fromDegrees="0"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:toDegrees="360" />
+
+</set>
