@@ -44,4 +44,30 @@ public class ViewUtil {
         }
     }
 
+    /**
+     * 获取View在当前窗口内的绝对坐标
+     * obtain the absolute coordinates to obtain the View within the current window
+     *
+     * @param view view
+     * @return int[] x y
+     */
+    public static int[] getLocationInWindow(View view) {
+        int[] location = new int[2];
+        view.getLocationInWindow(location);
+        return location;
+    }
+
+    /**
+     * 获取View在整个屏幕内的绝对坐标
+     * obtain access to View the absolute coordinates of within the entire screen
+     *
+     * @param view view
+     * @return int[] x y
+     */
+    public static int[] getLocationOnScreen(View view) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        return location;
+    }
+
 }
