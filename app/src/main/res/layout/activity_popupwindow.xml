@@ -6,10 +6,24 @@
     android:padding="26dp">
 
     <TextView
-        android:id="@+id/popupwindow_custom"
+        android:id="@+id/popupwindow_left_tv"
         style="@style/TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CustomPopupwindow" />
+        android:text="ShowAtDropDownLeft" />
+
+    <TextView
+        android:id="@+id/popupwindow_center_tv"
+        style="@style/TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ShowAtDropDownCenter" />
+
+    <TextView
+        android:id="@+id/popupwindow_right_tv"
+        style="@style/TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ShowAtDropDownRight" />
 
 </LinearLayout>

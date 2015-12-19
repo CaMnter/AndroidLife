@@ -15,14 +15,20 @@ import com.camnter.newlife.widget.CustomPopupWindow;
  */
 public class PopupWindowActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView customTV;
+    private TextView leftTV;
+    private TextView centerTV;
+    private TextView rightTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_popupwindow);
-        this.customTV = (TextView) this.findViewById(R.id.popupwindow_custom);
-        this.customTV.setOnClickListener(this);
+        this.leftTV = (TextView) this.findViewById(R.id.popupwindow_left_tv);
+        this.centerTV = (TextView) this.findViewById(R.id.popupwindow_center_tv);
+        this.rightTV = (TextView) this.findViewById(R.id.popupwindow_right_tv);
+        this.leftTV.setOnClickListener(this);
+        this.centerTV.setOnClickListener(this);
+        this.rightTV.setOnClickListener(this);
     }
 
     /**
@@ -33,10 +39,22 @@ public class PopupWindowActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.popupwindow_custom: {
+            case R.id.popupwindow_left_tv: {
                 CustomPopupWindow.PopupWindowBuilder.getInstance(this)
                         .getPopupWindow()
-                        .showAtLocation(this.customTV, 0, 0, 0);
+                        .showAtDropDownCenter(this.leftTV);
+                break;
+            }
+            case R.id.popupwindow_center_tv: {
+                CustomPopupWindow.PopupWindowBuilder.getInstance(this)
+                        .getPopupWindow()
+                        .showAtDropDownCenter(this.centerTV);
+                break;
+            }
+            case R.id.popupwindow_right_tv:{
+                    CustomPopupWindow.PopupWindowBuilder.getInstance(this)
+                            .getPopupWindow()
+                            .showAtDropDownRight(this.rightTV);
                 break;
             }
         }
