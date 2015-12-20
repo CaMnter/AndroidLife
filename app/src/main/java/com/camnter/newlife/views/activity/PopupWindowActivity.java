@@ -42,7 +42,7 @@ public class PopupWindowActivity extends AppCompatActivity implements View.OnCli
             case R.id.popupwindow_left_tv: {
                 CustomPopupWindow.PopupWindowBuilder.getInstance(this)
                         .getPopupWindow()
-                        .showAtDropDownCenter(this.leftTV);
+                        .showAtDropDownLeft(this.leftTV);
                 break;
             }
             case R.id.popupwindow_center_tv: {
