@@ -148,6 +148,7 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
         }
 
         public CustomPopupWindow getPopupWindow() {
+            popupWindow.update();
             return popupWindow;
         }
 

@@ -2,6 +2,32 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
+        Set 属性
+
+        shareInterpolator true时，interpolator应用到所有子元素中。
+     -->
+
+    <!--
+        公共属性
+
+        detachWallpaper 是否在壁纸上运行，设置了壁纸背景的窗口动画(window animation)才有效。
+        设为true，则动画只在窗口运行，壁纸背景保持不变。
+
+        fillEnabled true时，fillBefore的值才有效，否则fillBefore会被忽略。
+        fillBefore true时，动画执行完后，View会还原动画执行前的初始状态；否则不会，默认即为true。
+
+        repeatCount 动画重复执行的次数，默认为0，不重复；-1或infinite，无限重复。
+        repeatMode 动画重复执行的模式，默认restart 动画重复执行时从起点开始；reverse 动画会反方向执行。
+
+        startOffset 动画执行之前的等待时间，毫秒为单位；重复执行时，每次执行前同样执行等待时间。
+        zAdjustment 动画的内容在动画运行时在z轴上的位置：
+                        normal 默认值，在z轴上
+                        top 在z轴最上层
+                        bottom 在z轴最下层
+        interpolator 动画速率的变化
+     -->
+
+    <!--
         alpha 渐变动画
         对应的 AlphaAnimation
         AlphaAnimation alpha = (AlphaAnimation) AnimationUtils.loadAnimation(this, R.anim.alpha);

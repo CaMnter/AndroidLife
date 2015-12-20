@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        加速度设置
+        <动画标签
+        android:interpolator="@资源id"/>
+     -->
+
+    <!--
+        对应的类 AccelerateDecelerateInterpolator
+        对应的资源 @android:anim/accelerate_decelerate_interpolator
+        作用 动画开始与结束时速率改变比较慢，在中间时加速
+    -->
+    <accelerateDecelerateInterpolator />
+
+    <!--
+        对应的类 AccelerateInterpolator
+        对应的资源 @android:anim/accelerate_interpolator
+        作用 动画开始时速率改变比较慢，然后开始加速
+
+        factor 加速速率，默认值1.0。
+     -->
+    <accelerateInterpolator android:factor="1" />
+
+    <!--
+        对应的类 AnticipateInterpolator
+        对应的资源 @android:anim/anticipate_interpolator
+        作用 动画开始的时候向后然后往前抛
+
+        tension 向后的拉力，默认值2.0；0.0时，不会有向后的动画
+     -->
+    <anticipateInterpolator android:tension="2" />
+
+    <!--
+        对应的类 AnticipateOvershootInterpolator
+        对应的资源 @android:anim/anticipate_overshoot_interpolator
+        作用 动画开始的时候向后抛，然后再向前抛；会抛超过目标值后再返回到最后的值
+    -->
+    <anticipateOvershootInterpolator
+        android:extraTension="2"
+        android:tension="2" />
+
+    <!--
+        对应的类 BounceInterpolator
+        对应的资源 @android:anim/bounce_interpolator
+        作用 动画结束的时候会弹跳
+    -->
+    <bounceInterpolator />
+
+
+    <!--
+        对应的类 CycleInterpolator
+        对应的资源 @android:anim/bounce_interpolator
+        作用 动画循环做周期运动，速率改变沿着正弦曲线
+
+        cycles 循环次数，默认值1
+    -->
+    <cycleInterpolator android:cycles="1" />
+
+    <!--
+        对应的类 DecelerateInterpolator
+        对应的资源 @android:anim/decelerate_interpolator
+        作用 动画开始时速率改变比较快，然后开始减速线
+
+        factor 减速速率，默认为1.0
+    -->
+    <decelerateInterpolator android:factor="1" />
+
+    <!--
+        对应的类 LinearInterpolator
+        对应的资源 @android:anim/decelerate_interpolator
+        作用 动画匀速播放，没有可更改设置的属性
+     -->
+    <linearInterpolator />
+
+    <!--
+       对应的类 OvershootInterpolator
+       对应的资源 @android:anim/overshoot_interpolator
+       作用 动画向前抛，抛超过最后值，然后才返回
+
+       tension 超出后的拉力，默认为2.0
+    -->
+    <overshootInterpolator android:tension="2" />
+
+</set>
