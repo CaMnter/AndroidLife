@@ -88,41 +88,45 @@ public class CustomDialog extends Dialog {
     }
 
     public static class DialogBuilder {
-
+        private static String contextHashCode;
         private static CustomDialog dialog;
         public static DialogBuilder ourInstance;
 
         public static DialogBuilder getInstance(Context context) {
-            if (ourInstance == null) ourInstance = new DialogBuilder(context);
-            dialog = new CustomDialog(context);
+            if (ourInstance == null) ourInstance = new DialogBuilder();
+            String hashCode = String.valueOf(context.hashCode());
+            /**
+             * 不同一个Activity
+             */
+            if (!hashCode.equals(String.valueOf(contextHashCode))) {
+                contextHashCode = hashCode;
+                dialog = new CustomDialog(context);
+            }
             return ourInstance;
         }
 
-        private DialogBuilder(Context context) {
-        }
-
         public DialogBuilder setDuration(long duration) {
-            this.dialog.duration = duration;
+            dialog.duration = duration;
             return this;
         }
 
         public DialogBuilder setContent(String content) {
-            this.dialog.content = content;
+            dialog.content = content;
             return this;
         }
 
         public DialogBuilder setDrawable(Drawable drawable) {
-            this.dialog.setTextDrawable(drawable);
+            dialog.setTextDrawable(drawable);
             return this;
         }
 
         public DialogBuilder setCallback(DialogCallback callback) {
-            this.dialog.callback = callback;
+            dialog.callback = callback;
             return this;
         }
 
         public DialogBuilder setCanceledOnTouchOutside(boolean cancel) {
-            this.dialog.setCanceledOnTouchOutside(cancel);
+            dialog.setCanceledOnTouchOutside(cancel);
             return this;
         }
 
