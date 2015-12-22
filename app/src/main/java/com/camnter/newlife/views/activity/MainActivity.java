@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         classes.add(RxMapActivity.class);
         classes.add(DialogActivity.class);
         classes.add(PopupWindowActivity.class);
+        classes.add(TagTextViewActivity.class);
 
         MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter();
         adapter.setList(classes);

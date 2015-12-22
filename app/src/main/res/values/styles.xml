@@ -53,6 +53,13 @@
         <item name="android:textSize">13sp</item>
     </style>
 
+    <style name="TextView">
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
     <style name="PopupAnimation" parent="android:Animation" mce_bogus="1">
         <item name="android:windowEnterAnimation">@anim/anim_fade_in</item>
         <item name="android:windowExitAnimation">@anim/anim_fade_out</item>
