@@ -35,8 +35,4 @@
         android:layout_below="@id/rx_async_one_iv"
         android:layout_centerHorizontal="true" />
     
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
 </RelativeLayout>
