@@ -34,12 +34,14 @@ public class ClickableSpanNoUnderline extends ClickableSpan {
     @Override
     public void updateDrawState(@NonNull TextPaint ds) {
         super.updateDrawState(ds);
+        // 设置文字颜色
         if (this.color == NO_COLOR) {
             ds.setColor(ds.linkColor);
         } else {
             ds.setColor(this.color);
         }
         ds.clearShadowLayer();
+        // 去除下划线
         ds.setUnderlineText(false);
         ds.bgColor = Color.TRANSPARENT;
     }
@@ -59,7 +61,7 @@ public class ClickableSpanNoUnderline extends ClickableSpan {
     }
 
     /**
-     * 对外接口
+     * 回调接口，回调自身的onClick事件
      * 告诉外部 是否被点击
      */
     public interface OnClickListener<T extends ClickableSpanNoUnderline> {

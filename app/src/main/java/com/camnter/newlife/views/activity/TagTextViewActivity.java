@@ -1,6 +1,5 @@
 package com.camnter.newlife.views.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
@@ -54,7 +53,7 @@ public class TagTextViewActivity extends AppCompatActivity implements ClickableS
         // 在单击链接时凡是有要执行的动作，都必须设置MovementMethod对象
         this.tagTV.setMovementMethod(LinkMovementMethod.getInstance());
         // 设置点击后的颜色，这里涉及到ClickableSpan的点击背景
-        this.tagTV.setHighlightColor(Color.TRANSPARENT);
+        this.tagTV.setHighlightColor(0xff8FABCC);
     }
 
     /**
@@ -67,5 +66,5 @@ public class TagTextViewActivity extends AppCompatActivity implements ClickableS
     public void onClick(View widget, TagTextView.TagClickableSpan span) {
         ToastUtil.show(this, span.getId() + ":" + span.getContent(), Toast.LENGTH_SHORT);
     }
-    
+
 }
