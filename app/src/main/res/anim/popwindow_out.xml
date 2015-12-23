@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:interpolator="@android:anim/decelerate_interpolator">
+    <!--
+        时间 0.2秒
+        开始的时候 x y 全是1 实际大小
+        结束的时候 x y 全是0 没有大小
+        pivotX 100% 表示最右边
+        pivotY 0% 表示最顶边
+        以上定位右上角 缩放时不变位置
+    -->
     <scale
         android:duration="200"
         android:fromXScale="1.0"
@@ -9,6 +17,12 @@
         android:pivotY="0%"
         android:toXScale="0.0"
         android:toYScale="0.0" />
+
+    <!--
+        时间 0.2秒
+        开始一点都不透明
+        结束全透明
+    -->
     <alpha
         android:duration="200"
         android:fromAlpha="1.0"

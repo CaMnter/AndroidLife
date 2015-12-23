@@ -61,17 +61,21 @@ public class MenuDialog extends Dialog {
     }
 
     public static class DialogBuilder {
-
+        private static String contextHashCode;
         private static MenuDialog dialog;
         public static DialogBuilder ourInstance;
 
         public static DialogBuilder getInstance(Context context) {
-            if (ourInstance == null) ourInstance = new DialogBuilder(context);
-            dialog = new MenuDialog(context);
+            if (ourInstance == null) ourInstance = new DialogBuilder();
+            String hashCode = String.valueOf(context.hashCode());
+            /**
+             * 不同一个Activity
+             */
+            if (!hashCode.equals(String.valueOf(contextHashCode))) {
+                contextHashCode = hashCode;
+                dialog = new MenuDialog(context);
+            }
             return ourInstance;
-        }
-
-        private DialogBuilder(Context context) {
         }
 
         public DialogBuilder setCaseListenser(View.OnClickListener listener) {

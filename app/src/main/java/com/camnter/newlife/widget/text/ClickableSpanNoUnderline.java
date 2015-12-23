@@ -1,23 +1,29 @@
 package com.camnter.newlife.widget.text;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
 
 public class ClickableSpanNoUnderline extends ClickableSpan {
 
-    private static final int NO_COLOR = -206;
+    private static final String TAG = "ClickableSpan";
 
+    private static final int NO_COLOR = -206;
     private int color;
 
-    public ClickableSpanNoUnderline(int color) {
+    private OnClickListener onClickListener;
+
+    public ClickableSpanNoUnderline(int color, OnClickListener onClickListener) {
         super();
         this.color = color;
+        this.onClickListener = onClickListener;
     }
 
-    public ClickableSpanNoUnderline() {
-        this(NO_COLOR);
+    public ClickableSpanNoUnderline(OnClickListener onClickListener) {
+        this(NO_COLOR, onClickListener);
     }
 
     /**
@@ -26,16 +32,15 @@ public class ClickableSpanNoUnderline extends ClickableSpan {
      * @param ds
      */
     @Override
-    public void updateDrawState(TextPaint ds) {
+    public void updateDrawState(@NonNull TextPaint ds) {
         super.updateDrawState(ds);
         if (this.color == NO_COLOR) {
             ds.setColor(ds.linkColor);
-            ds.setUnderlineText(false);
         } else {
-            ds.setUnderlineText(false);
             ds.setColor(this.color);
         }
         ds.clearShadowLayer();
+        ds.setUnderlineText(false);
         ds.bgColor = Color.TRANSPARENT;
     }
 
@@ -46,5 +51,25 @@ public class ClickableSpanNoUnderline extends ClickableSpan {
      */
     @Override
     public void onClick(View widget) {
+        if (this.onClickListener != null) {
+            this.onClickListener.onClick(widget, this);
+        } else {
+            Log.w(TAG, "listener was null");
+        }
     }
+
+    /**
+     * 对外接口
+     * 告诉外部 是否被点击
+     */
+    public interface OnClickListener<T extends ClickableSpanNoUnderline> {
+        /**
+         * ClickableSpan被点击
+         *
+         * @param widget widget
+         * @param span   span
+         */
+        void onClick(View widget, T span);
+    }
+
 }

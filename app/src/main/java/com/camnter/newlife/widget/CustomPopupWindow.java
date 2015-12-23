@@ -18,10 +18,11 @@ import com.camnter.newlife.R;
 public class CustomPopupWindow extends android.widget.PopupWindow {
 
     private Activity activity;
-
     private View contentView;
 
+    // 用于保存PopupWindow的宽度
     private int width;
+    // 用于保存PopupWindow的高度
     private int height;
 
     public CustomPopupWindow(Activity activity) {
@@ -33,7 +34,7 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
     private void initPopupWindow() {
         LayoutInflater inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.contentView = inflater.inflate(R.layout.popupwindow_topic_field, null);
+        this.contentView = inflater.inflate(R.layout.popupwindow_custom, null);
         this.setContentView(contentView);
         // 设置弹出窗体的宽
         this.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -50,7 +51,7 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
         ColorDrawable background = new ColorDrawable(0x4f000000);
         //设置弹出窗体的背景
         this.setBackgroundDrawable(background);
-
+        // 绘制
         this.mandatoryDraw();
     }
 
@@ -59,6 +60,9 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
      */
     private void mandatoryDraw() {
         this.contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        /**
+         * 强制刷新后拿到PopupWindow的宽高
+         */
         this.width = this.contentView.getMeasuredWidth();
         this.height = this.contentView.getMeasuredHeight();
     }

@@ -14,7 +14,7 @@
     <application
         android:name=".robotlegs.robotlegsapplication.MainApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/zzmbs_2"
+        android:icon="@mipmap/ic_mm_1"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity

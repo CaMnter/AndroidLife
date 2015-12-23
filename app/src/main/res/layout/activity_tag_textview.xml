@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <com.camnter.newlife.widget.TagTextView
         android:id="@+id/tag_text_view_tv"
         style="@style/TextView"
         android:layout_width="wrap_content"
