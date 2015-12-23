@@ -227,7 +227,7 @@ A scalable, easy-to-use PopupWindow.
 
 ### 31.TagTextViewActivity
 Rich text textview with a clickable label  
-有可点击的标签的富文本textview
-
+有可点击的标签的富文本textview  
+[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50386502)
 
 
