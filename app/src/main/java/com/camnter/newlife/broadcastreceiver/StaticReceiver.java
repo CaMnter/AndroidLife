@@ -39,8 +39,8 @@ public class StaticReceiver extends BroadcastReceiver {
         Notification notification = new Notification.Builder(context)
                 .setContentTitle("StaticBroadcastReceiver")
                 .setContentText(message)
-                .setSmallIcon(R.mipmap.zzmbs_2)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.zzmbs_2))
+                .setSmallIcon(R.mipmap.ic_mm_1)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_mm_1))
                 .setContentIntent(pendingIntent)
                 .build();
         notificationManager.notify(206, notification);
