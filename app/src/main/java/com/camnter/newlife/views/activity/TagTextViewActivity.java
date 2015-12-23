@@ -67,4 +67,5 @@ public class TagTextViewActivity extends AppCompatActivity implements ClickableS
     public void onClick(View widget, TagTextView.TagClickableSpan span) {
         ToastUtil.show(this, span.getId() + ":" + span.getContent(), Toast.LENGTH_SHORT);
     }
+    
 }

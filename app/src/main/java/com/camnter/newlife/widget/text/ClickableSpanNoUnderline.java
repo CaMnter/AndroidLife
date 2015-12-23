@@ -47,7 +47,7 @@ public class ClickableSpanNoUnderline extends ClickableSpan {
     /**
      * Performs the click action associated with this span.
      *
-     * @param widget
+     * @param widget widget
      */
     @Override
     public void onClick(View widget) {
