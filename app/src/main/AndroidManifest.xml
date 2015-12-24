@@ -149,6 +149,9 @@
         <activity
             android:name=".views.activity.TagTextViewActivity"
             android:label="@string/app_label" />
+        <activity
+            android:name=".views.activity.EasyFlowLayoutActivity"
+            android:label="@string/app_label" />
 
         <activity
             android:name=".rxandroid.RxSyncActivity"

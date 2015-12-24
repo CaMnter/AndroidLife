@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <com.camnter.newlife.widget.EasyFlowLayout
+        android:id="@+id/left_fl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:gravity="left">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/bg_text_button"
+            android:text="初心不改"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/bg_text_button"
+            android:text="方能始终"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/bg_text_button"
+            android:text="初心始终"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/bg_text_button"
+            android:text="Save you from anything"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp" />
+
+    </com.camnter.newlife.widget.EasyFlowLayout>
+
+    <com.camnter.newlife.widget.EasyFlowLayout
+        android:id="@+id/center_fl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        app:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/bg_text_button"
+            android:text="初心不改"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/bg_text_button"
+            android:text="方能始终"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/bg_text_button"
+            android:text="初心始终"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/bg_text_button"
+            android:text="Save you from anything"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp" />
+
+    </com.camnter.newlife.widget.EasyFlowLayout>
+
+    <com.camnter.newlife.widget.EasyFlowLayout
+        android:id="@+id/right_fl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        app:gravity="right">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/bg_text_button"
+            android:text="初心不改"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_text_button"
+            android:text="方能始终"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/bg_text_button"
+            android:text="初心始终"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/bg_text_button"
+            android:text="Save you from anything"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp" />
+
+    </com.camnter.newlife.widget.EasyFlowLayout>
+
+</LinearLayout>

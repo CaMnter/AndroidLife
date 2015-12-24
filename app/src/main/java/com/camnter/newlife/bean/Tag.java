@@ -1,5 +1,10 @@
 package com.camnter.newlife.bean;
 
+/**
+ * Description：Tag
+ * Created by：CaMnter
+ * Time：2015-12-23 12:20
+ */
 public class Tag {
     private Long id;
     private String content;
