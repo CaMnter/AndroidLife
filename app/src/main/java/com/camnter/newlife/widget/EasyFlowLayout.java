@@ -27,13 +27,27 @@ public class EasyFlowLayout extends ViewGroup {
     private int gravity;
 
     /**
-     * 存储所有的View，按行记录
+     * 记录所有的子View，按行记录
+     * Records of all child View, press the row
      */
     private List<List<View>> allViews = new ArrayList<>();
     /**
      * 记录每一行的最大高度
+     * Record the maximum height of every line
      */
     private List<Integer> allHeight = new ArrayList<>();
+
+    /**
+     * 记录每一行的宽度
+     * Record the width of each line
+     */
+    private List<Integer> lineWidths = new ArrayList<>();
+
+    /**
+     * 临时存储当前行的childView
+     * Temporarily store the current row childView
+     */
+    private List<View> currentLineViews = new ArrayList<>();
 
 
     public EasyFlowLayout(Context context) {
@@ -113,7 +127,6 @@ public class EasyFlowLayout extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        // 获得它的父容器为它设置的测量模式和大小
         int layoutWidth = MeasureSpec.getSize(widthMeasureSpec);
         int layoutHeight = MeasureSpec.getSize(heightMeasureSpec);
         int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
@@ -121,16 +134,19 @@ public class EasyFlowLayout extends ViewGroup {
 
         /**
          * 动态记录warp_content时的宽高
+         * High dynamic recording warp_content wide
          */
         int wrapWidth = 0;
         int wrapHeight = 0;
 
         /**
          * 记录每一行的宽度，wrapWidth不断取最大宽度
+         * Record the width of each line, wrapWidth constantly get maximum width
          */
         int lineWidth = 0;
         /**
-         * 每一行的高度，累加至wrapHeight
+         * 记录每一行的高度，累加至wrapHeight
+         * Record the height of each row, accumulate to wrapHeight
          */
         int lineHeight = 0;
         int childCount = this.getChildCount();
@@ -146,26 +162,38 @@ public class EasyFlowLayout extends ViewGroup {
 
             /**
              * 子View的实际宽度
+             * The actual width of the child View
              */
             int childWidth = child.getMeasuredWidth() +
                     marginLayoutParams.leftMargin +
                     marginLayoutParams.rightMargin;
             /**
              * 子View的实际高度
+             * The actual width of the child View
              */
             int childHeight = child.getMeasuredHeight() +
                     marginLayoutParams.topMargin +
                     marginLayoutParams.bottomMargin;
 
             /**
-             * 如果在加入子View的时候，超出的最大宽度
+             * 如果在加入childView的时候，超出的最大宽度
+             * If at the time of joining childView, beyond the maximum width
              */
             if (lineWidth + childWidth > layoutWidth) {
-                // 最大的为如果是warp_content情况下时的宽度
+                /*
+                 * 最大的为如果是warp_content情况下时的宽度
+                 * Biggest as if is warp_content cases when the width
+                 */
                 wrapWidth = Math.max(lineWidth, childWidth);
-                // 换行
+                /*
+                 * 换行
+                 * newline
+                 */
                 lineWidth = childWidth;
-                // 换行了要加高度
+                /*
+                 * 换行，要加高度
+                 * Newline, to add height
+                 */
                 wrapHeight += lineHeight;
                 lineHeight = childHeight;
             } else {
@@ -182,6 +210,8 @@ public class EasyFlowLayout extends ViewGroup {
         /**
          * 如果是warp_content 则设置记录好的wrapWidth和wrapHeight
          * 否则 设置 layoutWidth 和 layoutHeight
+         * If it is warp_content wrapWidth and wrapHeight is set records
+         * Otherwise set layoutWidth and layoutHeight
          */
         this.setMeasuredDimension(
                 (modeWidth == MeasureSpec.EXACTLY) ? layoutWidth : wrapWidth,
@@ -202,16 +232,13 @@ public class EasyFlowLayout extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         this.allViews.clear();
         this.allHeight.clear();
+        this.currentLineViews.clear();
 
         int layoutWidth = this.getWidth();
 
         int lineWidth = 0;
         int lineHeight = 0;
 
-        // 存储每一行所有的childView
-        List<View> lineViews = new ArrayList<>();
-        //每一行的宽度
-        List<Integer> lineWidths = new ArrayList<>();
 
         int childCount = this.getChildCount();
 
@@ -222,48 +249,61 @@ public class EasyFlowLayout extends ViewGroup {
             int childHeight = child.getMeasuredHeight();
 
             /**
-             * 如果在加入子View的时候，超出的最大宽度
+             * 如果在加入childView的时候，超出的最大宽度
+             * If at the time of joining childView, beyond the maximum width
              */
             if (childWidth + marginLayoutParams.leftMargin + marginLayoutParams.rightMargin + lineWidth > layoutWidth) {
-                this.allViews.add(lineViews);
+                this.allViews.add(this.currentLineViews);
                 this.allHeight.add(lineHeight);
 
-                lineWidths.add(lineWidth);
+                this.lineWidths.add(lineWidth);
                 lineWidth = 0;
-                lineViews = new ArrayList<>();
+                this.currentLineViews = new ArrayList<>();
             }
             /**
-             * 不换行
+             * 不执行换行，继续叠加
+             * Does not perform a newline, continue to stack
              */
             lineWidth += childWidth + marginLayoutParams.leftMargin + marginLayoutParams.rightMargin;
             lineHeight = Math.max(lineHeight, childHeight + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin);
-            lineViews.add(child);
+            this.currentLineViews.add(child);
         }
 
         /**
          * 记录最后一行
+         * Record the last line
          */
         this.allHeight.add(lineHeight);
-        this.allViews.add(lineViews);
-        lineWidths.add(lineWidth);
+        this.allViews.add(this.currentLineViews);
+        this.lineWidths.add(lineWidth);
 
 
         int left = 0;
         int top = 0;
-        // 得到总行数
         int lineCount = this.allViews.size();
         for (int i = 0; i < lineCount; i++) {
-            // 每一行的所有的views
-            lineViews = this.allViews.get(i);
-            // 当前行的最大高度
+            /*
+             * 每一行的所有的views
+             * All the views of each line
+             */
+            this.currentLineViews = this.allViews.get(i);
+            /*
+             * 当前行的最大高度
+             * The current row maximum height
+             */
             lineHeight = this.allHeight.get(i);
 
-            // 拿到当前行的宽度
-            int currentLineWidth = lineWidths.get(i);
+            /*
+             * 拿到当前行的宽度
+             * Get the current line width
+             */
+            int currentLineWidth = this.lineWidths.get(i);
+
             /**
              * 设置 gravity
+             * Set the gravity
              */
-            switch (gravity) {
+            switch (this.gravity) {
                 case LEFT:
                     left = 0;
                     break;
@@ -275,15 +315,21 @@ public class EasyFlowLayout extends ViewGroup {
                     break;
             }
 
-            // 这行所有View
-            for (int j = 0; j < lineViews.size(); j++) {
-                View child = lineViews.get(j);
-                if (child.getVisibility() == View.GONE) {
+            /**
+             * 遍历当前行
+             * Traverse the current line
+             */
+            for (int j = 0; j < this.currentLineViews.size(); j++) {
+                View child = this.currentLineViews.get(j);
+                if (child.getVisibility() == View.GONE)
                     continue;
-                }
+
                 MarginLayoutParams marginLayoutParams = (MarginLayoutParams) child
                         .getLayoutParams();
-                // 拿到childView的 左上点坐标 和 右下点坐标
+                /**
+                 * childView的 左上点坐标 和 右下点坐标
+                 * The upper left point coordinates and lower point coordinates childView
+                 */
                 int childLeft = left + marginLayoutParams.leftMargin;
                 int childTop = top + marginLayoutParams.topMargin;
                 int childRight = childLeft + child.getMeasuredWidth();
@@ -337,6 +383,14 @@ public class EasyFlowLayout extends ViewGroup {
     @Override
     protected LayoutParams generateDefaultLayoutParams() {
         return new MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+    }
+
+    public List<List<View>> getAllViews() {
+        return allViews;
+    }
+
+    public List<Integer> getAllHeight() {
+        return allHeight;
     }
 
 }
