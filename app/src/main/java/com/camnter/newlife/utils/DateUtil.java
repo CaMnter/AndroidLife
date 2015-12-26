@@ -22,9 +22,9 @@ public class DateUtil {
     /**
      * String 转换 Date
      *
-     * @param str
-     * @param format
-     * @return
+     * @param str str
+     * @param format format
+     * @return Date
      */
     public static Date string2Date(String str, String format) {
         try {
@@ -38,9 +38,9 @@ public class DateUtil {
     /**
      * Date（long） 转换 String
      *
-     * @param time
-     * @param format
-     * @return
+     * @param time time
+     * @param format format
+     * @return String
      */
     public static String date2String(long time, String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -52,8 +52,8 @@ public class DateUtil {
      * long 去除 时分秒
      * 时分秒全部为0
      *
-     * @param date
-     * @return
+     * @param date date
+     * @return long
      */
     public static long getYearMonthDay(long date) {
         Calendar calendar = Calendar.getInstance();
@@ -68,8 +68,8 @@ public class DateUtil {
     /**
      * 获取目标时间和当前时间之间的差距
      *
-     * @param date
-     * @return
+     * @param date date
+     * @return String
      */
     public static String getTimestampString(Date date) {
         Date curDate = new Date();
@@ -96,8 +96,8 @@ public class DateUtil {
     /**
      * 24小时制 转换 12小时制
      *
-     * @param time
-     * @return
+     * @param time time
+     * @return String
      */
     public static String time24To12(String time) {
         String str[] = time.split(":");
@@ -121,8 +121,8 @@ public class DateUtil {
     /**
      * Date 转换 HH
      *
-     * @param date
-     * @return
+     * @param date date
+     * @return String
      */
     public static String date2HH(Date date) {
         return new SimpleDateFormat("HH").format(date);
@@ -131,8 +131,8 @@ public class DateUtil {
     /**
      * Date 转换 HH:mm:ss
      *
-     * @param date
-     * @return
+     * @param date date
+     * @return String
      */
     public static String date2HHmm(Date date) {
         return new SimpleDateFormat("HH:mm").format(date);
@@ -141,8 +141,8 @@ public class DateUtil {
     /**
      * Date 转换 HH:mm:ss
      *
-     * @param date
-     * @return
+     * @param date date
+     * @return String
      */
     public static String date2HHmmss(Date date) {
         return new SimpleDateFormat("HH:mm:ss").format(date);
@@ -151,8 +151,8 @@ public class DateUtil {
     /**
      * Date 转换 MM.dd
      *
-     * @param date
-     * @return
+     * @param date date
+     * @return String
      */
     public static String date2MMdd(Date date) {
         return new SimpleDateFormat("MM.dd").format(date);
@@ -161,8 +161,8 @@ public class DateUtil {
     /**
      * Date 转换 yyyy.MM.dd
      *
-     * @param date
-     * @return
+     * @param date date
+     * @return String
      */
     public static String date2yyyyMMdd(Date date) {
         return new SimpleDateFormat("yyyy.MM.dd").format(date);
@@ -171,8 +171,8 @@ public class DateUtil {
     /**
      * Date 转换 MM月dd日 星期
      *
-     * @param date
-     * @return
+     * @param date date
+     * @return String
      */
     public static String date2MMddWeek(Date date) {
         Calendar calendar = Calendar.getInstance();
@@ -184,8 +184,8 @@ public class DateUtil {
     /**
      * Date 转换 yyyy年MM月dd日 星期
      *
-     * @param date
-     * @return
+     * @param date date
+     * @return String
      */
     public static String date2yyyyMMddWeek(Date date) {
         Calendar calendar = Calendar.getInstance();
