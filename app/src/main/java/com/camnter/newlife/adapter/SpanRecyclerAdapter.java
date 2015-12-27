@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.os.Parcel;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.SuperscriptSpan;
 import android.text.style.TabStopSpan;
 import android.text.style.TextAppearanceSpan;
 import android.text.style.TypefaceSpan;
@@ -148,6 +150,18 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
                     ssb.append("\n");
                 }
                 ssb.setSpan(new TabStopSpan.Standard(126), 0, ssb.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case SUPERS_SCRIPT_SPAN: {
+                labelTV.setText("SuperscriptSpan");
+                ssb.replace(start, start + sub.length(), "Save6");
+                Parcel p = Parcel.obtain();
+                p.writeInt(6);
+                int sixPosition = ssb.toString().indexOf("6");
+                SuperscriptSpan superscriptSpan = new SuperscriptSpan(p);
+                ssb.setSpan(superscriptSpan, sixPosition, sixPosition+1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                p.recycle();
                 contentTV.setText(ssb);
                 break;
             }

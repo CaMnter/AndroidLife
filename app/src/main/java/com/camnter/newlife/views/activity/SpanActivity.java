@@ -39,7 +39,7 @@ public class SpanActivity extends AppCompatActivity {
         spanData.setContent(CONTENT);
         spanData.setType(1);
         spans.add(spanData);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             SpanData s = new SpanData();
             s.setContent(CONTENT);
             s.setType(0);
