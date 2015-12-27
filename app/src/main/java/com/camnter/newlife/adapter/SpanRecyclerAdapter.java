@@ -8,6 +8,7 @@ import android.os.Build;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.TabStopSpan;
 import android.text.style.TextAppearanceSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
@@ -108,13 +109,13 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
             }
             case UNDERLINE_SPAN: {
                 labelTV.setText("UnderlineSpan");
-                ssb.setSpan(new UnderlineSpan(), start, "Save".length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                ssb.setSpan(new UnderlineSpan(), start, start + sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                 contentTV.setText(ssb);
                 break;
             }
             case TYPEFACE_SPAN: {
                 labelTV.setText("TypefaceSpan ( Examples include \"monospace\", \"serif\", and \"sans-serif\". )");
-                ssb.setSpan(new TypefaceSpan("serif"), start, sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                ssb.setSpan(new TypefaceSpan("serif"), start, start + sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                 contentTV.setText(ssb);
                 break;
             }
@@ -130,7 +131,23 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
                         e.printStackTrace();
                     }
                 }
-                ssb.setSpan(new TextAppearanceSpan("serif", Typeface.BOLD_ITALIC, this.context.getResources().getDimensionPixelSize(R.dimen.text_appearance_span), colorStateList, colorStateList), start, sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                ssb.setSpan(new TextAppearanceSpan("serif", Typeface.BOLD_ITALIC, this.context.getResources().getDimensionPixelSize(R.dimen.text_appearance_span), colorStateList, colorStateList), start, start + sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case TAB_STOP_SPAN: {
+                labelTV.setText("TabStopSpan.Standard");
+                String[] subs = content.split(" ");
+                ssb = new SpannableStringBuilder();
+                /**
+                 * TabStopSpan. Standard related to \t and \n
+                 * TabStopSpan.Standard 跟 \t 和 \n 有关系
+                 */
+                for (String sub1 : subs) {
+                    ssb.append("\t").append(sub1).append(" ");
+                    ssb.append("\n");
+                }
+                ssb.setSpan(new TabStopSpan.Standard(126), 0, ssb.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                 contentTV.setText(ssb);
                 break;
             }
