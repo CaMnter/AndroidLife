@@ -1,4 +1,4 @@
-package com.camnter.newlife.views.activity.design;
+package com.camnter.newlife.views.activity;
 
 import android.content.Context;
 import android.os.Bundle;

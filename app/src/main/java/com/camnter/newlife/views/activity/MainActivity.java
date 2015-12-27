@@ -1,6 +1,5 @@
 package com.camnter.newlife.views.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +19,6 @@ import com.camnter.newlife.rxandroid.RxAsyncActivity;
 import com.camnter.newlife.rxandroid.RxMapActivity;
 import com.camnter.newlife.rxandroid.RxSyncActivity;
 import com.camnter.newlife.views.activity.design.CoordinatorLayoutActivity;
-import com.camnter.newlife.views.activity.design.EasyRecyclerViewActivity;
 import com.camnter.newlife.views.activity.design.FloatingActionButtonActivity;
 import com.camnter.newlife.views.activity.design.NavigationViewActivity;
 import com.camnter.newlife.views.activity.design.SnackbarActivity;
@@ -36,6 +34,7 @@ import com.camnter.newlife.views.activity.util.ReflectionUtilActivity;
 import com.camnter.newlife.views.activity.util.ResourcesUtilActivity;
 import com.camnter.newlife.widget.decorator.DividerItemDecoration;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private RecyclerView menuRV;
-    public LinkedList<Class> classes;
+    public ArrayList<Class> classes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         this.menuRV = (RecyclerView) this.findViewById(R.id.menu_rv);
 
 
-        this.classes = new LinkedList<>();
+        this.classes = new ArrayList<>();
 
         classes.add(ImageScaleTypesActivity.class);
         classes.add(AsyncTaskActivity.class);
@@ -95,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         classes.add(PopupWindowActivity.class);
         classes.add(TagTextViewActivity.class);
         classes.add(EasyFlowLayoutActivity.class);
+        classes.add(SpanActivity.class);
 
         MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter();
         adapter.setList(classes);

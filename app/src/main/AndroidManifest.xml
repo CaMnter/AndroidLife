@@ -70,7 +70,7 @@
             android:name=".views.activity.SensorManagerActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".views.activity.design.EasyRecyclerViewActivity"
+            android:name=".views.activity.EasyRecyclerViewActivity"
             android:label="@string/app_label" />
         <activity
             android:name=".views.activity.design.tablayout.NormalTabLayoutActivity"
@@ -151,6 +151,9 @@
             android:label="@string/app_label" />
         <activity
             android:name=".views.activity.EasyFlowLayoutActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name=".views.activity.SpanActivity"
             android:label="@string/app_label" />
 
         <activity
