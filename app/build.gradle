@@ -49,7 +49,7 @@ dependencies {
 
     // camnter
     compile 'com.camnter.easyslidingtabs:easyslidingtabs:0.2'
-    compile 'com.camnter.easyrecyclerview:easyrecyclerview:0.1'
+    compile 'com.camnter.easyrecyclerview:easyrecyclerview:1.0'
     compile 'com.camnter.robotlegs4android:robotlegs4android:0.8'
 
     // Rx
