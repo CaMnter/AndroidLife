@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.camnter.newlife">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -154,7 +155,9 @@
             android:label="@string/app_label" />
         <activity
             android:name=".views.activity.SpanActivity"
-            android:label="@string/app_label" />
+            android:hardwareAccelerated="false"
+            android:label="@string/app_label"
+            tools:ignore="UnusedAttribute" />
 
         <activity
             android:name=".rxandroid.RxSyncActivity"

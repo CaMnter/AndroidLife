@@ -3,12 +3,21 @@ package com.camnter.newlife.adapter;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.BlurMaskFilter;
+import android.graphics.EmbossMaskFilter;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Parcel;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.MaskFilterSpan;
+import android.text.style.QuoteSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.ScaleXSpan;
+import android.text.style.StrikethroughSpan;
+import android.text.style.StyleSpan;
+import android.text.style.SubscriptSpan;
 import android.text.style.SuperscriptSpan;
 import android.text.style.TabStopSpan;
 import android.text.style.TextAppearanceSpan;
@@ -42,22 +51,21 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
     private static final int TAB_STOP_SPAN = 5;
     private static final int SUPERS_SCRIPT_SPAN = 6;
     private static final int SUB_SCRIPT_SPAN = 7;
-    private static final int STYLE_SPAN = 8;
-    private static final int STRIKE_THROUGH_SPAN = 9;
-    private static final int SCALE_X_SPAN = 10;
+    private static final int STRIKE_THROUGH_SPAN = 8;
+    private static final int SCALE_X_SPAN = 9;
+    private static final int STYLE_SPAN = 10;
     private static final int RELATIVE_SIZE_SPAN = 11;
-    private static final int RASTERIZER_SPAN = 12;
-    private static final int QUOTO_SPAN = 13;
-    private static final int MASK_FILTER_SPAN = 14;
-    private static final int LEADING_MARGIN_SPAN = 15;
-    private static final int IMAGE_SPAN = 16;
-    private static final int ICON_MARGIN_SPAN = 17;
-    private static final int FOREGROUND_COLOR_SPAN = 18;
-    private static final int DRAWABLE_MARGIN_SPAN = 19;
-    private static final int BULLET_SPAN = 20;
-    private static final int BACKGROUND_COLOR_SPAN = 21;
-    private static final int ALIGNMENT_SPAN_STANDARD = 22;
-    private static final int ABSOLUTE_SIZE_SPAN = 23;
+    private static final int QUOTO_SPAN = 12;
+    private static final int MASK_FILTER_SPAN = 13;
+    private static final int LEADING_MARGIN_SPAN = 14;
+    private static final int IMAGE_SPAN = 15;
+    private static final int ICON_MARGIN_SPAN = 16;
+    private static final int FOREGROUND_COLOR_SPAN = 17;
+    private static final int DRAWABLE_MARGIN_SPAN = 18;
+    private static final int BULLET_SPAN = 19;
+    private static final int BACKGROUND_COLOR_SPAN = 20;
+    private static final int ALIGNMENT_SPAN_STANDARD = 21;
+    private static final int ABSOLUTE_SIZE_SPAN = 22;
 
     public SpanRecyclerAdapter(Context context) {
         this.context = context;
@@ -156,12 +164,64 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
             case SUPERS_SCRIPT_SPAN: {
                 labelTV.setText("SuperscriptSpan");
                 ssb.replace(start, start + sub.length(), "Save6");
-                Parcel p = Parcel.obtain();
-                p.writeInt(6);
+                Parcel parcel = Parcel.obtain();
+                parcel.writeInt(6);
                 int sixPosition = ssb.toString().indexOf("6");
-                SuperscriptSpan superscriptSpan = new SuperscriptSpan(p);
-                ssb.setSpan(superscriptSpan, sixPosition, sixPosition+1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                p.recycle();
+                ssb.setSpan(new SuperscriptSpan(parcel), sixPosition, sixPosition + 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                parcel.recycle();
+                contentTV.setText(ssb);
+                break;
+            }
+            case SUB_SCRIPT_SPAN: {
+                labelTV.setText("SubscriptSpan");
+                ssb.replace(start, start + sub.length(), "Save6");
+                Parcel parcel = Parcel.obtain();
+                parcel.writeInt(6);
+                int sixPosition = ssb.toString().indexOf("6");
+                ssb.setSpan(new SubscriptSpan(parcel), sixPosition, sixPosition + 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                parcel.recycle();
+                contentTV.setText(ssb);
+                break;
+            }
+            case STRIKE_THROUGH_SPAN: {
+                labelTV.setText("StrikethroughSpan");
+                ssb.setSpan(new StrikethroughSpan(), start, start + sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case SCALE_X_SPAN: {
+                labelTV.setText("ScaleXSpan");
+                ssb.setSpan(new ScaleXSpan(2.0f), start, start + sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case STYLE_SPAN: {
+                labelTV.setText("StyleSpan ( Typeface.NORMAL,Typeface.BOLD,Typeface.ITALIC,Typeface.BOLD_ITALIC ) ");
+                ssb.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), start, start + sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case RELATIVE_SIZE_SPAN: {
+                labelTV.setText("RelativeSizeSpan");
+                ssb.setSpan(new RelativeSizeSpan(6.0f), start, start + sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case QUOTO_SPAN: {
+                labelTV.setText("QuoteSpan");
+                ssb.setSpan(new QuoteSpan(0xff000000), start, start + sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case MASK_FILTER_SPAN: {
+                labelTV.setText("MaskFilterSpan ( BlurMaskFilter EmbossMaskFilter ) \n Activity: android:hardwareAccelerated=\"false\"\n ");
+                MaskFilterSpan embossMaskFilterSpan = new MaskFilterSpan(new EmbossMaskFilter(new float[]{3, 3, 9}, 3.0f, 12, 16));
+                ssb.setSpan(embossMaskFilterSpan, start, start + sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                contentTV.setText(ssb);
+                String you = "you";
+                int indexYou = content.indexOf(you);
+                MaskFilterSpan blurMaskFilterSpan = new MaskFilterSpan(new BlurMaskFilter(3, BlurMaskFilter.Blur.OUTER));
+                ssb.setSpan(blurMaskFilterSpan, indexYou, indexYou + you.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                 contentTV.setText(ssb);
                 break;
             }

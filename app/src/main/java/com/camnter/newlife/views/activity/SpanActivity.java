@@ -28,14 +28,20 @@ public class SpanActivity extends AppCompatActivity {
         RecyclerView spanRV = (RecyclerView) this.findViewById(R.id.span_rv);
         SpanRecyclerAdapter adapter = new SpanRecyclerAdapter(this);
         spanRV.setAdapter(adapter);
-        spanRV.addItemDecoration(new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST, R.drawable.bg_recycler_view_divider));
+        spanRV.addItemDecoration(
+                new EasyDividerItemDecoration(
+                        this,
+                        EasyDividerItemDecoration.VERTICAL_LIST,
+                        R.drawable.bg_recycler_view_divider
+                )
+        );
 
         List<SpanData> spans = new ArrayList<>();
         SpanData spanData = new SpanData();
         spanData.setContent(CONTENT);
         spanData.setType(1);
         spans.add(spanData);
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 13; i++) {
             SpanData s = new SpanData();
             s.setContent(CONTENT);
             s.setType(0);

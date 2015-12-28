@@ -17,6 +17,7 @@ import com.camnter.newlife.R;
  */
 public class CustomDialog extends Dialog {
 
+    private Context context;
     private TextView dialogTV;
 
     private static final long DEFAULT_DURATION = 1000L;
@@ -58,6 +59,7 @@ public class CustomDialog extends Dialog {
     }
 
     private void initViews(Context context) {
+        this.context = context;
         this.setContentView(R.layout.dialog_custom);
         this.dialogTV = (TextView) this.findViewById(R.id.custom_dialog_tv);
     }
@@ -70,7 +72,7 @@ public class CustomDialog extends Dialog {
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 if (CustomDialog.this.isShowing()) {
-                    CustomDialog.this.dismiss();
+                    if (CustomDialog.this.context != null) CustomDialog.this.dismiss();
                     if (CustomDialog.this.callback != null) CustomDialog.this.callback.onDismiss();
                 }
             }
