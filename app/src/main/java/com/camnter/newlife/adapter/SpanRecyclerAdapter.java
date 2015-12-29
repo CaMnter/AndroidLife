@@ -2,17 +2,23 @@ package com.camnter.newlife.adapter;
 
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BlurMaskFilter;
 import android.graphics.EmbossMaskFilter;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Parcel;
+import android.provider.Browser;
 import android.text.Layout;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.AlignmentSpan;
@@ -36,6 +42,8 @@ import android.text.style.TextAppearanceSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
@@ -43,6 +51,7 @@ import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.SpanData;
 import com.camnter.newlife.utils.ResourcesUtil;
+import com.camnter.newlife.widget.text.ClickableSpanNoUnderline;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -79,6 +88,7 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
     private static final int BACKGROUND_COLOR_SPAN = 20;
     private static final int ALIGNMENT_SPAN_STANDARD = 21;
     private static final int ABSOLUTE_SIZE_SPAN = 22;
+    private static final int CLICKABLE_SPAN = 23;
 
     public SpanRecyclerAdapter(Activity activity) {
         this.activity = activity;
@@ -302,7 +312,63 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
                 contentTV.setText(ssb);
                 break;
             }
+            case CLICKABLE_SPAN: {
+                labelTV.setText("ClickableSpan ( Please click \"Save\" )");
+                SpanClickableSpan spanClickableSpan = new SpanClickableSpan(0xffFF4081, new ClickableSpanNoUnderline.OnClickListener<SpanClickableSpan>() {
+                    /**
+                     * ClickableSpan被点击
+                     *
+                     * @param widget widget
+                     * @param span   span
+                     */
+                    @Override
+                    public void onClick(View widget, SpanClickableSpan span) {
+                        String urlString = span.getUrlString();
+                        if (TextUtils.isEmpty(urlString)) return;
+                        Uri uri = Uri.parse(urlString);
+                        Context context = widget.getContext();
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
+                        try {
+                            context.startActivity(intent);
+                        } catch (ActivityNotFoundException e) {
+                            Log.w("URLSpan", "Activity was not found for intent, " + intent.toString());
+                        }
+                    }
+                });
+                spanClickableSpan.setUrlString("https://github.com/CaMnter");
+                ssb.setSpan(spanClickableSpan, start, start + sub.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                contentTV.setText(ssb);
+                // 在单击链接时凡是有要执行的动作，都必须设置MovementMethod对象
+                contentTV.setMovementMethod(LinkMovementMethod.getInstance());
+                // 设置点击后的颜色，这里涉及到ClickableSpan的点击背景
+                contentTV.setHighlightColor(0x00000000);
+                break;
+            }
         }
+
+    }
+
+    private class SpanClickableSpan extends ClickableSpanNoUnderline {
+
+        private String urlString;
+
+        public String getUrlString() {
+            return urlString;
+        }
+
+        public void setUrlString(String urlString) {
+            this.urlString = urlString;
+        }
+
+        public SpanClickableSpan(int color, OnClickListener onClickListener) {
+            super(color, onClickListener);
+        }
+
+        public SpanClickableSpan(OnClickListener onClickListener) {
+            super(onClickListener);
+        }
+
     }
 
 }
