@@ -235,5 +235,7 @@ Rich text textview with a clickable label
 ### 32.SpanActivity  
 Show the effect of various Span  
 展示各种Span的效果  
+[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50427978)  
+
 
 
