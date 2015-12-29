@@ -1,16 +1,28 @@
 package com.camnter.newlife.adapter;
 
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BlurMaskFilter;
 import android.graphics.EmbossMaskFilter;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Parcel;
+import android.text.Layout;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.AlignmentSpan;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.BulletSpan;
+import android.text.style.DrawableMarginSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.IconMarginSpan;
+import android.text.style.ImageSpan;
+import android.text.style.LeadingMarginSpan;
 import android.text.style.MaskFilterSpan;
 import android.text.style.QuoteSpan;
 import android.text.style.RelativeSizeSpan;
@@ -30,6 +42,7 @@ import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.SpanData;
+import com.camnter.newlife.utils.ResourcesUtil;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -42,7 +55,7 @@ import java.io.IOException;
  */
 public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
 
-    private Context context;
+    private Activity activity;
 
     private static final int URL_SPAN = 1;
     private static final int UNDERLINE_SPAN = 2;
@@ -67,8 +80,8 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
     private static final int ALIGNMENT_SPAN_STANDARD = 21;
     private static final int ABSOLUTE_SIZE_SPAN = 22;
 
-    public SpanRecyclerAdapter(Context context) {
-        this.context = context;
+    public SpanRecyclerAdapter(Activity activity) {
+        this.activity = activity;
     }
 
     @Override
@@ -133,15 +146,15 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
                 labelTV.setText("TextAppearanceSpan");
                 ColorStateList colorStateList = null;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    colorStateList = this.context.getColorStateList(R.color.selector_apperarance_span);
+                    colorStateList = this.activity.getColorStateList(R.color.selector_apperarance_span);
                 } else {
                     try {
-                        colorStateList = ColorStateList.createFromXml(this.context.getResources(), this.context.getResources().getXml(R.color.selector_apperarance_span));
+                        colorStateList = ColorStateList.createFromXml(this.activity.getResources(), this.activity.getResources().getXml(R.color.selector_apperarance_span));
                     } catch (XmlPullParserException | IOException e) {
                         e.printStackTrace();
                     }
                 }
-                ssb.setSpan(new TextAppearanceSpan("serif", Typeface.BOLD_ITALIC, this.context.getResources().getDimensionPixelSize(R.dimen.text_appearance_span), colorStateList, colorStateList), start, start + sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                ssb.setSpan(new TextAppearanceSpan("serif", Typeface.BOLD_ITALIC, this.activity.getResources().getDimensionPixelSize(R.dimen.text_appearance_span), colorStateList, colorStateList), start, start + sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                 contentTV.setText(ssb);
                 break;
             }
@@ -222,6 +235,70 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
                 int indexYou = content.indexOf(you);
                 MaskFilterSpan blurMaskFilterSpan = new MaskFilterSpan(new BlurMaskFilter(3, BlurMaskFilter.Blur.OUTER));
                 ssb.setSpan(blurMaskFilterSpan, indexYou, indexYou + you.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case LEADING_MARGIN_SPAN: {
+                labelTV.setText("LeadingMarginSpan");
+                ssb.append(" ")
+                        .append(ssb.toString())
+                        .append(ssb.toString())
+                        .append(ssb.toString());
+                ssb.setSpan(new LeadingMarginSpan.Standard(96, 36), 0, ssb.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case IMAGE_SPAN: {
+                labelTV.setText("ImageSpan");
+                ssb.replace(start, start + sub.length(), " Save");
+                ssb.setSpan(new ImageSpan(this.activity, R.mipmap.ic_mm_1, ImageSpan.ALIGN_BASELINE), 0, 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case ICON_MARGIN_SPAN: {
+                labelTV.setText("IconMarginSpan");
+                Bitmap bitmap = BitmapFactory.decodeResource(this.activity.getResources(), R.mipmap.ic_mm_1);
+                ssb.setSpan(new IconMarginSpan(bitmap, 60), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                //bitmap.recycle();
+                contentTV.setText(ssb);
+                break;
+            }
+            case FOREGROUND_COLOR_SPAN: {
+                labelTV.setText("ForegroundColorSpan");
+                ssb.setSpan(new ForegroundColorSpan(0xff303F9F), start, start + sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case DRAWABLE_MARGIN_SPAN: {
+                labelTV.setText("DrawableMarginSpan");
+                ssb.setSpan(new DrawableMarginSpan(ResourcesUtil.getDrawable(this.activity, R.mipmap.ic_mm_1), 6), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case BULLET_SPAN: {
+                labelTV.setText("BulletSpan");
+                ssb.setSpan(new BulletSpan(66, 0xff303F9F), start, start + sub.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case BACKGROUND_COLOR_SPAN: {
+                labelTV.setText("BackgroundColorSpan");
+                String you = "you";
+                int indexYou = content.indexOf(you);
+                ssb.setSpan(new BackgroundColorSpan(0x2f303F9F), start, start + sub.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                ssb.setSpan(new BackgroundColorSpan(0x2fFF4081), indexYou, indexYou + you.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case ALIGNMENT_SPAN_STANDARD: {
+                labelTV.setText("AlignmentSpan.Standard");
+                ssb.setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                contentTV.setText(ssb);
+                break;
+            }
+            case ABSOLUTE_SIZE_SPAN: {
+                labelTV.setText("AbsoluteSizeSpan");
+                ssb.setSpan(new AbsoluteSizeSpan(26, true), start, start + sub.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 contentTV.setText(ssb);
                 break;
             }

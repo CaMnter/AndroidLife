@@ -66,10 +66,11 @@ public class LocationManagerActivity extends AppCompatActivity {
         };
         this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        this.longitudeTV.setText(location.getLongitude() + "");
-        this.latitudeTV.setText(location.getLatitude() + "");
-        this.altitudeTV.setText(location.getAltitude() + "");
-
+        if(location!=null){
+            this.longitudeTV.setText(location.getLongitude() + "");
+            this.latitudeTV.setText(location.getLatitude() + "");
+            this.altitudeTV.setText(location.getAltitude() + "");
+        }
         this.getProviders();
         this.getBestProvider();
     }

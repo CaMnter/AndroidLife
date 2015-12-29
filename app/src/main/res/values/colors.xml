@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#ff303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#ffFF4081</color>
     <color name="themeColor">#ff3E55AE</color>
     <color name="fern">#5BC15B</color>
     <color name="tabLayoutBackground">#ffe5e5e5</color>
