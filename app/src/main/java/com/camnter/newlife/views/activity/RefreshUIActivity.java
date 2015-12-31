@@ -1,6 +1,5 @@
 package com.camnter.newlife.views.activity;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,7 +32,7 @@ public class RefreshUIActivity extends AppCompatActivity {
         /**
          * Subclasses must implement this to receive messages.
          *
-         * @param msg
+         * @param msg msg
          */
         @Override
         public void handleMessage(Message msg) {
@@ -41,7 +40,7 @@ public class RefreshUIActivity extends AppCompatActivity {
             if (activity != null) {
                 switch (msg.what) {
                     case HANDLER_SUCCESS: {
-                        activity.handlerTV.setText("handler");
+                        activity.handlerTV.setText("Use: Handler.sendMessage");
                         break;
                     }
                 }
@@ -67,6 +66,7 @@ public class RefreshUIActivity extends AppCompatActivity {
     private final Thread mThread = new Thread(mRunnable);
 
     private TextView asyncTaskTV;
+    private MAsyncTask mAsyncTask;
 
     public class MAsyncTask extends AsyncTask<String, Integer, String> {
 
@@ -92,11 +92,6 @@ public class RefreshUIActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             int i = 0;
             for (; i < 100; i++) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 this.publishProgress(i);
             }
             return i + params[0];
@@ -114,7 +109,7 @@ public class RefreshUIActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Integer... values) {
             int value = values[0];
-            this.textview.setText(value + "%");
+            this.textview.setText("Use: AsyncTask " + value + "%");
         }
 
         /**
@@ -128,7 +123,7 @@ public class RefreshUIActivity extends AppCompatActivity {
          */
         @Override
         protected void onPostExecute(String s) {
-            this.textview.setText("执行结束：" + s);
+            this.textview.setText("Use : AsyncTask 执行结束：" + s);
         }
 
         /**
@@ -165,7 +160,7 @@ public class RefreshUIActivity extends AppCompatActivity {
     private final Runnable uiRunnable = new Runnable() {
         @Override
         public void run() {
-            RefreshUIActivity.this.runOnUiThreadTV.setText("runOnUiThread");
+            RefreshUIActivity.this.runOnUiThreadTV.setText("Use: runOnUiThread");
         }
     };
 
@@ -195,12 +190,7 @@ public class RefreshUIActivity extends AppCompatActivity {
     private final Runnable postRunnable = new Runnable() {
         @Override
         public void run() {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            RefreshUIActivity.this.postHandlerTV.setText("Handler.post(...)");
+            RefreshUIActivity.this.postHandlerTV.setText("Use: Handler.post(...)");
         }
     };
 
@@ -222,8 +212,8 @@ public class RefreshUIActivity extends AppCompatActivity {
     private void initData() {
         this.mThread.start();
 
-        MAsyncTask mAsyncTask = new MAsyncTask(this.asyncTaskTV);
-        mAsyncTask.execute("%");
+        this.mAsyncTask = new MAsyncTask(this.asyncTaskTV);
+        this.mAsyncTask.execute("%");
 
         this.runThread.start();
 
@@ -231,4 +221,9 @@ public class RefreshUIActivity extends AppCompatActivity {
         postHandler.post(this.postRunnable);
     }
 
+    @Override
+    protected void onDestroy() {
+        this.mAsyncTask.onCancelled();
+        super.onDestroy();
+    }
 }
