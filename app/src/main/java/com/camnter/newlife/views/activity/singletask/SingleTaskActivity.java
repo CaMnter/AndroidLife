@@ -15,14 +15,13 @@ import com.camnter.newlife.R;
  * Time：2015-09-23 15:29
  */
 public class SingleTaskActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button startBT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_singletask);
-        this.startBT = (Button) this.findViewById(R.id.start_bt);
-        this.startBT.setOnClickListener(this);
+        Button startBT = (Button) this.findViewById(R.id.start_bt);
+        startBT.setOnClickListener(this);
     }
 
     /**

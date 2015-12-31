@@ -7,4 +7,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_mvp">MvpActivity</string>
     <string name="title_activity_sqlite">SqliteActivity</string>
+    <string name="activity_launch_model_label">Activity:\n1.LaunchModeActivity\n\nstart VActivity</string>
+    <string name="activity_v_label">Activity:\n1.LaunchModeActivity\n2.VActivity\n\nstart SingleTaskActivity</string>
+    <string name="activity_single_task_label">Activity:\n1.LaunchModeActivity\n2.VActivity\n3.SingleTaskActivity\n\nstart LActivity</string>
+    <string name="activity_l_label">Activity:\n1.LaunchModeActivity\n2.VActivity\n3.SingleTaskActivity\n4.LActivity\n\nstart MActivity</string>
+    <string name="activity_m_label">Activity:\n1.LaunchModeActivity\n2.VActivity\n3.SingleTaskActivity\n4.LActivity\n5.MActivity\n\nstart SingleTaskActivity:\nit will destroy:\n1.LActivity\n2.MActivity</string>
 </resources>

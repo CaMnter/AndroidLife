@@ -12,5 +12,14 @@
         android:layout_centerInParent="true"
         android:text="LActivity" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/start_bt"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/activity_single_task_label" />
+
 
 </RelativeLayout>
