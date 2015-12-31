@@ -11,7 +11,7 @@ Introduce the ImageView scale properties
 介绍ImageView scale属性  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/48424095)  
 **Screenshot:**    
-![ImageScaleTypesActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/1.ImageScaleTypesActivity.png)  
+![ImageScaleTypesActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/1.ImageScaleTypesActivity.jpg)  
    
  ---
    
