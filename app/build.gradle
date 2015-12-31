@@ -48,9 +48,9 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.0.1'
 
     // camnter
-    compile 'com.camnter.easyslidingtabs:easyslidingtabs:0.2'
-    compile 'com.camnter.easyrecyclerview:easyrecyclerview:1.0'
-    compile 'com.camnter.robotlegs4android:robotlegs4android:0.8'
+    compile 'com.camnter.easyslidingtabs:easyslidingtabs:0.2.1'
+    compile 'com.camnter.easyrecyclerview:easyrecyclerview:1.0.1'
+    compile 'com.camnter.robotlegs4android:robotlegs4android:1.0'
 
     // Rx
     compile 'io.reactivex:rxandroid:1.0.1'
