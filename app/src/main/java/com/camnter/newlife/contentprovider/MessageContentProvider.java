@@ -90,16 +90,16 @@ public class MessageContentProvider extends BaseContentProvider {
         int count;
         switch (messageUriMatcher.match(uri)) {
             case MESSAGE:
-                count = db.delete(MessageSQLiteHelper.TB_MESSAGE, selection, selectionArgs);
-                this.getContext().getContentResolver().notifyChange(uri, null);
-                break;
-            case MESSAGES:
                 long messageId = ContentUris.parseId(uri);
                 // 指定id
                 String where = "_id=" + messageId;
                 // 把其它条件附加上
                 where += !TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "";
                 count = db.delete(MessageSQLiteHelper.TB_MESSAGE, where, selectionArgs);
+                this.getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            case MESSAGES:
+                count = db.delete(MessageSQLiteHelper.TB_MESSAGE, selection, selectionArgs);
                 this.getContext().getContentResolver().notifyChange(uri, null);
                 break;
             default:
