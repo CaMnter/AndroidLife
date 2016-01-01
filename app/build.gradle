@@ -52,9 +52,13 @@ dependencies {
     compile 'com.camnter.easyrecyclerview:easyrecyclerview:1.0.1'
     compile 'com.camnter.robotlegs4android:robotlegs4android:1.0'
 
-    // Rx
+    // ReactiveX
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'io.reactivex:rxjava:1.0.16'
+
+    // Square
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     // Alibaba
     compile 'com.alibaba:fastjson:1.2.7'
