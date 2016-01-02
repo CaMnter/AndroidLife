@@ -1,13 +1,13 @@
 package com.camnter.newlife.views.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.asynctask.ProgressBarAsyncTask;
 
 
@@ -16,19 +16,48 @@ import com.camnter.newlife.utils.asynctask.ProgressBarAsyncTask;
  * Created by：CaMnter
  * Time：2015-09-17 14:12
  */
-public class AsyncTaskActivity extends AppCompatActivity implements View.OnClickListener {
+public class AsyncTaskActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private ProgressBar progressBar;
     private TextView textview;
+    private Button start;
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_asynctask);
+    protected int getLayoutId() {
+        return R.layout.activity_asynctask;
+    }
+
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         this.textview = (TextView) this.findViewById(R.id.textview);
         this.progressBar = (ProgressBar) this.findViewById(R.id.progressBar);
-        Button start = (Button) this.findViewById(R.id.start);
-        start.setOnClickListener(this);
+        this.start = (Button) this.findViewById(R.id.start);
+    }
+
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
+        this.start.setOnClickListener(this);
+    }
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
+
     }
 
     /**

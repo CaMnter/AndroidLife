@@ -9,18 +9,18 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 
 /**
  * Description：LocationManagerActivity
  * Created by：CaMnter
  * Time：2015-11-28 16:04
  */
-public class LocationManagerActivity extends AppCompatActivity {
+public class LocationManagerActivity extends BaseAppCompatActivity {
 
     private static final String TAG = "LocationManagerActivity";
 
@@ -32,12 +32,43 @@ public class LocationManagerActivity extends AppCompatActivity {
     private TextView providersTV;
     private TextView bestProviderTV;
 
-
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_location_manager);
-        this.initViews();
+    protected int getLayoutId() {
+        return R.layout.activity_location_manager;
+    }
+
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
+        this.longitudeTV = (TextView) this.findViewById(R.id.location_longitude_tv);
+        this.latitudeTV = (TextView) this.findViewById(R.id.location_latitude_tv);
+        this.altitudeTV = (TextView) this.findViewById(R.id.location_altitude_tv);
+        this.providersTV = (TextView) this.findViewById(R.id.location_providers_tv);
+        this.bestProviderTV = (TextView) this.findViewById(R.id.location_best_provider_tv);
+    }
+
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
+
+    }
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
         this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         LocationListener locationListener = new LocationListener() {
             @Override
@@ -118,15 +149,6 @@ public class LocationManagerActivity extends AppCompatActivity {
         criteria.setCostAllowed(false);
         String provider = locationManager.getBestProvider(criteria, false); //false是指不管当前适配器是否可用
         this.bestProviderTV.setText(provider);
-    }
-
-
-    private void initViews() {
-        this.longitudeTV = (TextView) this.findViewById(R.id.location_longitude_tv);
-        this.latitudeTV = (TextView) this.findViewById(R.id.location_latitude_tv);
-        this.altitudeTV = (TextView) this.findViewById(R.id.location_altitude_tv);
-        this.providersTV = (TextView) this.findViewById(R.id.location_providers_tv);
-        this.bestProviderTV = (TextView) this.findViewById(R.id.location_best_provider_tv);
     }
 
 }

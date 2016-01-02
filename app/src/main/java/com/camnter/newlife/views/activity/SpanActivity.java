@@ -1,13 +1,13 @@
 package com.camnter.newlife.views.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 
+import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
 import com.camnter.easyrecyclerview.widget.decorator.EasyDividerItemDecoration;
 import com.camnter.newlife.R;
 import com.camnter.newlife.adapter.SpanRecyclerAdapter;
 import com.camnter.newlife.bean.SpanData;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,18 +17,49 @@ import java.util.List;
  * Created by：CaMnter
  * Time：2015-12-27 13:36
  */
-public class SpanActivity extends AppCompatActivity {
+public class SpanActivity extends BaseAppCompatActivity {
 
     private static final String CONTENT = "Save you from anything";
 
+    private EasyRecyclerView spanRV;
+    private SpanRecyclerAdapter adapter;
+
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_span);
-        RecyclerView spanRV = (RecyclerView) this.findViewById(R.id.span_rv);
-        SpanRecyclerAdapter adapter = new SpanRecyclerAdapter(this);
-        spanRV.setAdapter(adapter);
-        spanRV.addItemDecoration(
+    protected int getLayoutId() {
+        return R.layout.activity_span;
+    }
+
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
+        this.spanRV = this.findView(R.id.span_rv);
+    }
+
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
+
+    }
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
+        this.adapter = new SpanRecyclerAdapter(this);
+        this.spanRV.setAdapter(adapter);
+        this.spanRV.addItemDecoration(
                 new EasyDividerItemDecoration(
                         this,
                         EasyDividerItemDecoration.VERTICAL_LIST,

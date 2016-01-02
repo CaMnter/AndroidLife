@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.ImageUtil;
 import com.camnter.newlife.utils.ThreadUtil;
 import com.camnter.newlife.widget.CustomProgressBarDialog;
@@ -39,7 +39,7 @@ import rx.functions.Action1;
  * Created by：CaMnter
  * Time：2015-11-30 17:09
  */
-public class RxSyncActivity extends AppCompatActivity implements View.OnClickListener {
+public class RxSyncActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "RxSyncActivity";
     private static final String OBJECT_IMAGE_URL = "http://img.blog.csdn.net/20150913233900119";
@@ -98,30 +98,39 @@ public class RxSyncActivity extends AppCompatActivity implements View.OnClickLis
 
     private final LoadingHandler loadingHandler = new LoadingHandler(RxSyncActivity.this);
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_rx_sync);
-        this.initViews();
-        this.initListeners();
-        this.initData();
-        this.dialog = new CustomProgressBarDialog(this);
+    protected int getLayoutId() {
+        return R.layout.activity_rx_sync;
     }
 
-    private void initViews() {
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         TextView syncRxSaveTV = (TextView) this.findViewById(R.id.rx_sync_save_tv);
         syncRxSaveTV.setText(OBJECT_IMAGE_URL);
         this.syncRxIV = (ImageView) this.findViewById(R.id.rx_sync_iv);
         this.syncRxJustTV = (TextView) this.findViewById(R.id.rx_sync_just_tv);
         this.syncRxFromTV = (TextView) this.findViewById(R.id.rx_sync_from_tv);
         this.syncRxSaveBT = (Button) this.findViewById(R.id.rx_sync_save_bt);
+        this.dialog = new CustomProgressBarDialog(this);
     }
 
-    private void initListeners() {
+    @Override
+    protected void initListeners() {
         this.syncRxSaveBT.setOnClickListener(this);
     }
 
-    private void initData() {
+    @Override
+    protected void initData() {
         /**
          * 使用just 省略了create
          * 使用just，就表示不需要OnSubscribe对象了，默认发送了事件（也就是默认做了什么）。

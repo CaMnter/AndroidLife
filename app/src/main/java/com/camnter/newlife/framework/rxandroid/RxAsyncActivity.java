@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.ImageUtil;
 import com.camnter.newlife.utils.ThreadUtil;
 import com.camnter.newlife.widget.CustomProgressBarDialog;
@@ -39,7 +39,7 @@ import rx.schedulers.Schedulers;
  * Created by：CaMnter
  * Time：2015-12-01 15:49
  */
-public class RxAsyncActivity extends AppCompatActivity implements View.OnClickListener {
+public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "RxAsyncActivity";
     private static final String OBJECT_IMAGE_URL = "http://img.blog.csdn.net/20150913233900119";
@@ -94,25 +94,42 @@ public class RxAsyncActivity extends AppCompatActivity implements View.OnClickLi
 
     private final LoadingHandler loadingHandler = new LoadingHandler(RxAsyncActivity.this);
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_rx_async);
-        this.initViews();
-        this.initListeners();
-        this.dialog = new CustomProgressBarDialog(this);
+    protected int getLayoutId() {
+        return R.layout.activity_rx_async;
     }
 
-    private void initViews() {
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         TextView syncRxSaveTV = (TextView) this.findViewById(R.id.rx_async_save_tv);
         syncRxSaveTV.setText(OBJECT_IMAGE_URL);
         this.asyncRxOneIV = (ImageView) this.findViewById(R.id.rx_async_one_iv);
         this.asyncRxTwoIV = (ImageView) this.findViewById(R.id.rx_async_two_iv);
         this.asyncRxSaveBT = (Button) this.findViewById(R.id.rx_async_save_bt);
+        this.dialog = new CustomProgressBarDialog(this);
     }
 
-    private void initListeners() {
+    @Override
+    protected void initListeners() {
         this.asyncRxSaveBT.setOnClickListener(this);
+    }
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
+
     }
 
     /**

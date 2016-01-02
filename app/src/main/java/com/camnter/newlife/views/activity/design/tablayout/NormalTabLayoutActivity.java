@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 
 import com.camnter.newlife.R;
 import com.camnter.newlife.adapter.tablayout.NormalTabLayoutFragmentAdapter;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.views.fragment.tablayoutfragment.TabLayoutFirstFragment;
 import com.camnter.newlife.views.fragment.tablayoutfragment.TabLayoutFourthFragment;
 import com.camnter.newlife.views.fragment.tablayoutfragment.TabLayoutSecondFragment;
@@ -15,28 +15,49 @@ import com.camnter.newlife.views.fragment.tablayoutfragment.TabLayoutThirdFragme
 
 
 /**
- * Description：
+ * Description：NormalTabLayoutActivity
  * Created by：CaMnter
  * Time：2015-10-24 11:55
  */
-public class NormalTabLayoutActivity extends AppCompatActivity {
+public class NormalTabLayoutActivity extends BaseAppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    private NormalTabLayoutFragmentAdapter fragmentAdapter;
-
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.tablayout_normal_activity);
-
-        this.viewPager = (ViewPager) this.findViewById(R.id.view_pager_vp);
-        this.tabLayout = (TabLayout) this.findViewById(R.id.tab_layout_tl);
-        this.initData();
+    protected int getLayoutId() {
+        return R.layout.tablayout_normal_activity;
     }
 
-    private void initData() {
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
+        this.viewPager = this.findView(R.id.view_pager_vp);
+        this.tabLayout = this.findView(R.id.tab_layout_tl);
+    }
+
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
+
+    }
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
         String[] tabTitles = {"一次元", "二次元", "三次元", "四次元"};
         Fragment[] fragments = {
                 TabLayoutFirstFragment.getInstance(),
@@ -44,9 +65,10 @@ public class NormalTabLayoutActivity extends AppCompatActivity {
                 TabLayoutThirdFragment.getInstance(),
                 TabLayoutFourthFragment.getInstance()
         };
-        this.fragmentAdapter = new NormalTabLayoutFragmentAdapter(this.getSupportFragmentManager(), fragments, tabTitles);
-        this.viewPager.setAdapter(this.fragmentAdapter);
+        NormalTabLayoutFragmentAdapter fragmentAdapter = new NormalTabLayoutFragmentAdapter(this.getSupportFragmentManager(), fragments, tabTitles);
+        this.viewPager.setAdapter(fragmentAdapter);
         this.tabLayout.setupWithViewPager(this.viewPager);
     }
+
 
 }

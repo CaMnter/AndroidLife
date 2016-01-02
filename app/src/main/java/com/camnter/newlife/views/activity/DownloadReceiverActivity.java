@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +16,7 @@ import android.widget.Toast;
 
 import com.camnter.newlife.R;
 import com.camnter.newlife.component.service.DownloadIntentService;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.ImageUtil;
 
 /**
@@ -24,20 +24,34 @@ import com.camnter.newlife.utils.ImageUtil;
  * Created by：CaMnter
  * Time：2015-11-22 22:54
  */
-public class DownloadReceiverActivity extends AppCompatActivity implements View.OnClickListener {
+public class DownloadReceiverActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final String OBJECT_IMAGE_URL = "http://img.blog.csdn.net/20150913233900119";
 
     private Button downloadBT;
     private ImageView downloadIV;
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_download_broadcast_receiver);
-        this.registerReceiver();
-        this.initViews();
-        this.initListeners();
+    protected int getLayoutId() {
+        return R.layout.activity_download_broadcast_receiver;
+    }
+
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
+        TextView downloadTV = (TextView) this.findViewById(R.id.down_broadcast_image_tv);
+        downloadTV.setText(OBJECT_IMAGE_URL);
+        this.downloadBT = (Button) this.findViewById(R.id.down_broadcast_start_bt);
+        this.downloadIV = (ImageView) this.findViewById(R.id.down_broadcast_image_iv);
     }
 
     private void registerReceiver() {
@@ -47,15 +61,17 @@ public class DownloadReceiverActivity extends AppCompatActivity implements View.
         this.registerReceiver(downloadReceiver, intentFilter);
     }
 
-    private void initViews() {
-        TextView downloadTV = (TextView) this.findViewById(R.id.down_broadcast_image_tv);
-        downloadTV.setText(OBJECT_IMAGE_URL);
-        this.downloadBT = (Button) this.findViewById(R.id.down_broadcast_start_bt);
-        this.downloadIV = (ImageView) this.findViewById(R.id.down_broadcast_image_iv);
+    @Override
+    protected void initListeners() {
+        this.downloadBT.setOnClickListener(this);
     }
 
-    private void initListeners() {
-        this.downloadBT.setOnClickListener(this);
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
+        this.registerReceiver();
     }
 
     /**

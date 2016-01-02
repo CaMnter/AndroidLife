@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
+    <com.camnter.easyrecyclerview.widget.EasyRecyclerView
         android:id="@+id/data_base_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

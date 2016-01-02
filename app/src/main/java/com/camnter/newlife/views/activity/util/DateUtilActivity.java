@@ -1,10 +1,10 @@
 package com.camnter.newlife.views.activity.util;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.DateUtil;
 
 import java.util.Date;
@@ -15,7 +15,7 @@ import java.util.Date;
  * Created by：CaMnter
  * Time：2015-10-14 15:47
  */
-public class DateUtilActivity extends AppCompatActivity {
+public class DateUtilActivity extends BaseAppCompatActivity {
     TextView string2DateTv;
     TextView date2StringTv;
     TextView getYearMonthDayTv;
@@ -25,11 +25,23 @@ public class DateUtilActivity extends AppCompatActivity {
     TextView date2yyyyMMddWeekTv;
     TextView time24To12Tv;
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_date_util);
+    protected int getLayoutId() {
+        return R.layout.activity_date_util;
+    }
 
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         this.string2DateTv = (TextView) this.findViewById(R.id.string2Date_tv);
         this.date2StringTv = (TextView) this.findViewById(R.id.date2String_tv);
         this.getYearMonthDayTv = (TextView) this.findViewById(R.id.getYearMonthDay_tv);
@@ -38,10 +50,21 @@ public class DateUtilActivity extends AppCompatActivity {
         this.date2MMddWeekTv = (TextView) this.findViewById(R.id.date2MMddWeek_tv);
         this.date2yyyyMMddWeekTv = (TextView) this.findViewById(R.id.date2yyyyMMddWeek_tv);
         this.time24To12Tv = (TextView) this.findViewById(R.id.time24To12_tv);
-        this.initData();
     }
 
-    private void initData(){
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
+
+    }
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
         long oldTime = System.currentTimeMillis() - 1200000;
         Date date = new Date(oldTime);
         this.string2DateTv.setText(DateUtil.string2Date(date.toString(), "yyyy-MM-dd").toString());
@@ -53,5 +76,6 @@ public class DateUtilActivity extends AppCompatActivity {
         this.time24To12Tv.setText(DateUtil.time24To12("16:26"));
         this.getTimestampStringTv.setText(DateUtil.getTimestampString(date));
     }
+
 
 }

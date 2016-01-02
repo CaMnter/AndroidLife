@@ -7,20 +7,17 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
+import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.ProviderData;
 import com.camnter.newlife.bean.SQLiteData;
 import com.camnter.newlife.component.contentprovider.MessageContentProvider;
-import com.camnter.newlife.widget.decorator.DividerItemDecoration;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,46 +29,55 @@ import java.util.UUID;
  * Created by：CaMnter
  * Time：2015-11-13 14:27
  */
-public class CustomContentProviderActivity extends AppCompatActivity {
+public class CustomContentProviderActivity extends BaseAppCompatActivity {
 
 
-    private RecyclerView providerRV;
+    private EasyRecyclerView providerRV;
     private ProviderRecyclerViewAdapter adapter;
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_custom_content_provider);
-
-        this.getContentResolver().registerContentObserver(MessageContentProvider.MESSAGE_URI, true, new MessageProviderObserver(new Handler()));
-
-        this.providerRV = (RecyclerView) this.findViewById(R.id.provider_rv);
-        this.adapter = new ProviderRecyclerViewAdapter(this.getContentResolver(), MessageContentProvider.MESSAGE_URI);
-        this.providerRV.setAdapter(this.adapter);
-        this.initRecyclerView();
+    protected int getLayoutId() {
+        return R.layout.activity_custom_content_provider;
     }
 
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
+        this.providerRV = this.findView(R.id.provider_rv);
+    }
 
-    private void initRecyclerView() {
-        // 实例化LinearLayoutManager
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        // 设置垂直布局
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
 
-        // 设置布局管理器
-        this.providerRV.setLayoutManager(linearLayoutManager);
+    }
 
-        this.providerRV.setItemAnimator(new DefaultItemAnimator());
-        this.providerRV.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-
-        // 使RecyclerView保持固定的大小，该信息被用于自身的优化
-        this.providerRV.setHasFixedSize(true);
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
+        this.getContentResolver().registerContentObserver(MessageContentProvider.MESSAGE_URI, true, new MessageProviderObserver(new Handler()));
+        this.adapter = new ProviderRecyclerViewAdapter(this.getContentResolver(), MessageContentProvider.MESSAGE_URI);
+        this.providerRV.setAdapter(this.adapter);
 
         ArrayList<SQLiteData> allData = new ArrayList<>();
         allData.add(new SQLiteData());
         this.adapter.setList(allData);
         this.adapter.notifyDataSetChanged();
     }
+
 
     private class MessageProviderObserver extends ContentObserver {
 
@@ -167,7 +173,7 @@ public class CustomContentProviderActivity extends AppCompatActivity {
                     ContentValues values = new ContentValues();
                     values.put("content", UUID.randomUUID().toString());
                     String path = this.uri.toString();
-                    this.resolver.update(Uri.parse(path.substring(0, path.lastIndexOf("/")) +"/message/"+ firstId), values, null, null);
+                    this.resolver.update(Uri.parse(path.substring(0, path.lastIndexOf("/")) + "/message/" + firstId), values, null, null);
                     this.refresh();
                     break;
                 }
@@ -180,7 +186,7 @@ public class CustomContentProviderActivity extends AppCompatActivity {
 
         private void refresh() {
             List<ProviderData> l = this.queryAll();
-            l.add(0,new ProviderData());
+            l.add(0, new ProviderData());
             this.setList(l);
             this.notifyDataSetChanged();
         }

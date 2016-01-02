@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.camnter.newlife.R;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.ImageUtil;
 import com.camnter.newlife.widget.CustomProgressBarDialog;
 
@@ -35,7 +35,7 @@ import java.util.UUID;
  * Created by：CaMnter
  * Time：2015-10-20 15:00
  */
-public class DownloadImageToGalleryActivity extends AppCompatActivity implements View.OnClickListener {
+public class DownloadImageToGalleryActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final String OBJECT_IMAGE_URL = "http://img.blog.csdn.net/20150913233900119";
 
@@ -75,18 +75,45 @@ public class DownloadImageToGalleryActivity extends AppCompatActivity implements
             }
         }
     }
+
     private final LoadingHandler loadingHandler = new LoadingHandler(DownloadImageToGalleryActivity.this);
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_download_image_save_to_gallery);
+    protected int getLayoutId() {
+        return R.layout.activity_download_image_save_to_gallery;
+    }
+
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         this.saveBT = (Button) this.findViewById(R.id.save_bt);
         this.saveIV = (ImageView) this.findViewById(R.id.save_iv);
-
-        ((TextView) this.findViewById(R.id.save_tv)).setText(OBJECT_IMAGE_URL);
         this.dialog = new CustomProgressBarDialog(this);
+    }
+
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
         this.saveBT.setOnClickListener(this);
+    }
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
+        ((TextView) this.findViewById(R.id.save_tv)).setText(OBJECT_IMAGE_URL);
     }
 
     /**

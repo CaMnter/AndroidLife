@@ -1,12 +1,12 @@
 package com.camnter.newlife.framework.rxandroid;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.RxChildData;
 import com.camnter.newlife.bean.RxData;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -18,7 +18,7 @@ import rx.functions.Func1;
  * Created by：CaMnter
  * Time：2015-12-01 17:28
  */
-public class RxMapActivity extends AppCompatActivity {
+public class RxMapActivity extends BaseAppCompatActivity {
 
     public static final int KEY = 206;
     public static final String VALUE = "Save you from anything";
@@ -33,22 +33,39 @@ public class RxMapActivity extends AppCompatActivity {
     private Subscription rxThrSubscription;
     private Subscription rxFouSubscription;
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_rx_map);
-        this.initViews();
-        this.initData();
+    protected int getLayoutId() {
+        return R.layout.activity_rx_map;
     }
 
-    private void initViews() {
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         this.rxMapOneTV = (TextView) this.findViewById(R.id.rx_map_one_tv);
         this.rxMapTwoTV = (TextView) this.findViewById(R.id.rx_map_two_tv);
         this.rxFlatMapThrTV = (TextView) this.findViewById(R.id.rx_map_thr_tv);
         this.rxLiftFouTV = (TextView) this.findViewById(R.id.rx_map_fou_tv);
     }
 
-    private void initData() {
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
+
+    }
+
+    @Override
+    protected void initData() {
 
         /**
          * map一对一的类型转换

@@ -6,13 +6,13 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.DeviceUtil;
 
 import java.util.List;
@@ -23,16 +23,44 @@ import java.util.List;
  * Created by：CaMnter
  * Time：2015-10-27 15:54
  */
-public class SensorManagerActivity extends AppCompatActivity {
+public class SensorManagerActivity extends BaseAppCompatActivity {
     private TextView sensorManagerTV;
     private LinearLayout rootLayout;
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_sensor_manager);
+    protected int getLayoutId() {
+        return R.layout.activity_sensor_manager;
+    }
+
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         this.rootLayout = (LinearLayout) this.findViewById(R.id.sensor_root_layout);
         this.sensorManagerTV = (TextView) this.findViewById(R.id.sensor_count_tv);
+    }
+
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
+
+    }
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
         // 获取传感器管理器
         SensorManager sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
 
@@ -129,8 +157,6 @@ public class SensorManagerActivity extends AppCompatActivity {
                 }
             }
         }
-
-
     }
 
     private void addInfoView(Sensor sensor, TextView title) {

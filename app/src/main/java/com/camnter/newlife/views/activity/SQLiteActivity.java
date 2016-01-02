@@ -1,54 +1,61 @@
 package com.camnter.newlife.views.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
+import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
+import com.camnter.easyrecyclerview.widget.decorator.EasyDividerItemDecoration;
 import com.camnter.newlife.R;
 import com.camnter.newlife.adapter.sqlite.SQLiteRecyclerViewAdapter;
 import com.camnter.newlife.bean.SQLiteData;
-import com.camnter.newlife.widget.decorator.DividerItemDecoration;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 
 import java.util.ArrayList;
 
 
-public class SQLiteActivity extends AppCompatActivity {
+public class SQLiteActivity extends BaseAppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private SQLiteRecyclerViewAdapter sqLiteRecyclerViewAdapter;
+    private EasyRecyclerView recyclerView;
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sqlite);
-
-        this.recyclerView = (RecyclerView) this.findViewById(R.id.data_base_rv);
-        this.sqLiteRecyclerViewAdapter = new SQLiteRecyclerViewAdapter(this);
-        this.recyclerView.setAdapter(this.sqLiteRecyclerViewAdapter);
-        this.initRecyclerView();
+    protected int getLayoutId() {
+        return R.layout.activity_sqlite;
     }
 
-    private void initRecyclerView() {
-        // 实例化LinearLayoutManager
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        // 设置垂直布局
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
+        this.recyclerView = this.findView(R.id.data_base_rv);
+        this.recyclerView.addItemDecoration(new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST));
+    }
 
-        // 设置布局管理器
-        this.recyclerView.setLayoutManager(linearLayoutManager);
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
 
-        this.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        this.recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+    }
 
-        // 使RecyclerView保持固定的大小，该信息被用于自身的优化
-        this.recyclerView.setHasFixedSize(true);
-
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
+        SQLiteRecyclerViewAdapter sqLiteRecyclerViewAdapter = new SQLiteRecyclerViewAdapter(this);
+        this.recyclerView.setAdapter(sqLiteRecyclerViewAdapter);
         ArrayList<SQLiteData> allData = new ArrayList<>();
         allData.add(new SQLiteData());
-        this.sqLiteRecyclerViewAdapter.setList(allData);
-        this.sqLiteRecyclerViewAdapter.notifyDataSetChanged();
+        sqLiteRecyclerViewAdapter.setList(allData);
+        sqLiteRecyclerViewAdapter.notifyDataSetChanged();
     }
 
 }

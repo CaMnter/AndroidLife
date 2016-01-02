@@ -2,22 +2,20 @@ package com.camnter.newlife.views.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
 import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
+import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
+import com.camnter.easyrecyclerview.widget.decorator.EasyDividerItemDecoration;
 import com.camnter.newlife.R;
-import com.camnter.newlife.mvp.MvpActivity;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.framework.robotlegs.robotlegs4android.view.activity.Robotlegs4AndroidActivity;
 import com.camnter.newlife.framework.rxandroid.RxAsyncActivity;
 import com.camnter.newlife.framework.rxandroid.RxMapActivity;
 import com.camnter.newlife.framework.rxandroid.RxSyncActivity;
+import com.camnter.newlife.mvp.MvpActivity;
 import com.camnter.newlife.views.activity.design.CoordinatorLayoutActivity;
 import com.camnter.newlife.views.activity.design.FloatingActionButtonActivity;
 import com.camnter.newlife.views.activity.design.NavigationViewActivity;
@@ -32,88 +30,103 @@ import com.camnter.newlife.views.activity.util.DateUtilActivity;
 import com.camnter.newlife.views.activity.util.DeviceUtilActivity;
 import com.camnter.newlife.views.activity.util.ReflectionUtilActivity;
 import com.camnter.newlife.views.activity.util.ResourcesUtilActivity;
-import com.camnter.newlife.widget.decorator.DividerItemDecoration;
 
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseAppCompatActivity {
 
 
-    private RecyclerView menuRV;
+    private EasyRecyclerView menuRV;
+    private MainRecyclerViewAdapter adapter;
     public ArrayList<Class> classes;
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        this.menuRV = (RecyclerView) this.findViewById(R.id.menu_rv);
+    protected int getLayoutId() {
+        return R.layout.activity_main;
+    }
 
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
+        this.menuRV = this.findView(R.id.menu_rv);
+        this.menuRV.addItemDecoration(new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST));
+    }
 
-        this.classes = new ArrayList<>();
-
-        classes.add(ImageScaleTypesActivity.class);
-        classes.add(AsyncTaskActivity.class);
-        classes.add(TextInputLayoutActivity.class);
-        classes.add(RefreshUIActivity.class);
-        classes.add(LaunchModeActivity.class);
-        classes.add(NavigationViewActivity.class);
-        classes.add(DeviceUtilActivity.class);
-        classes.add(FloatingActionButtonActivity.class);
-        classes.add(SnackbarActivity.class);
-        classes.add(DateUtilActivity.class);
-        classes.add(EasySlidingTabsActivity.class);
-        classes.add(AutoAdjustSizeEditTextActivity.class);
-        classes.add(AutoAdjustSizeTextViewActivity.class);
-        classes.add(DownloadImageToGalleryActivity.class);
-        classes.add(EasyRecyclerViewActivity.class);
-        classes.add(NormalTabLayoutActivity.class);
-        classes.add(SetIconTabLayoutActivity.class);
-        classes.add(ImageSpanTabLayoutActivity.class);
-        classes.add(CustomViewTabLayoutActivity.class);
-        classes.add(CoordinatorLayoutActivity.class);
-        classes.add(SensorManagerActivity.class);
-        classes.add(MvpActivity.class);
-        classes.add(SQLiteActivity.class);
-        classes.add(Robotlegs4AndroidActivity.class);
-        classes.add(CustomContentProviderActivity.class);
-        classes.add(DownloadServiceActivity.class);
-        classes.add(AIDLActivity.class);
-        classes.add(ReflectionUtilActivity.class);
-        classes.add(StaticReceiverActivity.class);
-        classes.add(DynamicReceiverActivity.class);
-        classes.add(DownloadReceiverActivity.class);
-        classes.add(ResourcesUtilActivity.class);
-        classes.add(LocationManagerActivity.class);
-        classes.add(RxSyncActivity.class);
-        classes.add(RxAsyncActivity.class);
-        classes.add(RxMapActivity.class);
-        classes.add(DialogActivity.class);
-        classes.add(PopupWindowActivity.class);
-        classes.add(TagTextViewActivity.class);
-        classes.add(EasyFlowLayoutActivity.class);
-        classes.add(SpanActivity.class);
-
-        MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter();
-        adapter.setList(classes);
-        adapter.setOnItemClickListener(new EasyRecyclerViewHolder.OnItemClickListener() {
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
+        this.adapter.setOnItemClickListener(new EasyRecyclerViewHolder.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int i) {
                 Class c = MainActivity.this.classes.get(i);
                 MainActivity.this.startActivity(new Intent(MainActivity.this, c));
             }
         });
-        // 实例化LinearLayoutManager
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        // 设置垂直布局
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        // 设置布局管理器
-        this.menuRV.setLayoutManager(linearLayoutManager);
-        this.menuRV.setItemAnimator(new DefaultItemAnimator());
-        this.menuRV.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-        // 使RecyclerView保持固定的大小，该信息被用于自身的优化
-        this.menuRV.setHasFixedSize(true);
+    }
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
+        this.classes = new ArrayList<>();
+        this.classes.add(ImageScaleTypesActivity.class);
+        this.classes.add(AsyncTaskActivity.class);
+        this.classes.add(TextInputLayoutActivity.class);
+        this.classes.add(RefreshUIActivity.class);
+        this.classes.add(LaunchModeActivity.class);
+        this.classes.add(NavigationViewActivity.class);
+        this.classes.add(DeviceUtilActivity.class);
+        this.classes.add(FloatingActionButtonActivity.class);
+        this.classes.add(SnackbarActivity.class);
+        this.classes.add(DateUtilActivity.class);
+        this.classes.add(EasySlidingTabsActivity.class);
+        this.classes.add(AutoAdjustSizeEditTextActivity.class);
+        this.classes.add(AutoAdjustSizeTextViewActivity.class);
+        this.classes.add(DownloadImageToGalleryActivity.class);
+        this.classes.add(EasyRecyclerViewActivity.class);
+        this.classes.add(NormalTabLayoutActivity.class);
+        this.classes.add(SetIconTabLayoutActivity.class);
+        this.classes.add(ImageSpanTabLayoutActivity.class);
+        this.classes.add(CustomViewTabLayoutActivity.class);
+        this.classes.add(CoordinatorLayoutActivity.class);
+        this.classes.add(SensorManagerActivity.class);
+        this.classes.add(MvpActivity.class);
+        this.classes.add(SQLiteActivity.class);
+        this.classes.add(Robotlegs4AndroidActivity.class);
+        this.classes.add(CustomContentProviderActivity.class);
+        this.classes.add(DownloadServiceActivity.class);
+        this.classes.add(AIDLActivity.class);
+        this.classes.add(ReflectionUtilActivity.class);
+        this.classes.add(StaticReceiverActivity.class);
+        this.classes.add(DynamicReceiverActivity.class);
+        this.classes.add(DownloadReceiverActivity.class);
+        this.classes.add(ResourcesUtilActivity.class);
+        this.classes.add(LocationManagerActivity.class);
+        this.classes.add(RxSyncActivity.class);
+        this.classes.add(RxAsyncActivity.class);
+        this.classes.add(RxMapActivity.class);
+        this.classes.add(DialogActivity.class);
+        this.classes.add(PopupWindowActivity.class);
+        this.classes.add(TagTextViewActivity.class);
+        this.classes.add(EasyFlowLayoutActivity.class);
+        this.classes.add(SpanActivity.class);
+
+        this.adapter = new MainRecyclerViewAdapter();
+        this.adapter.setList(classes);
+
         this.menuRV.setAdapter(adapter);
 //        setSupportActionBar(toolbar);
     }

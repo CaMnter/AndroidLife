@@ -7,7 +7,6 @@ import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +16,7 @@ import android.widget.TextView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.component.service.DownloadService;
 import com.camnter.newlife.component.service.IBinderView;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.ImageUtil;
 
 /**
@@ -24,7 +24,7 @@ import com.camnter.newlife.utils.ImageUtil;
  * Created by：CaMnter
  * Time：2015-11-16 14:58
  */
-public class DownloadServiceActivity extends AppCompatActivity implements View.OnClickListener, IBinderView {
+public class DownloadServiceActivity extends BaseAppCompatActivity implements View.OnClickListener, IBinderView {
 
     private static final String OBJECT_IMAGE_URL = "http://img.blog.csdn.net/20150913233900119";
 
@@ -34,16 +34,24 @@ public class DownloadServiceActivity extends AppCompatActivity implements View.O
 
     private ServiceConnection connection;
 
+
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_download_service);
-        this.initViews();
-        this.initData();
-        this.initListeners();
+    protected int getLayoutId() {
+        return R.layout.activity_download_service;
     }
 
-    private void initViews() {
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         TextView imageTV = (TextView) this.findViewById(R.id.image_tv);
         imageTV.setText(OBJECT_IMAGE_URL);
 
@@ -51,7 +59,9 @@ public class DownloadServiceActivity extends AppCompatActivity implements View.O
         this.imageIV = (ImageView) this.findViewById(R.id.image_iv);
     }
 
-    private void initData() {
+
+    @Override
+    protected void initData() {
         this.connection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
@@ -73,7 +83,8 @@ public class DownloadServiceActivity extends AppCompatActivity implements View.O
         );
     }
 
-    private void initListeners() {
+    @Override
+    protected void initListeners() {
         this.startBT.setOnClickListener(this);
     }
 

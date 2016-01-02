@@ -1,13 +1,13 @@
 package com.camnter.newlife.views.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Toast;
 
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.Tag;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.ToastUtil;
 import com.camnter.newlife.widget.TagTextView;
 import com.camnter.newlife.widget.text.ClickableSpanNoUnderline;
@@ -19,19 +19,40 @@ import java.util.ArrayList;
  * Created by：CaMnter
  * Time：2015-12-22 11:42
  */
-public class TagTextViewActivity extends AppCompatActivity implements ClickableSpanNoUnderline.OnClickListener<TagTextView.TagClickableSpan> {
+public class TagTextViewActivity extends BaseAppCompatActivity implements ClickableSpanNoUnderline.OnClickListener<TagTextView.TagClickableSpan> {
 
     private TagTextView tagTV;
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_tag_textview);
-        this.tagTV = (TagTextView) this.findViewById(R.id.tag_text_view_tv);
-        this.initData();
+    protected int getLayoutId() {
+        return R.layout.activity_tag_textview;
     }
 
-    private void initData() {
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
+        this.tagTV = (TagTextView) this.findViewById(R.id.tag_text_view_tv);
+    }
+
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
+
+    }
+
+    @Override
+    protected void initData() {
         ArrayList<Tag> tags = new ArrayList<>();
 
         Tag tag1 = new Tag();

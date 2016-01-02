@@ -4,10 +4,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 
 import java.lang.ref.WeakReference;
 
@@ -16,7 +16,7 @@ import java.lang.ref.WeakReference;
  * Created by：CaMnter
  * Time：2015-09-21 11:13
  */
-public class RefreshUIActivity extends AppCompatActivity {
+public class RefreshUIActivity extends BaseAppCompatActivity {
 
     private TextView handlerTV;
     private static final int HANDLER_SUCCESS = 206;
@@ -194,22 +194,39 @@ public class RefreshUIActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_refresh_ui);
-        this.initViews();
-        this.initData();
+    protected int getLayoutId() {
+        return R.layout.activity_refresh_ui;
     }
 
-    private void initViews() {
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         this.handlerTV = (TextView) this.findViewById(R.id.refresh_ui_handler_tv);
         this.asyncTaskTV = (TextView) this.findViewById(R.id.refresh_ui_asynctask_tv);
         this.runOnUiThreadTV = (TextView) this.findViewById(R.id.refresh_ui_run_on_ui_thread_tv);
         this.postHandlerTV = (TextView) this.findViewById(R.id.refresh_ui_post_tv);
     }
 
-    private void initData() {
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
+
+    }
+
+    @Override
+    protected void initData() {
         this.mThread.start();
 
         this.mAsyncTask = new MAsyncTask(this.asyncTaskTV);

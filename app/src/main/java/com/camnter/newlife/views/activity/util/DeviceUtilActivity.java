@@ -1,10 +1,10 @@
 package com.camnter.newlife.views.activity.util;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.DeviceUtil;
 
 
@@ -13,7 +13,7 @@ import com.camnter.newlife.utils.DeviceUtil;
  * Created by：CaMnter
  * Time：2015-10-13 17:48
  */
-public class DeviceUtilActivity extends AppCompatActivity {
+public class DeviceUtilActivity extends BaseAppCompatActivity {
 
     private TextView deviceIdTV;
     private TextView versionCodeTV;
@@ -29,11 +29,23 @@ public class DeviceUtilActivity extends AppCompatActivity {
 
     private TextView metaDataTV;
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.device_util);
+    protected int getLayoutId() {
+        return R.layout.device_util;
+    }
 
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         this.deviceIdTV = (TextView) this.findViewById(R.id.device_id_tv);
         this.versionCodeTV = (TextView) this.findViewById(R.id.version_code_tv);
         this.versionNameTV = (TextView) this.findViewById(R.id.version_name_tv);
@@ -48,6 +60,22 @@ public class DeviceUtilActivity extends AppCompatActivity {
 
         this.metaDataTV = (TextView) this.findViewById(R.id.meta_data_tv);
 
+
+    }
+
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
+
+    }
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
         this.deviceIdTV.setText(DeviceUtil.getDeviceId(this));
         this.versionCodeTV.setText(DeviceUtil.getVersionCode(this));
         this.versionNameTV.setText(DeviceUtil.getVersionName(this));
@@ -58,6 +86,6 @@ public class DeviceUtilActivity extends AppCompatActivity {
         this.apiVersionTV.setText(DeviceUtil.getBuildVersion());
         this.appProcessIdTV.setText(DeviceUtil.getAppProcessId() + "");
         this.appNameTV.setText(DeviceUtil.getAppProcessName(this, DeviceUtil.getAppProcessId()));
-        this.metaDataTV.setText(DeviceUtil.getMetaData(this,"DEBUG"));
+        this.metaDataTV.setText(DeviceUtil.getMetaData(this, "DEBUG"));
     }
 }

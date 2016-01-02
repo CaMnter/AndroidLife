@@ -1,11 +1,11 @@
 package com.camnter.newlife.views.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.camnter.newlife.R;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.ToastUtil;
 import com.camnter.newlife.widget.CustomDialog;
 import com.camnter.newlife.widget.MenuDialog;
@@ -15,14 +15,27 @@ import com.camnter.newlife.widget.MenuDialog;
  * Created by：CaMnter
  * Time：2015-12-13 15:36
  */
-public class DialogActivity extends AppCompatActivity implements View.OnClickListener {
+public class DialogActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private MenuDialog menuDialog;
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_dialog);
+    protected int getLayoutId() {
+        return R.layout.activity_dialog;
+    }
+
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         this.menuDialog = MenuDialog.DialogBuilder.getInstance(this)
                 .setCaseListenser(new View.OnClickListener() {
                     @Override
@@ -40,12 +53,24 @@ public class DialogActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 })
                 .getDialog();
-        this.initListeners();
     }
 
-    private void initListeners() {
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
         this.findViewById(R.id.dialog_custom).setOnClickListener(this);
         this.findViewById(R.id.dialog_menu).setOnClickListener(this);
+    }
+
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
+
     }
 
     /**
@@ -64,8 +89,7 @@ public class DialogActivity extends AppCompatActivity implements View.OnClickLis
                         .setCallback(new CustomDialog.DialogCallback() {
                             @Override
                             public void onDismiss() {
-//                                Toast.makeText(DialogActivity.this, "CustomDialog dismiss", Toast.LENGTH_SHORT).show();
-                                ToastUtil.showCenter(DialogActivity.this,"CustomDialog dismiss");
+                                ToastUtil.showCenter(DialogActivity.this, "CustomDialog dismiss");
                             }
                         })
                         .getDialog()

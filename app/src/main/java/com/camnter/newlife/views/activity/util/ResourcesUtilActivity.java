@@ -1,11 +1,11 @@
 package com.camnter.newlife.views.activity.util;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
+import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.ResourcesUtil;
 
 /**
@@ -13,20 +13,48 @@ import com.camnter.newlife.utils.ResourcesUtil;
  * Created by：CaMnter
  * Time：2015-11-26 12:27
  */
-public class ResourcesUtilActivity extends AppCompatActivity {
+public class ResourcesUtilActivity extends BaseAppCompatActivity {
 
+    private TextView resourcesTV;
+    private ImageView resourcesIV;
 
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(ResourcesUtil.getLayoutId(this, "activity_resources"));
+    protected int getLayoutId() {
+        return ResourcesUtil.getLayoutId(this, "activity_resources");
+    }
 
-        TextView resourcesTV = (TextView) this.findViewById(R.id.resources_tv);
-        ImageView resourcesIV = (ImageView) this.findViewById(R.id.resources_iv);
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
+        this.resourcesTV = (TextView) this.findViewById(R.id.resources_tv);
+        this.resourcesIV = (ImageView) this.findViewById(R.id.resources_iv);
+    }
 
-        resourcesTV.setText(ResourcesUtil.getStringId(this, "app_label"));
-        resourcesTV.setTextColor(this.getResources().getColor(ResourcesUtil.getColorId(this, "colorAccent")));
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
 
-        resourcesIV.setImageResource(ResourcesUtil.getMipmapId(this, "mm_1"));
+    }
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
+        this.resourcesTV.setText(ResourcesUtil.getStringId(this, "app_label"));
+        this.resourcesTV.setTextColor(ResourcesUtil.getColor(this, ResourcesUtil.getColorId(this, "colorAccent")));
+
+        this.resourcesIV.setImageResource(ResourcesUtil.getMipmapId(this, "mm_1"));
     }
 }
