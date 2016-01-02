@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.camnter.newlife.R;
-import com.camnter.newlife.service.DownloadIntentService;
+import com.camnter.newlife.component.service.DownloadIntentService;
 import com.camnter.newlife.utils.ImageUtil;
 
 /**

@@ -3,7 +3,7 @@ package com.camnter.newlife.utils.cache;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.camnter.newlife.robotlegs.robotlegsapplication.MainApplication;
+import com.camnter.newlife.framework.robotlegs.robotlegsapplication.MainApplication;
 import com.camnter.newlife.utils.DeviceUtil;
 
 import java.io.File;

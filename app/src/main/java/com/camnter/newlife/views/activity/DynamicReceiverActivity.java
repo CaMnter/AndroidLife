@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.camnter.newlife.R;
-import com.camnter.newlife.broadcastreceiver.DynamicReceiver;
+import com.camnter.newlife.component.broadcastreceiver.DynamicReceiver;
 
 import java.util.UUID;
 

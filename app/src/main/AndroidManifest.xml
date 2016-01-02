@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:name=".robotlegs.robotlegsapplication.MainApplication"
+        android:name=".framework.robotlegs.robotlegsapplication.MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_mm_1"
         android:label="@string/app_name"
@@ -112,7 +112,7 @@
             android:name=".views.activity.SQLiteActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".robotlegs.robotlegs4android.view.activity.Robotlegs4AndroidActivity"
+            android:name=".framework.robotlegs.robotlegs4android.view.activity.Robotlegs4AndroidActivity"
             android:label="@string/app_label" />
         <activity
             android:name=".views.activity.CustomContentProviderActivity"
@@ -160,19 +160,19 @@
             tools:ignore="UnusedAttribute" />
 
         <activity
-            android:name=".rxandroid.RxSyncActivity"
+            android:name=".framework.rxandroid.RxSyncActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".rxandroid.RxAsyncActivity"
+            android:name=".framework.rxandroid.RxAsyncActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".rxandroid.RxMapActivity"
+            android:name=".framework.rxandroid.RxMapActivity"
             android:label="@string/app_label" />
 
 
-        <service android:name=".service.DownloadService" />
+        <service android:name=".component.service.DownloadService" />
 
-        <service android:name=".service.DownloadIntentService" />
+        <service android:name=".component.service.DownloadIntentService" />
 
         <!-- action 写上 aidl生成类的所在包 -->
         <service
@@ -185,11 +185,11 @@
         </service>
 
         <provider
-            android:name=".contentprovider.MessageContentProvider"
+            android:name=".component.contentprovider.MessageContentProvider"
             android:authorities="com.camnter.content.provider" />
 
         <receiver
-            android:name=".broadcastreceiver.StaticReceiver"
+            android:name=".component.broadcastreceiver.StaticReceiver"
             android:exported="true"
             android:process=":remotereceiver">
             <intent-filter>

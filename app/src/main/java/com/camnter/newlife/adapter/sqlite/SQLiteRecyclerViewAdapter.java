@@ -8,7 +8,7 @@ import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.SQLiteData;
-import com.camnter.newlife.sqlite.MySQLiteHelper;
+import com.camnter.newlife.component.sqlite.MySQLiteHelper;
 
 import java.util.List;
 

@@ -14,10 +14,10 @@ import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.newlife.R;
 import com.camnter.newlife.mvp.MvpActivity;
-import com.camnter.newlife.robotlegs.robotlegs4android.view.activity.Robotlegs4AndroidActivity;
-import com.camnter.newlife.rxandroid.RxAsyncActivity;
-import com.camnter.newlife.rxandroid.RxMapActivity;
-import com.camnter.newlife.rxandroid.RxSyncActivity;
+import com.camnter.newlife.framework.robotlegs.robotlegs4android.view.activity.Robotlegs4AndroidActivity;
+import com.camnter.newlife.framework.rxandroid.RxAsyncActivity;
+import com.camnter.newlife.framework.rxandroid.RxMapActivity;
+import com.camnter.newlife.framework.rxandroid.RxSyncActivity;
 import com.camnter.newlife.views.activity.design.CoordinatorLayoutActivity;
 import com.camnter.newlife.views.activity.design.FloatingActionButtonActivity;
 import com.camnter.newlife.views.activity.design.NavigationViewActivity;
@@ -35,7 +35,6 @@ import com.camnter.newlife.views.activity.util.ResourcesUtilActivity;
 import com.camnter.newlife.widget.decorator.DividerItemDecoration;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 
 public class MainActivity extends AppCompatActivity {

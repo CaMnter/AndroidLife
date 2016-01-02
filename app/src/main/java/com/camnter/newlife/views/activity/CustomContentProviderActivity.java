@@ -19,7 +19,7 @@ import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.ProviderData;
 import com.camnter.newlife.bean.SQLiteData;
-import com.camnter.newlife.contentprovider.MessageContentProvider;
+import com.camnter.newlife.component.contentprovider.MessageContentProvider;
 import com.camnter.newlife.widget.decorator.DividerItemDecoration;
 
 import java.util.ArrayList;
