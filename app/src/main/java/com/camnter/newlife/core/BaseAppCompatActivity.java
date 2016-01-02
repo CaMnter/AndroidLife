@@ -51,6 +51,13 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      */
     protected abstract void initData();
 
+    /**
+     * Find the view by id
+     *
+     * @param id  id
+     * @param <V> V
+     * @return V
+     */
     @SuppressWarnings("unchecked")
     protected <V extends View> V findView(int id) {
         return (V) this.findViewById(id);

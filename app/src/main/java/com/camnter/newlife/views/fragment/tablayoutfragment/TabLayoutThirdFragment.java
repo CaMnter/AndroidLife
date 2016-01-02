@@ -8,13 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.camnter.newlife.R;
+import com.camnter.newlife.core.BaseFragment;
 
 /**
  * Description：TabLayoutThirdFragment
  * Created by：CaMnter
  * Time：2015-10-17 12:15
  */
-public class TabLayoutThirdFragment extends Fragment {
+public class TabLayoutThirdFragment extends BaseFragment
+{
 
     private View self;
 
@@ -28,16 +30,41 @@ public class TabLayoutThirdFragment extends Fragment {
         return instance;
     }
 
-    @Nullable
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (this.self == null) {
-            this.self = inflater.inflate(R.layout.tablayout_third_fragment, null);
-        }
-        if (this.self.getParent() != null) {
-            ViewGroup parent = (ViewGroup) this.self.getParent();
-            parent.removeView(this.self);
-        }
-        return this.self;
+    protected int getLayoutId() {
+        return R.layout.tablayout_third_fragment;
     }
+
+    /**
+     * Initialize the view in the layout
+     *
+     * @param self               self
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override
+    protected void initViews(View self, Bundle savedInstanceState) {
+
+    }
+
+    /**
+     * Initialize the View of the listener
+     */
+    @Override
+    protected void initListeners() {
+
+    }
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
+
+    }
+
 }
