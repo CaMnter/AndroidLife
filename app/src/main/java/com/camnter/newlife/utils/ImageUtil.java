@@ -170,7 +170,7 @@ public class ImageUtil {
         /**
          * 如果存在SD卡
          */
-        if (DeviceUtil.isSDCardAvailable() && root != null) {
+        if (DeviceUtils.isSDCardAvailable() && root != null) {
             folder = new File(root, appName);
             if (!folder.exists()) {
                 folder.mkdirs();
@@ -388,7 +388,7 @@ public class ImageUtil {
      */
     public static String saveVideoThumbnail(File file, int width, int height, int kind) {
         Bitmap videoThumbnail = getVideoThumbnail(file.getAbsolutePath(), width, height, kind);
-        File thumbFile = new File(PathUtil.getInstance().getVideoPath(), "th" + file.getName());
+        File thumbFile = new File(PathUtils.getInstance().getVideoPath(), "th" + file.getName());
         try {
             thumbFile.createNewFile();
         } catch (IOException e) {

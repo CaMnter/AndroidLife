@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapUtil {
+public class MapUtils {
     /**
      * 返回由对象的属性为key,值为map的value的Map集合
      * 针对gson 加入 SerializedName 以及

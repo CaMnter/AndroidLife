@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.ImageUtil;
-import com.camnter.newlife.utils.ThreadUtil;
+import com.camnter.newlife.utils.ThreadUtils;
 import com.camnter.newlife.widget.CustomProgressBarDialog;
 
 import java.io.File;
@@ -332,7 +332,7 @@ public class RxSyncActivity extends BaseAppCompatActivity implements View.OnClic
      * @param info
      */
     private void checkThread(String info) {
-        Log.i(TAG, ThreadUtil.getThreadMsg(info));
+        Log.i(TAG, ThreadUtils.getThreadMsg(info));
     }
 
     /**

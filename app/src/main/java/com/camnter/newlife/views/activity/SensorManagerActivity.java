@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
-import com.camnter.newlife.utils.DeviceUtil;
+import com.camnter.newlife.utils.DeviceUtils;
 
 import java.util.List;
 
@@ -166,7 +166,7 @@ public class SensorManagerActivity extends BaseAppCompatActivity {
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        int paddingPX = DeviceUtil.dp2px(this, 6);
+        int paddingPX = DeviceUtils.dp2px(this, 6);
         linearLayout.setPadding(paddingPX, paddingPX, paddingPX, paddingPX);
         linearLayout.setLayoutParams(params);
 

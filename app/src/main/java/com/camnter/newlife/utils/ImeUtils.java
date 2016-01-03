@@ -9,7 +9,7 @@ import android.view.inputmethod.InputMethodManager;
  *
  * @author CaMnter
  */
-public class ImeUtil {
+public class ImeUtils {
     /**
      * 显示软键盘
      * View ： EditText、TextView

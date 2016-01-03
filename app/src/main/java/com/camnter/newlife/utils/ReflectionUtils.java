@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
  * Created by：CaMnter
  * Time：2015-11-20 12:08
  */
-public class ReflectionUtil {
+public class ReflectionUtils {
 
     public enum ResourcesType {
         styleable,

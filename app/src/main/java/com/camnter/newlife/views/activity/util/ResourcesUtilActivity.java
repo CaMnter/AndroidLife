@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
-import com.camnter.newlife.utils.ResourcesUtil;
+import com.camnter.newlife.utils.ResourcesUtils;
 
 /**
  * Description：ResourcesUtilActivity
@@ -25,7 +25,7 @@ public class ResourcesUtilActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int getLayoutId() {
-        return ResourcesUtil.getLayoutId(this, "activity_resources");
+        return ResourcesUtils.getLayoutId(this, "activity_resources");
     }
 
     /**
@@ -52,9 +52,9 @@ public class ResourcesUtilActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void initData() {
-        this.resourcesTV.setText(ResourcesUtil.getStringId(this, "app_label"));
-        this.resourcesTV.setTextColor(ResourcesUtil.getColor(this, ResourcesUtil.getColorId(this, "colorAccent")));
+        this.resourcesTV.setText(ResourcesUtils.getStringId(this, "app_label"));
+        this.resourcesTV.setTextColor(ResourcesUtils.getColor(this, ResourcesUtils.getColorId(this, "colorAccent")));
 
-        this.resourcesIV.setImageResource(ResourcesUtil.getMipmapId(this, "mm_1"));
+        this.resourcesIV.setImageResource(ResourcesUtils.getMipmapId(this, "mm_1"));
     }
 }

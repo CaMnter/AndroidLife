@@ -50,7 +50,7 @@ import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.SpanData;
-import com.camnter.newlife.utils.ResourcesUtil;
+import com.camnter.newlife.utils.ResourcesUtils;
 import com.camnter.newlife.widget.text.ClickableSpanNoUnderline;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -281,7 +281,7 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
             }
             case DRAWABLE_MARGIN_SPAN: {
                 labelTV.setText("DrawableMarginSpan");
-                ssb.setSpan(new DrawableMarginSpan(ResourcesUtil.getDrawable(this.activity, R.mipmap.ic_mm_1), 6), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                ssb.setSpan(new DrawableMarginSpan(ResourcesUtils.getDrawable(this.activity, R.mipmap.ic_mm_1), 6), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 contentTV.setText(ssb);
                 break;
             }

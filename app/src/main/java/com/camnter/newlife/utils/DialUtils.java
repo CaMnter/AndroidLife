@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
-public class DialUtil {
+public class DialUtils {
 
     /**
      * Have a dial-up view

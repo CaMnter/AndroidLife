@@ -6,7 +6,7 @@ import android.widget.ImageView;
 
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
-import com.camnter.newlife.utils.ReflectionUtil;
+import com.camnter.newlife.utils.ReflectionUtils;
 
 /**
  * Description：ReflectionUtilActivity
@@ -65,7 +65,7 @@ public class ReflectionUtilActivity extends BaseAppCompatActivity implements Vie
                 /*
                  * 获取资源名为mm_1的mipmap类型文件
                  */
-                this.imageView.setImageResource(ReflectionUtil.getResourceId(this, "mm_1", ReflectionUtil.ResourcesType.mipmap));
+                this.imageView.setImageResource(ReflectionUtils.getResourceId(this, "mm_1", ReflectionUtils.ResourcesType.mipmap));
                 break;
         }
     }

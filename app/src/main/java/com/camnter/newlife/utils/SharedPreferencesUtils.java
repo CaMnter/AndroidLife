@@ -11,7 +11,7 @@ import android.util.Log;
  * @author CaMnter
  *         2015-10-19
  */
-public class SharedPreferencesUtil {
+public class SharedPreferencesUtils {
 
     public static final String TAG = "SharedPreferencesUtils";
 
@@ -40,7 +40,7 @@ public class SharedPreferencesUtil {
             // 添加数据完成后，提交编辑器的添加操作
             editor.apply();
         } else {
-            Log.e(SharedPreferencesUtil.TAG, "The value parameter is invalid");
+            Log.e(SharedPreferencesUtils.TAG, "The value parameter is invalid");
         }
     }
 

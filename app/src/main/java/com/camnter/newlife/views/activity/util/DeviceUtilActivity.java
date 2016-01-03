@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
-import com.camnter.newlife.utils.DeviceUtil;
+import com.camnter.newlife.utils.DeviceUtils;
 
 
 /**
@@ -76,16 +76,16 @@ public class DeviceUtilActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void initData() {
-        this.deviceIdTV.setText(DeviceUtil.getDeviceId(this));
-        this.versionCodeTV.setText(DeviceUtil.getVersionCode(this));
-        this.versionNameTV.setText(DeviceUtil.getVersionName(this));
+        this.deviceIdTV.setText(DeviceUtils.getDeviceId(this));
+        this.versionCodeTV.setText(DeviceUtils.getVersionCode(this));
+        this.versionNameTV.setText(DeviceUtils.getVersionName(this));
 
-        this.phoneBrandTV.setText(DeviceUtil.getPhoneBrand());
-        this.phoneModelTV.setText(DeviceUtil.getPhoneModel());
-        this.apiLevelTV.setText(DeviceUtil.getBuildLevel() + "");
-        this.apiVersionTV.setText(DeviceUtil.getBuildVersion());
-        this.appProcessIdTV.setText(DeviceUtil.getAppProcessId() + "");
-        this.appNameTV.setText(DeviceUtil.getAppProcessName(this, DeviceUtil.getAppProcessId()));
-        this.metaDataTV.setText(DeviceUtil.getMetaData(this, "DEBUG"));
+        this.phoneBrandTV.setText(DeviceUtils.getPhoneBrand());
+        this.phoneModelTV.setText(DeviceUtils.getPhoneModel());
+        this.apiLevelTV.setText(DeviceUtils.getBuildLevel() + "");
+        this.apiVersionTV.setText(DeviceUtils.getBuildVersion());
+        this.appProcessIdTV.setText(DeviceUtils.getAppProcessId() + "");
+        this.appNameTV.setText(DeviceUtils.getAppProcessName(this, DeviceUtils.getAppProcessId()));
+        this.metaDataTV.setText(DeviceUtils.getMetaData(this, "DEBUG"));
     }
 }

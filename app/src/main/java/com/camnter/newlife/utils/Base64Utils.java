@@ -11,7 +11,7 @@ import java.io.ByteArrayOutputStream;
  * Created by：CaMnter
  * Time：2015-12-06 17:54
  */
-public class Base64Util {
+public class Base64Utils {
 
     /**
      * bitmap转成base64

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
  * Created by：CaMnter
  * Time：2015-12-16 22:55
  */
-public class LayoutParamsUtil {
+public class LayoutParamsUtils {
 
     public static DisplayMetrics dm;
 

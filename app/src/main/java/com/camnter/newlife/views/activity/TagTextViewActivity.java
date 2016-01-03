@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.Tag;
 import com.camnter.newlife.core.BaseAppCompatActivity;
-import com.camnter.newlife.utils.ToastUtil;
+import com.camnter.newlife.utils.ToastUtils;
 import com.camnter.newlife.widget.TagTextView;
 import com.camnter.newlife.widget.text.ClickableSpanNoUnderline;
 
@@ -85,7 +85,7 @@ public class TagTextViewActivity extends BaseAppCompatActivity implements Clicka
      */
     @Override
     public void onClick(View widget, TagTextView.TagClickableSpan span) {
-        ToastUtil.show(this, span.getId() + ":" + span.getContent(), Toast.LENGTH_SHORT);
+        ToastUtils.show(this, span.getId() + ":" + span.getContent(), Toast.LENGTH_SHORT);
     }
 
 }

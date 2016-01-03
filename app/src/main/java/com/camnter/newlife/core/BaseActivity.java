@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.camnter.newlife.R;
-import com.camnter.newlife.utils.ToastUtil;
+import com.camnter.newlife.utils.ToastUtils;
 
 /**
  * Description：BaseActivity
@@ -138,9 +138,9 @@ public abstract class BaseActivity extends Activity {
     public void showToast(String msg, int duration) {
         if (msg == null) return;
         if (duration == Toast.LENGTH_SHORT || duration == Toast.LENGTH_LONG) {
-            ToastUtil.show(this, msg, duration);
+            ToastUtils.show(this, msg, duration);
         } else {
-            ToastUtil.show(this, msg, ToastUtil.LENGTH_SHORT);
+            ToastUtils.show(this, msg, ToastUtils.LENGTH_SHORT);
         }
     }
 
@@ -151,9 +151,9 @@ public abstract class BaseActivity extends Activity {
 
     public void showToast(int resId, int duration) {
         if (duration == Toast.LENGTH_SHORT || duration == Toast.LENGTH_LONG) {
-            ToastUtil.show(this, resId, duration);
+            ToastUtils.show(this, resId, duration);
         } else {
-            ToastUtil.show(this, resId, ToastUtil.LENGTH_SHORT);
+            ToastUtils.show(this, resId, ToastUtils.LENGTH_SHORT);
         }
     }
 

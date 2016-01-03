@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.camnter.newlife.utils.ToastUtil;
+import com.camnter.newlife.utils.ToastUtils;
 
 /**
  * Description：BaseFragment
@@ -95,9 +95,9 @@ public abstract class BaseFragment extends Fragment {
     public void showToast(String msg, int duration) {
         if (msg == null) return;
         if (duration == Toast.LENGTH_SHORT || duration == Toast.LENGTH_LONG) {
-            ToastUtil.show(this.getActivity(), msg, duration);
+            ToastUtils.show(this.getActivity(), msg, duration);
         } else {
-            ToastUtil.show(this.getActivity(), msg, ToastUtil.LENGTH_SHORT);
+            ToastUtils.show(this.getActivity(), msg, ToastUtils.LENGTH_SHORT);
         }
     }
 
@@ -108,9 +108,9 @@ public abstract class BaseFragment extends Fragment {
 
     public void showToast(int resId, int duration) {
         if (duration == Toast.LENGTH_SHORT || duration == Toast.LENGTH_LONG) {
-            ToastUtil.show(this.getActivity(), resId, duration);
+            ToastUtils.show(this.getActivity(), resId, duration);
         } else {
-            ToastUtil.show(this.getActivity(), resId, ToastUtil.LENGTH_SHORT);
+            ToastUtils.show(this.getActivity(), resId, ToastUtils.LENGTH_SHORT);
         }
     }
 

@@ -5,7 +5,7 @@ import android.os.Environment;
 
 import java.io.File;
 
-public class PathUtil {
+public class PathUtils {
     public static String pathPrefix;
     public static final String historyPathName = "/chat/";
     public static final String imagePathName = "/image/";
@@ -15,19 +15,19 @@ public class PathUtil {
     public static final String netdiskDownloadPathName = "/netdisk/";
     public static final String meetingPathName = "/meeting/";
     private static File storageDir = null;
-    private static PathUtil instance = null;
+    private static PathUtils instance = null;
     private File voicePath = null;
     private File imagePath = null;
     private File historyPath = null;
     private File videoPath = null;
     private File filePath;
 
-    private PathUtil() {
+    private PathUtils() {
     }
 
-    public static PathUtil getInstance() {
+    public static PathUtils getInstance() {
         if (instance == null) {
-            instance = new PathUtil();
+            instance = new PathUtils();
         }
 
         return instance;

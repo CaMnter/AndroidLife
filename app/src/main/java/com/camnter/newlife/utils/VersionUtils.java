@@ -7,7 +7,7 @@ import android.os.Build;
  * Created by：CaMnter
  * Time：2015-12-04 22:37
  */
-public class VersionUtil {
+public class VersionUtils {
     /**
      * 检查当前版本是否大于目标版本
      * Check whether the current version is greater than the target version

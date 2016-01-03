@@ -21,7 +21,7 @@ public class ColorUtil {
     public static int getResourcesColor(Activity activity, int colorId) {
         int color = 0x00ffffff;
         try {
-            color = ResourcesUtil.getColor(activity, colorId);
+            color = ResourcesUtils.getColor(activity, colorId);
         } catch (Exception e) {
             e.printStackTrace();
         }

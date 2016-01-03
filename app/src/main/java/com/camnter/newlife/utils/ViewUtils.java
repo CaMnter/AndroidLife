@@ -9,7 +9,7 @@ import android.view.View;
  * Created by：CaMnter
  * Time：2015-12-04 22:33
  */
-public class ViewUtil {
+public class ViewUtils {
 
     /**
      * Set view alpha

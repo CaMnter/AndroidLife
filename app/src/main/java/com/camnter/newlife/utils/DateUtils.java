@@ -10,7 +10,7 @@ import java.util.Locale;
 
 
 @SuppressLint("SimpleDateFormat")
-public class DateUtil {
+public class DateUtils {
 
     public static String[] WEEK = new String[]{"天", "一", "二", "三", "四", "五", "六"};
 

@@ -7,7 +7,7 @@ import android.os.Looper;
  * Created by：CaMnter
  * Time：2015-12-01 12:22
  */
-public class ThreadUtil {
+public class ThreadUtils {
 
     private static final String MAIN_THREAD_MSG = "MainThread-%d: %s";
     private static final String CHILD_THREAD_MSG = "ChildThread-%d: %s";
@@ -30,7 +30,7 @@ public class ThreadUtil {
      * @return msg
      */
     public static String getThreadMsg(String info) {
-        if (ThreadUtil.isMainThread()) {
+        if (ThreadUtils.isMainThread()) {
             return String.format(MAIN_THREAD_MSG, Thread.currentThread().getId(), info);
         } else {
             return String.format(CHILD_THREAD_MSG, Thread.currentThread().getId(), info);

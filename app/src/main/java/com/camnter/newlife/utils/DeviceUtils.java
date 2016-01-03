@@ -20,7 +20,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
-public class DeviceUtil {
+public class DeviceUtils {
 
     /**
      * dp 转化为 px
@@ -217,7 +217,7 @@ public class DeviceUtil {
                     return processName;
                 }
             } catch (Exception e) {
-                Log.e(DeviceUtil.class.getName(), e.getMessage(), e);
+                Log.e(DeviceUtils.class.getName(), e.getMessage(), e);
             }
         }
         return processName;
@@ -248,7 +248,7 @@ public class DeviceUtil {
         /**
          * 如果存在SD卡
          */
-        if (DeviceUtil.isSDCardAvailable() && root != null) {
+        if (DeviceUtils.isSDCardAvailable() && root != null) {
             folder = new File(root, appName);
             if (!folder.exists()) {
                 folder.mkdirs();

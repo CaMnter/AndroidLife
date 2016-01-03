@@ -10,7 +10,7 @@ import android.view.Gravity;
  * Created by：CaMnter
  * Time：2015-12-14 23:01
  */
-public class ToastUtil {
+public class ToastUtils {
 
     public static final long DEFAULT_DURATION = 1000L;
 

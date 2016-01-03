@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.camnter.newlife.framework.robotlegs.robotlegsapplication.MainApplication;
-import com.camnter.newlife.utils.DeviceUtil;
+import com.camnter.newlife.utils.DeviceUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -210,7 +210,7 @@ public class FileCacheHelper extends CacheHelper {
 
             case DeadlineType.currentVersion:
                 String version = sp.getString(key, "");
-                String curVersion = DeviceUtil.getVersionCode(context);
+                String curVersion = DeviceUtils.getVersionCode(context);
 
                 if (version.equals(curVersion)) {
                     String path = getCacheFile(scope, model);
@@ -241,7 +241,7 @@ public class FileCacheHelper extends CacheHelper {
                 break;
 
             case DeadlineType.currentVersion:
-                String curVersion = DeviceUtil.getVersionCode(this.context);
+                String curVersion = DeviceUtils.getVersionCode(this.context);
                 edt.putString(model + "_currentVersion", curVersion).apply();
                 break;
             case DeadlineType.currentStart:
@@ -265,7 +265,7 @@ public class FileCacheHelper extends CacheHelper {
      * 获得缓存文件路径
      **/
     private String getCacheFile(String scope, String model) {
-        return DeviceUtil.createAPPFolder(DeviceUtil.getAppProcessName(this.context, DeviceUtil.getAppProcessId()), MainApplication.getInstance()) + File.separator
+        return DeviceUtils.createAPPFolder(DeviceUtils.getAppProcessName(this.context, DeviceUtils.getAppProcessId()), MainApplication.getInstance()) + File.separator
                 + CACHE_DIR + File.separator + scope + "_" + model + ".data";
     }
 

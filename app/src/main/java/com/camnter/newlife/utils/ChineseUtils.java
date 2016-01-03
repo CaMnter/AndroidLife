@@ -7,7 +7,7 @@ import android.util.Log;
  * Created by：CaMnter
  * Time：2015-12-02 20:17
  */
-public class ChineseUtil {
+public class ChineseUtils {
 
     private static final String TAG = "ChineseUtil";
 
@@ -109,9 +109,9 @@ public class ChineseUtil {
             "zong", "zou", "zu", "zuan", "zui", "zun", "zuo"};
 
     private String resource;
-    private static ChineseUtil ourInstance = new ChineseUtil();
+    private static ChineseUtils ourInstance = new ChineseUtils();
 
-    public static ChineseUtil getInstance() {
+    public static ChineseUtils getInstance() {
         return ourInstance;
     }
 

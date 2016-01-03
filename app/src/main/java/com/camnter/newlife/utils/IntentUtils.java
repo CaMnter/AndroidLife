@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Created by：CaMnter
  * Time：2015-12-12 18:22
  */
-public class IntentUtil  {
+public class IntentUtils {
 
     public static boolean hasIntent(Intent intent) {
         return intent != null;

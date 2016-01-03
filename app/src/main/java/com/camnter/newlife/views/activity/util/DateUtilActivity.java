@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
-import com.camnter.newlife.utils.DateUtil;
+import com.camnter.newlife.utils.DateUtils;
 
 import java.util.Date;
 
@@ -67,14 +67,14 @@ public class DateUtilActivity extends BaseAppCompatActivity {
     protected void initData() {
         long oldTime = System.currentTimeMillis() - 1200000;
         Date date = new Date(oldTime);
-        this.string2DateTv.setText(DateUtil.string2Date(date.toString(), "yyyy-MM-dd").toString());
-        this.date2StringTv.setText(DateUtil.date2String(oldTime, "yyyy-MM-dd HH:mm:ss"));
-        this.getYearMonthDayTv.setText(new Date(DateUtil.getYearMonthDay(oldTime)).toString());
-        this.date2yyyyMMddTv.setText(DateUtil.date2yyyyMMdd(date));
-        this.date2MMddWeekTv.setText(DateUtil.date2MMddWeek(date));
-        this.date2yyyyMMddWeekTv.setText(DateUtil.date2yyyyMMddWeek(date));
-        this.time24To12Tv.setText(DateUtil.time24To12("16:26"));
-        this.getTimestampStringTv.setText(DateUtil.getTimestampString(date));
+        this.string2DateTv.setText(DateUtils.string2Date(date.toString(), "yyyy-MM-dd").toString());
+        this.date2StringTv.setText(DateUtils.date2String(oldTime, "yyyy-MM-dd HH:mm:ss"));
+        this.getYearMonthDayTv.setText(new Date(DateUtils.getYearMonthDay(oldTime)).toString());
+        this.date2yyyyMMddTv.setText(DateUtils.date2yyyyMMdd(date));
+        this.date2MMddWeekTv.setText(DateUtils.date2MMddWeek(date));
+        this.date2yyyyMMddWeekTv.setText(DateUtils.date2yyyyMMddWeek(date));
+        this.time24To12Tv.setText(DateUtils.time24To12("16:26"));
+        this.getTimestampStringTv.setText(DateUtils.getTimestampString(date));
     }
 
 

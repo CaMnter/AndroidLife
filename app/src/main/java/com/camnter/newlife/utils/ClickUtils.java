@@ -5,24 +5,24 @@ package com.camnter.newlife.utils;
  * Created by：CaMnter
  * Time：2015-12-08 17:54
  */
-public class ClickUtil {
+public class ClickUtils {
 
     private static long lastClickTime;
     private static long clickInterval = 500;
 
-    public static ClickUtil ourInstance;
+    public static ClickUtils ourInstance;
 
-    public static ClickUtil getInstance() {
-        if (ourInstance == null) ourInstance = new ClickUtil();
+    public static ClickUtils getInstance() {
+        if (ourInstance == null) ourInstance = new ClickUtils();
         return ourInstance;
     }
 
-    public static ClickUtil setInterval(long interval) {
+    public static ClickUtils setInterval(long interval) {
         clickInterval = interval;
         return getInstance();
     }
 
-    public static ClickUtil clearLastTime() {
+    public static ClickUtils clearLastTime() {
         lastClickTime = 0L;
         return getInstance();
     }

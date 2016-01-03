@@ -10,7 +10,7 @@ import android.os.Build;
  * Created by：CaMnter
  * Time：2015-12-04 23:06
  */
-public class ResourcesUtil {
+public class ResourcesUtils {
 
     /**
      * 根据Android系统版本，调用版本API中的获取颜色方法

@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
  * Created by：CaMnter
  * Time：2015-11-25 11:12
  */
-public class ThreadPoolUtil {
+public class ThreadPoolUtils {
 
     /**
      * Create a single thread thread pool.The thread pool is only one thread in
