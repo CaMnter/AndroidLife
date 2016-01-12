@@ -20,6 +20,11 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Description：DeviceUtils
+ * Created by：CaMnter
+ * Time：2015-09-26 14:43
+ */
 public class DeviceUtils {
 
     /**

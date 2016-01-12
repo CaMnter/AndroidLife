@@ -4,10 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+
 /**
- * IME(Input Method Editor)
- *
- * @author CaMnter
+ * Description：ImeUtils
+ * Created by：CaMnter
+ * Time：2014-12-25 19:21
  */
 public class ImeUtils {
     /**
@@ -15,9 +16,9 @@ public class ImeUtils {
      * View ： EditText、TextView
      * wantPop : true = show , false = hide
      *
-     * @param context
-     * @param view
-     * @param wantPop
+     * @param context context
+     * @param view view
+     * @param wantPop wantPop
      */
     public static void popSoftKeyboard(Context context, View view, boolean wantPop) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -33,7 +34,7 @@ public class ImeUtils {
     /**
      * 显示软键盘
      *
-     * @param view
+     * @param view view
      */
     public static void showSoftKeyboard(View view) {
         Context context = view.getContext();
@@ -45,7 +46,7 @@ public class ImeUtils {
     /**
      * 隐藏软键盘
      *
-     * @param view
+     * @param view view
      */
     public static void hideSoftKeyboard(View view) {
         Context context = view.getContext();

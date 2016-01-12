@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
+/**
+ * Description：DialUtils
+ * Created by：CaMnter
+ * Time：2015-10-13 11:53
+ */
 public class DialUtils {
 
     /**
