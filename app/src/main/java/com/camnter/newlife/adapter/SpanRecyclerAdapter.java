@@ -51,7 +51,7 @@ import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.SpanData;
 import com.camnter.newlife.utils.ResourcesUtils;
-import com.camnter.newlife.widget.text.ClickableSpanNoUnderline;
+import com.camnter.newlife.widget.span.ClickableSpanNoUnderline;
 
 import org.xmlpull.v1.XmlPullParserException;
 

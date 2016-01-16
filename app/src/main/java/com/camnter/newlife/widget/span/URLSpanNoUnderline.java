@@ -1,4 +1,4 @@
-package com.camnter.newlife.widget.text;
+package com.camnter.newlife.widget.span;
 
 import android.text.TextPaint;
 import android.text.style.URLSpan;

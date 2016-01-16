@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.camnter.newlife.bean.Tag;
-import com.camnter.newlife.widget.text.ClickableSpanNoUnderline;
+import com.camnter.newlife.widget.span.ClickableSpanNoUnderline;
 
 import java.util.ArrayList;
 import java.util.HashMap;
