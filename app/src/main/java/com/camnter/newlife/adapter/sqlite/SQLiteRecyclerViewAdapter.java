@@ -79,7 +79,7 @@ public class SQLiteRecyclerViewAdapter extends EasyRecyclerViewAdapter implement
                 this.refresh();
                 break;
             }
-            case R.id.data_base_mod_bt:{
+            case R.id.data_base_mod_bt: {
                 MySQLiteHelper.getInstance(this.context).updateFirst();
                 this.refresh();
                 break;
@@ -91,7 +91,7 @@ public class SQLiteRecyclerViewAdapter extends EasyRecyclerViewAdapter implement
         }
     }
 
-    private void refresh(){
+    private void refresh() {
         List<SQLiteData> allData = MySQLiteHelper.getInstance(this.context).queryAll();
         allData.add(0, new SQLiteData());
         this.setList(allData);

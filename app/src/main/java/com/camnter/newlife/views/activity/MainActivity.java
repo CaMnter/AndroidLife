@@ -123,6 +123,7 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(TagTextViewActivity.class);
         this.classes.add(EasyFlowLayoutActivity.class);
         this.classes.add(SpanActivity.class);
+        this.classes.add(OttoActivity.class);
 
         this.adapter = new MainRecyclerViewAdapter();
         this.adapter.setList(classes);
