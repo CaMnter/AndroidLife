@@ -44,6 +44,7 @@ class EventProducer {
     private final int hashCode;
     /**
      * Should this producer produce events?
+     * 标识该producer可否创建事件？
      */
     private boolean valid = true;
 
@@ -57,8 +58,15 @@ class EventProducer {
 
         this.target = target;
         this.method = method;
+
+        /**
+         * 取消 Java语言访问检查，提高反射速度
+         */
         method.setAccessible(true);
 
+        /**
+         * 计算hashCode
+         */
         // Compute hash code eagerly since we know it will be used frequently and we cannot estimate the runtime of the
         // target's hashCode call.
         final int prime = 31;
@@ -87,10 +95,23 @@ class EventProducer {
      *                                                     an {@link Error} ({@code Error}s are propagated as-is).
      */
     public Object produceEvent() throws InvocationTargetException {
+        /**
+         * 检查是否可以创建事件
+         */
         if (!valid) {
             throw new IllegalStateException(
                     toString() + " has been invalidated and can no longer produce events.");
         }
+
+        /**
+         * 调用target类里的
+         * method方法
+         * 创建一个event
+         *
+         * 这里的
+         * target = listener
+         * method = @Produce方法
+         */
         try {
             return method.invoke(target);
         } catch (IllegalAccessException e) {
@@ -115,20 +136,35 @@ class EventProducer {
 
     @Override
     public boolean equals(Object obj) {
+        /**
+         * 地址一样 视为相同
+         */
         if (this == obj) {
             return true;
         }
 
+        /**
+         * obj 为 null
+         * 想都不想为false
+         */
         if (obj == null) {
             return false;
         }
 
+        /**
+         * 判断是否是一个Class
+         */
         if (getClass() != obj.getClass()) {
             return false;
         }
 
         final EventProducer other = (EventProducer) obj;
 
+        /**
+         * 到这里，是地址不一样，就意味着hashcode不一样
+         * 但是如果method 和 target相同的话
+         * 那么视为相同的 EventProducer
+         */
         return method.equals(other.method) && target == other.target;
     }
 }

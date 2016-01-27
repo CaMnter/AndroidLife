@@ -18,6 +18,7 @@ package com.camnter.otto;
 
 /**
  * Wraps an event that was posted, but which had no subscribers and thus could not be delivered.
+ * 包装发布一个事件，但是没有订阅者，因此它不能被传递
  * <p/>
  * <p>Subscribing a DeadEvent handler is useful for debugging or logging, as it can detect misconfigurations in a
  * system's event distribution.
