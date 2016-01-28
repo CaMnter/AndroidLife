@@ -214,7 +214,7 @@ final class AnnotatedHandlerFinder {
 
     /**
      * This implementation finds all methods marked with a {@link Produce} annotation.
-     * 寻找所有 @Produce 方法
+     * 寻找所有 @Produce 方法，封装成 EventProducer（ @Produce方法 和 一些数据  ）
      */
     static Map<Class<?>, EventProducer> findAllProducers(Object listener) {
 
@@ -254,7 +254,7 @@ final class AnnotatedHandlerFinder {
 
     /**
      * This implementation finds all methods marked with a {@link Subscribe} annotation.
-     * 寻找所有 @Subscribe 方法
+     * 寻找所有 @Subscribe 方法，封装成 EventProducer（ @Subscribe方法 和 一些数据  ）
      */
     static Map<Class<?>, Set<EventHandler>> findAllSubscribers(Object listener) {
 

@@ -66,33 +66,42 @@ public class Bus {
 
     /**
      * All registered event handlers, indexed by event type.
+     * listener 及其对应的 EventHandler
+     * 可以看出一个 listener 可以对应多个 EventHandler
      */
     private final ConcurrentMap<Class<?>, Set<EventHandler>> handlersByType =
             new ConcurrentHashMap<Class<?>, Set<EventHandler>>();
 
     /**
      * All registered event producers, index by event type.
+     * listener 及其对应的 EventProducer
+     * 可以看出一个 listener 对应一个 EventProducer
      */
     private final ConcurrentMap<Class<?>, EventProducer> producersByType =
             new ConcurrentHashMap<Class<?>, EventProducer>();
 
     /**
      * Identifier used to differentiate the event bus instance.
+     * 可是实现多个Bus，就相当于多个事件总线，实例化的时候可以提供一个String类型的id
+     * 作为每一个Bus的唯一标识。
      */
     private final String identifier;
 
     /**
      * Thread enforcer for register, unregister, and posting events.
+     * ThreadEnforcer去执行 注册、注销和发送事件。
      */
     private final ThreadEnforcer enforcer;
 
     /**
      * Used to find handler methods in register and unregister.
+     * 在注销和注册的时候，HandlerFinder去找一遍全部的EventHandler（ @Subscribe ）
      */
     private final HandlerFinder handlerFinder;
 
     /**
      * Queues of events for the current thread to dispatch.
+     * ThreadLocal存放一个ConcurrentLinkedQueue<EventWithHandler>队列
      */
     private final ThreadLocal<ConcurrentLinkedQueue<EventWithHandler>> eventsToDispatch =
             new ThreadLocal<ConcurrentLinkedQueue<EventWithHandler>>() {
@@ -104,6 +113,7 @@ public class Bus {
 
     /**
      * True if the current thread is currently dispatching an event.
+     * ThreadLocal存放isDispatching标识
      */
     private final ThreadLocal<Boolean> isDispatching = new ThreadLocal<Boolean>() {
         @Override
@@ -114,6 +124,8 @@ public class Bus {
 
     /**
      * Creates a new Bus named "default" that enforces actions on the main thread.
+     * 默认构造Bus
+     * 唯一标识为 DEFAULT_IDENTIFIER
      */
     public Bus() {
         this(DEFAULT_IDENTIFIER);
@@ -121,6 +133,9 @@ public class Bus {
 
     /**
      * Creates a new Bus with the given {@code identifier} that enforces actions on the main thread.
+     * 默认构造Bus
+     * 唯一标识为 自定义
+     * ThreadEnforcer为 主线程
      *
      * @param identifier a brief name for this bus, for debugging purposes.  Should be a valid Java
      *                   identifier.
@@ -131,6 +146,9 @@ public class Bus {
 
     /**
      * Creates a new Bus named "default" with the given {@code enforcer} for actions.
+     * 默认构造Bus
+     * 唯一标识为 DEFAULT_IDENTIFIER
+     * ThreadEnforcer为 自定义
      *
      * @param enforcer Thread enforcer for register, unregister, and post actions.
      */
@@ -141,6 +159,10 @@ public class Bus {
     /**
      * Creates a new Bus with the given {@code enforcer} for actions and the given {@code
      * identifier}.
+     * 默认构造Bus
+     * 唯一标识为 自定义
+     * ThreadEnforcer为 自定义
+     * HandlerFinder为 HandlerFinder.ANNOTATED
      *
      * @param enforcer   Thread enforcer for register, unregister, and post actions.
      * @param identifier A brief name for this bus, for debugging purposes.  Should be a valid Java
@@ -152,6 +174,10 @@ public class Bus {
 
     /**
      * Test constructor which allows replacing the default {@code HandlerFinder}.
+     * 默认构造Bus
+     * 唯一标识为 自定义
+     * ThreadEnforcer为 自定义
+     * HandlerFinder为 自定义
      *
      * @param enforcer      Thread enforcer for register, unregister, and post actions.
      * @param identifier    A brief name for this bus, for debugging purposes.  Should be a valid Java
