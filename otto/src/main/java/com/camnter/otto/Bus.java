@@ -66,7 +66,7 @@ public class Bus {
 
     /**
      * All registered event handlers, indexed by event type.
-     * listener 及其对应的 EventHandler
+     * 缓存 listener 及其对应的 EventHandler
      * 可以看出一个 listener 可以对应多个 EventHandler
      */
     private final ConcurrentMap<Class<?>, Set<EventHandler>> handlersByType =
@@ -74,7 +74,7 @@ public class Bus {
 
     /**
      * All registered event producers, index by event type.
-     * listener 及其对应的 EventProducer
+     * 缓存 listener 及其对应的 EventProducer
      * 可以看出一个 listener 对应一个 EventProducer
      */
     private final ConcurrentMap<Class<?>, EventProducer> producersByType =
@@ -210,33 +210,94 @@ public class Bus {
         if (object == null) {
             throw new NullPointerException("Object to register must not be null.");
         }
+
+        /*********************
+         * 处理 @Produce 逻辑 *
+         *********************/
+
+        /**
+         * 一般用户不设置的话
+         * 这里的ThreadEnforcer为ThreadEnforcer.MAIN
+         */
         enforcer.enforce(this);
 
+        /**
+         * 通过HandlerFinder找到所有
+         * object里所有 @Produce 方法
+         * 找回来的封装成EventProducer
+         * 并且最后返回Map<Class<?>, EventProducer>
+         */
         Map<Class<?>, EventProducer> foundProducers = handlerFinder.findAllProducers(object);
         for (Class<?> type : foundProducers.keySet()) {
 
+            /**
+             * 逐个拿到EventProducer
+             */
             final EventProducer producer = foundProducers.get(type);
+            /**
+             * ConcurrentMap putIfAbsent 安全的put
+             * 防止并发
+             * 查看缓存 ConcurrentMap<Class<?>, EventProducer> 有木有
+             */
             EventProducer previousProducer = producersByType.putIfAbsent(type, producer);
             //checking if the previous producer existed
+
+            /**
+             * 有缓存 先 “炸” 一下
+             */
             if (previousProducer != null) {
                 throw new IllegalArgumentException("Producer method for type " + type
                         + " found on type " + producer.target.getClass()
                         + ", but already registered by type " + previousProducer.target.getClass() + ".");
             }
+
+            /**
+             * 逐个拿到全部缓存EventHandler （ @Subscribe方法封装类 ）
+             */
             Set<EventHandler> handlers = handlersByType.get(type);
             if (handlers != null && !handlers.isEmpty()) {
                 for (EventHandler handler : handlers) {
+                    /**
+                     * 逐个去调用@Subscribe 和 @Produce 方法
+                     */
                     dispatchProducerResultToHandler(handler, producer);
                 }
             }
         }
 
+        /*********************
+         * 处理 @Produce 逻辑 *
+         *********************/
+
+
+        /***********************
+         * 处理 @SubScribe 逻辑 *
+         ***********************/
+
+        /**
+         * 通过HandlerFinder找到所有
+         * object里所有 @SubScribe 方法
+         * 找回来的封装成EventHandler
+         * Map<Class<?>, Set<EventHandler>>
+         */
         Map<Class<?>, Set<EventHandler>> foundHandlersMap = handlerFinder.findAllSubscribers(object);
+
+        /**
+         * 逐个拿到EventHandler
+         */
         for (Class<?> type : foundHandlersMap.keySet()) {
+
+            /**
+             * 拿到缓存 EventHandler 集合
+             */
             Set<EventHandler> handlers = handlersByType.get(type);
             if (handlers == null) {
                 //concurrent put if absent
                 Set<EventHandler> handlersCreation = new CopyOnWriteArraySet<EventHandler>();
+
+                /**
+                 * 往缓存 EventHandler Map 里放入一份 type 对应的 EventHandle 集合
+                 */
                 handlers = handlersByType.putIfAbsent(type, handlersCreation);
                 if (handlers == null) {
                     handlers = handlersCreation;
@@ -248,8 +309,17 @@ public class Bus {
             }
         }
 
+        /**
+         * 遍历所有找到 EventHandler （ @Subscribe方法 ）
+         */
         for (Map.Entry<Class<?>, Set<EventHandler>> entry : foundHandlersMap.entrySet()) {
             Class<?> type = entry.getKey();
+            /**
+             * 再那一次 EventProducer 缓存
+             * 如果object 里 存在 @Producer 方法
+             * 才循环 EventHandler 的逻辑里去 调用
+             * dispatchProducerResultToHandler方法
+             */
             EventProducer producer = producersByType.get(type);
             if (producer != null && producer.isValid()) {
                 Set<EventHandler> foundHandlers = entry.getValue();
@@ -263,11 +333,29 @@ public class Bus {
                 }
             }
         }
+
+        /***********************
+         * 处理 @SubScribe 逻辑 *
+         ***********************/
     }
 
+    /**
+     * 完成了所谓的 提供 @Produce 被自身 @Subscribe 消费的流程
+     *
+     * @param handler  handler
+     * @param producer producer
+     */
     private void dispatchProducerResultToHandler(EventHandler handler, EventProducer producer) {
+        /**
+         * 在这里进行一些数据的判断
+         */
         Object event = null;
         try {
+            /**
+             * 然后调用EventProducer里的 produceEvent 方法
+             * produceEvent里又反射
+             * 调用注册object里的 @Produce 方法
+             */
             event = producer.produceEvent();
         } catch (InvocationTargetException e) {
             throwRuntimeException("Producer " + producer + " threw an exception.", e);
@@ -275,6 +363,14 @@ public class Bus {
         if (event == null) {
             return;
         }
+        /**
+         * 通过  @Produce 的方法提供的事件不为null
+         * 如果 event 不为空
+         * 最后进到dispatch里调用
+         * EventHandler里的handleEvent方法
+         * 调用注册object里的 的 @Subscribe 方法
+         * 完成了所谓的 提供 @Produce 被自身 @Subscribe 消费的流程
+         */
         dispatch(event, handler);
     }
 
@@ -289,11 +385,30 @@ public class Bus {
         if (object == null) {
             throw new NullPointerException("Object to unregister must not be null.");
         }
+
+        /**
+         * 一般用户不设置的话
+         * 这里的ThreadEnforcer为ThreadEnforcer.MAIN
+         */
         enforcer.enforce(this);
 
+        /**
+         * 通过HandlerFinder找到所有
+         * object里所有 @Produce 方法
+         * 找回来的封装成EventProducer
+         * 并且最后返回Map<Class<?>, EventProducer>
+         */
         Map<Class<?>, EventProducer> producersInListener = handlerFinder.findAllProducers(object);
         for (Map.Entry<Class<?>, EventProducer> entry : producersInListener.entrySet()) {
             final Class<?> key = entry.getKey();
+
+            /**
+             * 拿到对应的 EventProducer
+             * 这里只拿一个 又表明了：
+             * 一个 object 只存在 一个 EventProducer
+             * producer 表示 已缓存的 该 object 的 所有 EventProducer
+             * value 表示 通过Finder 找到的 所有 EventHandler
+             */
             EventProducer producer = getProducerForEventType(key);
             EventProducer value = entry.getValue();
 
@@ -302,11 +417,24 @@ public class Bus {
                         "Missing event producer for an annotated method. Is " + object.getClass()
                                 + " registered?");
             }
+            /**
+             * 从 EventProducer 缓存Map里移除
+             * 并调用 EventProducer.invalidate()方法
+             * 设置该 EventProducer 不合法
+             */
             producersByType.remove(key).invalidate();
         }
 
         Map<Class<?>, Set<EventHandler>> handlersInListener = handlerFinder.findAllSubscribers(object);
         for (Map.Entry<Class<?>, Set<EventHandler>> entry : handlersInListener.entrySet()) {
+
+            /**
+             * 拿到对应的 Set<EventHandler>
+             * 又表明了：
+             * 一个 object 只存在 N个 EventHandler
+             * currentHandlers 表示 已缓存的 该 object 的 所有 EventHandler
+             * eventMethodsInListener 表示 通过Finder 找到的 所有 EventHandler
+             */
             Set<EventHandler> currentHandlers = getHandlersForEventType(entry.getKey());
             Collection<EventHandler> eventMethodsInListener = entry.getValue();
 
@@ -316,11 +444,21 @@ public class Bus {
                                 + " registered?");
             }
 
+            /**
+             * 循环所有 缓存的 EventHandler
+             * 如果 缓存的 EventHandler 又存在 Finder先查的  EventHandler 里
+             * 标记为 不合法
+             */
             for (EventHandler handler : currentHandlers) {
                 if (eventMethodsInListener.contains(handler)) {
                     handler.invalidate();
                 }
             }
+
+            /**
+             * 该 object 所有缓存的 EventHandler 集合中 剔除
+             * Finder现查的所有 EventHandler
+             */
             currentHandlers.removeAll(eventMethodsInListener);
         }
     }
@@ -338,22 +476,49 @@ public class Bus {
         if (event == null) {
             throw new NullPointerException("Event to post must not be null.");
         }
+
+        /**
+         * 一般用户不设置的话
+         * 这里的ThreadEnforcer为ThreadEnforcer.MAIN
+         */
         enforcer.enforce(this);
 
+        /**
+         * 拿到 该事件 + 该事件所有父类 的Set集合
+         */
         Set<Class<?>> dispatchTypes = flattenHierarchy(event.getClass());
 
         boolean dispatched = false;
         for (Class<?> eventType : dispatchTypes) {
+
+            /**
+             * 拿到 该 object所有缓存 EventHandler
+             */
             Set<EventHandler> wrappers = getHandlersForEventType(eventType);
 
+            /**
+             * 开始进入 遍历缓存的 EventHandler
+             * 并处理事件
+             * 进入 enqueueEvent 逻辑
+             */
             if (wrappers != null && !wrappers.isEmpty()) {
                 dispatched = true;
                 for (EventHandler wrapper : wrappers) {
+                    /**
+                     * 事件 + EventHandler 包装成 EventWithHandler
+                     * 入队
+                     */
                     enqueueEvent(event, wrapper);
                 }
             }
         }
 
+        /**
+         * 根据上面的循环可知道
+         * 如果 object 存在 一个 EventHandler
+         * 并且post的 事件不是 DeadEvent
+         * 就会执行一次 post(new DeadEvent(this, event))
+         */
         if (!dispatched && !(event instanceof DeadEvent)) {
             post(new DeadEvent(this, event));
         }
@@ -364,6 +529,8 @@ public class Bus {
     /**
      * Queue the {@code event} for dispatch during {@link #dispatchQueuedEvents()}. Events are queued
      * in-order of occurrence so they can be dispatched in the same order.
+     * 封装成 EventWithHandler
+     * 入队
      */
     protected void enqueueEvent(Object event, EventHandler handler) {
         eventsToDispatch.get().offer(new EventWithHandler(event, handler));
@@ -372,6 +539,7 @@ public class Bus {
     /**
      * Drain the queue of events to be dispatched. As the queue is being drained, new events may be
      * posted to the end of the queue.
+     * 开始处理事件队列
      */
     protected void dispatchQueuedEvents() {
         // don't dispatch if we're already dispatching, that would allow reentrancy and out-of-order events. Instead, leave
@@ -383,11 +551,17 @@ public class Bus {
         isDispatching.set(true);
         try {
             while (true) {
+                /**
+                 * 拿到队列，取出一个 EventWithHandler
+                 */
                 EventWithHandler eventWithHandler = eventsToDispatch.get().poll();
                 if (eventWithHandler == null) {
                     break;
                 }
 
+                /**
+                 * 处理 @Subscribe 逻辑
+                 */
                 if (eventWithHandler.handler.isValid()) {
                     dispatch(eventWithHandler.event, eventWithHandler.handler);
                 }
@@ -400,11 +574,18 @@ public class Bus {
     /**
      * Dispatches {@code event} to the handler in {@code wrapper}.  This method is an appropriate
      * override point for subclasses that wish to make event delivery asynchronous.
+     * <p/>
+     * 调用 EventHandler.handleEvent方法
+     * 将事件传入，进而调用 @Subscribe 方法
      *
      * @param event   event to dispatch.
      * @param wrapper wrapper that will call the handler.
      */
     protected void dispatch(Object event, EventHandler wrapper) {
+        /**
+         * 调用 EventHandler.handleEvent方法
+         * 将事件传入，进而调用 @Subscribe 方法
+         */
         try {
             wrapper.handleEvent(event);
         } catch (InvocationTargetException e) {
@@ -416,6 +597,7 @@ public class Bus {
     /**
      * Retrieves the currently registered producer for {@code type}.  If no producer is currently
      * registered for {@code type}, this method will return {@code null}.
+     * 根据object的class类型 拿到object缓存的 一个EventProducer
      *
      * @param type type of producer to retrieve.
      * @return currently registered producer, or {@code null}.
@@ -428,6 +610,7 @@ public class Bus {
      * Retrieves a mutable set of the currently registered handlers for {@code type}.  If no handlers
      * are currently registered for {@code type}, this method may either return {@code null} or an
      * empty set.
+     * 根据object的class类型 拿到object缓存的 一个 EventHandler 集合
      *
      * @param type type of handlers to retrieve.
      * @return currently registered handlers, or {@code null}.
@@ -446,7 +629,15 @@ public class Bus {
     Set<Class<?>> flattenHierarchy(Class<?> concreteClass) {
         Set<Class<?>> classes = flattenHierarchyCache.get(concreteClass);
         if (classes == null) {
+            /**
+             * 寻找改 事件 的所有父类 包括 自己
+             * 返回一个Set 集合
+             */
             Set<Class<?>> classesCreation = getClassesFor(concreteClass);
+            /**
+             * flattenHierarchyCache 里放入 该事件自身为key
+             * 上面的Set为 value
+             */
             classes = flattenHierarchyCache.putIfAbsent(concreteClass, classesCreation);
             if (classes == null) {
                 classes = classesCreation;
@@ -456,6 +647,12 @@ public class Bus {
         return classes;
     }
 
+    /**
+     * 寻找一个类所有父类 包括自己 存为一个 Set 集合
+     *
+     * @param concreteClass concreteClass
+     * @return Set<Class<?>>
+     */
     private Set<Class<?>> getClassesFor(Class<?> concreteClass) {
         List<Class<?>> parents = new LinkedList<Class<?>>();
         Set<Class<?>> classes = new HashSet<Class<?>>();

@@ -35,8 +35,6 @@ public interface ThreadEnforcer {
 
     /**
      * 其他线程的 ThreadEnforcer
-     */
-    /**
      * A {@link ThreadEnforcer} that does no verification.
      */
     ThreadEnforcer ANY = new ThreadEnforcer() {
@@ -48,8 +46,6 @@ public interface ThreadEnforcer {
 
     /**
      * 主线程的 ThreadEnforcer
-     */
-    /**
      * A {@link ThreadEnforcer} that confines {@link Bus} methods to the main thread.
      */
     ThreadEnforcer MAIN = new ThreadEnforcer() {
