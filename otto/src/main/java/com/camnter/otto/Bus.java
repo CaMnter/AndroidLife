@@ -315,7 +315,7 @@ public class Bus {
         for (Map.Entry<Class<?>, Set<EventHandler>> entry : foundHandlersMap.entrySet()) {
             Class<?> type = entry.getKey();
             /**
-             * 再那一次 EventProducer 缓存
+             * 再拿一次 EventProducer 缓存
              * 如果object 里 存在 @Producer 方法
              * 才循环 EventHandler 的逻辑里去 调用
              * dispatchProducerResultToHandler方法
@@ -446,7 +446,7 @@ public class Bus {
 
             /**
              * 循环所有 缓存的 EventHandler
-             * 如果 缓存的 EventHandler 又存在 Finder先查的  EventHandler 里
+             * 如果 缓存的 EventHandler 又存在 Finder 先查的  EventHandler 里
              * 标记为 不合法
              */
             for (EventHandler handler : currentHandlers) {
@@ -489,10 +489,13 @@ public class Bus {
         Set<Class<?>> dispatchTypes = flattenHierarchy(event.getClass());
 
         boolean dispatched = false;
+        /**
+         * 遍历该事件 + 该事件所有父类 的Set集合
+         */
         for (Class<?> eventType : dispatchTypes) {
 
             /**
-             * 拿到 该 object所有缓存 EventHandler
+             * 拿到 该 object 所有缓存 EventHandler
              */
             Set<EventHandler> wrappers = getHandlersForEventType(eventType);
 
