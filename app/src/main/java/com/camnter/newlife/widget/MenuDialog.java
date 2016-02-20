@@ -3,7 +3,6 @@ package com.camnter.newlife.widget;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.view.View;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
@@ -60,43 +59,5 @@ public class MenuDialog extends Dialog {
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
     }
 
-    public static class DialogBuilder {
-        private static String contextHashCode;
-        private static MenuDialog dialog;
-        public static DialogBuilder ourInstance;
-
-        public static DialogBuilder getInstance(Context context) {
-            if (ourInstance == null) ourInstance = new DialogBuilder();
-            String hashCode = String.valueOf(context.hashCode());
-            /**
-             * 不同一个Activity
-             */
-            if (!hashCode.equals(String.valueOf(contextHashCode))) {
-                contextHashCode = hashCode;
-                dialog = new MenuDialog(context);
-            }
-            return ourInstance;
-        }
-
-        public DialogBuilder setCaseListenser(View.OnClickListener listener) {
-            dialog.caseTV.setOnClickListener(listener);
-            return this;
-        }
-
-        public DialogBuilder setHelpListener(View.OnClickListener listener) {
-            dialog.helpTV.setOnClickListener(listener);
-            return this;
-        }
-
-        public DialogBuilder setCanceledOnTouchOutside(boolean cancel) {
-            dialog.setCanceledOnTouchOutside(cancel);
-            return this;
-        }
-
-        public MenuDialog getDialog() {
-            return dialog;
-        }
-
-    }
 
 }
