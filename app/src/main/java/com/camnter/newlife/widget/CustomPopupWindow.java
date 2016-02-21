@@ -3,7 +3,6 @@ package com.camnter.newlife.widget;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,46 +115,6 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
             parent.getLocationOnScreen(location);
             this.showAtLocation(parent, 0, location[0] / 2 + parent.getWidth() / 2 - this.width / 6, location[1] + parent.getHeight());
         }
-    }
-
-    public static class PopupWindowBuilder {
-        private static String activityHashCode;
-        private static CustomPopupWindow popupWindow;
-        public static PopupWindowBuilder ourInstance;
-
-        public static PopupWindowBuilder getInstance(Activity activity) {
-            if (ourInstance == null) ourInstance = new PopupWindowBuilder();
-            String hashCode = String.valueOf(activity.hashCode());
-            /**
-             * 不同一个Activity
-             */
-            if (!hashCode.equals(String.valueOf(activityHashCode))) {
-                activityHashCode = hashCode;
-                popupWindow = new CustomPopupWindow(activity);
-            }
-            return ourInstance;
-        }
-
-        public PopupWindowBuilder setTouchable(boolean touchable) {
-            popupWindow.setTouchable(touchable);
-            return this;
-        }
-
-        public PopupWindowBuilder setAnimationStyle(int animationStyle) {
-            popupWindow.setAnimationStyle(animationStyle);
-            return this;
-        }
-
-        public PopupWindowBuilder setBackgroundDrawable(Drawable background) {
-            popupWindow.setBackgroundDrawable(background);
-            return this;
-        }
-
-        public CustomPopupWindow getPopupWindow() {
-            popupWindow.update();
-            return popupWindow;
-        }
-
     }
 
 }

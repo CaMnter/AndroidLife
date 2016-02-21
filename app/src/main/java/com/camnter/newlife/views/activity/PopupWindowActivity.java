@@ -68,21 +68,18 @@ public class PopupWindowActivity extends BaseAppCompatActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.popupwindow_left_tv: {
-                CustomPopupWindow.PopupWindowBuilder.getInstance(this)
-                        .getPopupWindow()
-                        .showAtDropDownLeft(this.leftTV);
+                CustomPopupWindow p = new CustomPopupWindow(this);
+                p.showAtDropDownLeft(this.leftTV);
                 break;
             }
             case R.id.popupwindow_center_tv: {
-                CustomPopupWindow.PopupWindowBuilder.getInstance(this)
-                        .getPopupWindow()
-                        .showAtDropDownCenter(this.centerTV);
+                CustomPopupWindow p = new CustomPopupWindow(this);
+                p.showAtDropDownCenter(this.centerTV);
                 break;
             }
             case R.id.popupwindow_right_tv: {
-                CustomPopupWindow.PopupWindowBuilder.getInstance(this)
-                        .getPopupWindow()
-                        .showAtDropDownRight(this.rightTV);
+                CustomPopupWindow p = new CustomPopupWindow(this);
+                p.showAtDropDownRight(this.rightTV);
                 break;
             }
         }

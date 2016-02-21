@@ -36,23 +36,22 @@ public class DialogActivity extends BaseAppCompatActivity implements View.OnClic
      */
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        this.menuDialog = MenuDialog.DialogBuilder.getInstance(this)
-                .setCaseListenser(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ToastUtils.show(DialogActivity.this, "Case", Toast.LENGTH_SHORT);
-                        DialogActivity.this.menuDialog.dismiss();
+        this.menuDialog = new MenuDialog(this);
+        this.menuDialog.setCaseListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.show(DialogActivity.this, "Case", Toast.LENGTH_SHORT);
+                DialogActivity.this.menuDialog.dismiss();
 
-                    }
-                })
-                .setHelpListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ToastUtils.show(DialogActivity.this, "Help", Toast.LENGTH_SHORT);
-                        DialogActivity.this.menuDialog.dismiss();
-                    }
-                })
-                .getDialog();
+            }
+        });
+        this.menuDialog.setHelpListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.show(DialogActivity.this, "Help", Toast.LENGTH_SHORT);
+                DialogActivity.this.menuDialog.dismiss();
+            }
+        });
     }
 
     /**

@@ -3,6 +3,7 @@ package com.camnter.newlife.widget;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.widget.TextView;
 
 import com.camnter.newlife.R;
@@ -51,6 +52,20 @@ public class MenuDialog extends Dialog {
         this.setContentView(R.layout.dialog_menu);
         this.caseTV = (TextView) this.findViewById(R.id.dialog_menu_case_tv);
         this.helpTV = (TextView) this.findViewById(R.id.dialog_menu_help_tv);
+    }
+
+    /**
+     * @param listener listener
+     */
+    public void setCaseListener(View.OnClickListener listener) {
+        this.caseTV.setOnClickListener(listener);
+    }
+
+    /**
+     * @param listener listener
+     */
+    public void setHelpListener(View.OnClickListener listener) {
+        this.helpTV.setOnClickListener(listener);
     }
 
 
