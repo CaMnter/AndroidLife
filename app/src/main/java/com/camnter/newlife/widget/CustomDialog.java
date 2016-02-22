@@ -89,53 +89,28 @@ public class CustomDialog extends Dialog {
         void onDismiss();
     }
 
-    public static class DialogBuilder {
-        private static String contextHashCode;
-        private static CustomDialog dialog;
-        public static DialogBuilder ourInstance;
+    public CustomDialog setDuration(long duration) {
+        this.duration = duration;
+        return this;
+    }
 
-        public static DialogBuilder getInstance(Context context) {
-            if (ourInstance == null) ourInstance = new DialogBuilder();
-            String hashCode = String.valueOf(context.hashCode());
-            /**
-             * 不同一个Activity
-             */
-            if (!hashCode.equals(String.valueOf(contextHashCode))) {
-                contextHashCode = hashCode;
-                dialog = new CustomDialog(context);
-            }
-            return ourInstance;
-        }
+    public CustomDialog setContent(String content) {
+        this.content = content;
+        return this;
+    }
 
-        public DialogBuilder setDuration(long duration) {
-            dialog.duration = duration;
-            return this;
-        }
+    public CustomDialog setDrawable(Drawable drawable) {
+        this.setTextDrawable(drawable);
+        return this;
+    }
 
-        public DialogBuilder setContent(String content) {
-            dialog.content = content;
-            return this;
-        }
+    public CustomDialog setCallback(DialogCallback callback) {
+        this.callback = callback;
+        return this;
+    }
 
-        public DialogBuilder setDrawable(Drawable drawable) {
-            dialog.setTextDrawable(drawable);
-            return this;
-        }
-
-        public DialogBuilder setCallback(DialogCallback callback) {
-            dialog.callback = callback;
-            return this;
-        }
-
-        public DialogBuilder setCanceledOnTouchOutside(boolean cancel) {
-            dialog.setCanceledOnTouchOutside(cancel);
-            return this;
-        }
-
-        public CustomDialog getDialog() {
-            return dialog;
-        }
-
+    public void setCanceledOnTouchOutside(boolean cancel) {
+        this.setCanceledOnTouchOutside(cancel);
     }
 
 }

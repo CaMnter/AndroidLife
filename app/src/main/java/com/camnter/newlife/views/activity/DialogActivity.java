@@ -81,18 +81,17 @@ public class DialogActivity extends BaseAppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.dialog_custom:
-                CustomDialog.DialogBuilder.getInstance(this)
-                        .setDuration(2000L)
-                        .setContent("CustomDialog")
-                        .setCanceledOnTouchOutside(false)
-                        .setCallback(new CustomDialog.DialogCallback() {
-                            @Override
-                            public void onDismiss() {
-                                ToastUtils.showCenter(DialogActivity.this, "CustomDialog dismiss");
-                            }
-                        })
-                        .getDialog()
-                        .show();
+                CustomDialog d = new CustomDialog(this);
+                d.setDuration(2000L);
+                d.setContent("CustomDialog");
+                d.setCanceledOnTouchOutside(false);
+                d.setCallback(new CustomDialog.DialogCallback() {
+                    @Override
+                    public void onDismiss() {
+                        ToastUtils.showCenter(DialogActivity.this, "CustomDialog dismiss");
+                    }
+                });
+                d.show();
                 break;
             case R.id.dialog_menu:
                 this.menuDialog.show();
