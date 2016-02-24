@@ -29,8 +29,7 @@ public class EasySlidingTabsFragmentAdapter extends FragmentPagerAdapter impleme
     public SpannableString getTabTitle(int position) {
         CharSequence title = this.getPageTitle(position);
         if (TextUtils.isEmpty(title)) return new SpannableString("");
-        SpannableString spannableString = new SpannableString(title);
-        return spannableString;
+        return new SpannableString(title);
     }
 
     /**

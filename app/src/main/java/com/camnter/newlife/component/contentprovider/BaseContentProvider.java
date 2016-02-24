@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 /**
  * Description：BaseContentProvider
@@ -106,7 +107,7 @@ public abstract class BaseContentProvider extends ContentProvider {
      * @return a Cursor or {@code null}.
      */
     @Override
-    public abstract Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder);
+    public abstract Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder);
 
     /**
      * Implement this to handle requests for the MIME type of the data at the
@@ -127,7 +128,7 @@ public abstract class BaseContentProvider extends ContentProvider {
      * @return a MIME type string, or {@code null} if there is no type.
      */
     @Override
-    public abstract String getType(Uri uri);
+    public abstract String getType(@NonNull Uri uri);
 
     /**
      * Implement this to handle requests to insert a new row.
@@ -143,7 +144,7 @@ public abstract class BaseContentProvider extends ContentProvider {
      * @return The URI for the newly inserted item.
      */
     @Override
-    public abstract Uri insert(Uri uri, ContentValues values);
+    public abstract Uri insert(@NonNull Uri uri, ContentValues values);
 
     /**
      * Implement this to handle requests to delete one or more rows.
@@ -167,7 +168,7 @@ public abstract class BaseContentProvider extends ContentProvider {
      * @throws SQLException
      */
     @Override
-    public abstract int delete(Uri uri, String selection, String[] selectionArgs);
+    public abstract int delete(@NonNull Uri uri, String selection, String[] selectionArgs);
 
     /**
      * Implement this to handle requests to update one or more rows.
@@ -188,6 +189,6 @@ public abstract class BaseContentProvider extends ContentProvider {
      * @return the number of rows affected.
      */
     @Override
-    public abstract int update(Uri uri, ContentValues values, String selection, String[] selectionArgs);
+    public abstract int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs);
 
 }

@@ -1,5 +1,6 @@
 package com.camnter.newlife.adapter.sqlite;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ public class SQLiteRecyclerViewAdapter extends EasyRecyclerViewAdapter implement
         return new int[]{R.layout.item_sql_lite_operation, R.layout.item_sql_lite_data};
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindRecycleViewHolder(EasyRecyclerViewHolder easyRecyclerViewHolder, int position) {
         int itemType = this.getRecycleViewItemType(position);

@@ -34,8 +34,8 @@ public class MyRecyclerViewAdapter extends EasyRecyclerViewAdapter {
      * 对接了onBindViewHolder
      * onBindViewHolder里的逻辑写在这
      *
-     * @param viewHolder
-     * @param position
+     * @param viewHolder  viewHolder
+     * @param position position
      */
     @Override
     public void onBindRecycleViewHolder(EasyRecyclerViewHolder viewHolder, int position) {

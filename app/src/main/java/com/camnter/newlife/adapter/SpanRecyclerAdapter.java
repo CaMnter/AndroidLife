@@ -1,6 +1,7 @@
 package com.camnter.newlife.adapter;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -125,6 +126,7 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
         return spanData.getType();
     }
 
+    @SuppressLint("SetTextI18n")
     public void setSpanContent(TextView labelTV, TextView contentTV, String content, int position) {
         SpannableStringBuilder ssb = new SpannableStringBuilder(content);
         String sub = "Save";

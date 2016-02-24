@@ -68,8 +68,8 @@ public class AutoAdjustSizeTextView extends TextView {
      * 重写setText
      * 每次setText的时候
      *
-     * @param text
-     * @param type
+     * @param text text
+     * @param type type
      */
     @Override
     public void setText(CharSequence text, BufferType type) {

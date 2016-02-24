@@ -6,6 +6,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 /**
@@ -52,7 +53,7 @@ public class MessageContentProvider extends BaseContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         int match = messageUriMatcher.match(uri);
         switch (match) {
             case MESSAGE:
@@ -109,7 +110,7 @@ public class MessageContentProvider extends BaseContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         SQLiteDatabase db = this.messageSQLiteHelper.getWritableDatabase();
         int count;
         switch (messageUriMatcher.match(uri)) {

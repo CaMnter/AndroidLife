@@ -37,7 +37,7 @@ public class DynamicReceiver extends BroadcastReceiver {
     /**
      * 提供给外部注册广播
      *
-     * @param context
+     * @param context context
      */
     public static void register(Context context) {
         IntentFilter intentFilter = new IntentFilter();
