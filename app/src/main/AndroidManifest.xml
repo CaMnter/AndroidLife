@@ -161,6 +161,9 @@
         <activity
             android:name=".views.activity.OttoActivity"
             android:label="@string/app_label" />
+        <activity
+            android:name=".views.activity.AnimatorActivity"
+            android:label="@string/app_label" />
 
         <activity
             android:name=".framework.rxandroid.RxSyncActivity"
