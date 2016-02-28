@@ -1,4 +1,4 @@
-package com.camnter.newlife.utils;
+package com.camnter.newlife.utils.other;
 
 import android.app.Activity;
 
