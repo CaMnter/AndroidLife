@@ -125,6 +125,7 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(SpanActivity.class);
         this.classes.add(OttoActivity.class);
         this.classes.add(AnimatorActivity.class);
+        this.classes.add(CanvasClipViewActivity.class);
 
         this.adapter = new MainRecyclerViewAdapter();
         this.adapter.setList(classes);
