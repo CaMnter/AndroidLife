@@ -61,8 +61,8 @@ public class DynamicReceiver extends BroadcastReceiver {
         Notification notification = new Notification.Builder(context)
                 .setContentTitle("StaticBroadcastReceiver")
                 .setContentText(message)
-                .setSmallIcon(R.mipmap.ic_mm_1)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_mm_1))
+                .setSmallIcon(R.mipmap.ic_mm_normal)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_mm_normal))
                 .setContentIntent(pendingIntent)
                 .build();
         notificationManager.notify(206, notification);

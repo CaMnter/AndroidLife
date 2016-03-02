@@ -263,13 +263,13 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
             case IMAGE_SPAN: {
                 labelTV.setText("ImageSpan");
                 ssb.replace(start, start + sub.length(), " Save");
-                ssb.setSpan(new ImageSpan(this.activity, R.mipmap.ic_mm_1, ImageSpan.ALIGN_BASELINE), 0, 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                ssb.setSpan(new ImageSpan(this.activity, R.mipmap.ic_mm_normal, ImageSpan.ALIGN_BASELINE), 0, 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                 contentTV.setText(ssb);
                 break;
             }
             case ICON_MARGIN_SPAN: {
                 labelTV.setText("IconMarginSpan");
-                Bitmap bitmap = BitmapFactory.decodeResource(this.activity.getResources(), R.mipmap.ic_mm_1);
+                Bitmap bitmap = BitmapFactory.decodeResource(this.activity.getResources(), R.mipmap.ic_mm_normal);
                 ssb.setSpan(new IconMarginSpan(bitmap, 60), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 //bitmap.recycle();
                 contentTV.setText(ssb);
@@ -283,7 +283,7 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
             }
             case DRAWABLE_MARGIN_SPAN: {
                 labelTV.setText("DrawableMarginSpan");
-                ssb.setSpan(new DrawableMarginSpan(ResourcesUtils.getDrawable(this.activity, R.mipmap.ic_mm_1), 6), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                ssb.setSpan(new DrawableMarginSpan(ResourcesUtils.getDrawable(this.activity, R.mipmap.ic_mm_normal), 6), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 contentTV.setText(ssb);
                 break;
             }
