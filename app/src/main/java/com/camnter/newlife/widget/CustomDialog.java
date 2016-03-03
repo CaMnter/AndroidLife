@@ -109,8 +109,4 @@ public class CustomDialog extends Dialog {
         return this;
     }
 
-    public void setCanceledOnTouchOutside(boolean cancel) {
-        this.setCanceledOnTouchOutside(cancel);
-    }
-
 }
