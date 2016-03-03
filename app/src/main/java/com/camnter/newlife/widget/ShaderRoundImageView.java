@@ -45,7 +45,6 @@ public class ShaderRoundImageView extends ImageView {
 
     private static final int DEFAULT_BORDER_RADIUS = 8;
 
-
     private int mRadius;
     private int mBorderRadius;
     private Paint mBitmapPaint;
@@ -53,6 +52,11 @@ public class ShaderRoundImageView extends ImageView {
     private BitmapShader mBitmapShader;
     private int mWidth;
     private RectF mRoundRect;
+
+    public ShaderRoundImageView(Context context) {
+        super(context);
+        this.init(context, null);
+    }
 
     public ShaderRoundImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -75,6 +79,7 @@ public class ShaderRoundImageView extends ImageView {
         this.mBitmapPaint = new Paint();
         this.mBitmapPaint.setAntiAlias(true);
 
+        if (attrs == null) return;
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ShaderRoundImageView);
         this.imageType = typedArray.getInt(R.styleable.ShaderRoundImageView_imageType, CIRCLE) == CIRCLE ? CIRCLE : ROUND;
         this.mBorderRadius = typedArray.getDimensionPixelSize(
@@ -107,12 +112,12 @@ public class ShaderRoundImageView extends ImageView {
             return;
         this.setPaintShader();
         switch (this.imageType) {
-            case CIRCLE: {
-                canvas.drawCircle(this.mRadius, this.mRadius, this.mRadius, this.mBitmapPaint);
-                break;
-            }
             case ROUND: {
                 canvas.drawRoundRect(this.mRoundRect, this.mBorderRadius, this.mBorderRadius, this.mBitmapPaint);
+                break;
+            }
+            case CIRCLE: {
+                canvas.drawCircle(this.mRadius, this.mRadius, this.mRadius, this.mBitmapPaint);
                 break;
             }
         }
@@ -126,13 +131,12 @@ public class ShaderRoundImageView extends ImageView {
         this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         float scale = 1.0f;
         switch (this.imageType) {
-            case CIRCLE: {
-                int bitmapSize = Math.min(bitmap.getWidth(), bitmap.getHeight());
-                scale = this.mWidth * 1.0f / bitmapSize;
-                break;
-            }
             case ROUND: {
                 scale = Math.max(this.getWidth() * 1.0f / bitmap.getWidth(), this.getHeight() * 1.0f / bitmap.getHeight());
+                break;
+            }
+            case CIRCLE: {
+                scale = this.mWidth * 1.0f / Math.min(bitmap.getWidth(), bitmap.getHeight());
                 break;
             }
         }

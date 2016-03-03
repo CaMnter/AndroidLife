@@ -168,7 +168,10 @@
             android:name=".views.activity.CanvasClipViewActivity"
             android:label="@string/app_label" />
         <activity
-            android:name=".views.activity.ShaderRoundImageViewActivity"
+            android:name=".views.activity.RoundImageViewActivity"
+            android:label="@string/app_label" />
+        <activity
+            android:name="com.camnter.xfermode.XfermodesActivity"
             android:label="@string/app_label" />
 
         <activity

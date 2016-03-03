@@ -30,6 +30,7 @@ import com.camnter.newlife.views.activity.util.DateUtilActivity;
 import com.camnter.newlife.views.activity.util.DeviceUtilActivity;
 import com.camnter.newlife.views.activity.util.ReflectionUtilActivity;
 import com.camnter.newlife.views.activity.util.ResourcesUtilActivity;
+import com.camnter.xfermode.XfermodesActivity;
 
 import java.util.ArrayList;
 
@@ -126,7 +127,8 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(OttoActivity.class);
         this.classes.add(AnimatorActivity.class);
         this.classes.add(CanvasClipViewActivity.class);
-        this.classes.add(ShaderRoundImageViewActivity.class);
+        this.classes.add(RoundImageViewActivity.class);
+        this.classes.add(XfermodesActivity.class);
 
         this.adapter = new MainRecyclerViewAdapter();
         this.adapter.setList(classes);

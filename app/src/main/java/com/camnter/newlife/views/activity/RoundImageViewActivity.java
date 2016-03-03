@@ -10,7 +10,7 @@ import com.camnter.newlife.core.BaseAppCompatActivity;
  * Created by：CaMnter
  * Time：2016-03-02 14:56
  */
-public class ShaderRoundImageViewActivity extends BaseAppCompatActivity {
+public class RoundImageViewActivity extends BaseAppCompatActivity {
     /**
      * Fill in layout id
      *

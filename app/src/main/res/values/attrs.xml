@@ -15,4 +15,13 @@
         </attr>
         <attr name="borderRadius" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="XfermodeRoundImageView">
+        <attr name="xfermodeImageType">
+            <enum name="round" value="2601" />
+            <enum name="circle" value="2602" />
+        </attr>
+        <attr name="xfermodeBorderRadius" format="dimension" />
+    </declare-styleable>
+
 </resources>
