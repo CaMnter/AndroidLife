@@ -128,7 +128,6 @@ public class XfermodeRoundImageView extends ImageView {
             this.mBitmapPaint.reset();
             super.onDraw(canvas);
         }
-
     }
 
     @Override
