@@ -294,7 +294,27 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
             }
             case R.id.animator_evaluator_tv:
                 RectCoordinates newRectCoordinates = new RectCoordinates(this.evaluatorIv.getWidth(), this.evaluatorIv.getHeight());
-                this.evaluatorIv.startAnimation(newRectCoordinates);
+                this.evaluatorIv.startAnimation(newRectCoordinates, new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        evaluatorTv.setEnabled(false);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        evaluatorTv.setEnabled(true);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        evaluatorTv.setEnabled(true);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
                 break;
         }
     }

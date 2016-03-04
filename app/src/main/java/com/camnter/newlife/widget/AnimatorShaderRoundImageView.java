@@ -1,5 +1,6 @@
 package com.camnter.newlife.widget;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -44,7 +45,7 @@ public class AnimatorShaderRoundImageView extends ShaderRoundImageView {
         super.onDraw(canvas);
     }
 
-    public void startAnimation(RectCoordinates newCoordinates) {
+    public void startAnimation(RectCoordinates newCoordinates,Animator.AnimatorListener listener) {
         RectCoordinates oldCoordinates = new RectCoordinates(
                 this.mRoundRect.left,
                 this.mRoundRect.top
@@ -57,6 +58,7 @@ public class AnimatorShaderRoundImageView extends ShaderRoundImageView {
                 invalidate();
             }
         });
+        valueAnimator.addListener(listener);
         valueAnimator.setInterpolator(new BounceInterpolator());
         valueAnimator.setDuration(2666);
         valueAnimator.start();
