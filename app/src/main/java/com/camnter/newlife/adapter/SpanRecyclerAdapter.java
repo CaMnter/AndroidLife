@@ -54,10 +54,6 @@ import com.camnter.newlife.bean.SpanData;
 import com.camnter.newlife.utils.ResourcesUtils;
 import com.camnter.newlife.widget.span.ClickableSpanNoUnderline;
 
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
-
 /**
  * Description：SpanRecyclerAdapter
  * Created by：CaMnter
@@ -160,12 +156,9 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     colorStateList = this.activity.getColorStateList(R.color.selector_apperarance_span);
                 } else {
-                    try {
-                        colorStateList = ColorStateList.createFromXml(this.activity.getResources(), this.activity.getResources().getXml(R.color.selector_apperarance_span));
-                    } catch (XmlPullParserException | IOException e) {
-                        e.printStackTrace();
-                    }
+                    colorStateList = this.activity.getResources().getColorStateList(R.color.selector_apperarance_span);
                 }
+
                 ssb.setSpan(new TextAppearanceSpan("serif", Typeface.BOLD_ITALIC, this.activity.getResources().getDimensionPixelSize(R.dimen.text_appearance_span), colorStateList, colorStateList), start, start + sub.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                 contentTV.setText(ssb);
                 break;

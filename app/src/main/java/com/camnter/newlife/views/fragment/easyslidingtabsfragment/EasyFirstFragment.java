@@ -15,9 +15,6 @@ public class EasyFirstFragment extends BaseFragment {
 
     private static EasyFirstFragment instance;
 
-    private EasyFirstFragment() {
-    }
-
     public static EasyFirstFragment getInstance() {
         if (instance == null) instance = new EasyFirstFragment();
         return instance;

@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.getkeepsafe.dexcount'
 
-
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
 repositories {
 //    maven { url 'http://uk.maven.org/maven2' }
 //    maven { url 'https://raw.githubusercontent.com/umeng/mvn-repo-umeng/master/repository' }
@@ -20,10 +23,32 @@ android {
         versionName "1.0"
     }
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        debug {
+            println("====== buildTypes.debug ======")
+            signingConfig signingConfigs.debug
         }
+        release {
+            println("====== buildTypes.release ======")
+            //开启或者关闭 混淆 。
+//            minifyEnabled true
+//            shrinkResources true
+//            proguardFiles file('proguard-rules.pro')
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        // EasyGank_版本_yyyy-MM-dd_渠道.apk
+                        def fileName = "AndroidLife_v${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
+                        println("====== buildTypes.output ======")
+                        println("AppName: " + fileName)
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    } else {
+
+                    }
+                }
+            }
+        }
+
     }
     //渠道Flavors
     productFlavors {

@@ -1,5 +1,6 @@
 package com.camnter.newlife.views.fragment.tablayoutfragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 
@@ -15,6 +16,7 @@ public class TabLayoutSecondFragment extends BaseFragment {
 
     private static TabLayoutSecondFragment instance;
 
+    @SuppressLint("ValidFragment")
     private TabLayoutSecondFragment() {
     }
 

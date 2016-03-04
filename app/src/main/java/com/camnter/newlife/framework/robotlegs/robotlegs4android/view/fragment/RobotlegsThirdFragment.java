@@ -1,5 +1,7 @@
 package com.camnter.newlife.framework.robotlegs.robotlegs4android.view.fragment;
 
+import android.annotation.SuppressLint;
+
 import com.camnter.newlife.R;
 import com.camnter.robotlegs4android.views.RobotlegsFragment;
 
@@ -13,6 +15,7 @@ public class RobotlegsThirdFragment extends RobotlegsFragment {
 
     private static RobotlegsThirdFragment instance;
 
+    @SuppressLint("ValidFragment")
     private RobotlegsThirdFragment() {
     }
 

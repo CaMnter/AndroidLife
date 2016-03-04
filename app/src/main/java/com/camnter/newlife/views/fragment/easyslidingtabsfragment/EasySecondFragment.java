@@ -1,5 +1,6 @@
 package com.camnter.newlife.views.fragment.easyslidingtabsfragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ public class EasySecondFragment extends BaseFragment {
 
     private static EasySecondFragment instance;
 
+    @SuppressLint("ValidFragment")
     private EasySecondFragment() {
     }
 

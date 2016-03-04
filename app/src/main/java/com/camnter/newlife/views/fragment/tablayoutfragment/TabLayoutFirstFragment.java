@@ -1,5 +1,6 @@
 package com.camnter.newlife.views.fragment.tablayoutfragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,6 +26,7 @@ public class TabLayoutFirstFragment extends BaseFragment {
     private static TabLayoutFirstFragment instance;
     private EasyRecyclerView firstRV;
 
+    @SuppressLint("ValidFragment")
     private TabLayoutFirstFragment() {
     }
 
