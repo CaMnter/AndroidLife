@@ -35,7 +35,7 @@ public class DeviceUtilActivity extends BaseAppCompatActivity {
 
     private TextView metaDataTV;
 
-    public static final int READ_PHONE_STATE_REQUEST = 61;
+    public static final int REQUEST_READ_PHONE_STATE = 61;
 
     /**
      * Fill in layout id
@@ -97,7 +97,7 @@ public class DeviceUtilActivity extends BaseAppCompatActivity {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_PHONE_STATE},
-                        READ_PHONE_STATE_REQUEST);
+                        REQUEST_READ_PHONE_STATE);
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
                 // result of the request.
@@ -125,7 +125,7 @@ public class DeviceUtilActivity extends BaseAppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
-            case READ_PHONE_STATE_REQUEST: {
+            case REQUEST_READ_PHONE_STATE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
