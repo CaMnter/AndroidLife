@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.utils.animation.RectCoordinates;
+import com.camnter.newlife.widget.AnimatorShaderRoundImageView;
 
 /**
  * Description：CaMnter
@@ -29,6 +31,8 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
     private TextView translationTv;
     private TextView scaleTv;
     private TextView setTv;
+    private TextView evaluatorTv;
+    private AnimatorShaderRoundImageView evaluatorIv;
 
     private SurfaceView valueSv;
     private SurfaceHolder holder;
@@ -69,6 +73,8 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
         this.scaleTv = (TextView) this.findViewById(R.id.animator_scale_tv);
         this.setTv = (TextView) this.findViewById(R.id.animator_set_tv);
         this.valueSv = (SurfaceView) this.findViewById(R.id.animator_sv);
+        this.evaluatorIv = (AnimatorShaderRoundImageView) this.findViewById(R.id.animator_evaluator_iv);
+        this.evaluatorTv = (TextView) this.findViewById(R.id.animator_evaluator_tv);
         this.holder = this.valueSv.getHolder();
     }
 
@@ -83,6 +89,7 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
         this.translationTv.setOnClickListener(this);
         this.scaleTv.setOnClickListener(this);
         this.setTv.setOnClickListener(this);
+        this.evaluatorTv.setOnClickListener(this);
     }
 
     /**
@@ -270,10 +277,10 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
                 break;
             case R.id.animator_set_tv: {
                 // x y
-                int[] translationTvLocation = new int[2];
+                int[] setTvLocation = new int[2];
                 //获取在整个屏幕内的绝对坐标
-                this.setTv.getLocationOnScreen(translationTvLocation);
-                int totalHeight = this.setTv.getHeight() + translationTvLocation[1];
+                this.setTv.getLocationOnScreen(setTvLocation);
+                int totalHeight = this.setTv.getHeight() + setTvLocation[1];
                 float tY = this.setTv.getTranslationY();
                 ObjectAnimator translation = ObjectAnimator.ofFloat(this.setTv, "translationY", tY, -totalHeight, tY, -totalHeight, tY);
                 ObjectAnimator rotation = ObjectAnimator.ofFloat(this.setTv, "rotation", 0f, 180f, 0f, 180f, 0f);
@@ -285,6 +292,10 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
                 set.start();
                 break;
             }
+            case R.id.animator_evaluator_tv:
+                RectCoordinates newRectCoordinates = new RectCoordinates(this.evaluatorIv.getWidth(), this.evaluatorIv.getHeight());
+                this.evaluatorIv.startAnimation(newRectCoordinates);
+                break;
         }
     }
 

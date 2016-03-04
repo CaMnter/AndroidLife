@@ -45,13 +45,13 @@ public class ShaderRoundImageView extends ImageView {
 
     private static final int DEFAULT_BORDER_RADIUS = 8;
 
-    private int mRadius;
+    protected int mRadius;
     private int mBorderRadius;
     private Paint mBitmapPaint;
     private Matrix mMatrix;
     private BitmapShader mBitmapShader;
     private int mWidth;
-    private RectF mRoundRect;
+    protected RectF mRoundRect;
 
     public ShaderRoundImageView(Context context) {
         super(context);
