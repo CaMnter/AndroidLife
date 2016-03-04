@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
-import com.camnter.newlife.utils.animation.RectCoordinates;
+import com.camnter.newlife.utils.animation.RectAttribute;
 import com.camnter.newlife.widget.AnimatorShaderRoundImageView;
 
 /**
@@ -293,8 +293,8 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
                 break;
             }
             case R.id.animator_evaluator_tv:
-                RectCoordinates newRectCoordinates = new RectCoordinates(this.evaluatorIv.getWidth(), this.evaluatorIv.getHeight());
-                this.evaluatorIv.startAnimation(newRectCoordinates, new Animator.AnimatorListener() {
+                RectAttribute newRectAttribute = new RectAttribute(this.evaluatorIv.getWidth() / 2, this.evaluatorIv.getHeight() / 2, this.evaluatorIv.getWidth() / 2, this.evaluatorIv.getHeight() / 2, 0.0f);
+                this.evaluatorIv.startAnimation(newRectAttribute, new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
                         evaluatorTv.setEnabled(false);

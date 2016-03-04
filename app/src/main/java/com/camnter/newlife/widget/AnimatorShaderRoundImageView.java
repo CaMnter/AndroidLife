@@ -4,12 +4,11 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.animation.BounceInterpolator;
 
-import com.camnter.newlife.utils.animation.RectCoordinates;
-import com.camnter.newlife.utils.animation.RectCoordinatesEvaluator;
+import com.camnter.newlife.utils.animation.RectAttribute;
+import com.camnter.newlife.utils.animation.RectAttributeEvaluator;
 
 /**
  * Description：AnimatorShaderRoundImageView
@@ -19,7 +18,7 @@ import com.camnter.newlife.utils.animation.RectCoordinatesEvaluator;
 public class AnimatorShaderRoundImageView extends ShaderRoundImageView {
 
 
-    private RectCoordinates currentCoordinates;
+    private RectAttribute currentCoordinates;
 
     public AnimatorShaderRoundImageView(Context context) {
         super(context);
@@ -40,21 +39,28 @@ public class AnimatorShaderRoundImageView extends ShaderRoundImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         if (currentCoordinates != null) {
-            this.mRoundRect = new RectF(this.currentCoordinates.left, this.currentCoordinates.top, this.getWidth(), this.getHeight());
+            this.mRoundRect.left = this.currentCoordinates.left;
+            this.mRoundRect.top = this.currentCoordinates.top;
+            this.mRoundRect.right = this.currentCoordinates.right;
+            this.mRoundRect.bottom = this.currentCoordinates.bottom;
+            this.mBorderRadius = this.currentCoordinates.radius;
         }
         super.onDraw(canvas);
     }
 
-    public void startAnimation(RectCoordinates newCoordinates,Animator.AnimatorListener listener) {
-        RectCoordinates oldCoordinates = new RectCoordinates(
+    public void startAnimation(RectAttribute newCoordinates, Animator.AnimatorListener listener) {
+        RectAttribute oldCoordinates = new RectAttribute(
                 this.mRoundRect.left,
-                this.mRoundRect.top
+                this.mRoundRect.top,
+                this.mRoundRect.right,
+                this.mRoundRect.bottom,
+                this.mBorderRadius
         );
-        ValueAnimator valueAnimator = ValueAnimator.ofObject(new RectCoordinatesEvaluator(), oldCoordinates, newCoordinates, oldCoordinates);
+        ValueAnimator valueAnimator = ValueAnimator.ofObject(new RectAttributeEvaluator(), oldCoordinates, newCoordinates, oldCoordinates);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                currentCoordinates = (RectCoordinates) animation.getAnimatedValue();
+                currentCoordinates = (RectAttribute) animation.getAnimatedValue();
                 invalidate();
             }
         });

@@ -46,7 +46,7 @@ public class ShaderRoundImageView extends ImageView {
     private static final int DEFAULT_BORDER_RADIUS = 8;
 
     protected int mRadius;
-    private int mBorderRadius;
+    protected float mBorderRadius;
     private Paint mBitmapPaint;
     private Matrix mMatrix;
     private BitmapShader mBitmapShader;
@@ -154,7 +154,7 @@ public class ShaderRoundImageView extends ImageView {
         Bundle bundle = new Bundle();
         bundle.putParcelable(STATE_INSTANCE, super.onSaveInstanceState());
         bundle.putInt(STATE_TYPE, this.imageType);
-        bundle.putInt(STATE_BORDER_RADIUS, this.mBorderRadius);
+        bundle.putFloat(STATE_BORDER_RADIUS, this.mBorderRadius);
         return bundle;
     }
 
