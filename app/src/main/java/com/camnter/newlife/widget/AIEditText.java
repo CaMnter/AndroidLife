@@ -64,7 +64,7 @@ public class AIEditText extends AppCompatEditText implements View.OnTouchListene
      * @param context
      */
     private void init(Context context) {
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.abc_ic_clear_mtrl_alpha);
+        Drawable drawable = ContextCompat.getDrawable(context, R.mipmap.ic_clear_mtrl_alpha);
         Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
         DrawableCompat.setTint(wrappedDrawable, super.getCurrentHintTextColor());
         this.mClearDrawable = wrappedDrawable;

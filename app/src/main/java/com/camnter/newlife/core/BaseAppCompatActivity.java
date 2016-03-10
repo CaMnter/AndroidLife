@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.camnter.newlife.R;
 import com.camnter.newlife.utils.ToastUtils;
 
 /**
@@ -72,7 +71,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
-        this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//        this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     /**
@@ -87,7 +86,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     public void startActivity(Intent intent, Bundle options) {
         super.startActivity(intent, options);
-        this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//        this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     /**
@@ -103,7 +102,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
         super.startActivityForResult(intent, requestCode, options);
-        this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//        this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     /**
@@ -113,7 +112,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
-        this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//        this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     /**
@@ -124,7 +123,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+//        this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     /*********
