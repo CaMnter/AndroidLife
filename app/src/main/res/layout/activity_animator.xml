@@ -87,5 +87,13 @@
             android:src="@mipmap/ic_mm_normal"
             app:imageType="round" />
 
+        <TextView
+            android:id="@+id/animator_property_tv"
+            style="@style/TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/animator_evaluator_tv"
+            android:text="AnimatorProperty" />
+
     </RelativeLayout>
 </ScrollView>

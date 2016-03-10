@@ -7,6 +7,7 @@ import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -32,6 +33,7 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
     private TextView scaleTv;
     private TextView setTv;
     private TextView evaluatorTv;
+    private TextView propertyTv;
     private AnimatorShaderRoundImageView evaluatorIv;
 
     private SurfaceView valueSv;
@@ -75,6 +77,7 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
         this.valueSv = (SurfaceView) this.findViewById(R.id.animator_sv);
         this.evaluatorIv = (AnimatorShaderRoundImageView) this.findViewById(R.id.animator_evaluator_iv);
         this.evaluatorTv = (TextView) this.findViewById(R.id.animator_evaluator_tv);
+        this.propertyTv = (TextView) this.findViewById(R.id.animator_property_tv);
         this.holder = this.valueSv.getHolder();
     }
 
@@ -90,6 +93,7 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
         this.scaleTv.setOnClickListener(this);
         this.setTv.setOnClickListener(this);
         this.evaluatorTv.setOnClickListener(this);
+        this.propertyTv.setOnClickListener(this);
     }
 
     /**
@@ -227,7 +231,7 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
      * @param v The view that was clicked.
      */
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.animator_value_tv:
                 this.reset();
@@ -316,6 +320,32 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
                     }
                 });
                 break;
+            case R.id.animator_property_tv: {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+                    v.animate().alpha(0.0f).setDuration(3000).setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            v.setEnabled(false);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            v.setEnabled(true);
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+                }
+                break;
+            }
         }
     }
 
