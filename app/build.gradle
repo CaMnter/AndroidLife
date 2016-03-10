@@ -53,6 +53,7 @@ dependencies {
     compile 'com.camnter.easyslidingtabs:easyslidingtabs:0.2.1'
     compile 'com.camnter.easyrecyclerview:easyrecyclerview:1.0.1'
     compile 'com.camnter.robotlegs4android:robotlegs4android:1.0'
+    compile 'com.camnter.easyarcloading:easyarcloading:1.0'
 
     // ReactiveX
     compile 'io.reactivex:rxandroid:1.0.1'

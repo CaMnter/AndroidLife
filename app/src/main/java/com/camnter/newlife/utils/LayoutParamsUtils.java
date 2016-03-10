@@ -3,6 +3,7 @@ package com.camnter.newlife.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -68,8 +69,7 @@ public class LayoutParamsUtils {
      * @return int
      */
     public static int dp2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
     }
 
     /**
