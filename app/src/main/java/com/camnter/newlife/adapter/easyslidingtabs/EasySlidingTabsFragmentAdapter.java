@@ -53,7 +53,7 @@ public class EasySlidingTabsFragmentAdapter extends FragmentPagerAdapter impleme
     /**
      * Return the Fragment associated with a specified position.
      *
-     * @param position
+     * @param position position
      */
     @Override
     public Fragment getItem(int position) {

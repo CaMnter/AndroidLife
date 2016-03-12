@@ -144,7 +144,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     /**
      * 查询数据
      *
-     * @return
+     * @return List list
      */
     public List<SQLiteData> queryAll() {
         List<SQLiteData> allData = new ArrayList<>();

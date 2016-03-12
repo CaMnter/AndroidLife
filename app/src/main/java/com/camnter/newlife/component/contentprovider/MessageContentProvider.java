@@ -66,7 +66,7 @@ public class MessageContentProvider extends BaseContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
         SQLiteDatabase db = this.messageSQLiteHelper.getWritableDatabase();
         long id;
         switch (messageUriMatcher.match(uri)) {
@@ -86,7 +86,7 @@ public class MessageContentProvider extends BaseContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase db = this.messageSQLiteHelper.getWritableDatabase();
         int count;
         switch (messageUriMatcher.match(uri)) {
@@ -134,7 +134,7 @@ public class MessageContentProvider extends BaseContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = this.messageSQLiteHelper.getReadableDatabase();
         Cursor cursor;
         switch (messageUriMatcher.match(uri)) {

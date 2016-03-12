@@ -152,7 +152,7 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
             }
             case TEXT_APPERARANCE_SPAN: {
                 labelTV.setText("TextAppearanceSpan");
-                ColorStateList colorStateList = null;
+                ColorStateList colorStateList;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     colorStateList = this.activity.getColorStateList(R.color.selector_apperarance_span);
                 } else {
@@ -358,10 +358,6 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
 
         public SpanClickableSpan(int color, OnClickListener onClickListener) {
             super(color, onClickListener);
-        }
-
-        public SpanClickableSpan(OnClickListener onClickListener) {
-            super(onClickListener);
         }
 
     }
