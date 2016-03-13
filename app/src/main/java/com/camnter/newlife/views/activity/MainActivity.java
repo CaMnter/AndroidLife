@@ -129,6 +129,7 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(CanvasClipViewActivity.class);
         this.classes.add(RoundImageViewActivity.class);
         this.classes.add(XfermodesActivity.class);
+        this.classes.add(EasyArcLoadingActivity.class);
 
         this.adapter = new MainRecyclerViewAdapter();
         this.adapter.setList(classes);
