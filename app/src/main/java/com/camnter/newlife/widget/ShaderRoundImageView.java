@@ -49,8 +49,7 @@ public class ShaderRoundImageView extends ImageView {
     protected float mBorderRadius;
     private Paint mBitmapPaint;
     private Matrix mMatrix;
-    private BitmapShader mBitmapShader;
-    private int mWidth;
+    private int mSide;
     protected RectF mRoundRect;
 
     public ShaderRoundImageView(Context context) {
@@ -93,9 +92,9 @@ public class ShaderRoundImageView extends ImageView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (this.imageType == CIRCLE) {
-            this.mWidth = Math.min(this.getMeasuredWidth(), this.getMeasuredHeight());
-            this.mRadius = this.mWidth / 2;
-            this.setMeasuredDimension(this.mWidth, this.mWidth);
+            this.mSide = Math.min(this.getMeasuredWidth(), this.getMeasuredHeight());
+            this.mRadius = this.mSide / 2;
+            this.setMeasuredDimension(this.mSide, this.mSide);
         }
     }
 
@@ -128,7 +127,7 @@ public class ShaderRoundImageView extends ImageView {
         if (drawable == null) return;
 
         Bitmap bitmap = this.drawableToBitmap(drawable);
-        this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        BitmapShader mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         float scale = 1.0f;
         switch (this.imageType) {
             case ROUND: {
@@ -136,13 +135,13 @@ public class ShaderRoundImageView extends ImageView {
                 break;
             }
             case CIRCLE: {
-                scale = this.mWidth * 1.0f / Math.min(bitmap.getWidth(), bitmap.getHeight());
+                scale = this.mSide * 1.0f / Math.min(bitmap.getWidth(), bitmap.getHeight());
                 break;
             }
         }
         this.mMatrix.setScale(scale, scale);
-        this.mBitmapShader.setLocalMatrix(this.mMatrix);
-        this.mBitmapPaint.setShader(this.mBitmapShader);
+        mBitmapShader.setLocalMatrix(this.mMatrix);
+        this.mBitmapPaint.setShader(mBitmapShader);
     }
 
     private static final String STATE_INSTANCE = "state_instance";

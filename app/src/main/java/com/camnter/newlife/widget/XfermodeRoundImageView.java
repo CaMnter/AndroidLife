@@ -91,8 +91,8 @@ public class XfermodeRoundImageView extends ImageView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (this.imageType == CIRCLE) {
-            int width = Math.min(this.getMeasuredWidth(), this.getMeasuredHeight());
-            this.setMeasuredDimension(width, width);
+            int side = Math.min(this.getMeasuredWidth(), this.getMeasuredHeight());
+            this.setMeasuredDimension(side, side);
         }
     }
 
