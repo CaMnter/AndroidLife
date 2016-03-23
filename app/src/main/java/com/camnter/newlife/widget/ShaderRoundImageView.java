@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.ImageView;
 
@@ -52,6 +53,8 @@ public class ShaderRoundImageView extends ImageView {
     private int mSide;
     protected RectF mRoundRect;
 
+    private DisplayMetrics mMetrics;
+
     public ShaderRoundImageView(Context context) {
         super(context);
         this.init(context, null);
@@ -77,13 +80,14 @@ public class ShaderRoundImageView extends ImageView {
         this.mMatrix = new Matrix();
         this.mBitmapPaint = new Paint();
         this.mBitmapPaint.setAntiAlias(true);
+        this.mMetrics = this.getResources().getDisplayMetrics();
 
         if (attrs == null) return;
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ShaderRoundImageView);
         this.imageType = typedArray.getInt(R.styleable.ShaderRoundImageView_imageType, CIRCLE) == CIRCLE ? CIRCLE : ROUND;
-        this.mBorderRadius = typedArray.getDimensionPixelSize(
+        this.mBorderRadius = typedArray.getDimension(
                 R.styleable.ShaderRoundImageView_borderRadius,
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_BORDER_RADIUS, this.getResources().getDisplayMetrics())
+                this.dp2px(DEFAULT_BORDER_RADIUS)
         );
         typedArray.recycle();
     }
@@ -195,7 +199,7 @@ public class ShaderRoundImageView extends ImageView {
     }
 
     public void setBorderRadius(int borderRadius) {
-        int px = this.dp2px(borderRadius);
+        float px = this.dp2px(borderRadius);
         if (this.mBorderRadius != px) {
             this.mBorderRadius = px;
             this.invalidate();
@@ -209,8 +213,8 @@ public class ShaderRoundImageView extends ImageView {
         }
     }
 
-    public int dp2px(int dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, this.getResources().getDisplayMetrics());
+    public float dp2px(int dp) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, this.mMetrics);
     }
 
 }
