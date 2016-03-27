@@ -14,42 +14,42 @@
         <com.camnter.easyarcloading.EasyArcLoading
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_margin="16dp" />
+            android:layout_margin="16dp"/>
 
         <com.camnter.easyarcloading.EasyArcLoading
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:layout_margin="16dp" />
+            android:layout_margin="16dp"/>
 
         <com.camnter.easyarcloading.EasyArcLoading
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp" />
+            android:layout_margin="16dp"/>
 
         <com.camnter.easyarcloading.EasyArcLoading
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:layout_margin="16dp" />
+            android:layout_margin="16dp"/>
 
         <com.camnter.easyarcloading.EasyArcLoading
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             app:eastArcExternalColor="#ff4DB849"
-            app:eastArcInternalColor="#ffFBD20B" />
+            app:eastArcInternalColor="#ffFBD20B"/>
 
         <com.camnter.easyarcloading.EasyArcLoading
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             app:eastArcExternalWidth="1.5dp"
-            app:eastArcInternalWidth="1dp" />
+            app:eastArcInternalWidth="1dp"/>
 
         <com.camnter.easyarcloading.EasyArcLoading
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            app:easyArcPadding="12dp" />
+            app:easyArcPadding="12dp"/>
 
     </LinearLayout>
 

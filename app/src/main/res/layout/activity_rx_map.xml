@@ -8,27 +8,27 @@
         android:id="@+id/rx_map_one_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp" />
+        android:padding="16dp"/>
 
     <TextView
         android:id="@+id/rx_map_two_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/rx_map_one_tv"
-        android:padding="16dp" />
+        android:padding="16dp"/>
 
     <TextView
         android:id="@+id/rx_map_thr_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/rx_map_two_tv"
-        android:padding="16dp" />
+        android:padding="16dp"/>
 
     <TextView
         android:id="@+id/rx_map_fou_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/rx_map_thr_tv"
-        android:padding="16dp" />
+        android:padding="16dp"/>
 
 </LinearLayout>

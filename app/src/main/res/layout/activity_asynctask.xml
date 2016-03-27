@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="10dp" />
+        android:padding="10dp"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -18,13 +18,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:padding="10dp" />
+        android:padding="10dp"/>
 
     <Button
         android:id="@+id/start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:text="开始" />
+        android:text="开始"/>
 
 </LinearLayout>

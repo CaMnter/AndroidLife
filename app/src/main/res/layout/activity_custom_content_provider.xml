@@ -6,6 +6,6 @@
     <com.camnter.easyrecyclerview.widget.EasyRecyclerView
         android:id="@+id/provider_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

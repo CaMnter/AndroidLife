@@ -17,14 +17,14 @@
             android:layout_height="wrap_content"
             android:text="经度："
             android:textColor="@color/themeColor"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/location_longitude_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
     </LinearLayout>
 
@@ -39,14 +39,14 @@
             android:layout_height="wrap_content"
             android:text="纬度："
             android:textColor="@color/themeColor"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/location_latitude_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
     </LinearLayout>
 
@@ -61,14 +61,14 @@
             android:layout_height="wrap_content"
             android:text="海拔："
             android:textColor="@color/themeColor"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/location_altitude_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
     </LinearLayout>
 
@@ -83,14 +83,14 @@
             android:layout_height="wrap_content"
             android:text="Providers："
             android:textColor="@color/themeColor"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/location_providers_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
     </LinearLayout>
 
@@ -105,14 +105,14 @@
             android:layout_height="wrap_content"
             android:text="Best Provider："
             android:textColor="@color/themeColor"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/location_best_provider_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
     </LinearLayout>
 

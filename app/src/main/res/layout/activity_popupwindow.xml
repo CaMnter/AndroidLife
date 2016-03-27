@@ -10,20 +10,20 @@
         style="@style/TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ShowAtDropDownLeft" />
+        android:text="ShowAtDropDownLeft"/>
 
     <TextView
         android:id="@+id/popupwindow_center_tv"
         style="@style/TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ShowAtDropDownCenter" />
+        android:text="ShowAtDropDownCenter"/>
 
     <TextView
         android:id="@+id/popupwindow_right_tv"
         style="@style/TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ShowAtDropDownRight" />
+        android:text="ShowAtDropDownRight"/>
 
 </LinearLayout>

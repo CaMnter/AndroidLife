@@ -9,11 +9,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="gravity:left" />
+        android:text="gravity:left"/>
 
     <com.camnter.newlife.widget.EasyFlowLayout
         android:id="@+id/left_fl"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         app:gravity="left">
@@ -26,7 +26,7 @@
             android:background="@drawable/bg_text_button"
             android:text="Breath And Life"
             android:textColor="@color/colorAccent"
-            android:textSize="13sp" />
+            android:textSize="13sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
             android:background="@drawable/bg_text_button"
             android:text="Fallen"
             android:textColor="@color/colorAccent"
-            android:textSize="13sp" />
+            android:textSize="13sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,129 +46,9 @@
             android:background="@drawable/bg_text_button"
             android:text="Brand-new World"
             android:textColor="@color/colorAccent"
-            android:textSize="13sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginRight="6dp"
-            android:background="@drawable/bg_text_button"
-            android:text="Save you from anything"
-            android:textColor="@color/colorAccent"
-            android:textSize="13sp" />
+            android:textSize="13sp"/>
 
     </com.camnter.newlife.widget.EasyFlowLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
-        android:text="gravity:center" />
-
-    <com.camnter.newlife.widget.EasyFlowLayout
-        android:id="@+id/center_fl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        app:gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginRight="6dp"
-            android:background="@drawable/bg_text_button"
-            android:text="Breath And Life"
-            android:textColor="@color/colorAccent"
-            android:textSize="13sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginRight="6dp"
-            android:background="@drawable/bg_text_button"
-            android:text="Fallen"
-            android:textColor="@color/colorAccent"
-            android:textSize="13sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginRight="6dp"
-            android:background="@drawable/bg_text_button"
-            android:text="Brand-new World"
-            android:textColor="@color/colorAccent"
-            android:textSize="13sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginRight="6dp"
-            android:background="@drawable/bg_text_button"
-            android:text="Save you from anything"
-            android:textColor="@color/colorAccent"
-            android:textSize="13sp" />
-
-    </com.camnter.newlife.widget.EasyFlowLayout>
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
-        android:text="gravity:right" />
-
-    <com.camnter.newlife.widget.EasyFlowLayout
-        android:id="@+id/right_fl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        app:gravity="right">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginRight="6dp"
-            android:background="@drawable/bg_text_button"
-            android:text="Breath And Life"
-            android:textColor="@color/colorAccent"
-            android:textSize="13sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginRight="6dp"
-            android:background="@drawable/bg_text_button"
-            android:text="Fallen"
-            android:textColor="@color/colorAccent"
-            android:textSize="13sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginRight="6dp"
-            android:background="@drawable/bg_text_button"
-            android:text="Brand-new World"
-            android:textColor="@color/colorAccent"
-            android:textSize="13sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginRight="6dp"
-            android:background="@drawable/bg_text_button"
-            android:text="Save you from anything"
-            android:textColor="@color/colorAccent"
-            android:textSize="13sp" />
-
-    </com.camnter.newlife.widget.EasyFlowLayout>
 
 </LinearLayout>

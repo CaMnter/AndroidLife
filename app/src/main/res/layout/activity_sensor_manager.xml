@@ -20,14 +20,14 @@
                 android:layout_height="wrap_content"
                 android:text="手机传感器个数："
                 android:textColor="@color/themeColor"
-                android:textSize="15dp" />
+                android:textSize="15dp"/>
 
             <TextView
                 android:id="@+id/sensor_count_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorAccent"
-                android:textSize="15dp" />
+                android:textSize="15dp"/>
 
         </LinearLayout>
 

@@ -7,10 +7,10 @@
 
     <TextView
         android:id="@+id/save_tv"
-        android:padding="6dp"
-        android:layout_margin="6dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:padding="6dp"/>
 
     <Button
         android:id="@+id/save_bt"
@@ -18,12 +18,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
         android:padding="6dp"
-        android:text="保存" />
+        android:text="保存"/>
 
     <ImageView
         android:id="@+id/save_iv"
         android:layout_width="360dp"
         android:layout_height="360dp"
-        android:layout_margin="6dp" />
+        android:layout_margin="6dp"/>
 
 </LinearLayout>

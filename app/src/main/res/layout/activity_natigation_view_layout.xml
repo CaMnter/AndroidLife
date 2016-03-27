@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="NavigationViewActivity"
-            android:textColor="#ff3E55AE" />
+            android:textColor="#ff3E55AE"/>
 
     </RelativeLayout>
 
@@ -26,6 +26,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/navigation_header"
-        app:menu="@menu/menu_navigation" />
+        app:menu="@menu/menu_navigation"/>
 
 </android.support.v4.widget.DrawerLayout>

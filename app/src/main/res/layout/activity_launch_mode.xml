@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:padding="10dp"
-        android:text="VActivity" />
+        android:text="VActivity"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,7 +20,7 @@
         android:layout_centerInParent="true"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="@string/activity_launch_model_label" />
+        android:text="@string/activity_launch_model_label"/>
 
 
 </RelativeLayout>

@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:padding="16dp" />
+        android:padding="16dp"/>
 
     <Button
         android:id="@+id/rx_async_save_bt"
@@ -19,20 +19,20 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="6dp"
         android:padding="6dp"
-        android:text="下载" />
+        android:text="下载"/>
 
     <ImageView
         android:id="@+id/rx_async_one_iv"
         android:layout_width="266dp"
         android:layout_height="266dp"
         android:layout_below="@id/rx_async_save_bt"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"/>
 
     <ImageView
         android:id="@+id/rx_async_two_iv"
         android:layout_width="266dp"
         android:layout_height="266dp"
         android:layout_below="@id/rx_async_one_iv"
-        android:layout_centerHorizontal="true" />
-    
+        android:layout_centerHorizontal="true"/>
+
 </RelativeLayout>

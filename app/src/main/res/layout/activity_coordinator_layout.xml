@@ -19,7 +19,7 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="Save you from anything"
-            app:titleTextColor="#ffffffff" />
+            app:titleTextColor="#ffffffff"/>
 
 
     </android.support.design.widget.AppBarLayout>
@@ -28,7 +28,7 @@
         android:id="@+id/coordinator_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>
 

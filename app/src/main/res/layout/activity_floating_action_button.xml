@@ -13,7 +13,7 @@
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_dialog_email"
-        android:visibility="visible" />
+        android:visibility="visible"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_two"
@@ -24,8 +24,8 @@
         android:layout_toLeftOf="@id/fab_one"
         android:src="@android:drawable/ic_popup_sync"
         android:visibility="visible"
-        app:elevation="0dp"
-        app:backgroundTint="#3435bb" />
+        app:backgroundTint="#3435bb"
+        app:elevation="0dp"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_three"
@@ -37,7 +37,7 @@
         android:src="@android:drawable/ic_dialog_dialer"
         android:visibility="visible"
         app:backgroundTint="#bba707"
-        app:fabSize="mini" />
+        app:fabSize="mini"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_four"
@@ -49,7 +49,7 @@
         android:src="@mipmap/mm_1"
         android:visibility="visible"
         app:backgroundTint="#9406bb"
-        app:fabSize="normal" />
+        app:fabSize="normal"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_five"
@@ -60,6 +60,6 @@
         android:layout_toLeftOf="@id/fab_four"
         android:src="@android:drawable/ic_dialog_alert"
         android:visibility="visible"
-        app:backgroundTint="#bb6787" />
+        app:backgroundTint="#bb6787"/>
 
 </RelativeLayout>

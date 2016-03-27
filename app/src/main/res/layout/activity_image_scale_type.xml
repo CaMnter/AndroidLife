@@ -9,7 +9,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
     <LinearLayout
@@ -22,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
             android:text="normal："
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/normal"
@@ -30,13 +29,13 @@
             android:layout_height="200dp"
             android:layout_marginBottom="20dp"
             android:scaleType="center"
-            android:src="@mipmap/mm_1" />
+            android:src="@mipmap/mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="center："
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/center"
@@ -44,13 +43,13 @@
             android:layout_height="200dp"
             android:layout_marginBottom="20dp"
             android:scaleType="center"
-            android:src="@mipmap/mm_1" />
+            android:src="@mipmap/mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="centerCrop："
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/centerCrop"
@@ -58,13 +57,13 @@
             android:layout_height="200dp"
             android:layout_margin="20dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/mm_1" />
+            android:src="@mipmap/mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="centerInside："
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/centerInside"
@@ -72,13 +71,13 @@
             android:layout_height="200dp"
             android:layout_margin="20dp"
             android:scaleType="centerInside"
-            android:src="@mipmap/mm_1" />
+            android:src="@mipmap/mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="fitCenter："
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/fitCenter"
@@ -86,13 +85,13 @@
             android:layout_height="200dp"
             android:layout_margin="20dp"
             android:scaleType="fitCenter"
-            android:src="@mipmap/mm_1" />
+            android:src="@mipmap/mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="fitEnd："
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/fitEnd"
@@ -100,13 +99,13 @@
             android:layout_height="200dp"
             android:layout_margin="20dp"
             android:scaleType="fitEnd"
-            android:src="@mipmap/mm_1" />
+            android:src="@mipmap/mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="fitStart："
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
 
         <ImageView
@@ -115,13 +114,13 @@
             android:layout_height="200dp"
             android:layout_margin="20dp"
             android:scaleType="fitStart"
-            android:src="@mipmap/mm_1" />
+            android:src="@mipmap/mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="fitXY："
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
 
         <ImageView
@@ -130,13 +129,13 @@
             android:layout_height="200dp"
             android:layout_margin="20dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/mm_1" />
+            android:src="@mipmap/mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="matrix："
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
 
         <ImageView
@@ -145,7 +144,7 @@
             android:layout_height="200dp"
             android:layout_margin="20dp"
             android:scaleType="matrix"
-            android:src="@mipmap/mm_1" />
+            android:src="@mipmap/mm_1"/>
     </LinearLayout>
 
 </ScrollView>

@@ -15,7 +15,7 @@
             style="@style/TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ValueAnimator" />
+            android:text="ValueAnimator"/>
 
         <SurfaceView
             android:id="@+id/animator_sv"
@@ -26,7 +26,7 @@
             android:layout_alignRight="@id/animator_value_tv"
             android:layout_alignStart="@id/animator_value_tv"
             android:layout_below="@id/animator_value_tv"
-            android:layout_margin="13dp" />
+            android:layout_margin="13dp"/>
 
         <TextView
             android:id="@+id/animator_alpha_tv"
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animator_sv"
-            android:text="AlphaAnimator" />
+            android:text="AlphaAnimator"/>
 
         <TextView
             android:id="@+id/animator_rotation_tv"
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animator_alpha_tv"
-            android:text="RotationAnimator" />
+            android:text="RotationAnimator"/>
 
         <TextView
             android:id="@+id/animator_translation_tv"
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animator_rotation_tv"
-            android:text="TranslationAnimator" />
+            android:text="TranslationAnimator"/>
 
         <TextView
             android:id="@+id/animator_scale_tv"
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animator_translation_tv"
-            android:text="ScaleAnimator" />
+            android:text="ScaleAnimator"/>
 
         <TextView
             android:id="@+id/animator_set_tv"
@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animator_scale_tv"
-            android:text="AnimatorSet" />
+            android:text="AnimatorSet"/>
 
         <TextView
             android:id="@+id/animator_evaluator_tv"
@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animator_set_tv"
-            android:text="AnimatorTypeEvaluator" />
+            android:text="AnimatorTypeEvaluator"/>
 
         <com.camnter.newlife.widget.AnimatorShaderRoundImageView
             android:id="@+id/animator_evaluator_iv"
@@ -85,7 +85,7 @@
             android:layout_toEndOf="@id/animator_evaluator_tv"
             android:layout_toRightOf="@id/animator_evaluator_tv"
             android:src="@mipmap/ic_mm_normal"
-            app:imageType="round" />
+            app:imageType="round"/>
 
         <TextView
             android:id="@+id/animator_property_tv"
@@ -93,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animator_evaluator_tv"
-            android:text="AnimatorProperty" />
+            android:text="AnimatorProperty"/>
 
     </RelativeLayout>
 </ScrollView>

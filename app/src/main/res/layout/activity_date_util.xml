@@ -15,14 +15,14 @@
             android:layout_height="wrap_content"
             android:text="string2Date："
             android:textColor="@color/themeColor"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/string2Date_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
     </LinearLayout>
 
@@ -37,14 +37,14 @@
             android:layout_height="wrap_content"
             android:text="date2String："
             android:textColor="@color/themeColor"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/date2String_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
     </LinearLayout>
 
@@ -59,14 +59,14 @@
             android:layout_height="wrap_content"
             android:text="getYearMonthDay："
             android:textColor="@color/themeColor"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/getYearMonthDay_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
     </LinearLayout>
 
@@ -81,14 +81,14 @@
             android:layout_height="wrap_content"
             android:text="getTimestampString："
             android:textColor="@color/themeColor"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/getTimestampString_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
     </LinearLayout>
 
@@ -104,14 +104,14 @@
             android:layout_height="wrap_content"
             android:text="date2yyyyMMdd："
             android:textColor="@color/themeColor"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/date2yyyyMMdd_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
     </LinearLayout>
 
@@ -126,14 +126,14 @@
             android:layout_height="wrap_content"
             android:text="date2MMddWeek："
             android:textColor="@color/themeColor"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/date2MMddWeek_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
     </LinearLayout>
 
@@ -148,14 +148,14 @@
             android:layout_height="wrap_content"
             android:text="date2yyyyMMddWeek："
             android:textColor="@color/themeColor"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/date2yyyyMMddWeek_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
     </LinearLayout>
 
@@ -170,14 +170,14 @@
             android:layout_height="wrap_content"
             android:text="time24To12："
             android:textColor="@color/themeColor"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/time24To12_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
+            android:textSize="15dp"/>
 
     </LinearLayout>
 
