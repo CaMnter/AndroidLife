@@ -186,6 +186,8 @@
             android:label="@string/app_label"/>
         <activity android:name="me.drakeet.newlife.RxBusActivity"/>
 
+        <activity android:name="me.drakeet.newlife.RxBusConsumerActivity"/>
+
         <service android:name=".component.service.DownloadService"/>
         <service android:name=".component.service.DownloadIntentService"/>
 
@@ -217,7 +219,6 @@
             android:label="@string/app_label"
             android:value="${DEBUG}"/>
 
-        <activity android:name="me.drakeet.newlife.RxBusConsumerActivity"></activity>
     </application>
 
 </manifest>
