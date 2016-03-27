@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="me.drakeet.newlife.RxBusActivity">
+
+    <Button
+        android:id="@+id/send"
+        style="@style/TestButtonStyle"
+        android:onClick="onSend"
+        android:text="Send"/>
+
+    <Button
+        android:id="@+id/start_consumer"
+        style="@style/TestButtonStyle"
+        android:onClick="onStartConsumer"
+        android:text="Start Consumer"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="说明：Send 按钮将发送一个当下没人订阅的事件，这个事件在 Consumer 中有订阅，看这边发送后，再到 Consumer 中是否能收到。\n（测试结果是：不能）"/>
+
+</LinearLayout>

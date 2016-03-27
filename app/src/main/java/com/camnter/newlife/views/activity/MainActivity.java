@@ -33,7 +33,7 @@ import com.camnter.newlife.views.activity.util.ResourcesUtilActivity;
 import com.camnter.xfermode.XfermodesActivity;
 
 import java.util.ArrayList;
-
+import me.drakeet.newlife.RxBusActivity;
 
 public class MainActivity extends BaseAppCompatActivity {
 
@@ -130,6 +130,7 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(RoundImageViewActivity.class);
         this.classes.add(XfermodesActivity.class);
         this.classes.add(EasyArcLoadingActivity.class);
+        this.classes.add(RxBusActivity.class);
 
         this.adapter = new MainRecyclerViewAdapter();
         this.adapter.setList(classes);

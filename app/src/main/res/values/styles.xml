@@ -65,4 +65,10 @@
     <item name="android:windowExitAnimation">@anim/popwindow_out</item>
 </style>
 
+    <style name="TestButtonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
 </resources>
