@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/span_content_tv"
@@ -21,6 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:paddingBottom="16dp"
-        android:paddingTop="16dp" />
+        android:paddingTop="16dp"/>
 
 </LinearLayout>

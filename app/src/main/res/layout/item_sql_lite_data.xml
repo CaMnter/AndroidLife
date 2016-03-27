@@ -14,25 +14,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="6dp"
-            android:text="ID：" />
+            android:text="ID："/>
 
         <TextView
             android:id="@+id/data_base_id_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="6dp" />
+            android:padding="6dp"/>
 
         <TextView
-            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="content：" />
+            android:layout_marginLeft="10dp"
+            android:text="content："/>
 
         <TextView
             android:id="@+id/data_base_content_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="6dp" />
+            android:padding="6dp"/>
 
     </LinearLayout>
 

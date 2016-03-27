@@ -14,15 +14,15 @@
         android:background="@drawable/bg_dialog_menu_item"
         android:drawablePadding="13dp"
         android:drawableTop="@mipmap/dialog_menu_case"
+        android:gravity="center_horizontal"
         android:paddingBottom="13.5dp"
         android:paddingEnd="36dp"
         android:paddingLeft="36dp"
         android:paddingRight="36dp"
         android:paddingTop="20dp"
-        android:gravity="center_horizontal"
         android:text="Case"
         android:textColor="#ff666666"
-        android:textSize="14sp" />
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/dialog_menu_help_tv"
@@ -40,6 +40,6 @@
         android:paddingTop="20dp"
         android:text="Help"
         android:textColor="#ff666666"
-        android:textSize="14sp" />
+        android:textSize="14sp"/>
 
 </LinearLayout>

@@ -10,17 +10,17 @@
         android:id="@+id/easy_sliding_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:easyIndicatorColor="#ff57C1CC"
-        app:easyUnderlineColor="#ffdddddd"
-        app:easyTabTextColor="#ffFF4081"
-        app:easySelectedTagTextColor="#ff57C1CC"
         android:paddingBottom="16dp"
-        android:paddingTop="16dp" />
+        android:paddingTop="16dp"
+        app:easyIndicatorColor="#ff57C1CC"
+        app:easySelectedTagTextColor="#ff57C1CC"
+        app:easyTabTextColor="#ffFF4081"
+        app:easyUnderlineColor="#ffdddddd"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/easy_vp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
 </LinearLayout>

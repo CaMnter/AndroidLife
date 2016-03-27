@@ -3,44 +3,44 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#ffffffff"
-    android:orientation="horizontal" >
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/dialog_gallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:drawablePadding="10dp"
+        android:drawableTop="@mipmap/ic_gallery_in_layer"
         android:gravity="center"
-        android:paddingTop="20dp"
+        android:onClick="doSomething"
+        android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingBottom="10dp"
-        android:drawableTop="@mipmap/ic_gallery_in_layer"
-        android:drawablePadding="10dp"
-        android:text="相册"
-        android:onClick="doSomething"
-        android:clickable="true" />
+        android:paddingTop="20dp"
+        android:text="相册"/>
 
     <ImageView
         android:layout_width="1px"
         android:layout_height="match_parent"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:contentDescription="@null"
-        android:background="#d9d9d9" />
+        android:background="#d9d9d9"
+        android:contentDescription="@null"/>
 
     <TextView
         android:id="@+id/dialog_camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:drawablePadding="10dp"
+        android:drawableTop="@mipmap/ic_camera_in_layer"
         android:gravity="center"
-        android:paddingTop="20dp"
+        android:onClick="doSomething"
+        android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingBottom="10dp"
-        android:drawableTop="@mipmap/ic_camera_in_layer"
-        android:drawablePadding="10dp"
-        android:text="拍照"
-        android:onClick="doSomething"
-        android:clickable="true" />
+        android:paddingTop="20dp"
+        android:text="拍照"/>
 
 </LinearLayout>

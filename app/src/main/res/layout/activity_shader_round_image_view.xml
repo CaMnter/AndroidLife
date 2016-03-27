@@ -11,7 +11,7 @@
         android:layout_marginLeft="66dp"
         android:layout_marginStart="66dp"
         android:layout_marginTop="33dp"
-        android:src="@mipmap/ic_mm_normal" />
+        android:src="@mipmap/ic_mm_normal"/>
 
     <com.camnter.newlife.widget.ShaderRoundImageView
         android:layout_width="66dp"
@@ -20,23 +20,23 @@
         android:layout_marginStart="66dp"
         android:layout_marginTop="33dp"
         android:src="@mipmap/ic_mm_normal"
-        app:imageType="round" />
+        app:imageType="round"/>
 
     <com.camnter.newlife.widget.XfermodeRoundImageView
-        android:layout_marginLeft="66dp"
-        android:layout_marginStart="66dp"
         android:layout_width="66dp"
         android:layout_height="66dp"
+        android:layout_marginLeft="66dp"
+        android:layout_marginStart="66dp"
         android:layout_marginTop="33dp"
-        android:src="@mipmap/ic_mm_normal" />
+        android:src="@mipmap/ic_mm_normal"/>
 
     <com.camnter.newlife.widget.XfermodeRoundImageView
-        android:layout_marginLeft="66dp"
-        android:layout_marginStart="66dp"
         android:layout_width="66dp"
         android:layout_height="66dp"
+        android:layout_marginLeft="66dp"
+        android:layout_marginStart="66dp"
         android:layout_marginTop="33dp"
         android:src="@mipmap/ic_mm_normal"
-        app:xfermodeImageType="round" />
+        app:xfermodeImageType="round"/>
 
 </LinearLayout>

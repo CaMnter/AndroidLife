@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:padding="10dip" />
+        android:padding="10dip"/>
 
     <TextView
         android:id="@+id/load_info_text"
@@ -18,6 +18,6 @@
         android:layout_height="wrap_content"
         android:padding="10dip"
         android:text="正在提交..."
-        android:textColor="#000000" />
+        android:textColor="#000000"/>
 
 </LinearLayout>

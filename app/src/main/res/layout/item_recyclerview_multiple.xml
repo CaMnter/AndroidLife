@@ -5,17 +5,17 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingBottom="26dp"
-    android:paddingLeft="10dp"
-    android:paddingStart="10dp"
-    android:paddingRight="10dp"
     android:paddingEnd="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingStart="10dp"
     android:paddingTop="26dp">
 
     <ImageView
         android:id="@+id/recycler_view_mul_iv"
         android:layout_width="66dp"
         android:layout_height="66dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/recycler_view_mul_tv"
@@ -23,6 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="26dp"
         android:padding="6dp"
-        android:textColor="#ff3F51B5" />
+        android:textColor="#ff3F51B5"/>
 
 </LinearLayout>

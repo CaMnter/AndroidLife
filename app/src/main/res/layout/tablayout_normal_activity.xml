@@ -12,17 +12,17 @@
      -->
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout_tl"
-        app:tabBackground="@color/tabLayoutBackground"
-        app:tabTextColor="@color/black"
-        app:tabSelectedTextColor="@color/red"
-        app:tabIndicatorColor="@color/yellow"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:tabBackground="@color/tabLayoutBackground"
+        app:tabIndicatorColor="@color/yellow"
+        app:tabSelectedTextColor="@color/red"
+        app:tabTextColor="@color/black"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager_vp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
 </LinearLayout>

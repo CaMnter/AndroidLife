@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Spanned.SPAN_EXCLUSIVE_EXCLUSIVE"
-        android:textSize="14sp" />
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/exclusive_exclusive_content_tv"
@@ -26,7 +26,7 @@
         android:text="(a,b)"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/exclusive_inclusive_tv"
@@ -35,7 +35,7 @@
         android:layout_below="@id/exclusive_exclusive_content_tv"
         android:layout_marginTop="16dp"
         android:text="Spanned.SPAN_EXCLUSIVE_INCLUSIVE"
-        android:textSize="14sp" />
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/exclusive_inclusive_content_tv"
@@ -48,7 +48,7 @@
         android:text="(a,b]"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/inclusive_exclusive_tv"
@@ -57,7 +57,7 @@
         android:layout_below="@id/exclusive_inclusive_content_tv"
         android:layout_marginTop="16dp"
         android:text="Spanned.SPAN_INCLUSIVE_EXCLUSIVE"
-        android:textSize="14sp" />
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/inclusive_exclusive_content_tv"
@@ -70,7 +70,7 @@
         android:text="[a,b)"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/inclusive_inclusive_tv"
@@ -79,7 +79,7 @@
         android:layout_below="@id/inclusive_exclusive_content_tv"
         android:layout_marginTop="16dp"
         android:text="Spanned.SPAN_INCLUSIVE_INCLUSIVE"
-        android:textSize="14sp" />
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/inclusive_inclusive_content_tv"
@@ -92,7 +92,7 @@
         android:text="[a,b]"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
 
 </RelativeLayout>

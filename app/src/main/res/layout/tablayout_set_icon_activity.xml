@@ -15,12 +15,12 @@
         app:tabPaddingStart="6dp"
         app:tabSelectedTextColor="@color/red"
         app:tabTextAppearance="@style/IconTabLayoutTextAppearance"
-        app:tabTextColor="@color/black" />
+        app:tabTextColor="@color/black"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager_vp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
 </LinearLayout>

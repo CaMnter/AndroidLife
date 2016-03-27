@@ -16,12 +16,12 @@
         android:padding="10dp"
         android:text="查看"
         android:textColor="#ff97A4AF"
-        android:textSize="12sp" />
+        android:textSize="12sp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#ffDDDDDD" />
+        android:background="#ffDDDDDD"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,12 +33,12 @@
         android:padding="10dp"
         android:text="点赞"
         android:textColor="#ff97A4AF"
-        android:textSize="12sp" />
+        android:textSize="12sp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#ffDDDDDD" />
+        android:background="#ffDDDDDD"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,12 +50,12 @@
         android:padding="10dp"
         android:text="评论"
         android:textColor="#ff97A4AF"
-        android:textSize="12sp" />
+        android:textSize="12sp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#ffDDDDDD" />
+        android:background="#ffDDDDDD"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,6 +67,6 @@
         android:padding="10dp"
         android:text="分享"
         android:textColor="#ff97A4AF"
-        android:textSize="12sp" />
+        android:textSize="12sp"/>
 
 </LinearLayout>
