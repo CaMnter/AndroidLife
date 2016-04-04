@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.camnter.newlife.utils.ToastUtils;
 
 /**
@@ -19,18 +18,18 @@ public abstract class BaseFragment extends Fragment {
 
     protected View self;
 
+
     /**
-     * @param inflater           The LayoutInflater object that can be used to inflate
-     *                           any views in the fragment,
-     * @param container          If non-null, this is the parent view that the fragment's
-     *                           UI should be attached to.  The fragment should not add the view itself,
-     *                           but this can be used to generate the LayoutParams of the view.
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
      * @param savedInstanceState If non-null, this fragment is being re-constructed
-     *                           from a previous saved state as given here.
+     * from a previous saved state as given here.
      * @return Return the View for the fragment's UI, or null.
      */
-    @Nullable
-    @Override
+    @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         if (this.self == null) {
@@ -47,6 +46,7 @@ public abstract class BaseFragment extends Fragment {
         return this.self;
     }
 
+
     /**
      * Fill in layout id
      *
@@ -57,7 +57,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * Initialize the view in the layout
      *
-     * @param self               self
+     * @param self self
      * @param savedInstanceState savedInstanceState
      */
     protected abstract void initViews(View self, Bundle savedInstanceState);
@@ -72,17 +72,18 @@ public abstract class BaseFragment extends Fragment {
      */
     protected abstract void initData();
 
+
     /**
      * Find the view by id
      *
-     * @param id  id
+     * @param id id
      * @param <V> V
      * @return V
      */
-    @SuppressWarnings("unchecked")
-    protected <V extends View> V findView(int id) {
+    @SuppressWarnings("unchecked") protected <V extends View> V findView(int id) {
         return (V) this.self.findViewById(id);
     }
+
 
     /*********
      * Toast *
@@ -92,6 +93,7 @@ public abstract class BaseFragment extends Fragment {
         this.showToast(msg, Toast.LENGTH_SHORT);
     }
 
+
     public void showToast(String msg, int duration) {
         if (msg == null) return;
         if (duration == Toast.LENGTH_SHORT || duration == Toast.LENGTH_LONG) {
@@ -100,6 +102,7 @@ public abstract class BaseFragment extends Fragment {
             ToastUtils.show(this.getActivity(), msg, ToastUtils.LENGTH_SHORT);
         }
     }
+
 
     public void showToast(int resId) {
         this.showToast(resId, Toast.LENGTH_SHORT);

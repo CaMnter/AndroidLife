@@ -12,5 +12,4 @@ public class User implements Serializable {
     public String name;
 
     public String sign;
-
 }

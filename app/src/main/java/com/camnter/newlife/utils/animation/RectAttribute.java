@@ -12,6 +12,7 @@ public class RectAttribute {
     public float bottom;
     public float radius;
 
+
     public RectAttribute(float left, float top, float right, float bottom, float radius) {
         this.left = left;
         this.top = top;

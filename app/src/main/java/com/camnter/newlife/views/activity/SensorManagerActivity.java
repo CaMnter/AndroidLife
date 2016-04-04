@@ -10,13 +10,10 @@ import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.DeviceUtils;
-
 import java.util.List;
-
 
 /**
  * Description：SensorManagerActivity
@@ -27,40 +24,40 @@ public class SensorManagerActivity extends BaseAppCompatActivity {
     private TextView sensorManagerTV;
     private LinearLayout rootLayout;
 
+
     /**
      * Fill in layout id
      *
      * @return layout id
      */
-    @Override
-    protected int getLayoutId() {
+    @Override protected int getLayoutId() {
         return R.layout.activity_sensor_manager;
     }
+
 
     /**
      * Initialize the view in the layout
      *
      * @param savedInstanceState savedInstanceState
      */
-    @Override
-    protected void initViews(Bundle savedInstanceState) {
+    @Override protected void initViews(Bundle savedInstanceState) {
         this.rootLayout = (LinearLayout) this.findViewById(R.id.sensor_root_layout);
         this.sensorManagerTV = (TextView) this.findViewById(R.id.sensor_count_tv);
     }
 
+
     /**
      * Initialize the View of the listener
      */
-    @Override
-    protected void initListeners() {
+    @Override protected void initListeners() {
 
     }
+
 
     /**
      * Initialize the Activity data
      */
-    @Override
-    protected void initData() {
+    @Override protected void initData() {
         // 获取传感器管理器
         SensorManager sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
 
@@ -73,8 +70,7 @@ public class SensorManagerActivity extends BaseAppCompatActivity {
          * SensorEvent.values[2] = z
          */
         SensorEventListener listener = new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent event) {
+            @Override public void onSensorChanged(SensorEvent event) {
                 String info = "";
                 for (int i = 0; i < event.values.length; i++) {
                     info += "event.values[" + i + "]：" + event.values[i] + "\t";
@@ -82,8 +78,8 @@ public class SensorManagerActivity extends BaseAppCompatActivity {
                 Log.i("SensorManagerActivity", info);
             }
 
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            @Override public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
             }
         };
@@ -96,7 +92,8 @@ public class SensorManagerActivity extends BaseAppCompatActivity {
         this.sensorManagerTV.setText(sensors.size() + "");
         for (Sensor sensor : sensors) {
             TextView title = new TextView(this);
-            title.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            title.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
             title.setTextSize(15);
             title.setTextColor(this.getResources().getColor(R.color.themeColor));
             switch (sensor.getType()) {
@@ -159,13 +156,17 @@ public class SensorManagerActivity extends BaseAppCompatActivity {
         }
     }
 
+
     private void addInfoView(Sensor sensor, TextView title) {
-        String tempString = "\n" + "设备版本：" + sensor.getVersion() + "\n" + "供应商："
-                + sensor.getVendor() + "\n" + "最大取值范围：" + sensor.getMaximumRange() + "\n功率：" + sensor.getPower() + "\n精度：" + sensor.getResolution() + "\n传感器类型：" + sensor.getType();
+        String tempString = "\n" + "设备版本：" + sensor.getVersion() + "\n" + "供应商：" +
+                sensor.getVendor() + "\n" + "最大取值范围：" + sensor.getMaximumRange() + "\n功率：" +
+                sensor.getPower() + "\n精度：" + sensor.getResolution() + "\n传感器类型：" +
+                sensor.getType();
 
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         int paddingPX = DeviceUtils.dp2px(this, 6);
         linearLayout.setPadding(paddingPX, paddingPX, paddingPX, paddingPX);
         linearLayout.setLayoutParams(params);
@@ -173,7 +174,8 @@ public class SensorManagerActivity extends BaseAppCompatActivity {
         linearLayout.addView(title);
 
         TextView content = new TextView(this);
-        content.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        content.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         content.setTextSize(15);
         content.setTextColor(this.getResources().getColor(R.color.colorAccent));
         content.setText(tempString);
@@ -181,5 +183,4 @@ public class SensorManagerActivity extends BaseAppCompatActivity {
 
         this.rootLayout.addView(linearLayout);
     }
-
 }

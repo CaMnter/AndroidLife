@@ -2,12 +2,10 @@ package com.camnter.newlife.framework.rxandroid;
 
 import android.os.Bundle;
 import android.widget.TextView;
-
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.RxChildData;
 import com.camnter.newlife.bean.RxData;
 import com.camnter.newlife.core.BaseAppCompatActivity;
-
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -33,39 +31,39 @@ public class RxMapActivity extends BaseAppCompatActivity {
     private Subscription rxThrSubscription;
     private Subscription rxFouSubscription;
 
+
     /**
      * Fill in layout id
      *
      * @return layout id
      */
-    @Override
-    protected int getLayoutId() {
+    @Override protected int getLayoutId() {
         return R.layout.activity_rx_map;
     }
+
 
     /**
      * Initialize the view in the layout
      *
      * @param savedInstanceState savedInstanceState
      */
-    @Override
-    protected void initViews(Bundle savedInstanceState) {
+    @Override protected void initViews(Bundle savedInstanceState) {
         this.rxMapOneTV = (TextView) this.findViewById(R.id.rx_map_one_tv);
         this.rxMapTwoTV = (TextView) this.findViewById(R.id.rx_map_two_tv);
         this.rxFlatMapThrTV = (TextView) this.findViewById(R.id.rx_map_thr_tv);
         this.rxLiftFouTV = (TextView) this.findViewById(R.id.rx_map_fou_tv);
     }
 
+
     /**
      * Initialize the View of the listener
      */
-    @Override
-    protected void initListeners() {
+    @Override protected void initListeners() {
 
     }
 
-    @Override
-    protected void initData() {
+
+    @Override protected void initData() {
 
         /**
          * map一对一的类型转换
@@ -74,8 +72,7 @@ public class RxMapActivity extends BaseAppCompatActivity {
          * 订阅者接收到的也是String
          */
         this.rxOneSubscription = Observable.just(KEY).map(new Func1<Integer, String>() {
-            @Override
-            public String call(Integer integer) {
+            @Override public String call(Integer integer) {
                 switch (integer) {
                     case KEY:
                         return VALUE;
@@ -84,18 +81,17 @@ public class RxMapActivity extends BaseAppCompatActivity {
                 }
             }
         }).subscribe(new Subscriber<String>() {
-            @Override
-            public void onCompleted() {
+            @Override public void onCompleted() {
 
             }
 
-            @Override
-            public void onError(Throwable e) {
+
+            @Override public void onError(Throwable e) {
 
             }
 
-            @Override
-            public void onNext(String s) {
+
+            @Override public void onNext(String s) {
                 RxMapActivity.this.rxMapOneTV.setText(s);
             }
         });
@@ -106,7 +102,7 @@ public class RxMapActivity extends BaseAppCompatActivity {
         data2.setId(206L);
         RxData data3 = new RxData();
         data3.setId(266L);
-        RxData[] data = {data1, data2, data3};
+        RxData[] data = { data1, data2, data3 };
 
         /**
          * map一对一的类型转换
@@ -115,23 +111,21 @@ public class RxMapActivity extends BaseAppCompatActivity {
          * 订阅者接收到的也是Long
          */
         this.rxTwoSubscription = Observable.from(data).map(new Func1<RxData, Long>() {
-            @Override
-            public Long call(RxData rxData) {
+            @Override public Long call(RxData rxData) {
                 return rxData.getId();
             }
         }).subscribe(new Subscriber<Long>() {
-            @Override
-            public void onCompleted() {
+            @Override public void onCompleted() {
 
             }
 
-            @Override
-            public void onError(Throwable e) {
+
+            @Override public void onError(Throwable e) {
 
             }
 
-            @Override
-            public void onNext(Long aLong) {
+
+            @Override public void onNext(Long aLong) {
                 String text = RxMapActivity.this.rxMapTwoTV.getText().toString();
                 text += aLong + " ";
                 RxMapActivity.this.rxMapTwoTV.setText(text);
@@ -145,7 +139,7 @@ public class RxMapActivity extends BaseAppCompatActivity {
         childData2.setChildContent("childData2");
         RxChildData childData3 = new RxChildData();
         childData3.setChildContent("childData3");
-        RxChildData[] childData = {childData1, childData2, childData3};
+        RxChildData[] childData = { childData1, childData2, childData3 };
         parentData.setChildDatas(childData);
 
         /**
@@ -161,29 +155,33 @@ public class RxMapActivity extends BaseAppCompatActivity {
          * 事件拆成了两级，通过一组新创建的 Observable 将初始的对象『铺平』之后通过统一路径
          * 分发了下去。而这个『铺平』就是 flatMap() 所谓的 flat
          */
-        this.rxThrSubscription = Observable.from(new RxData[]{parentData}).flatMap(new Func1<RxData, Observable<RxChildData>>() {
-            @Override
-            public Observable<RxChildData> call(RxData rxData) {
-                return Observable.from(rxData.getChildDatas());
-            }
-        }).subscribe(new Subscriber<RxChildData>() {
-            @Override
-            public void onCompleted() {
+        this.rxThrSubscription = Observable.from(new RxData[] { parentData })
+                                           .flatMap(new Func1<RxData, Observable<RxChildData>>() {
+                                               @Override
+                                               public Observable<RxChildData> call(RxData rxData) {
+                                                   return Observable.from(rxData.getChildDatas());
+                                               }
+                                           })
+                                           .subscribe(new Subscriber<RxChildData>() {
+                                               @Override public void onCompleted() {
 
-            }
+                                               }
 
-            @Override
-            public void onError(Throwable e) {
 
-            }
+                                               @Override public void onError(Throwable e) {
 
-            @Override
-            public void onNext(RxChildData rxChildData) {
-                String text = RxMapActivity.this.rxFlatMapThrTV.getText().toString();
-                text += rxChildData.getChildContent() + " ";
-                RxMapActivity.this.rxFlatMapThrTV.setText(text);
-            }
-        });
+                                               }
+
+
+                                               @Override
+                                               public void onNext(RxChildData rxChildData) {
+                                                   String text
+                                                           = RxMapActivity.this.rxFlatMapThrTV.getText()
+                                                                                              .toString();
+                                                   text += rxChildData.getChildContent() + " ";
+                                                   RxMapActivity.this.rxFlatMapThrTV.setText(text);
+                                               }
+                                           });
 
         /**
          * 当含有 lift() 时：
@@ -200,49 +198,51 @@ public class RxMapActivity extends BaseAppCompatActivity {
          * Observable 进行订阅。
          * 这样就实现了 lift() 过程，有点像一种代理机制，通过事件拦截和处理实现事件序列的变换。
          */
-        this.rxFouSubscription = Observable.from(new Integer[]{6, 7}).lift(new Observable.Operator<String, Integer>() {
-            @Override
-            public Subscriber<? super Integer> call(final Subscriber<? super String> subscriber) {
-                return new Subscriber<Integer>() {
-                    @Override
-                    public void onCompleted() {
+        this.rxFouSubscription = Observable.from(new Integer[] { 6, 7 })
+                                           .lift(new Observable.Operator<String, Integer>() {
+                                               @Override
+                                               public Subscriber<? super Integer> call(final Subscriber<? super String> subscriber) {
+                                                   return new Subscriber<Integer>() {
+                                                       @Override public void onCompleted() {
 
-                    }
+                                                       }
 
-                    @Override
-                    public void onError(Throwable e) {
 
-                    }
+                                                       @Override public void onError(Throwable e) {
 
-                    @Override
-                    public void onNext(Integer integer) {
-                        subscriber.onNext(integer + "");
-                    }
-                };
-            }
-        }).subscribe(new Subscriber<String>() {
-            @Override
-            public void onCompleted() {
+                                                       }
 
-            }
 
-            @Override
-            public void onError(Throwable e) {
+                                                       @Override
+                                                       public void onNext(Integer integer) {
+                                                           subscriber.onNext(integer + "");
+                                                       }
+                                                   };
+                                               }
+                                           })
+                                           .subscribe(new Subscriber<String>() {
+                                               @Override public void onCompleted() {
 
-            }
+                                               }
 
-            @Override
-            public void onNext(String s) {
-                String text = RxMapActivity.this.rxLiftFouTV.getText().toString();
-                text += s + " ";
-                RxMapActivity.this.rxLiftFouTV.setText(text);
-            }
-        });
 
+                                               @Override public void onError(Throwable e) {
+
+                                               }
+
+
+                                               @Override public void onNext(String s) {
+                                                   String text
+                                                           = RxMapActivity.this.rxLiftFouTV.getText()
+                                                                                           .toString();
+                                                   text += s + " ";
+                                                   RxMapActivity.this.rxLiftFouTV.setText(text);
+                                               }
+                                           });
     }
 
-    @Override
-    protected void onDestroy() {
+
+    @Override protected void onDestroy() {
         this.rxOneSubscription.unsubscribe();
         this.rxTwoSubscription.unsubscribe();
         this.rxThrSubscription.unsubscribe();

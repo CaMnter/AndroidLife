@@ -18,9 +18,7 @@ import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.ImageView;
-
 import com.camnter.newlife.R;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -35,15 +33,11 @@ public class XfermodeRoundImageView extends ImageView {
     public static final int ROUND = 2601;
     public static final int CIRCLE = 2602;
 
-    @IntDef({ROUND, CIRCLE})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface ImageType {
-    }
+    @IntDef({ ROUND, CIRCLE }) @Retention(RetentionPolicy.SOURCE) public @interface ImageType {}
 
     private static final int DEFAULT_BORDER_RADIUS = 8;
 
-    @ImageType
-    private int imageType;
+    @ImageType private int imageType;
 
     private int mBorderRadius;
     private Paint mBitmapPaint;
@@ -52,20 +46,24 @@ public class XfermodeRoundImageView extends ImageView {
 
     private WeakReference<Bitmap> mWeakReference;
 
+
     public XfermodeRoundImageView(Context context) {
         super(context);
         this.init(context, null);
     }
+
 
     public XfermodeRoundImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.init(context, attrs);
     }
 
+
     public XfermodeRoundImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.init(context, attrs);
     }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public XfermodeRoundImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -73,22 +71,26 @@ public class XfermodeRoundImageView extends ImageView {
         this.init(context, attrs);
     }
 
+
     private void init(Context context, AttributeSet attrs) {
         this.mBitmapPaint = new Paint();
         this.mBitmapPaint.setAntiAlias(true);
 
         if (attrs == null) return;
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.XfermodeRoundImageView);
-        this.imageType = typedArray.getInt(R.styleable.XfermodeRoundImageView_xfermodeImageType, CIRCLE) == CIRCLE ? CIRCLE : ROUND;
+        TypedArray typedArray = context.obtainStyledAttributes(attrs,
+                R.styleable.XfermodeRoundImageView);
+        this.imageType =
+                typedArray.getInt(R.styleable.XfermodeRoundImageView_xfermodeImageType, CIRCLE) ==
+                        CIRCLE ? CIRCLE : ROUND;
         this.mBorderRadius = typedArray.getDimensionPixelSize(
                 R.styleable.XfermodeRoundImageView_xfermodeBorderRadius,
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_BORDER_RADIUS, this.getResources().getDisplayMetrics())
-        );
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_BORDER_RADIUS,
+                        this.getResources().getDisplayMetrics()));
         typedArray.recycle();
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (this.imageType == CIRCLE) {
             int side = Math.min(this.getMeasuredWidth(), this.getMeasuredHeight());
@@ -96,8 +98,8 @@ public class XfermodeRoundImageView extends ImageView {
         }
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
+
+    @Override protected void onDraw(Canvas canvas) {
         Bitmap bitmap = this.mWeakReference == null ? null : this.mWeakReference.get();
         if (bitmap == null || bitmap.isRecycled()) {
             Drawable drawable = this.getDrawable();
@@ -106,13 +108,15 @@ public class XfermodeRoundImageView extends ImageView {
                 return;
             }
             bitmap = this.drawableToBitmap(drawable, this.imageType);
-            if (this.mMaskBitmap == null || this.mMaskBitmap.isRecycled())
-                this.mMaskBitmap = this.drawBitmapSafely(this.getWidth(), this.getHeight(), Bitmap.Config.ARGB_8888, 1);
+            if (this.mMaskBitmap == null || this.mMaskBitmap.isRecycled()) {
+                this.mMaskBitmap = this.drawBitmapSafely(this.getWidth(), this.getHeight(),
+                        Bitmap.Config.ARGB_8888, 1);
+            }
             this.mWeakReference = new WeakReference<>(bitmap);
         }
         if (bitmap != null) {
             int sc = canvas.saveLayer(0, 0, this.getWidth(), this.getHeight(), null,
-                            Canvas.MATRIX_SAVE_FLAG |
+                    Canvas.MATRIX_SAVE_FLAG |
                             Canvas.CLIP_SAVE_FLAG |
                             Canvas.HAS_ALPHA_LAYER_SAVE_FLAG |
                             Canvas.FULL_COLOR_LAYER_SAVE_FLAG |
@@ -130,8 +134,8 @@ public class XfermodeRoundImageView extends ImageView {
         }
     }
 
-    @Override
-    public void invalidate() {
+
+    @Override public void invalidate() {
         this.mWeakReference = null;
         if (this.mMaskBitmap != null) {
             this.mMaskBitmap.recycle();
@@ -139,6 +143,7 @@ public class XfermodeRoundImageView extends ImageView {
         }
         super.invalidate();
     }
+
 
     private Bitmap drawableToBitmap(Drawable drawable, @ImageType int imageType) {
         if (drawable instanceof BitmapDrawable) ((BitmapDrawable) drawable).getBitmap();
@@ -162,6 +167,7 @@ public class XfermodeRoundImageView extends ImageView {
         return bitmap;
     }
 
+
     public Bitmap createBitmapSafely(int width, int height, Bitmap.Config config, int retryCount) {
         try {
             return Bitmap.createBitmap(width, height, config);
@@ -175,6 +181,7 @@ public class XfermodeRoundImageView extends ImageView {
         }
     }
 
+
     public Bitmap drawBitmapSafely(int width, int height, Bitmap.Config config, int retryCount) {
         try {
             Bitmap bitmap = Bitmap.createBitmap(width, height, config);
@@ -183,10 +190,12 @@ public class XfermodeRoundImageView extends ImageView {
             paint.setColor(Color.BLACK);
             switch (this.imageType) {
                 case ROUND:
-                    canvas.drawRoundRect(new RectF(0, 0, this.getWidth(), getHeight()), this.mBorderRadius, this.mBorderRadius, paint);
+                    canvas.drawRoundRect(new RectF(0, 0, this.getWidth(), getHeight()),
+                            this.mBorderRadius, this.mBorderRadius, paint);
                     break;
                 case CIRCLE:
-                    canvas.drawCircle(this.getWidth() / 2, this.getWidth() / 2, this.getWidth() / 2, paint);
+                    canvas.drawCircle(this.getWidth() / 2, this.getWidth() / 2, this.getWidth() / 2,
+                            paint);
                     break;
             }
             return bitmap;
@@ -199,6 +208,4 @@ public class XfermodeRoundImageView extends ImageView {
             return null;
         }
     }
-
-
 }

@@ -6,7 +6,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.newlife.R;
@@ -16,13 +15,11 @@ import com.camnter.robotlegs4android.base.Listener;
 import com.camnter.robotlegs4android.core.IListener;
 import com.camnter.robotlegs4android.core.IMediator;
 import com.camnter.robotlegs4android.mvcs.Mediator;
-
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * Description：
+ * Description：RobotlegsFourthFragmentMediator
  * Created by：CaMnter
  * Time：2015-11-10 15:00
  */
@@ -32,17 +29,18 @@ public class RobotlegsFourthFragmentMediator extends Mediator {
 
     private RecyclerView fourthRV;
 
+
     /**
      * {@inheritDoc}
      * {@linkplain IMediator #onRegister}
      */
-    @Override
-    public void onRegister() {
+    @Override public void onRegister() {
         super.onRegister();
         this.fragment = (RobotlegsFourthFragment) this.getViewComponent();
         this.initViews();
         this.initListeners();
     }
+
 
     private void initViews() {
         this.fourthRV = (RecyclerView) this.fragment.self.findViewById(R.id.fourth_rv);
@@ -64,14 +62,14 @@ public class RobotlegsFourthFragmentMediator extends Mediator {
         this.fourthRV.setAdapter(adapter);
         adapter.setList(resIds);
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
+                StaggeredGridLayoutManager.VERTICAL);
 
         this.fourthRV.setLayoutManager(staggeredGridLayoutManager);
         this.fourthRV.setItemAnimator(new DefaultItemAnimator());
         this.fourthRV.setHasFixedSize(true);
-
     }
+
 
     private void initListeners() {
         /*
@@ -80,48 +78,50 @@ public class RobotlegsFourthFragmentMediator extends Mediator {
          * 监听你的自定义事件（例如监听一个USER_LOGIN_SUCCESS_FROM_CONTROLLER_TO_VIEW类型的LoginEvent）
          * 在这里监听从Controller层到View层
          */
-        this.getEventMap().mapListener(this.getEventDispatcher(), LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW, new Listener() {
-            /**
-             * {@inheritDoc}
-             * <p/>
-             * {@linkplain IListener #onHandle}
-             *
-             * @param event
-             */
-            @Override
-            public void onHandle(Event event) {
-                if (event instanceof LoginEvent) {
-                    RobotlegsFourthFragmentMediator.this.fourthRV.setVisibility(View.VISIBLE);
-                }
-            }
-        }, null, false, 0, true);
+        this.getEventMap()
+            .mapListener(this.getEventDispatcher(),
+                    LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW, new Listener() {
+                        /**
+                         * {@inheritDoc}
+                         * <p/>
+                         * {@linkplain IListener #onHandle}
+                         *
+                         * @param event
+                         */
+                        @Override public void onHandle(Event event) {
+                            if (event instanceof LoginEvent) {
+                                RobotlegsFourthFragmentMediator.this.fourthRV.setVisibility(
+                                        View.VISIBLE);
+                            }
+                        }
+                    }, null, false, 0, true);
     }
+
 
     public class FourthRecyclerViewAdapter extends EasyRecyclerViewAdapter {
 
         private static final long MIN = 500L;
         private static final long MAX = 1000L;
 
-        @Override
-        public int[] getItemLayouts() {
-            return new int[]{R.layout.item_robotlegs_fourth_recycler};
+
+        @Override public int[] getItemLayouts() {
+            return new int[] { R.layout.item_robotlegs_fourth_recycler };
         }
+
 
         @Override
         public void onBindRecycleViewHolder(EasyRecyclerViewHolder easyRecyclerViewHolder, int i) {
             int resId = (int) this.getList().get(i);
             ImageView fourthRV = easyRecyclerViewHolder.findViewById(R.id.fourth_recycler_iv);
             fourthRV.setImageResource(resId);
-            ViewGroup.LayoutParams params =  fourthRV.getLayoutParams();
-            params.height  = (int) Math.round(Math.random() * (MAX - MIN) + MIN);
+            ViewGroup.LayoutParams params = fourthRV.getLayoutParams();
+            params.height = (int) Math.round(Math.random() * (MAX - MIN) + MIN);
             fourthRV.setLayoutParams(params);
         }
 
-        @Override
-        public int getRecycleViewItemType(int i) {
+
+        @Override public int getRecycleViewItemType(int i) {
             return 0;
         }
-
     }
-
 }

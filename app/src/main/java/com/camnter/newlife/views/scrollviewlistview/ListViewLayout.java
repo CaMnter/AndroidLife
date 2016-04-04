@@ -18,29 +18,31 @@ public class ListViewLayout extends LinearLayout {
     private BaseAdapter adapter;
     private OnClickListener onClickListener;
 
+
     public ListViewLayout(Context context) {
         super(context);
     }
 
+
     public ListViewLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public ListViewLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public ListViewLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+
     /**
      * 设置BaseAdapter和OnClickListener
-     *
-     * @param adapter
-     * @param onClickListener
      */
     public void setAdapterAndListener(BaseAdapter adapter, OnClickListener onClickListener) {
         this.init(adapter, onClickListener);
@@ -55,9 +57,9 @@ public class ListViewLayout extends LinearLayout {
         }
     }
 
+
     private void init(BaseAdapter adapter, OnClickListener onClickListener) {
         this.adapter = adapter;
         this.onClickListener = onClickListener;
     }
-
 }

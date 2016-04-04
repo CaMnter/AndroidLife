@@ -12,6 +12,7 @@ public class ThreadUtils {
     private static final String MAIN_THREAD_MSG = "MainThread-%d: %s";
     private static final String CHILD_THREAD_MSG = "ChildThread-%d: %s";
 
+
     /**
      * Determine whether to the main thread
      * 判断是否为主线程
@@ -21,6 +22,7 @@ public class ThreadUtils {
     public static boolean isMainThread() {
         return Thread.currentThread() == Looper.getMainLooper().getThread();
     }
+
 
     /**
      * Formatting information, formatting and thread information
@@ -36,5 +38,4 @@ public class ThreadUtils {
             return String.format(CHILD_THREAD_MSG, Thread.currentThread().getId(), info);
         }
     }
-
 }

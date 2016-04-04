@@ -2,7 +2,6 @@ package com.camnter.newlife.utils;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.camnter.newlife.utils.annotation.Exclude;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -63,7 +62,8 @@ public class MapUtils {
         for (Field field : fields) {
             Class<?> clsType = field.getType();
             String name = field.getName();
-            String strSet = "set" + name.substring(0, 1).toUpperCase() + name.substring(1, name.length());
+            String strSet = "set" + name.substring(0, 1).toUpperCase() +
+                    name.substring(1, name.length());
             Method methodSet = cls.getDeclaredMethod(strSet, clsType);
             if (map.containsKey(name)) {
                 Object objValue = typeConversion(clsType, map.get(name));
@@ -73,10 +73,11 @@ public class MapUtils {
         return obj;
     }
 
+
     /**
      * 将Map里面的部分值通过反射设置到已有对象里去
      *
-     * @param obj  Object
+     * @param obj Object
      * @param data Map<String,String>
      * @return obj Object
      * @throws Exception
@@ -87,7 +88,8 @@ public class MapUtils {
         for (Field field : fields) {
             Class<?> clsType = field.getType();
             String name = field.getName();
-            String strSet = "set" + name.substring(0, 1).toUpperCase() + name.substring(1, name.length());
+            String strSet = "set" + name.substring(0, 1).toUpperCase() +
+                    name.substring(1, name.length());
             Method methodSet = cls.getDeclaredMethod(strSet, clsType);
             if (data.containsKey(name)) {
                 Object objValue = typeConversion(clsType, data.get(name));
@@ -96,6 +98,7 @@ public class MapUtils {
         }
         return obj;
     }
+
 
     /**
      * 把对象的值用Map对应装起来
@@ -115,6 +118,7 @@ public class MapUtils {
         }
         return mapValue;
     }
+
 
     /**
      * 把临时对象的值复制到持久化对象上
@@ -143,6 +147,7 @@ public class MapUtils {
         }
         return oldObject;
     }
+
 
     public static Object typeConversion(Class<?> cls, String str) {
         Object obj = null;

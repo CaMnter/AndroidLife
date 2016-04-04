@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.TextView;
-
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
-
 import java.lang.ref.WeakReference;
 
 /**
@@ -25,17 +23,18 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
 
         private final WeakReference<RefreshUIActivity> mActivity;
 
+
         public RefreshHandler(RefreshUIActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
+
 
         /**
          * Subclasses must implement this to receive messages.
          *
          * @param msg msg
          */
-        @Override
-        public void handleMessage(Message msg) {
+        @Override public void handleMessage(Message msg) {
             RefreshUIActivity activity = this.mActivity.get();
             if (activity != null) {
                 switch (msg.what) {
@@ -48,11 +47,9 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
         }
     }
 
-
     private final RefreshHandler refreshHandler = new RefreshHandler(RefreshUIActivity.this);
     private final Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
+        @Override public void run() {
             Message message = RefreshUIActivity.this.refreshHandler.obtainMessage();
             try {
                 Thread.sleep(5000);
@@ -72,10 +69,12 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
 
         private TextView textview;
 
+
         public MAsyncTask(TextView textview) {
             super();
             this.textview = textview;
         }
+
 
         /**
          * 对应AsyncTask第一个参数
@@ -88,14 +87,14 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
          * @see #onPostExecute
          * @see #publishProgress
          */
-        @Override
-        protected String doInBackground(String... params) {
+        @Override protected String doInBackground(String... params) {
             int i = 0;
             for (; i < 100; i++) {
                 this.publishProgress(i);
             }
             return i + params[0];
         }
+
 
         /**
          * 对应AsyncTask第二个参数
@@ -106,11 +105,11 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
          * @see #publishProgress
          * @see #doInBackground
          */
-        @Override
-        protected void onProgressUpdate(Integer... values) {
+        @Override protected void onProgressUpdate(Integer... values) {
             int value = values[0];
             this.textview.setText("Use: AsyncTask " + value + "%");
         }
+
 
         /**
          * 对应AsyncTask第三个参数 (接受doInBackground的返回值)
@@ -121,10 +120,10 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
          * @see #doInBackground
          * @see #onCancelled(Object)
          */
-        @Override
-        protected void onPostExecute(String s) {
+        @Override protected void onPostExecute(String s) {
             this.textview.setText("Use : AsyncTask 执行结束：" + s);
         }
+
 
         /**
          * 运行在主UI线程中，此时是预执行状态，下一步是doInBackground
@@ -132,10 +131,10 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
          * @see #onPostExecute
          * @see #doInBackground
          */
-        @Override
-        protected void onPreExecute() {
+        @Override protected void onPreExecute() {
             super.onPreExecute();
         }
+
 
         /**
          * <p>Applications should preferably override {@link #onCancelled(Object)}.
@@ -149,17 +148,14 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
          * @see #cancel(boolean)
          * @see #isCancelled()
          */
-        @Override
-        protected void onCancelled() {
+        @Override protected void onCancelled() {
             super.onCancelled();
         }
-
     }
 
     private TextView runOnUiThreadTV;
     private final Runnable uiRunnable = new Runnable() {
-        @Override
-        public void run() {
+        @Override public void run() {
             RefreshUIActivity.this.runOnUiThreadTV.setText("Use: runOnUiThread");
         }
     };
@@ -172,8 +168,7 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
          *
          * @see Thread#start
          */
-        @Override
-        public void run() {
+        @Override public void run() {
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -185,48 +180,46 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
 
     private final MThread runThread = new MThread();
 
-
     private TextView postHandlerTV;
     private final Runnable postRunnable = new Runnable() {
-        @Override
-        public void run() {
+        @Override public void run() {
             RefreshUIActivity.this.postHandlerTV.setText("Use: Handler.post(...)");
         }
     };
+
 
     /**
      * Fill in layout id
      *
      * @return layout id
      */
-    @Override
-    protected int getLayoutId() {
+    @Override protected int getLayoutId() {
         return R.layout.activity_refresh_ui;
     }
+
 
     /**
      * Initialize the view in the layout
      *
      * @param savedInstanceState savedInstanceState
      */
-    @Override
-    protected void initViews(Bundle savedInstanceState) {
+    @Override protected void initViews(Bundle savedInstanceState) {
         this.handlerTV = (TextView) this.findViewById(R.id.refresh_ui_handler_tv);
         this.asyncTaskTV = (TextView) this.findViewById(R.id.refresh_ui_asynctask_tv);
         this.runOnUiThreadTV = (TextView) this.findViewById(R.id.refresh_ui_run_on_ui_thread_tv);
         this.postHandlerTV = (TextView) this.findViewById(R.id.refresh_ui_post_tv);
     }
 
+
     /**
      * Initialize the View of the listener
      */
-    @Override
-    protected void initListeners() {
+    @Override protected void initListeners() {
 
     }
 
-    @Override
-    protected void initData() {
+
+    @Override protected void initData() {
         this.mThread.start();
 
         this.mAsyncTask = new MAsyncTask(this.asyncTaskTV);
@@ -238,8 +231,8 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
         postHandler.post(this.postRunnable);
     }
 
-    @Override
-    protected void onDestroy() {
+
+    @Override protected void onDestroy() {
         this.mAsyncTask.onCancelled();
         super.onDestroy();
     }

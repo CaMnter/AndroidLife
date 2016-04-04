@@ -19,9 +19,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-
 import com.camnter.newlife.R;
-
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
@@ -45,17 +43,18 @@ public class DeviceUtils {
         return (int) (dpValue * scale + 0.5f);
     }
 
+
     /**
      * px 转化为 dp
      *
      * @param context context
      * @param pxValue pxValue
-     * @return
      */
     public static int px2dp(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
+
 
     /**
      * 获取设备宽度（px）
@@ -67,15 +66,14 @@ public class DeviceUtils {
         return context.getResources().getDisplayMetrics().widthPixels;
     }
 
+
     /**
      * 获取设备高度（px）
-     *
-     * @param context
-     * @return
      */
     public static int deviceHeight(Context context) {
         return context.getResources().getDisplayMetrics().heightPixels;
     }
+
 
     /**
      * SD卡判断
@@ -86,6 +84,7 @@ public class DeviceUtils {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
 
+
     /**
      * 是否有网
      *
@@ -94,16 +93,16 @@ public class DeviceUtils {
      */
     public static boolean isNetworkConnected(Context context) {
         if (context != null) {
-            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo mNetworkInfo = mConnectivityManager
-                    .getActiveNetworkInfo();
+            ConnectivityManager mConnectivityManager
+                    = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
             if (mNetworkInfo != null) {
                 return mNetworkInfo.isAvailable();
             }
         }
         return false;
     }
+
 
     /**
      * 返回版本名字
@@ -124,6 +123,7 @@ public class DeviceUtils {
         return versionName;
     }
 
+
     /**
      * 返回版本号
      * 对应build.gradle中的versionCode
@@ -143,6 +143,7 @@ public class DeviceUtils {
         return versionCode;
     }
 
+
     /**
      * 获取设备的唯一标识，deviceId
      *
@@ -150,7 +151,8 @@ public class DeviceUtils {
      * @return String
      */
     public static String getDeviceId(Context context) {
-        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(
+                Context.TELEPHONY_SERVICE);
         String deviceId = tm.getDeviceId();
         if (deviceId == null) {
             return "-";
@@ -158,6 +160,7 @@ public class DeviceUtils {
             return deviceId;
         }
     }
+
 
     /**
      * 获取手机品牌
@@ -168,6 +171,7 @@ public class DeviceUtils {
         return android.os.Build.BRAND;
     }
 
+
     /**
      * 获取手机型号
      *
@@ -176,6 +180,7 @@ public class DeviceUtils {
     public static String getPhoneModel() {
         return android.os.Build.MODEL;
     }
+
 
     /**
      * 获取手机Android API等级（22、23 ...）
@@ -186,6 +191,7 @@ public class DeviceUtils {
         return android.os.Build.VERSION.SDK_INT;
     }
 
+
     /**
      * 获取手机Android 版本（4.4、5.0、5.1 ...）
      *
@@ -194,6 +200,7 @@ public class DeviceUtils {
     public static String getBuildVersion() {
         return android.os.Build.VERSION.RELEASE;
     }
+
 
     /**
      * 获取当前App进程的id
@@ -204,10 +211,11 @@ public class DeviceUtils {
         return android.os.Process.myPid();
     }
 
+
     /**
      * 获取当前App进程的Name
      *
-     * @param context   context
+     * @param context context
      * @param processId processId
      * @return String
      */
@@ -219,10 +227,12 @@ public class DeviceUtils {
         Iterator i = l.iterator();
         PackageManager pm = context.getPackageManager();
         while (i.hasNext()) {
-            ActivityManager.RunningAppProcessInfo info = (ActivityManager.RunningAppProcessInfo) (i.next());
+            ActivityManager.RunningAppProcessInfo info
+                    = (ActivityManager.RunningAppProcessInfo) (i.next());
             try {
                 if (info.pid == processId) {
-                    CharSequence c = pm.getApplicationLabel(pm.getApplicationInfo(info.processName, PackageManager.GET_META_DATA));
+                    CharSequence c = pm.getApplicationLabel(
+                            pm.getApplicationInfo(info.processName, PackageManager.GET_META_DATA));
 
                     processName = info.processName;
                     return processName;
@@ -234,10 +244,11 @@ public class DeviceUtils {
         return processName;
     }
 
+
     /**
      * 创建App文件夹
      *
-     * @param appName     appName
+     * @param appName appName
      * @param application application
      * @return String
      */
@@ -245,12 +256,13 @@ public class DeviceUtils {
         return createAPPFolder(appName, application, null);
     }
 
+
     /**
      * 创建App文件夹
      *
-     * @param appName     appName
+     * @param appName appName
      * @param application application
-     * @param folderName  folderName
+     * @param folderName folderName
      * @return String
      */
     public static String createAPPFolder(String appName, Application application, String folderName) {
@@ -283,23 +295,24 @@ public class DeviceUtils {
         return folder.getAbsolutePath();
     }
 
+
     /**
      * 通过Uri找到File
      *
      * @param context context
-     * @param uri     uri
+     * @param uri uri
      * @return File
      */
     public static File uri2File(Activity context, Uri uri) {
         File file;
-        String[] project = {MediaStore.Images.Media.DATA};
-        Cursor actualImageCursor = context.getContentResolver().query(uri, project, null, null, null);
+        String[] project = { MediaStore.Images.Media.DATA };
+        Cursor actualImageCursor = context.getContentResolver()
+                                          .query(uri, project, null, null, null);
         if (actualImageCursor != null) {
-            int actual_image_column_index = actualImageCursor
-                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            int actual_image_column_index = actualImageCursor.getColumnIndexOrThrow(
+                    MediaStore.Images.Media.DATA);
             actualImageCursor.moveToFirst();
-            String img_path = actualImageCursor
-                    .getString(actual_image_column_index);
+            String img_path = actualImageCursor.getString(actual_image_column_index);
             file = new File(img_path);
         } else {
             file = new File(uri.getPath());
@@ -308,23 +321,27 @@ public class DeviceUtils {
         return file;
     }
 
+
     /**
      * 获取AndroidManifest.xml里 <meta-data>的值
      *
      * @param context context
-     * @param name    name
+     * @param name name
      * @return String
      */
     public static String getMetaData(Context context, String name) {
         String value = null;
         try {
-            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            ApplicationInfo appInfo = context.getPackageManager()
+                                             .getApplicationInfo(context.getPackageName(),
+                                                     PackageManager.GET_META_DATA);
             value = appInfo.metaData.getString(name);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
         return value;
     }
+
 
     /**
      * 复制到剪贴板
@@ -339,5 +356,4 @@ public class DeviceUtils {
                 Context.CLIPBOARD_SERVICE);
         clipboardManager.setPrimaryClip(clipData);
     }
-
 }

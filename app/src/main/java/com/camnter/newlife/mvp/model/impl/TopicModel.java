@@ -1,10 +1,8 @@
 package com.camnter.newlife.mvp.model.impl;
 
-
 import com.camnter.newlife.mvp.bean.Topic;
 import com.camnter.newlife.mvp.model.ITopicModel;
 import com.camnter.newlife.mvp.model.callback.TopicModelCallBack;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,57 +15,49 @@ public class TopicModel implements ITopicModel {
 
     private TopicModelCallBack callBack;
 
+
     public TopicModel(TopicModelCallBack callBack) {
         this.callBack = callBack;
     }
 
+
     /**
      * 添加Topic
-     *
-     * @param topic
      */
-    @Override
-    public void add(Topic topic) {
+    @Override public void add(Topic topic) {
         // TODO ...网络请求后...
 
         // TODO 返回数据 这里默认为返回原数据
         this.callBack.addSuccess(topic);
     }
 
+
     /**
      * 删除主题
-     *
-     * @param topic
      */
-    @Override
-    public void del(Topic topic) {
+    @Override public void del(Topic topic) {
         // TODO ...网络请求后...
 
         // TODO 返回数据 这里默认为返回原数据
         this.callBack.delSuccess(topic);
     }
 
+
     /**
      * 修改主题
-     *
-     * @param topicId
-     * @param topic
      */
-    @Override
-    public void mod(Long topicId, Topic topic) {
+    @Override public void mod(Long topicId, Topic topic) {
         // TODO ...网络请求后...
 
         // TODO 返回数据 这里默认为返回原数据
         this.callBack.modSuccess(topic);
     }
 
+
     /**
      * 查询主题
-     *
-     * @return
      */
-    @Override
-    public void query() {
+    @Override public void query() {
         // TODO ...网络请求后...
 
         // TODO 返回数据

@@ -4,14 +4,12 @@ import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Toast;
-
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.Tag;
 import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.ToastUtils;
 import com.camnter.newlife.widget.TagTextView;
 import com.camnter.newlife.widget.span.ClickableSpanNoUnderline;
-
 import java.util.ArrayList;
 
 /**
@@ -19,40 +17,41 @@ import java.util.ArrayList;
  * Created by：CaMnter
  * Time：2015-12-22 11:42
  */
-public class TagTextViewActivity extends BaseAppCompatActivity implements ClickableSpanNoUnderline.OnClickListener<TagTextView.TagClickableSpan> {
+public class TagTextViewActivity extends BaseAppCompatActivity
+        implements ClickableSpanNoUnderline.OnClickListener<TagTextView.TagClickableSpan> {
 
     private TagTextView tagTV;
+
 
     /**
      * Fill in layout id
      *
      * @return layout id
      */
-    @Override
-    protected int getLayoutId() {
+    @Override protected int getLayoutId() {
         return R.layout.activity_tag_textview;
     }
+
 
     /**
      * Initialize the view in the layout
      *
      * @param savedInstanceState savedInstanceState
      */
-    @Override
-    protected void initViews(Bundle savedInstanceState) {
+    @Override protected void initViews(Bundle savedInstanceState) {
         this.tagTV = (TagTextView) this.findViewById(R.id.tag_text_view_tv);
     }
+
 
     /**
      * Initialize the View of the listener
      */
-    @Override
-    protected void initListeners() {
+    @Override protected void initListeners() {
 
     }
 
-    @Override
-    protected void initData() {
+
+    @Override protected void initData() {
         ArrayList<Tag> tags = new ArrayList<>();
 
         Tag tag1 = new Tag();
@@ -77,15 +76,14 @@ public class TagTextViewActivity extends BaseAppCompatActivity implements Clicka
         this.tagTV.setHighlightColor(0xff8FABCC);
     }
 
+
     /**
      * ClickableSpan被点击
      *
      * @param widget widget
-     * @param span   span
+     * @param span span
      */
-    @Override
-    public void onClick(View widget, TagTextView.TagClickableSpan span) {
+    @Override public void onClick(View widget, TagTextView.TagClickableSpan span) {
         ToastUtils.show(this, span.getId() + ":" + span.getContent(), Toast.LENGTH_SHORT);
     }
-
 }

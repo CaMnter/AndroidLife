@@ -34,10 +34,11 @@ public class LruCache<K, V> {
     // 丢失的次数（取出数据的失败次数）
     private int missCount;
 
+
     /**
      * @param maxSize for caches that do not override {@link #sizeOf}, this is
-     *                the maximum number of entries in the cache. For all other caches,
-     *                this is the maximum sum of the sizes of the entries in this cache.
+     * the maximum number of entries in the cache. For all other caches,
+     * this is the maximum sum of the sizes of the entries in this cache.
      */
     public LruCache(int maxSize) {
         if (maxSize <= 0) {
@@ -46,6 +47,7 @@ public class LruCache<K, V> {
         this.maxSize = maxSize;
         this.map = new LinkedHashMap<K, V>(0, 0.75f, true);
     }
+
 
     /**
      * Sets the size of the cache.
@@ -63,6 +65,7 @@ public class LruCache<K, V> {
         }
         trimToSize(maxSize);
     }
+
 
     /**
      * Returns the value for {@code key} if it exists in the cache or can be
@@ -130,6 +133,7 @@ public class LruCache<K, V> {
         }
     }
 
+
     /**
      * Caches {@code value} for {@code key}. The value is moved to the head of
      * the queue.
@@ -160,13 +164,14 @@ public class LruCache<K, V> {
         return previous;
     }
 
+
     /**
      * Remove the eldest entries until the total of remaining entries is at or
      * below the requested size.
      * 删除最旧的数据直到剩余的数据的总数以下要求的大小。
      *
      * @param maxSize the maximum size of the cache before returning. May be -1
-     *                to evict even 0-sized elements.
+     * to evict even 0-sized elements.
      */
     public void trimToSize(int maxSize) {
         while (true) {
@@ -174,8 +179,8 @@ public class LruCache<K, V> {
             V value;
             synchronized (this) {
                 if (size < 0 || (map.isEmpty() && size != 0)) {
-                    throw new IllegalStateException(getClass().getName()
-                            + ".sizeOf() is reporting inconsistent results!");
+                    throw new IllegalStateException(
+                            getClass().getName() + ".sizeOf() is reporting inconsistent results!");
                 }
 
                 if (size <= maxSize || map.isEmpty()) {
@@ -193,6 +198,7 @@ public class LruCache<K, V> {
             entryRemoved(true, key, value, null);
         }
     }
+
 
     /**
      * Removes the entry for {@code key} if it exists.
@@ -220,6 +226,7 @@ public class LruCache<K, V> {
         return previous;
     }
 
+
     /**
      * Called for entries that have been evicted or removed. This method is
      * invoked when a value is evicted to make space, removed by a call to
@@ -233,19 +240,20 @@ public class LruCache<K, V> {
      * access the cache while this method is executing.
      * 该方法没用同步调用，如果其他线程访问缓存时，该方法也会执行。
      *
-     * @param evicted  true if the entry is being removed to make space, false
-     *                 if the removal was caused by a {@link #put} or {@link #remove}.
-     *                 <p/>
-     *                 true：如果该条目被删除空间
-     *                 false：put或remove导致
+     * @param evicted true if the entry is being removed to make space, false
+     * if the removal was caused by a {@link #put} or {@link #remove}.
+     * <p/>
+     * true：如果该条目被删除空间
+     * false：put或remove导致
      * @param newValue the new value for {@code key}, if it exists. If non-null,
-     *                 this removal was caused by a {@link #put}. Otherwise it was caused by
-     *                 an eviction or a {@link #remove}.
-     *                 <p/>
-     *                 如果存在key对应的新value。如果不为null，那么被put()或remove()调用。
+     * this removal was caused by a {@link #put}. Otherwise it was caused by
+     * an eviction or a {@link #remove}.
+     * <p/>
+     * 如果存在key对应的新value。如果不为null，那么被put()或remove()调用。
      */
     protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) {
     }
+
 
     /**
      * Called after a cache miss to compute a value for the corresponding key.
@@ -274,6 +282,7 @@ public class LruCache<K, V> {
         return null;
     }
 
+
     private int safeSizeOf(K key, V value) {
         int result = sizeOf(key, value);
         if (result < 0) {
@@ -281,6 +290,7 @@ public class LruCache<K, V> {
         }
         return result;
     }
+
 
     /**
      * Returns the size of the entry for {@code key} and {@code value} in
@@ -295,6 +305,7 @@ public class LruCache<K, V> {
         return 1;
     }
 
+
     /**
      * Clear the cache, calling {@link #entryRemoved} on each removed entry.
      * 清理缓存
@@ -302,6 +313,7 @@ public class LruCache<K, V> {
     public final void evictAll() {
         trimToSize(-1); // -1 will evict 0-sized elements
     }
+
 
     /**
      * For caches that do not override {@link #sizeOf}, this returns the number
@@ -315,6 +327,7 @@ public class LruCache<K, V> {
         return size;
     }
 
+
     /**
      * For caches that do not override {@link #sizeOf}, this returns the maximum
      * number of entries in the cache. For all other caches, this returns the
@@ -327,6 +340,7 @@ public class LruCache<K, V> {
         return maxSize;
     }
 
+
     /**
      * Returns the number of times {@link #get} returned a value that was
      * already present in the cache.
@@ -335,6 +349,7 @@ public class LruCache<K, V> {
     public synchronized final int hitCount() {
         return hitCount;
     }
+
 
     /**
      * Returns the number of times {@link #get} returned null or required a new
@@ -345,6 +360,7 @@ public class LruCache<K, V> {
         return missCount;
     }
 
+
     /**
      * Returns the number of times {@link #create(Object)} returned a value.
      * 返回的次数{@link #create(Object)}返回一个值。
@@ -352,6 +368,7 @@ public class LruCache<K, V> {
     public synchronized final int createCount() {
         return createCount;
     }
+
 
     /**
      * Returns the number of times {@link #put} was called.
@@ -361,6 +378,7 @@ public class LruCache<K, V> {
         return putCount;
     }
 
+
     /**
      * Returns the number of values that have been evicted.
      * 返回被回收的value数量。
@@ -368,6 +386,7 @@ public class LruCache<K, V> {
     public synchronized final int evictionCount() {
         return evictionCount;
     }
+
 
     /**
      * Returns a copy of the current contents of the cache, ordered from least
@@ -379,11 +398,11 @@ public class LruCache<K, V> {
         return new LinkedHashMap<K, V>(map);
     }
 
-    @Override
-    public synchronized final String toString() {
+
+    @Override public synchronized final String toString() {
         int accesses = hitCount + missCount;
         int hitPercent = accesses != 0 ? (100 * hitCount / accesses) : 0;
-        return String.format("LruCache[maxSize=%d,hits=%d,misses=%d,hitRate=%d%%]",
-                maxSize, hitCount, missCount, hitPercent);
+        return String.format("LruCache[maxSize=%d,hits=%d,misses=%d,hitRate=%d%%]", maxSize,
+                hitCount, missCount, hitPercent);
     }
 }

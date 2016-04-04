@@ -7,10 +7,8 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
 import android.widget.TextView;
-
 import com.camnter.newlife.bean.Tag;
 import com.camnter.newlife.widget.span.ClickableSpanNoUnderline;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,27 +22,32 @@ public class TagTextView extends TextView {
 
     private ClickableSpanNoUnderline.OnClickListener onTagClickListener;
 
+
     public TagTextView(Context context) {
         super(context);
     }
+
 
     public TagTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+
     public TagTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public TagTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+
     /**
      * 添加标签ClickableSpan
      *
-     * @param tags    tags
+     * @param tags tags
      * @param content content
      * @return SpannableStringBuilder
      */
@@ -90,11 +93,13 @@ public class TagTextView extends TextView {
                 /**
                  * 设置TagClickableSpan
                  */
-                sb.setSpan(span, index - 1, index + mLength + 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                sb.setSpan(span, index - 1, index + mLength + 1,
+                        Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             }
         }
         return sb;
     }
+
 
     /**
      * Tag ClickableSpan
@@ -104,30 +109,34 @@ public class TagTextView extends TextView {
         private Long id;
         private String content;
 
+
         public TagClickableSpan(int color, OnClickListener onClickListener) {
             super(color, onClickListener);
         }
+
 
         public TagClickableSpan(OnClickListener onClickListener) {
             super(onClickListener);
         }
 
+
         public Long getId() {
             return id;
         }
+
 
         public void setId(Long id) {
             this.id = id;
         }
 
+
         public String getContent() {
             return content;
         }
 
+
         public void setContent(String content) {
             this.content = content;
         }
-
     }
-
 }

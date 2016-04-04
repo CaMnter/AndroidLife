@@ -14,12 +14,13 @@ public class ProgressBarAsyncTask extends AsyncTask<String, Integer, String> {
     private TextView textview;
     private ProgressBar progressBar;
 
+
     public ProgressBarAsyncTask(ProgressBar progressBar, TextView textview) {
         super();
         this.textview = textview;
         this.progressBar = progressBar;
-
     }
+
 
     /**
      * 对应AsyncTask第一个参数
@@ -32,8 +33,7 @@ public class ProgressBarAsyncTask extends AsyncTask<String, Integer, String> {
      * @see #onPostExecute
      * @see #publishProgress
      */
-    @Override
-    protected String doInBackground(String... params) {
+    @Override protected String doInBackground(String... params) {
         int i = 0;
         for (; i < 100; i++) {
             try {
@@ -46,6 +46,7 @@ public class ProgressBarAsyncTask extends AsyncTask<String, Integer, String> {
         return i + params[0];
     }
 
+
     /**
      * 对应AsyncTask第二个参数
      * 在doInBackground方法当中，每次调用publishProgress方法都会中转(handler.sendMessage(...))到onProgressUpdate
@@ -55,12 +56,12 @@ public class ProgressBarAsyncTask extends AsyncTask<String, Integer, String> {
      * @see #publishProgress
      * @see #doInBackground
      */
-    @Override
-    protected void onProgressUpdate(Integer... values) {
+    @Override protected void onProgressUpdate(Integer... values) {
         int value = values[0];
         this.progressBar.setProgress(value);
-        this.textview.setText(value+"%");
+        this.textview.setText(value + "%");
     }
+
 
     /**
      * 对应AsyncTask第三个参数 (接受doInBackground的返回值)
@@ -71,10 +72,10 @@ public class ProgressBarAsyncTask extends AsyncTask<String, Integer, String> {
      * @see #doInBackground
      * @see #onCancelled(Object)
      */
-    @Override
-    protected void onPostExecute(String s) {
+    @Override protected void onPostExecute(String s) {
         this.textview.setText("执行结束：" + s);
     }
+
 
     /**
      * 运行在主UI线程中，此时是预执行状态，下一步是doInBackground
@@ -82,10 +83,10 @@ public class ProgressBarAsyncTask extends AsyncTask<String, Integer, String> {
      * @see #onPostExecute
      * @see #doInBackground
      */
-    @Override
-    protected void onPreExecute() {
+    @Override protected void onPreExecute() {
         super.onPreExecute();
     }
+
 
     /**
      * <p>Applications should preferably override {@link #onCancelled(Object)}.
@@ -99,9 +100,7 @@ public class ProgressBarAsyncTask extends AsyncTask<String, Integer, String> {
      * @see #cancel(boolean)
      * @see #isCancelled()
      */
-    @Override
-    protected void onCancelled() {
+    @Override protected void onCancelled() {
         super.onCancelled();
     }
-
 }

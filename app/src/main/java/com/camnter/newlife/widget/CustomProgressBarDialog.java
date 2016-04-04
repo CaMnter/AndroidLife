@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-
 import com.camnter.newlife.R;
 
 /**
@@ -24,25 +23,30 @@ public class CustomProgressBarDialog extends Dialog {
     private View mView;
     private TextView promptTV;
 
+
     public CustomProgressBarDialog(Context context) {
         super(context);
         this.init(context);
     }
+
 
     public CustomProgressBarDialog(Context context, int themeResId) {
         super(context, themeResId);
         this.init(context);
     }
 
+
     protected CustomProgressBarDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
         this.init(context);
     }
 
+
     private void init(Context context) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.mContext = context;
-        this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mInflater = (LayoutInflater) mContext.getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
         this.mView = this.mInflater.inflate(R.layout.dialog_progressbar, null);
         setContentView(this.mView);
 
@@ -58,13 +62,11 @@ public class CustomProgressBarDialog extends Dialog {
         this.promptTV = (TextView) findViewById(R.id.load_info_text);
     }
 
+
     /**
      * 设置内容
-     *
-     * @param prompt
      */
     public void setLoadPrompt(String prompt) {
         this.promptTV.setText(prompt);
     }
-
 }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.TextView;
-
 import com.camnter.newlife.R;
 
 /**
@@ -18,10 +17,12 @@ public class MenuDialog extends Dialog {
     private TextView caseTV;
     private TextView helpTV;
 
+
     public MenuDialog(Context context) {
         super(context, R.style.menu_dialog);
         this.initViews(context);
     }
+
 
     /**
      * Creates a dialog window that uses a custom dialog style.
@@ -34,19 +35,21 @@ public class MenuDialog extends Dialog {
      * Style and Theme Resources</a> for more information about defining and
      * using styles.
      *
-     * @param context    the context in which the dialog should run
+     * @param context the context in which the dialog should run
      * @param themeResId a style resource describing the theme to use for the
-     *                   window, or {@code 0} to use the default dialog theme
+     * window, or {@code 0} to use the default dialog theme
      */
     public MenuDialog(Context context, int themeResId) {
         super(context, themeResId);
         this.initViews(context);
     }
 
+
     public MenuDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
         this.initViews(context);
     }
+
 
     private void initViews(Context context) {
         this.setContentView(R.layout.dialog_menu);
@@ -54,12 +57,14 @@ public class MenuDialog extends Dialog {
         this.helpTV = (TextView) this.findViewById(R.id.dialog_menu_help_tv);
     }
 
+
     /**
      * @param listener listener
      */
     public void setCaseListener(View.OnClickListener listener) {
         this.caseTV.setOnClickListener(listener);
     }
+
 
     /**
      * @param listener listener
@@ -73,6 +78,4 @@ public class MenuDialog extends Dialog {
         if (drawable == null) return;
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
     }
-
-
 }

@@ -16,23 +16,23 @@ public class ClickableSpanNoUnderline extends ClickableSpan {
 
     private OnClickListener onClickListener;
 
+
     public ClickableSpanNoUnderline(int color, OnClickListener onClickListener) {
         super();
         this.color = color;
         this.onClickListener = onClickListener;
     }
 
+
     public ClickableSpanNoUnderline(OnClickListener onClickListener) {
         this(NO_COLOR, onClickListener);
     }
 
+
     /**
      * Makes the text underlined and in the link color.
-     *
-     * @param ds
      */
-    @Override
-    public void updateDrawState(@NonNull TextPaint ds) {
+    @Override public void updateDrawState(@NonNull TextPaint ds) {
         super.updateDrawState(ds);
         // 设置文字颜色
         if (this.color == NO_COLOR) {
@@ -46,19 +46,20 @@ public class ClickableSpanNoUnderline extends ClickableSpan {
         ds.bgColor = Color.TRANSPARENT;
     }
 
+
     /**
      * Performs the click action associated with this span.
      *
      * @param widget widget
      */
-    @Override
-    public void onClick(View widget) {
+    @Override public void onClick(View widget) {
         if (this.onClickListener != null) {
             this.onClickListener.onClick(widget, this);
         } else {
             Log.w(TAG, "listener was null");
         }
     }
+
 
     /**
      * 回调接口，回调自身的onClick事件
@@ -69,9 +70,8 @@ public class ClickableSpanNoUnderline extends ClickableSpan {
          * ClickableSpan被点击
          *
          * @param widget widget
-         * @param span   span
+         * @param span span
          */
         void onClick(View widget, T span);
     }
-
 }

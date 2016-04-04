@@ -17,29 +17,28 @@ public class SVListView extends ListView {
         super(context);
     }
 
+
     public SVListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+
     public SVListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public SVListView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+
     /**
      * 重新算高度，适应ScrollView的效果
-     * @param widthMeasureSpec
-     * @param heightMeasureSpec
      */
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
-                MeasureSpec.AT_MOST);
+    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
         super.onMeasure(widthMeasureSpec, expandSpec);
     }
-
 }

@@ -10,29 +10,33 @@ public class RxData {
     private String content;
     private RxChildData[] childDatas;
 
+
     public RxChildData[] getChildDatas() {
         return childDatas;
     }
+
 
     public void setChildDatas(RxChildData[] childDatas) {
         this.childDatas = childDatas;
     }
 
+
     public long getId() {
         return id;
     }
+
 
     public void setId(long id) {
         this.id = id;
     }
 
+
     public String getContent() {
         return content;
     }
 
+
     public void setContent(String content) {
         this.content = content;
     }
-
-
 }

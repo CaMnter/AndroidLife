@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
-
 import java.util.UUID;
 
 /**
@@ -28,44 +27,41 @@ public class PushMessageService extends Service {
          * Demonstrates some basic types that you can use as parameters
          * and return values in AIDL.
          *
-         * @param anInt    anInt
-         * @param aLong    aLong
+         * @param anInt anInt
+         * @param aLong aLong
          * @param aBoolean aBoolean
-         * @param aFloat   aFloat
-         * @param aDouble  aDouble
-         * @param aString  aString
+         * @param aFloat aFloat
+         * @param aDouble aDouble
+         * @param aString aString
          */
         @Override
-        public void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString) throws RemoteException {
+        public void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString)
+                throws RemoteException {
 
         }
 
-        @Override
-        public String onMessage() throws RemoteException {
+
+        @Override public String onMessage() throws RemoteException {
             return UUID.randomUUID().toString();
         }
-
     }
+
 
     /**
      * Called by the system when the service is first created.  Do not call this method directly.
      */
-    @Override
-    public void onCreate() {
+    @Override public void onCreate() {
         super.onCreate();
         this.binder = new IPushMessageImpl();
     }
 
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    @Override public int onStartCommand(Intent intent, int flags, int startId) {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
+
+    @Nullable @Override public IBinder onBind(Intent intent) {
         return this.binder;
     }
-
 }

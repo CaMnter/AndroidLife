@@ -18,5 +18,4 @@ public class VersionUtils {
     public boolean thanOrEqual(int targetVersion) {
         return Build.VERSION.SDK_INT >= targetVersion;
     }
-
 }

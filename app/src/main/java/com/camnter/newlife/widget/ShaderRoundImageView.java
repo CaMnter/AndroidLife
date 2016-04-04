@@ -20,9 +20,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.ImageView;
-
 import com.camnter.newlife.R;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -36,13 +34,9 @@ public class ShaderRoundImageView extends ImageView {
     public static final int ROUND = 2601;
     public static final int CIRCLE = 2602;
 
-    @IntDef({ROUND, CIRCLE})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface ImageType {
-    }
+    @IntDef({ ROUND, CIRCLE }) @Retention(RetentionPolicy.SOURCE) public @interface ImageType {}
 
-    @ImageType
-    private int imageType;
+    @ImageType private int imageType;
 
     private static final int DEFAULT_BORDER_RADIUS = 8;
 
@@ -55,26 +49,31 @@ public class ShaderRoundImageView extends ImageView {
 
     private DisplayMetrics mMetrics;
 
+
     public ShaderRoundImageView(Context context) {
         super(context);
         this.init(context, null);
     }
+
 
     public ShaderRoundImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.init(context, attrs);
     }
 
+
     public ShaderRoundImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.init(context, attrs);
     }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public ShaderRoundImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         this.init(context, attrs);
     }
+
 
     private void init(Context context, AttributeSet attrs) {
         this.mMatrix = new Matrix();
@@ -83,17 +82,19 @@ public class ShaderRoundImageView extends ImageView {
         this.mMetrics = this.getResources().getDisplayMetrics();
 
         if (attrs == null) return;
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ShaderRoundImageView);
-        this.imageType = typedArray.getInt(R.styleable.ShaderRoundImageView_imageType, CIRCLE) == CIRCLE ? CIRCLE : ROUND;
-        this.mBorderRadius = typedArray.getDimension(
-                R.styleable.ShaderRoundImageView_borderRadius,
-                this.dp2px(DEFAULT_BORDER_RADIUS)
-        );
+        TypedArray typedArray = context.obtainStyledAttributes(attrs,
+                R.styleable.ShaderRoundImageView);
+        this.imageType =
+                typedArray.getInt(R.styleable.ShaderRoundImageView_imageType, CIRCLE) == CIRCLE
+                ? CIRCLE
+                : ROUND;
+        this.mBorderRadius = typedArray.getDimension(R.styleable.ShaderRoundImageView_borderRadius,
+                this.dp2px(DEFAULT_BORDER_RADIUS));
         typedArray.recycle();
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (this.imageType == CIRCLE) {
             this.mSide = Math.min(this.getMeasuredWidth(), this.getMeasuredHeight());
@@ -102,21 +103,22 @@ public class ShaderRoundImageView extends ImageView {
         }
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+
+    @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (this.imageType == ROUND)
+        if (this.imageType == ROUND) {
             this.mRoundRect = new RectF(0, 0, this.getWidth(), this.getHeight());
+        }
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        if (this.getDrawable() == null)
-            return;
+
+    @Override protected void onDraw(Canvas canvas) {
+        if (this.getDrawable() == null) return;
         this.setPaintShader();
         switch (this.imageType) {
             case ROUND: {
-                canvas.drawRoundRect(this.mRoundRect, this.mBorderRadius, this.mBorderRadius, this.mBitmapPaint);
+                canvas.drawRoundRect(this.mRoundRect, this.mBorderRadius, this.mBorderRadius,
+                        this.mBitmapPaint);
                 break;
             }
             case CIRCLE: {
@@ -126,16 +128,19 @@ public class ShaderRoundImageView extends ImageView {
         }
     }
 
+
     private void setPaintShader() {
         Drawable drawable = this.getDrawable();
         if (drawable == null) return;
 
         Bitmap bitmap = this.drawableToBitmap(drawable);
-        BitmapShader mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        BitmapShader mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP,
+                Shader.TileMode.CLAMP);
         float scale = 1.0f;
         switch (this.imageType) {
             case ROUND: {
-                scale = Math.max(this.getWidth() * 1.0f / bitmap.getWidth(), this.getHeight() * 1.0f / bitmap.getHeight());
+                scale = Math.max(this.getWidth() * 1.0f / bitmap.getWidth(),
+                        this.getHeight() * 1.0f / bitmap.getHeight());
                 break;
             }
             case CIRCLE: {
@@ -148,12 +153,13 @@ public class ShaderRoundImageView extends ImageView {
         this.mBitmapPaint.setShader(mBitmapShader);
     }
 
+
     private static final String STATE_INSTANCE = "state_instance";
     private static final String STATE_TYPE = "state_type";
     private static final String STATE_BORDER_RADIUS = "state_border_radius";
 
-    @Override
-    protected Parcelable onSaveInstanceState() {
+
+    @Override protected Parcelable onSaveInstanceState() {
         Bundle bundle = new Bundle();
         bundle.putParcelable(STATE_INSTANCE, super.onSaveInstanceState());
         bundle.putInt(STATE_TYPE, this.imageType);
@@ -161,8 +167,8 @@ public class ShaderRoundImageView extends ImageView {
         return bundle;
     }
 
-    @Override
-    protected void onRestoreInstanceState(Parcelable state) {
+
+    @Override protected void onRestoreInstanceState(Parcelable state) {
         if (state instanceof Bundle) {
             Bundle bundle = (Bundle) state;
             super.onRestoreInstanceState(((Bundle) state).getParcelable(STATE_INSTANCE));
@@ -172,6 +178,7 @@ public class ShaderRoundImageView extends ImageView {
             super.onRestoreInstanceState(state);
         }
     }
+
 
     private Bitmap drawableToBitmap(Drawable drawable) {
         if (drawable instanceof BitmapDrawable) ((BitmapDrawable) drawable).getBitmap();
@@ -184,6 +191,7 @@ public class ShaderRoundImageView extends ImageView {
         drawable.draw(canvas);
         return bitmap;
     }
+
 
     public Bitmap createBitmapSafely(int width, int height, Bitmap.Config config, int retryCount) {
         try {
@@ -198,6 +206,7 @@ public class ShaderRoundImageView extends ImageView {
         }
     }
 
+
     public void setBorderRadius(int borderRadius) {
         float px = this.dp2px(borderRadius);
         if (this.mBorderRadius != px) {
@@ -206,6 +215,7 @@ public class ShaderRoundImageView extends ImageView {
         }
     }
 
+
     public void setImageType(@ImageType int imageType) {
         if (this.imageType != imageType) {
             this.imageType = imageType;
@@ -213,8 +223,8 @@ public class ShaderRoundImageView extends ImageView {
         }
     }
 
+
     public float dp2px(int dp) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, this.mMetrics);
     }
-
 }

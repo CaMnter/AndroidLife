@@ -30,9 +30,7 @@ import android.view.View;
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
-    private static final int[] ATTRS = new int[]{
-            android.R.attr.listDivider
-    };
+    private static final int[] ATTRS = new int[] { android.R.attr.listDivider };
 
     public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
 
@@ -42,12 +40,14 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mOrientation;
 
+
     public DividerItemDecoration(Context context, int orientation) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         this.mDivider = a.getDrawable(0);
         a.recycle();
         this.setOrientation(orientation);
     }
+
 
     public DividerItemDecoration(Activity activity, int orientation, int drawableId) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -58,6 +58,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         this.setOrientation(orientation);
     }
 
+
     public void setOrientation(int orientation) {
         if (orientation != HORIZONTAL_LIST && orientation != VERTICAL_LIST) {
             throw new IllegalArgumentException("invalid orientation");
@@ -65,23 +66,24 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         this.mOrientation = orientation;
     }
 
+
     /**
      * Draw any appropriate decorations into the Canvas supplied to the RecyclerView.
      * Any content drawn by this method will be drawn before the item views are drawn,
      * and will thus appear underneath the views.
      *
-     * @param c      Canvas to draw into
+     * @param c Canvas to draw into
      * @param parent RecyclerView this ItemDecoration is drawing into
-     * @param state  The current state of RecyclerView
+     * @param state The current state of RecyclerView
      */
-    @Override
-    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    @Override public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         if (mOrientation == VERTICAL_LIST) {
             drawVertical(c, parent);
         } else {
             drawHorizontal(c, parent);
         }
     }
+
 
     public void drawVertical(Canvas c, RecyclerView parent) {
         final int left = parent.getPaddingLeft();
@@ -90,8 +92,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount - 1; i++) {
             final View child = parent.getChildAt(i);
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
-                    .getLayoutParams();
+            final RecyclerView.LayoutParams params
+                    = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int top = child.getBottom() + params.bottomMargin +
                     Math.round(ViewCompat.getTranslationY(child));
             final int bottom = top + mDivider.getIntrinsicHeight();
@@ -100,6 +102,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
+
     public void drawHorizontal(Canvas c, RecyclerView parent) {
         final int top = parent.getPaddingTop();
         final int bottom = parent.getHeight() - parent.getPaddingBottom();
@@ -107,8 +110,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount - 1; i++) {
             final View child = parent.getChildAt(i);
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
-                    .getLayoutParams();
+            final RecyclerView.LayoutParams params
+                    = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int left = child.getRight() + params.rightMargin +
                     Math.round(ViewCompat.getTranslationX(child));
             final int right = left + mDivider.getIntrinsicHeight();
@@ -116,6 +119,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             mDivider.draw(c);
         }
     }
+
 
     /**
      * Retrieve any offsets for the given item. Each field of <code>outRect</code> specifies
@@ -133,9 +137,9 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
      * View.
      *
      * @param outRect Rect to receive the output.
-     * @param view    The child view to decorate
-     * @param parent  RecyclerView this ItemDecoration is decorating
-     * @param state   The current state of RecyclerView.
+     * @param view The child view to decorate
+     * @param parent RecyclerView this ItemDecoration is decorating
+     * @param state The current state of RecyclerView.
      */
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {

@@ -17,131 +17,132 @@
 package com.camnter.newlife.utils;
 
 import android.net.Uri;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
-Utility class to aid in matching URIs in content providers.
-
-<p>To use this class, build up a tree of <code>UriMatcher</code> objects.
-For example:
-<pre>
-    private static final int PEOPLE = 1;
-    private static final int PEOPLE_ID = 2;
-    private static final int PEOPLE_PHONES = 3;
-    private static final int PEOPLE_PHONES_ID = 4;
-    private static final int PEOPLE_CONTACTMETHODS = 7;
-    private static final int PEOPLE_CONTACTMETHODS_ID = 8;
-
-    private static final int DELETED_PEOPLE = 20;
-
-    private static final int PHONES = 9;
-    private static final int PHONES_ID = 10;
-    private static final int PHONES_FILTER = 14;
-
-    private static final int CONTACTMETHODS = 18;
-    private static final int CONTACTMETHODS_ID = 19;
-
-    private static final int CALLS = 11;
-    private static final int CALLS_ID = 12;
-    private static final int CALLS_FILTER = 15;
-
-    private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-
-    static
-    {
-        sURIMatcher.addURI("contacts", "people", PEOPLE);
-        sURIMatcher.addURI("contacts", "people/#", PEOPLE_ID);
-        sURIMatcher.addURI("contacts", "people/#/phones", PEOPLE_PHONES);
-        sURIMatcher.addURI("contacts", "people/#/phones/#", PEOPLE_PHONES_ID);
-        sURIMatcher.addURI("contacts", "people/#/contact_methods", PEOPLE_CONTACTMETHODS);
-        sURIMatcher.addURI("contacts", "people/#/contact_methods/#", PEOPLE_CONTACTMETHODS_ID);
-        sURIMatcher.addURI("contacts", "deleted_people", DELETED_PEOPLE);
-        sURIMatcher.addURI("contacts", "phones", PHONES);
-        sURIMatcher.addURI("contacts", "phones/filter/*", PHONES_FILTER);
-        sURIMatcher.addURI("contacts", "phones/#", PHONES_ID);
-        sURIMatcher.addURI("contacts", "contact_methods", CONTACTMETHODS);
-        sURIMatcher.addURI("contacts", "contact_methods/#", CONTACTMETHODS_ID);
-        sURIMatcher.addURI("call_log", "calls", CALLS);
-        sURIMatcher.addURI("call_log", "calls/filter/*", CALLS_FILTER);
-        sURIMatcher.addURI("call_log", "calls/#", CALLS_ID);
-    }
-</pre>
-<p>Starting from API level {@link android.os.Build.VERSION_CODES#JELLY_BEAN_MR2}, paths can start
- with a leading slash.  For example:
-<pre>
-        sURIMatcher.addURI("contacts", "/people", PEOPLE);
-</pre>
-<p>Then when you need to match against a URI, call {@link #match}, providing
-the URL that you have been given.  You can use the result to build a query,
-return a type, insert or delete a row, or whatever you need, without duplicating
-all of the if-else logic that you would otherwise need.  For example:
-<pre>
-    public String getType(Uri url)
-    {
-        int match = sURIMatcher.match(url);
-        switch (match)
-        {
-            case PEOPLE:
-                return "vnd.android.cursor.dir/person";
-            case PEOPLE_ID:
-                return "vnd.android.cursor.item/person";
-... snip ...
-                return "vnd.android.cursor.dir/snail-mail";
-            case PEOPLE_ADDRESS_ID:
-                return "vnd.android.cursor.item/snail-mail";
-            default:
-                return null;
-        }
-    }
-</pre>
-instead of:
-<pre>
-    public String getType(Uri url)
-    {
-        List<String> pathSegments = url.getPathSegments();
-        if (pathSegments.size() >= 2) {
-            if ("people".equals(pathSegments.get(1))) {
-                if (pathSegments.size() == 2) {
-                    return "vnd.android.cursor.dir/person";
-                } else if (pathSegments.size() == 3) {
-                    return "vnd.android.cursor.item/person";
-... snip ...
-                    return "vnd.android.cursor.dir/snail-mail";
-                } else if (pathSegments.size() == 3) {
-                    return "vnd.android.cursor.item/snail-mail";
-                }
-            }
-        }
-        return null;
-    }
-</pre>
-*/
-public class UriMatcher
-{
+ * Utility class to aid in matching URIs in content providers.
+ *
+ * <p>To use this class, build up a tree of <code>UriMatcher</code> objects.
+ * For example:
+ * <pre>
+ * private static final int PEOPLE = 1;
+ * private static final int PEOPLE_ID = 2;
+ * private static final int PEOPLE_PHONES = 3;
+ * private static final int PEOPLE_PHONES_ID = 4;
+ * private static final int PEOPLE_CONTACTMETHODS = 7;
+ * private static final int PEOPLE_CONTACTMETHODS_ID = 8;
+ *
+ * private static final int DELETED_PEOPLE = 20;
+ *
+ * private static final int PHONES = 9;
+ * private static final int PHONES_ID = 10;
+ * private static final int PHONES_FILTER = 14;
+ *
+ * private static final int CONTACTMETHODS = 18;
+ * private static final int CONTACTMETHODS_ID = 19;
+ *
+ * private static final int CALLS = 11;
+ * private static final int CALLS_ID = 12;
+ * private static final int CALLS_FILTER = 15;
+ *
+ * private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+ *
+ * static
+ * {
+ * sURIMatcher.addURI("contacts", "people", PEOPLE);
+ * sURIMatcher.addURI("contacts", "people/#", PEOPLE_ID);
+ * sURIMatcher.addURI("contacts", "people/#/phones", PEOPLE_PHONES);
+ * sURIMatcher.addURI("contacts", "people/#/phones/#", PEOPLE_PHONES_ID);
+ * sURIMatcher.addURI("contacts", "people/#/contact_methods", PEOPLE_CONTACTMETHODS);
+ * sURIMatcher.addURI("contacts", "people/#/contact_methods/#", PEOPLE_CONTACTMETHODS_ID);
+ * sURIMatcher.addURI("contacts", "deleted_people", DELETED_PEOPLE);
+ * sURIMatcher.addURI("contacts", "phones", PHONES);
+ * sURIMatcher.addURI("contacts", "phones/filter/*", PHONES_FILTER);
+ * sURIMatcher.addURI("contacts", "phones/#", PHONES_ID);
+ * sURIMatcher.addURI("contacts", "contact_methods", CONTACTMETHODS);
+ * sURIMatcher.addURI("contacts", "contact_methods/#", CONTACTMETHODS_ID);
+ * sURIMatcher.addURI("call_log", "calls", CALLS);
+ * sURIMatcher.addURI("call_log", "calls/filter/*", CALLS_FILTER);
+ * sURIMatcher.addURI("call_log", "calls/#", CALLS_ID);
+ * }
+ * </pre>
+ * <p>Starting from API level {@link android.os.Build.VERSION_CODES#JELLY_BEAN_MR2}, paths can
+ * start
+ * with a leading slash.  For example:
+ * <pre>
+ * sURIMatcher.addURI("contacts", "/people", PEOPLE);
+ * </pre>
+ * <p>Then when you need to match against a URI, call {@link #match}, providing
+ * the URL that you have been given.  You can use the result to build a query,
+ * return a type, insert or delete a row, or whatever you need, without duplicating
+ * all of the if-else logic that you would otherwise need.  For example:
+ * <pre>
+ * public String getType(Uri url)
+ * {
+ * int match = sURIMatcher.match(url);
+ * switch (match)
+ * {
+ * case PEOPLE:
+ * return "vnd.android.cursor.dir/person";
+ * case PEOPLE_ID:
+ * return "vnd.android.cursor.item/person";
+ * ... snip ...
+ * return "vnd.android.cursor.dir/snail-mail";
+ * case PEOPLE_ADDRESS_ID:
+ * return "vnd.android.cursor.item/snail-mail";
+ * default:
+ * return null;
+ * }
+ * }
+ * </pre>
+ * instead of:
+ * <pre>
+ * public String getType(Uri url)
+ * {
+ * List<String> pathSegments = url.getPathSegments();
+ * if (pathSegments.size() >= 2) {
+ * if ("people".equals(pathSegments.get(1))) {
+ * if (pathSegments.size() == 2) {
+ * return "vnd.android.cursor.dir/person";
+ * } else if (pathSegments.size() == 3) {
+ * return "vnd.android.cursor.item/person";
+ * ... snip ...
+ * return "vnd.android.cursor.dir/snail-mail";
+ * } else if (pathSegments.size() == 3) {
+ * return "vnd.android.cursor.item/snail-mail";
+ * }
+ * }
+ * }
+ * return null;
+ * }
+ * </pre>
+ */
+public class UriMatcher {
     public static final int NO_MATCH = -1;
+
+
     /**
      * Creates the root node of the URI tree.
      * 创建Uri树的根节点
      *
      * @param code the code to match for the root URI
      */
-    public UriMatcher(int code)
-    {
+    public UriMatcher(int code) {
         mCode = code;
         mWhich = -1;
         mChildren = new ArrayList<UriMatcher>();
         mText = null;
     }
 
-    private UriMatcher()
-    {
+
+    private UriMatcher() {
         mCode = NO_MATCH;
         mWhich = -1;
         mChildren = new ArrayList<UriMatcher>();
         mText = null;
     }
+
 
     /**
      * Add a URI to match, and the code to return when this URI is
@@ -155,18 +156,15 @@ public class UriMatcher
      * this method will accept a leading slash in the path.
      *
      * @param authority the authority to match
-     *                  ContentProvider的authority
-     *
+     * ContentProvider的authority
      * @param path the path to match. * may be used as a wild card for
      * any text, and # may be used as a wild card for numbers.
-     *             匹配路径，*可能是作为一个通配符用于任何文本,和#可能用作通配符数字。
-     *
+     * 匹配路径，*可能是作为一个通配符用于任何文本,和#可能用作通配符数字。
      * @param code the code that is returned when a URI is matched
      * against the given components. Must be positive.
-     *             该URI匹配成功时返回的code
-    */
-    public void addURI(String authority, String path, int code)
-    {
+     * 该URI匹配成功时返回的code
+     */
+    public void addURI(String authority, String path, int code) {
         if (code < 0) {
             throw new IllegalArgumentException("code " + code + " is invalid: it must be positive");
         }
@@ -214,20 +212,19 @@ public class UriMatcher
         node.mCode = code;
     }
 
+
     /**
      * Try to match against the path in a url.
      * 尝试匹配一个url的路径。
      *
-     * @param uri       The url whose path we will match against.
-     *                  将匹配的url路径。
-     *
-     * @return  The code for the matched node (added using addURI),
+     * @param uri The url whose path we will match against.
+     * 将匹配的url路径。
+     * @return The code for the matched node (added using addURI),
      * or -1 if there is no matched node.
-     *          匹配节点设置的code（在使用addURI时，给对应URI设置code），
-     *          或者没有匹配节点，则反悔-1。
+     * 匹配节点设置的code（在使用addURI时，给对应URI设置code），
+     * 或者没有匹配节点，则反悔-1。
      */
-    public int match(Uri uri)
-    {
+    public int match(Uri uri) {
         final List<String> pathSegments = uri.getPathSegments();
         final int li = pathSegments.size();
 
@@ -237,7 +234,7 @@ public class UriMatcher
             return this.mCode;
         }
 
-        for (int i=-1; i<li; i++) {
+        for (int i = -1; i < li; i++) {
             String u = i < 0 ? uri.getAuthority() : pathSegments.get(i);
             ArrayList<UriMatcher> list = node.mChildren;
             if (list == null) {
@@ -245,9 +242,9 @@ public class UriMatcher
             }
             node = null;
             int lj = list.size();
-            for (int j=0; j<lj; j++) {
+            for (int j = 0; j < lj; j++) {
                 UriMatcher n = list.get(j);
-          which_switch:
+which_switch:
                 switch (n.mWhich) {
                     case EXACT:
                         if (n.mText.equals(u)) {
@@ -256,7 +253,7 @@ public class UriMatcher
                         break;
                     case NUMBER:
                         int lk = u.length();
-                        for (int k=0; k<lk; k++) {
+                        for (int k = 0; k < lk; k++) {
                             char c = u.charAt(k);
                             if (c < '0' || c > '9') {
                                 break which_switch;
@@ -279,6 +276,7 @@ public class UriMatcher
 
         return node.mCode;
     }
+
 
     private static final int EXACT = 0;
     private static final int NUMBER = 1;

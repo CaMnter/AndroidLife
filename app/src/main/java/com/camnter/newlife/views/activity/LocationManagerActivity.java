@@ -14,7 +14,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.TextView;
-
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
 
@@ -37,23 +36,23 @@ public class LocationManagerActivity extends BaseAppCompatActivity {
     private TextView providersTV;
     private TextView bestProviderTV;
 
+
     /**
      * Fill in layout id
      *
      * @return layout id
      */
-    @Override
-    protected int getLayoutId() {
+    @Override protected int getLayoutId() {
         return R.layout.activity_location_manager;
     }
+
 
     /**
      * Initialize the view in the layout
      *
      * @param savedInstanceState savedInstanceState
      */
-    @Override
-    protected void initViews(Bundle savedInstanceState) {
+    @Override protected void initViews(Bundle savedInstanceState) {
         this.longitudeTV = (TextView) this.findViewById(R.id.location_longitude_tv);
         this.latitudeTV = (TextView) this.findViewById(R.id.location_latitude_tv);
         this.altitudeTV = (TextView) this.findViewById(R.id.location_altitude_tv);
@@ -61,22 +60,21 @@ public class LocationManagerActivity extends BaseAppCompatActivity {
         this.bestProviderTV = (TextView) this.findViewById(R.id.location_best_provider_tv);
     }
 
+
     /**
      * Initialize the View of the listener
      */
-    @Override
-    protected void initListeners() {
+    @Override protected void initListeners() {
 
     }
+
 
     /**
      * Initialize the Activity data
      */
-    @Override
-    protected void initData() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+    @Override protected void initData() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -86,7 +84,7 @@ public class LocationManagerActivity extends BaseAppCompatActivity {
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
                         REQUEST_ACCESS_FINE_LOCATION);
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
@@ -97,12 +95,11 @@ public class LocationManagerActivity extends BaseAppCompatActivity {
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private void setData() {
+
+    @SuppressLint("SetTextI18n") private void setData() {
         this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
+            @Override public void onLocationChanged(Location location) {
                 /**
                  * 经度
                  * 纬度
@@ -113,22 +110,24 @@ public class LocationManagerActivity extends BaseAppCompatActivity {
                 Log.i(TAG, "getAltitude:" + Double.toString(location.getAltitude()));
             }
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            @Override public void onStatusChanged(String provider, int status, Bundle extras) {
 
             }
 
-            @Override
-            public void onProviderEnabled(String provider) {
+
+            @Override public void onProviderEnabled(String provider) {
 
             }
 
-            @Override
-            public void onProviderDisabled(String provider) {
+
+            @Override public void onProviderDisabled(String provider) {
 
             }
         };
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -138,7 +137,8 @@ public class LocationManagerActivity extends BaseAppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+        this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0,
+                locationListener);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if (location != null) {
             this.longitudeTV.setText(location.getLongitude() + "");
@@ -148,6 +148,7 @@ public class LocationManagerActivity extends BaseAppCompatActivity {
         this.getProviders();
         this.getBestProvider();
     }
+
 
     /**
      * 获取全部的provider
@@ -159,6 +160,7 @@ public class LocationManagerActivity extends BaseAppCompatActivity {
         }
         this.providersTV.setText(providers);
     }
+
 
     /**
      * 获取以下条件下，最合适的provider
@@ -179,14 +181,16 @@ public class LocationManagerActivity extends BaseAppCompatActivity {
         this.bestProviderTV.setText(provider);
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     this.setData();
@@ -200,5 +204,4 @@ public class LocationManagerActivity extends BaseAppCompatActivity {
             // permissions this app might request
         }
     }
-
 }

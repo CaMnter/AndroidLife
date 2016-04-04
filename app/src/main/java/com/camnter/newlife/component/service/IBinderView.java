@@ -13,8 +13,6 @@ public interface IBinderView {
 
     /**
      * 下载成功
-     *
-     * @param imageFilePath
      */
     void downloadSuccess(String imageFilePath);
 

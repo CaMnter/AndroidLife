@@ -21,26 +21,31 @@ public class CanvasClipView extends View {
     private Paint mPaint;
     private Path mPath;
 
+
     public CanvasClipView(Context context) {
         super(context);
         this.init(context);
     }
+
 
     public CanvasClipView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.init(context);
     }
 
+
     public CanvasClipView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.init(context);
     }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public CanvasClipView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         this.init(context);
     }
+
 
     private void init(Context context) {
         this.mPaint = new Paint();
@@ -50,6 +55,7 @@ public class CanvasClipView extends View {
         this.mPaint.setTextAlign(Paint.Align.CENTER);
         this.mPath = new Path();
     }
+
 
     private void drawOriginalView(Canvas canvas) {
         canvas.clipRect(0, 0, 280, 280);
@@ -65,13 +71,13 @@ public class CanvasClipView extends View {
         canvas.drawText("CaMnter", 210, 70, this.mPaint);
     }
 
+
     /**
      * Implement this to do your drawing.
      *
      * @param canvas the canvas on which the background will be drawn
      */
-    @Override
-    protected void onDraw(Canvas canvas) {
+    @Override protected void onDraw(Canvas canvas) {
 
         /**
          * android.graphics.Region.Op:
@@ -133,6 +139,5 @@ public class CanvasClipView extends View {
         canvas.clipRect(140, 140, 280, 280, Region.Op.REVERSE_DIFFERENCE);
         this.drawOriginalView(canvas);
         canvas.restore();
-
     }
 }

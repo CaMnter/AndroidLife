@@ -1,7 +1,6 @@
 package com.camnter.newlife.mvp.model.callback;
 
 import com.camnter.newlife.mvp.bean.Topic;
-
 import java.util.List;
 
 /**
@@ -12,35 +11,31 @@ import java.util.List;
 public abstract class TopicModelCallBack {
     /**
      * 添加成功
-     *
-     * @param topic
      */
     public void addSuccess(Topic topic) {
     }
 
+
     /**
      * 删除成功
-     *
-     * @param topic
      */
     public void delSuccess(Topic topic) {
     }
 
+
     /**
      * 修改成功
-     *
-     * @param newTopic
      */
     public void modSuccess(Topic newTopic) {
     }
 
+
     /**
      * 查询成功
-     *
-     * @return
      */
     public void querySuccess(List<Topic> topics) {
     }
+
 
     /**
      * 发生错误

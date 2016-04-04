@@ -1,7 +1,6 @@
 package com.camnter.newlife.utils.other;
 
 import android.app.Activity;
-
 import java.lang.ref.WeakReference;
 
 /**
@@ -18,6 +17,7 @@ public class ActivityManager {
     private ActivityManager() {
     }
 
+
     /**
      * 获得 ActivityManager 实例
      *
@@ -26,6 +26,7 @@ public class ActivityManager {
     public static ActivityManager getInstance() {
         return instance;
     }
+
 
     /**
      * 获得 弱引用 缓存的 Activity
@@ -40,6 +41,7 @@ public class ActivityManager {
         return currentActivity;
     }
 
+
     /**
      * 获得 设置 Activity 为弱引用
      *
@@ -48,5 +50,4 @@ public class ActivityManager {
     public void setCurrentActivity(Activity activity) {
         activityWeakReference = new WeakReference<>(activity);
     }
-
 }

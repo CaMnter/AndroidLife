@@ -2,10 +2,8 @@ package com.camnter.newlife.utils.cache;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.camnter.newlife.framework.robotlegs.robotlegsapplication.MainApplication;
 import com.camnter.newlife.utils.DeviceUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,9 +12,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-
 /**
- * Description：
+ * Description：FileCacheHelper
  * Created by：CaMnter
  * Time：2015-10-28 25:11
  */
@@ -25,20 +22,17 @@ public class FileCacheHelper extends CacheHelper {
     private static final String SHARED_PREFERENCE_NAME = FileCacheHelper.class + ".xml";
     private Context context;
 
+
     public FileCacheHelper(Context context) {
         super(context);
         this.context = context;
     }
 
+
     /**
      * 获取对应缓存文件
-     *
-     * @param scope
-     * @param model
-     * @return
      */
-    @Override
-    public <T> T getCache(String scope, String model) {
+    @Override public <T> T getCache(String scope, String model) {
         //TODO 读取index 判断cache
         T result = null;
         File file = new File(getCacheFile(scope, model));
@@ -69,15 +63,11 @@ public class FileCacheHelper extends CacheHelper {
         return result;
     }
 
+
     /**
      * 删除对应缓存
-     *
-     * @param scope
-     * @param model
-     * @return
      */
-    @Override
-    public <T> T delCache(String scope, String model) {
+    @Override public <T> T delCache(String scope, String model) {
         T result = null;
         File file = new File(getCacheFile(scope, model));
         createFileFolder(file);
@@ -114,28 +104,21 @@ public class FileCacheHelper extends CacheHelper {
         }
     }
 
+
     /**
      * 修改对应缓存
-     *
-     * @param cacheOption
-     * @param obj
-     * @return
      */
-    @Override
-    public <T> T modCache(CacheOption cacheOption, Object obj) {
+    @Override public <T> T modCache(CacheOption cacheOption, Object obj) {
         T result = this.delCache(cacheOption.scope, cacheOption.model);
         this.saveCache(cacheOption, obj);
         return result;
     }
 
+
     /**
      * 保存缓存
-     *
-     * @param cacheOption
-     * @param obj
      */
-    @Override
-    public void saveCache(CacheOption cacheOption, Object obj) {
+    @Override public void saveCache(CacheOption cacheOption, Object obj) {
         if (cacheOption.deadlineType == DeadlineType.currentStart) {
             addToCache(cacheOption.model + "_memory", obj);
             return;
@@ -170,15 +153,11 @@ public class FileCacheHelper extends CacheHelper {
         }
     }
 
+
     /**
      * 缓存是否可以使用
-     *
-     * @param scope
-     * @param model
-     * @return
      */
-    @Override
-    public boolean canUse(String scope, String model, int deadlineType) {
+    @Override public boolean canUse(String scope, String model, int deadlineType) {
         SharedPreferences sp = context.getSharedPreferences(scope + SHARED_PREFERENCE_NAME, 0);
         String key = model;
         switch (deadlineType) {
@@ -226,13 +205,13 @@ public class FileCacheHelper extends CacheHelper {
         }
     }
 
+
     /**
      * 将索引保存到 SharedPreferences 中
-     *
-     * @param cacheOption
      */
     private void saveCacheIndex(CacheOption cacheOption) {
-        SharedPreferences sp = context.getSharedPreferences(cacheOption.scope + SHARED_PREFERENCE_NAME, 0);
+        SharedPreferences sp = context.getSharedPreferences(
+                cacheOption.scope + SHARED_PREFERENCE_NAME, 0);
         String model = cacheOption.model;
         SharedPreferences.Editor edt = sp.edit();
         switch (cacheOption.deadlineType) {
@@ -250,23 +229,23 @@ public class FileCacheHelper extends CacheHelper {
         }
     }
 
+
     /**
      * 创建缓存文件夹
-     *
-     * @param file
-     * @return
      */
     private boolean createFileFolder(File file) {
         File parentFile = file.getParentFile();
         return parentFile.exists() || parentFile.mkdirs();
     }
 
+
     /**
      * 获得缓存文件路径
      **/
     private String getCacheFile(String scope, String model) {
-        return DeviceUtils.createAPPFolder(DeviceUtils.getAppProcessName(this.context, DeviceUtils.getAppProcessId()), MainApplication.getInstance()) + File.separator
-                + CACHE_DIR + File.separator + scope + "_" + model + ".data";
+        return DeviceUtils.createAPPFolder(
+                DeviceUtils.getAppProcessName(this.context, DeviceUtils.getAppProcessId()),
+                MainApplication.getInstance()) + File.separator + CACHE_DIR + File.separator +
+                scope + "_" + model + ".data";
     }
-
 }

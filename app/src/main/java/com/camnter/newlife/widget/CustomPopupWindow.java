@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.camnter.newlife.R;
 
 /**
@@ -24,15 +23,17 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
     // 用于保存PopupWindow的高度
     private int height;
 
+
     public CustomPopupWindow(Activity activity) {
         super(activity);
         this.activity = activity;
         this.initPopupWindow();
     }
 
+
     private void initPopupWindow() {
-        LayoutInflater inflater = (LayoutInflater) activity
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) activity.getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
         this.contentView = inflater.inflate(R.layout.popupwindow_custom, null);
         this.setContentView(contentView);
         // 设置弹出窗体的宽
@@ -54,6 +55,7 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
         this.mandatoryDraw();
     }
 
+
     /**
      * 强制绘制popupWindowView，并且初始化popupWindowView的尺寸
      */
@@ -65,6 +67,7 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
         this.width = this.contentView.getMeasuredWidth();
         this.height = this.contentView.getMeasuredHeight();
     }
+
 
     /**
      * 显示在控件的下右方
@@ -79,9 +82,11 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
             int[] location = new int[2];
             //获取在整个屏幕内的绝对坐标
             parent.getLocationOnScreen(location);
-            this.showAtLocation(parent, 0, location[0] + parent.getWidth() - this.width, location[1] + parent.getHeight());
+            this.showAtLocation(parent, 0, location[0] + parent.getWidth() - this.width,
+                    location[1] + parent.getHeight());
         }
     }
+
 
     /**
      * 显示在控件的下左方
@@ -100,6 +105,7 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
         }
     }
 
+
     /**
      * 显示在控件的下中方
      *
@@ -113,8 +119,8 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
             int[] location = new int[2];
             //获取在整个屏幕内的绝对坐标
             parent.getLocationOnScreen(location);
-            this.showAtLocation(parent, 0, location[0] / 2 + parent.getWidth() / 2 - this.width / 6, location[1] + parent.getHeight());
+            this.showAtLocation(parent, 0, location[0] / 2 + parent.getWidth() / 2 - this.width / 6,
+                    location[1] + parent.getHeight());
         }
     }
-
 }

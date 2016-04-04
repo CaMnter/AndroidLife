@@ -3,7 +3,6 @@ package com.camnter.newlife.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-
 import java.io.ByteArrayOutputStream;
 
 /**
@@ -29,6 +28,7 @@ public class Base64Utils {
         return base64;
     }
 
+
     /**
      * base64转成bitmap
      *
@@ -41,12 +41,10 @@ public class Base64Utils {
         try {
             byte[] bitmapArray;
             bitmapArray = Base64.decode(base64, Base64.DEFAULT);
-            bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0,
-                    bitmapArray.length);
+            bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return bitmap;
     }
-
 }

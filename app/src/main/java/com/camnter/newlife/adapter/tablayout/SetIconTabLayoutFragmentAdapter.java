@@ -17,6 +17,7 @@ public class SetIconTabLayoutFragmentAdapter extends FragmentPagerAdapter {
     private String[] tabTitles;
     private Fragment[] fragments;
 
+
     public SetIconTabLayoutFragmentAdapter(Context context, FragmentManager fm, Fragment[] fragments, String[] tabTitles, int[] icons) {
         super(fm);
         this.context = context;
@@ -25,23 +26,22 @@ public class SetIconTabLayoutFragmentAdapter extends FragmentPagerAdapter {
         this.tabTitles = tabTitles;
     }
 
+
     /**
      * Return the Fragment associated with a specified position.
-     *
-     * @param position
      */
-    @Override
-    public Fragment getItem(int position) {
+    @Override public Fragment getItem(int position) {
         return this.fragments[position];
     }
+
 
     /**
      * Return the number of views available.
      */
-    @Override
-    public int getCount() {
+    @Override public int getCount() {
         return this.fragments.length;
     }
+
 
     /**
      * This method may be called by the ViewPager to obtain a title string
@@ -52,10 +52,8 @@ public class SetIconTabLayoutFragmentAdapter extends FragmentPagerAdapter {
      * @param position The position of the title requested
      * @return A title for the requested page
      */
-    @Override
-    public CharSequence getPageTitle(int position) {
+    @Override public CharSequence getPageTitle(int position) {
         // 多返回三个空格，作为padding的作用，挤开图片
-        return "  "+this.tabTitles[position];
+        return "  " + this.tabTitles[position];
     }
-
 }

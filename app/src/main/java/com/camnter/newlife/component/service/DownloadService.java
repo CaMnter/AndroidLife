@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,36 +25,37 @@ public class DownloadService extends Service {
     private static final String TAG = "DownloadService";
     private IBinder binder;
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
+
+    @Nullable @Override public IBinder onBind(Intent intent) {
         return this.binder;
     }
+
 
     /**
      * Called by the system when the service is first created.  Do not call this method directly.
      */
-    @Override
-    public void onCreate() {
+    @Override public void onCreate() {
         super.onCreate();
         this.binder = new DownloadServiceBinder();
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+
+    @Override public int onStartCommand(Intent intent, int flags, int startId) {
         return super.onStartCommand(intent, flags, startId);
     }
 
+
     /**
-     * Called by the system to notify a Service that it is no longer used and is being removed.  The
+     * Called by the system to notify a Service that it is no longer used and is being removed.
+     * The
      * service should clean up any resources it holds (threads, registered
      * receivers, etc) at this point.  Upon return, there will be no more calls
      * in to this Service object and it is effectively dead.  Do not call this method directly.
      */
-    @Override
-    public void onDestroy() {
+    @Override public void onDestroy() {
         super.onDestroy();
     }
+
 
     /**
      * Service Binder
@@ -63,15 +63,18 @@ public class DownloadService extends Service {
     public class DownloadServiceBinder extends Binder {
         public IBinderView iBinderView;
 
+
         public DownloadService getService() {
             return DownloadService.this;
         }
     }
 
+
     public void startDownload(String imageUrl) {
         ((DownloadServiceBinder) DownloadService.this.binder).iBinderView.downloadStart();
         new DownloadImageAsyncTask(this).execute(imageUrl);
     }
+
 
     /**
      * 下载图片异步任务
@@ -81,10 +84,12 @@ public class DownloadService extends Service {
         private Service service;
         private String localFilePath;
 
+
         public DownloadImageAsyncTask(Service service) {
             super();
             this.service = service;
         }
+
 
         /**
          * 对应AsyncTask第一个参数
@@ -97,8 +102,7 @@ public class DownloadService extends Service {
          * @see #onPostExecute
          * @see #publishProgress
          */
-        @Override
-        protected String doInBackground(String... params) {
+        @Override protected String doInBackground(String... params) {
             URL fileUrl = null;
             try {
                 fileUrl = new URL(params[0]);
@@ -145,6 +149,7 @@ public class DownloadService extends Service {
             return null;
         }
 
+
         /**
          * 对应AsyncTask第三个参数 (接受doInBackground的返回值)
          * 在doInBackground方法执行结束之后在运行，此时已经回来主UI线程当中 能对UI控件进行修改
@@ -154,11 +159,12 @@ public class DownloadService extends Service {
          * @see #doInBackground
          * @see #onCancelled(Object)
          */
-        @Override
-        protected void onPostExecute(String string) {
+        @Override protected void onPostExecute(String string) {
             super.onPostExecute(string);
-            ((DownloadServiceBinder) DownloadService.this.binder).iBinderView.downloadSuccess(this.localFilePath);
+            ((DownloadServiceBinder) DownloadService.this.binder).iBinderView.downloadSuccess(
+                    this.localFilePath);
         }
+
 
         /**
          * 对应AsyncTask第二个参数
@@ -169,10 +175,10 @@ public class DownloadService extends Service {
          * @see #publishProgress
          * @see #doInBackground
          */
-        @Override
-        protected void onProgressUpdate(Integer... values) {
+        @Override protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
         }
+
 
         /**
          * 运行在主UI线程中，此时是预执行状态，下一步是doInBackground
@@ -180,10 +186,10 @@ public class DownloadService extends Service {
          * @see #onPostExecute
          * @see #doInBackground
          */
-        @Override
-        protected void onPreExecute() {
+        @Override protected void onPreExecute() {
             super.onPreExecute();
         }
+
 
         /**
          * <p>Applications should preferably override {@link #onCancelled(Object)}.
@@ -197,12 +203,9 @@ public class DownloadService extends Service {
          * @see #cancel(boolean)
          * @see #isCancelled()
          */
-        @Override
-        protected void onCancelled() {
+        @Override protected void onCancelled() {
             super.onCancelled();
             ((DownloadServiceBinder) DownloadService.this.binder).iBinderView.downloadFailure();
         }
-
     }
-
 }

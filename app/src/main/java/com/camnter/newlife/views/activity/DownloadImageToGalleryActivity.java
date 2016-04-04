@@ -13,12 +13,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.utils.ImageUtil;
 import com.camnter.newlife.widget.CustomProgressBarDialog;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,13 +27,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
 
-
 /**
  * Description：DownloadImageToGalleryActivity
  * Created by：CaMnter
  * Time：2015-10-20 15:00
  */
-public class DownloadImageToGalleryActivity extends BaseAppCompatActivity implements View.OnClickListener {
+public class DownloadImageToGalleryActivity extends BaseAppCompatActivity
+        implements View.OnClickListener {
 
     private static final String OBJECT_IMAGE_URL = "http://img.blog.csdn.net/20150913233900119";
 
@@ -51,17 +49,16 @@ public class DownloadImageToGalleryActivity extends BaseAppCompatActivity implem
     private static class LoadingHandler extends Handler {
         private final WeakReference<DownloadImageToGalleryActivity> mActivity;
 
+
         public LoadingHandler(DownloadImageToGalleryActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
 
+
         /**
          * Subclasses must implement this to receive messages.
-         *
-         * @param msg
          */
-        @Override
-        public void handleMessage(Message msg) {
+        @Override public void handleMessage(Message msg) {
             DownloadImageToGalleryActivity activity = this.mActivity.get();
             if (activity != null) {
                 switch (msg.what) {
@@ -76,53 +73,54 @@ public class DownloadImageToGalleryActivity extends BaseAppCompatActivity implem
         }
     }
 
-    private final LoadingHandler loadingHandler = new LoadingHandler(DownloadImageToGalleryActivity.this);
+    private final LoadingHandler loadingHandler = new LoadingHandler(
+            DownloadImageToGalleryActivity.this);
+
 
     /**
      * Fill in layout id
      *
      * @return layout id
      */
-    @Override
-    protected int getLayoutId() {
+    @Override protected int getLayoutId() {
         return R.layout.activity_download_image_save_to_gallery;
     }
+
 
     /**
      * Initialize the view in the layout
      *
      * @param savedInstanceState savedInstanceState
      */
-    @Override
-    protected void initViews(Bundle savedInstanceState) {
+    @Override protected void initViews(Bundle savedInstanceState) {
         this.saveBT = (Button) this.findViewById(R.id.save_bt);
         this.saveIV = (ImageView) this.findViewById(R.id.save_iv);
         this.dialog = new CustomProgressBarDialog(this);
     }
 
+
     /**
      * Initialize the View of the listener
      */
-    @Override
-    protected void initListeners() {
+    @Override protected void initListeners() {
         this.saveBT.setOnClickListener(this);
     }
+
 
     /**
      * Initialize the Activity data
      */
-    @Override
-    protected void initData() {
+    @Override protected void initData() {
         ((TextView) this.findViewById(R.id.save_tv)).setText(OBJECT_IMAGE_URL);
     }
+
 
     /**
      * Called when a view has been clicked.
      *
      * @param v The view that was clicked.
      */
-    @Override
-    public void onClick(View v) {
+    @Override public void onClick(View v) {
         switch (v.getId()) {
             case R.id.save_bt: {
                 v.setEnabled(false);
@@ -135,6 +133,7 @@ public class DownloadImageToGalleryActivity extends BaseAppCompatActivity implem
         }
     }
 
+
     /**
      * 下载图片异步任务
      */
@@ -143,10 +142,12 @@ public class DownloadImageToGalleryActivity extends BaseAppCompatActivity implem
         private Activity activity;
         private String localFilePath;
 
+
         public DownloadImageAsyncTask(Activity activity) {
             super();
             this.activity = activity;
         }
+
 
         /**
          * 对应AsyncTask第一个参数
@@ -159,8 +160,7 @@ public class DownloadImageToGalleryActivity extends BaseAppCompatActivity implem
          * @see #onPostExecute
          * @see #publishProgress
          */
-        @Override
-        protected String doInBackground(String... params) {
+        @Override protected String doInBackground(String... params) {
             URL fileUrl = null;
             try {
                 fileUrl = new URL(params[0]);
@@ -207,6 +207,7 @@ public class DownloadImageToGalleryActivity extends BaseAppCompatActivity implem
             return null;
         }
 
+
         /**
          * 对应AsyncTask第三个参数 (接受doInBackground的返回值)
          * 在doInBackground方法执行结束之后在运行，此时已经回来主UI线程当中 能对UI控件进行修改
@@ -216,8 +217,7 @@ public class DownloadImageToGalleryActivity extends BaseAppCompatActivity implem
          * @see #doInBackground
          * @see #onCancelled(Object)
          */
-        @Override
-        protected void onPostExecute(String string) {
+        @Override protected void onPostExecute(String string) {
             /**
              * 设置按钮可用，并隐藏Dialog
              */
@@ -231,15 +231,20 @@ public class DownloadImageToGalleryActivity extends BaseAppCompatActivity implem
             /**
              * ImageUtil.decodeScaleImage 解析图片
              */
-            Bitmap bitmap = ImageUtil.decodeScaleImage(this.localFilePath, screenWidth, screenHeight);
+            Bitmap bitmap = ImageUtil.decodeScaleImage(this.localFilePath, screenWidth,
+                    screenHeight);
             DownloadImageToGalleryActivity.this.saveIV.setImageBitmap(bitmap);
             /**
              * 保存图片到相册
              */
             String imageName = System.currentTimeMillis() + ".jpg";
-            MediaStore.Images.Media.insertImage(DownloadImageToGalleryActivity.this.getApplicationContext().getContentResolver(), bitmap, imageName, "camnter");
+            MediaStore.Images.Media.insertImage(
+                    DownloadImageToGalleryActivity.this.getApplicationContext()
+                                                       .getContentResolver(), bitmap, imageName,
+                    "camnter");
             Toast.makeText(this.activity, "已保存：" + imageName, Toast.LENGTH_LONG).show();
         }
+
 
         /**
          * 对应AsyncTask第二个参数
@@ -250,8 +255,7 @@ public class DownloadImageToGalleryActivity extends BaseAppCompatActivity implem
          * @see #publishProgress
          * @see #doInBackground
          */
-        @Override
-        protected void onProgressUpdate(Integer... values) {
+        @Override protected void onProgressUpdate(Integer... values) {
             // 主线程Handler实例消息
             Message message = DownloadImageToGalleryActivity.this.loadingHandler.obtainMessage();
             message.obj = values[0];
@@ -260,16 +264,17 @@ public class DownloadImageToGalleryActivity extends BaseAppCompatActivity implem
             DownloadImageToGalleryActivity.this.loadingHandler.handleMessage(message);
         }
 
+
         /**
          * 运行在主UI线程中，此时是预执行状态，下一步是doInBackground
          *
          * @see #onPostExecute
          * @see #doInBackground
          */
-        @Override
-        protected void onPreExecute() {
+        @Override protected void onPreExecute() {
             super.onPreExecute();
         }
+
 
         /**
          * <p>Applications should preferably override {@link #onCancelled(Object)}.
@@ -283,15 +288,12 @@ public class DownloadImageToGalleryActivity extends BaseAppCompatActivity implem
          * @see #cancel(boolean)
          * @see #isCancelled()
          */
-        @Override
-        protected void onCancelled() {
+        @Override protected void onCancelled() {
             /**
              * 设置按钮可用
              */
             DownloadImageToGalleryActivity.this.saveBT.setEnabled(true);
             super.onCancelled();
         }
-
     }
-
 }

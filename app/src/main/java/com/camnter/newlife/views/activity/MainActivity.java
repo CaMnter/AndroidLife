@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
@@ -31,57 +30,55 @@ import com.camnter.newlife.views.activity.util.DeviceUtilActivity;
 import com.camnter.newlife.views.activity.util.ReflectionUtilActivity;
 import com.camnter.newlife.views.activity.util.ResourcesUtilActivity;
 import com.camnter.xfermode.XfermodesActivity;
-
 import java.util.ArrayList;
 import me.drakeet.newlife.RxBusActivity;
 
 public class MainActivity extends BaseAppCompatActivity {
 
-
     private EasyRecyclerView menuRV;
     private MainRecyclerViewAdapter adapter;
     public ArrayList<Class> classes;
+
 
     /**
      * Fill in layout id
      *
      * @return layout id
      */
-    @Override
-    protected int getLayoutId() {
+    @Override protected int getLayoutId() {
         return R.layout.activity_main;
     }
+
 
     /**
      * Initialize the view in the layout
      *
      * @param savedInstanceState savedInstanceState
      */
-    @Override
-    protected void initViews(Bundle savedInstanceState) {
+    @Override protected void initViews(Bundle savedInstanceState) {
         this.menuRV = this.findView(R.id.menu_rv);
-        this.menuRV.addItemDecoration(new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST));
+        this.menuRV.addItemDecoration(
+                new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST));
     }
+
 
     /**
      * Initialize the View of the listener
      */
-    @Override
-    protected void initListeners() {
+    @Override protected void initListeners() {
         this.adapter.setOnItemClickListener(new EasyRecyclerViewHolder.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int i) {
+            @Override public void onItemClick(View view, int i) {
                 Class c = MainActivity.this.classes.get(i);
                 MainActivity.this.startActivity(new Intent(MainActivity.this, c));
             }
         });
     }
 
+
     /**
      * Initialize the Activity data
      */
-    @Override
-    protected void initData() {
+    @Override protected void initData() {
         this.classes = new ArrayList<>();
         this.classes.add(ImageScaleTypesActivity.class);
         this.classes.add(AsyncTaskActivity.class);
@@ -136,17 +133,16 @@ public class MainActivity extends BaseAppCompatActivity {
         this.adapter.setList(classes);
 
         this.menuRV.setAdapter(adapter);
-//        setSupportActionBar(toolbar);
+        //        setSupportActionBar(toolbar);
     }
+
 
     public class MainRecyclerViewAdapter extends EasyRecyclerViewAdapter {
 
-        @Override
-        public int[] getItemLayouts() {
-            return new int[]{
-                    R.layout.item_main
-            };
+        @Override public int[] getItemLayouts() {
+            return new int[] { R.layout.item_main };
         }
+
 
         @Override
         public void onBindRecycleViewHolder(EasyRecyclerViewHolder easyRecyclerViewHolder, int i) {
@@ -156,10 +152,9 @@ public class MainActivity extends BaseAppCompatActivity {
             textView.setText(c.getSimpleName());
         }
 
-        @Override
-        public int getRecycleViewItemType(int i) {
+
+        @Override public int getRecycleViewItemType(int i) {
             return 0;
         }
     }
-
 }

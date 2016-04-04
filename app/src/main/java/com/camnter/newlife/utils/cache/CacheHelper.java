@@ -2,12 +2,11 @@ package com.camnter.newlife.utils.cache;
 
 import android.content.Context;
 import android.support.v4.util.LruCache;
-
 import java.lang.ref.SoftReference;
 import java.util.LinkedHashMap;
 
 /**
- * Description：
+ * Description：CacheHelper
  * Created by：CaMnter
  * Time：2015-10-28 16:11
  */
@@ -19,6 +18,7 @@ public abstract class CacheHelper {
     protected static LruCache<String, Object> mLruCache;
     // 软引用缓存（一级缓存）
     protected static LinkedHashMap<String, SoftReference<Object>> mSoftCache;
+
 
     public CacheHelper(Context context) {
         int cacheSize = 30;
@@ -34,10 +34,10 @@ public abstract class CacheHelper {
              * @param value
              * @return
              */
-            @Override
-            protected int sizeOf(String key, Object value) {
+            @Override protected int sizeOf(String key, Object value) {
                 return 1;
             }
+
 
             /**
              * 当item被回收或者删掉时调用。该方法当value被回收释放存储空间时被remove调用，
@@ -55,7 +55,6 @@ public abstract class CacheHelper {
                 // 硬引用缓存容量满的时候，会根据LRU算法把最近没有被使用的转入此软引用缓存
                 if (oldValue != null) mSoftCache.put(key, new SoftReference<>(oldValue));
             }
-
         };
 
         /**
@@ -65,37 +64,32 @@ public abstract class CacheHelper {
          * accessOrder：true：如果排序基于最后一次访问（从最近最少访问到最近访问）
          *              false：如果排序应该是顺序插入的条目
          */
-        mSoftCache = new LinkedHashMap<String, SoftReference<Object>>(SOFT_CACHE_SIZE, 0.75f, true) {
+        mSoftCache = new LinkedHashMap<String, SoftReference<Object>>(SOFT_CACHE_SIZE, 0.75f,
+                true) {
             /**
              * 移除最旧的数据
              * @param eldest
              * @return
              */
             @Override
-            protected boolean removeEldestEntry(
-                    Entry<String, SoftReference<Object>> eldest) {
+            protected boolean removeEldestEntry(Entry<String, SoftReference<Object>> eldest) {
                 return this.size() > SOFT_CACHE_SIZE;
             }
         };
-
     }
+
 
     /**
      * 判断缓存是否存在
-     *
-     * @param key
-     * @return
      */
     public boolean cacheExit(String key) {
         Object result = mLruCache.get(key);
         return result != null || mSoftCache.containsKey(key);
     }
 
+
     /**
      * 获取缓存数据
-     *
-     * @param key
-     * @return
      */
     protected Object getFromCache(String key) {
         Object result;
@@ -105,8 +99,7 @@ public abstract class CacheHelper {
         if (reference != null) {
             result = reference.get();
             // 如果数据不为脏数据
-            if (result != null)
-                return result;
+            if (result != null) return result;
         }
         //TODO 再从二级缓存中找
         result = mLruCache.get(key);
@@ -118,11 +111,9 @@ public abstract class CacheHelper {
         return null;
     }
 
+
     /**
      * 添加数据到缓存
-     *
-     * @param key
-     * @param result
      */
     public void addToCache(String key, Object result) {
         if (result != null) {
@@ -133,50 +124,26 @@ public abstract class CacheHelper {
 
     /**
      * 获取对应缓存
-     *
-     * @param scope
-     * @param model
-     * @param <T>
-     * @return
      */
     public abstract <T> T getCache(String scope, String model);
 
     /**
      * 删除对应缓存
-     *
-     * @param scope
-     * @param model
-     * @param <T>
-     * @return
      */
     public abstract <T> T delCache(String scope, String model);
 
     /**
      * 修改对应缓存
-     *
-     * @param <T>
-     * @param cacheOption
-     * @param obj
-     * @return
      */
     public abstract <T> Object modCache(CacheOption cacheOption, Object obj);
 
     /**
      * 保存缓存
-     *
-     * @param cacheOption
-     * @param obj
      */
     public abstract void saveCache(CacheOption cacheOption, Object obj);
 
     /**
      * 缓存是否可以使用
-     *
-     * @param scope
-     * @param model
-     * @param deadlineType
-     * @return
      */
     public abstract boolean canUse(String scope, String model, int deadlineType);
-
 }

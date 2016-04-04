@@ -33,11 +33,11 @@ public class MessageContentProvider extends BaseContentProvider {
     // 有无匹配码
     public static final int MESSAGES = 7;
 
-
     // Message SQLite helper
     private MessageSQLiteHelper messageSQLiteHelper;
 
     private static final UriMatcher messageUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
 
     static {
         // content://com.camnter.content.provider/message
@@ -46,14 +46,14 @@ public class MessageContentProvider extends BaseContentProvider {
         messageUriMatcher.addURI(AUTHORITY, "message/#", MESSAGE);
     }
 
-    @Override
-    public boolean onCreate() {
+
+    @Override public boolean onCreate() {
         this.messageSQLiteHelper = MessageSQLiteHelper.getInstance(this.getContext());
         return true;
     }
 
-    @Override
-    public String getType(@NonNull Uri uri) {
+
+    @Override public String getType(@NonNull Uri uri) {
         int match = messageUriMatcher.match(uri);
         switch (match) {
             case MESSAGE:
@@ -65,8 +65,8 @@ public class MessageContentProvider extends BaseContentProvider {
         }
     }
 
-    @Override
-    public Uri insert(@NonNull Uri uri, ContentValues values) {
+
+    @Override public Uri insert(@NonNull Uri uri, ContentValues values) {
         SQLiteDatabase db = this.messageSQLiteHelper.getWritableDatabase();
         long id;
         switch (messageUriMatcher.match(uri)) {
@@ -79,14 +79,14 @@ public class MessageContentProvider extends BaseContentProvider {
                 String path = uri.toString();
                 this.getContext().getContentResolver().notifyChange(uri, null);
                 // 新id的Uri替换旧id的Uri
-                return Uri.parse(path.substring(0, path.lastIndexOf("/")) +"/"+ id);
+                return Uri.parse(path.substring(0, path.lastIndexOf("/")) + "/" + id);
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
     }
 
-    @Override
-    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
+
+    @Override public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase db = this.messageSQLiteHelper.getWritableDatabase();
         int count;
         switch (messageUriMatcher.match(uri)) {
@@ -109,8 +109,10 @@ public class MessageContentProvider extends BaseContentProvider {
         return count;
     }
 
+
     @Override
-    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(
+            @NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         SQLiteDatabase db = this.messageSQLiteHelper.getWritableDatabase();
         int count;
         switch (messageUriMatcher.match(uri)) {
@@ -133,8 +135,10 @@ public class MessageContentProvider extends BaseContentProvider {
         return count;
     }
 
+
     @Override
-    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(@NonNull
+                        Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = this.messageSQLiteHelper.getReadableDatabase();
         Cursor cursor;
         switch (messageUriMatcher.match(uri)) {
@@ -144,16 +148,17 @@ public class MessageContentProvider extends BaseContentProvider {
                 String where = "_id=" + messageId;
                 // 把其它条件附加上
                 where += !TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "";
-                cursor = db.query(MessageSQLiteHelper.TB_MESSAGE, projection, where, selectionArgs, null, null, sortOrder);
+                cursor = db.query(MessageSQLiteHelper.TB_MESSAGE, projection, where, selectionArgs,
+                        null, null, sortOrder);
                 this.getContext().getContentResolver().notifyChange(uri, null);
                 return cursor;
             case MESSAGES:
-                cursor = db.query(MessageSQLiteHelper.TB_MESSAGE, projection, selection, selectionArgs, null, null, sortOrder);
+                cursor = db.query(MessageSQLiteHelper.TB_MESSAGE, projection, selection,
+                        selectionArgs, null, null, sortOrder);
                 this.getContext().getContentResolver().notifyChange(uri, null);
                 return cursor;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
     }
-
 }

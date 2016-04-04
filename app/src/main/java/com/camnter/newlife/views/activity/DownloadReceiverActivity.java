@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.camnter.newlife.R;
 import com.camnter.newlife.component.service.DownloadIntentService;
 import com.camnter.newlife.core.BaseAppCompatActivity;
@@ -24,35 +23,37 @@ import com.camnter.newlife.utils.ImageUtil;
  * Created by：CaMnter
  * Time：2015-11-22 22:54
  */
-public class DownloadReceiverActivity extends BaseAppCompatActivity implements View.OnClickListener {
+public class DownloadReceiverActivity extends BaseAppCompatActivity
+        implements View.OnClickListener {
 
     private static final String OBJECT_IMAGE_URL = "http://img.blog.csdn.net/20150913233900119";
 
     private Button downloadBT;
     private ImageView downloadIV;
 
+
     /**
      * Fill in layout id
      *
      * @return layout id
      */
-    @Override
-    protected int getLayoutId() {
+    @Override protected int getLayoutId() {
         return R.layout.activity_download_broadcast_receiver;
     }
+
 
     /**
      * Initialize the view in the layout
      *
      * @param savedInstanceState savedInstanceState
      */
-    @Override
-    protected void initViews(Bundle savedInstanceState) {
+    @Override protected void initViews(Bundle savedInstanceState) {
         TextView downloadTV = (TextView) this.findViewById(R.id.down_broadcast_image_tv);
         downloadTV.setText(OBJECT_IMAGE_URL);
         this.downloadBT = (Button) this.findViewById(R.id.down_broadcast_start_bt);
         this.downloadIV = (ImageView) this.findViewById(R.id.down_broadcast_image_iv);
     }
+
 
     private void registerReceiver() {
         DownloadReceiver downloadReceiver = new DownloadReceiver();
@@ -61,26 +62,26 @@ public class DownloadReceiverActivity extends BaseAppCompatActivity implements V
         this.registerReceiver(downloadReceiver, intentFilter);
     }
 
-    @Override
-    protected void initListeners() {
+
+    @Override protected void initListeners() {
         this.downloadBT.setOnClickListener(this);
     }
+
 
     /**
      * Initialize the Activity data
      */
-    @Override
-    protected void initData() {
+    @Override protected void initData() {
         this.registerReceiver();
     }
+
 
     /**
      * Called when a view has been clicked.
      *
      * @param v The view that was clicked.
      */
-    @Override
-    public void onClick(View v) {
+    @Override public void onClick(View v) {
         switch (v.getId()) {
             case R.id.down_broadcast_start_bt:
                 v.setEnabled(false);
@@ -91,6 +92,7 @@ public class DownloadReceiverActivity extends BaseAppCompatActivity implements V
                 break;
         }
     }
+
 
     /**
      * 下载广播
@@ -105,8 +107,8 @@ public class DownloadReceiverActivity extends BaseAppCompatActivity implements V
         public static final int TYPE_DOWNLOAD_SUCCESS = 2062;
         public static final int TYPE_DOWNLOAD_FAILURE = 2063;
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
+
+        @Override public void onReceive(Context context, Intent intent) {
             int type = intent.getIntExtra(INTENT_TYPE, -1);
             if (type == -1) return;
             switch (type) {
@@ -128,15 +130,20 @@ public class DownloadReceiverActivity extends BaseAppCompatActivity implements V
                     /**
                      * ImageUtil.decodeScaleImage 解析图片
                      */
-                    Bitmap bitmap = ImageUtil.decodeScaleImage(imageFilePath, screenWidth, screenHeight);
+                    Bitmap bitmap = ImageUtil.decodeScaleImage(imageFilePath, screenWidth,
+                            screenHeight);
                     DownloadReceiverActivity.this.downloadIV.setImageBitmap(bitmap);
 
                     /**
                      * 保存图片到相册
                      */
                     String imageName = System.currentTimeMillis() + ".jpg";
-                    MediaStore.Images.Media.insertImage(DownloadReceiverActivity.this.getApplicationContext().getContentResolver(), bitmap, imageName, "camnter");
-                    Toast.makeText(DownloadReceiverActivity.this, "已保存：" + imageName, Toast.LENGTH_LONG).show();
+                    MediaStore.Images.Media.insertImage(
+                            DownloadReceiverActivity.this.getApplicationContext()
+                                                         .getContentResolver(), bitmap, imageName,
+                            "camnter");
+                    Toast.makeText(DownloadReceiverActivity.this, "已保存：" + imageName,
+                            Toast.LENGTH_LONG).show();
                     break;
                 }
                 case TYPE_DOWNLOAD_FAILURE: {
@@ -145,7 +152,5 @@ public class DownloadReceiverActivity extends BaseAppCompatActivity implements V
                 }
             }
         }
-
     }
-
 }

@@ -26,6 +26,7 @@ public class ThreadPoolUtils {
         return Executors.newSingleThreadExecutor();
     }
 
+
     /**
      * To create a fixed-size pool.Every time to submit a task to create a
      * thread, thread until reach the maximum size of the thread pool.Once the
@@ -41,6 +42,7 @@ public class ThreadPoolUtils {
     public static ExecutorService getFixedThreadPool(int count) {
         return Executors.newFixedThreadPool(count);
     }
+
 
     /**
      * To create a cache of the thread pool.If the thread pool size than the
@@ -61,6 +63,7 @@ public class ThreadPoolUtils {
         return Executors.newCachedThreadPool();
     }
 
+
     /**
      * Create a limitless thread pool size.The thread pool support regular and
      * periodic mission requirements.
@@ -72,5 +75,4 @@ public class ThreadPoolUtils {
     public static ExecutorService getScheduledThreadPool(int corePoolSize) {
         return Executors.newScheduledThreadPool(corePoolSize);
     }
-
 }

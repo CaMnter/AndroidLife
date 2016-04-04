@@ -53,6 +53,7 @@ dependencies {
     compile 'com.camnter.easyrecyclerview:easyrecyclerview:1.2'
     compile 'com.camnter.robotlegs4android:robotlegs4android:1.0'
     compile 'com.camnter.easyarcloading:easyarcloading:1.0'
+    compile 'com.camnter.easylikearea:easylikearea:1.3'
 
     // ReactiveX
     compile 'io.reactivex:rxandroid:1.0.1'

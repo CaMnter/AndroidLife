@@ -4,7 +4,6 @@ import com.camnter.newlife.framework.robotlegs.robotlegs4android.bean.User;
 import com.camnter.newlife.framework.robotlegs.robotlegs4android.event.LoginEvent;
 import com.camnter.robotlegs4android.mvcs.Actor;
 
-
 /**
  * Description：UserModel
  * Created by：CaMnter
@@ -12,7 +11,7 @@ import com.camnter.robotlegs4android.mvcs.Actor;
  */
 public class UserModel extends Actor {
 
-    public void login(String name,String password) {
+    public void login(String name, String password) {
 
         // TODO Do you want to network requests
 
@@ -27,15 +26,15 @@ public class UserModel extends Actor {
         LoginEvent loginEvent = new LoginEvent(LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW);
         loginEvent.user = user;
         this.dispatch(loginEvent);
-        this.getEventDispatcher().dispatchEvent(new LoginEvent(LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_CONTROLLER));
+        this.getEventDispatcher()
+            .dispatchEvent(new LoginEvent(LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_CONTROLLER));
     }
 
-    public boolean logout(){
+
+    public boolean logout() {
 
         // TODO Do you want to network requests
 
         return true;
     }
-
-
 }

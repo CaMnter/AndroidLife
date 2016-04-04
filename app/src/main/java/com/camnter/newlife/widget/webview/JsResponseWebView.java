@@ -24,15 +24,18 @@ public class JsResponseWebView extends WebView {
 
     private String javascript;
 
+
     public JsResponseWebView(Context context) {
         super(context);
         this.initWebView();
     }
 
+
     public JsResponseWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.initWebView();
     }
+
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public JsResponseWebView(Context context, AttributeSet attrs, int defStyleAttr, boolean privateBrowsing) {
@@ -40,10 +43,12 @@ public class JsResponseWebView extends WebView {
         this.initWebView();
     }
 
+
     public JsResponseWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.initWebView();
     }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public JsResponseWebView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -51,28 +56,28 @@ public class JsResponseWebView extends WebView {
         this.initWebView();
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    private void initWebView() {
+
+    @SuppressLint("SetJavaScriptEnabled") private void initWebView() {
         WebSettings settings = this.getSettings();
         settings.setJavaScriptEnabled(true);
         this.setWebViewClient(new JsResponseViewClient());
-        this.javascript =
-                "javascript:(function(){" +
-                        "   // 图片   " +
-                        "   var images = document.getElementsByTagName('img');" +
-                        "   for(var i=0;i<images.length;i++){" +
-                        "       images[i].onclick=function(){" +
-                        "           window." + INTERFACE_NAME + "." + ON_CLICK_PICTURE + "(images[i].src);" +
-                        "       }" +
-                        "   }" +
-                        "   // 标签   " +
-                        "   var tags = document.getElementsByClassName('video');" +
-                        "   for(var i=0;i<tags.length;i++){" +
-                        "       tags[i].onclick=function(){" +
-                        "           window." + INTERFACE_NAME + "." + ON_CLICK_TAG + "(tags[i].id,i);" +
-                        "       }" +
-                        "   }" +
-                        "})()";
+        this.javascript = "javascript:(function(){" +
+                "   // 图片   " +
+                "   var images = document.getElementsByTagName('img');" +
+                "   for(var i=0;i<images.length;i++){" +
+                "       images[i].onclick=function(){" +
+                "           window." + INTERFACE_NAME + "." + ON_CLICK_PICTURE +
+                "(images[i].src);" +
+                "       }" +
+                "   }" +
+                "   // 标签   " +
+                "   var tags = document.getElementsByClassName('video');" +
+                "   for(var i=0;i<tags.length;i++){" +
+                "       tags[i].onclick=function(){" +
+                "           window." + INTERFACE_NAME + "." + ON_CLICK_TAG + "(tags[i].id,i);" +
+                "       }" +
+                "   }" +
+                "})()";
     }
 
 
@@ -84,9 +89,11 @@ public class JsResponseWebView extends WebView {
         this.loadUrl(this.javascript);
     }
 
+
     public void setJavascript(String javascript) {
         this.javascript = javascript;
     }
+
 
     @SuppressLint("AddJavascriptInterface")
     public void setJsResponseInterface(JsResponseInterface jsResponseInterface) {
@@ -94,9 +101,9 @@ public class JsResponseWebView extends WebView {
         this.addJavascriptInterface(jsResponseInterface, INTERFACE_NAME);
     }
 
+
     private class JsResponseViewClient extends WebViewClient {
-        @Override
-        public void onPageFinished(WebView view, String url) {
+        @Override public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             JsResponseWebView.this.injectJavaScript();
         }
@@ -112,17 +119,14 @@ public class JsResponseWebView extends WebView {
          *
          * @param name name
          */
-        @JavascriptInterface
-        void onClickTag(String name);
+        @JavascriptInterface void onClickTag(String name);
 
         /**
          * 图片点击
          *
-         * @param url      url
+         * @param url url
          * @param position position
          */
-        @JavascriptInterface
-        void onClickPicture(String url, int position);
+        @JavascriptInterface void onClickPicture(String url, int position);
     }
-
 }

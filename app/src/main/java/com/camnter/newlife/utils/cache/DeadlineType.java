@@ -1,7 +1,7 @@
 package com.camnter.newlife.utils.cache;
 
 /**
- * Description：
+ * Description：DeadlineType
  * Created by：CaMnter
  * Time：2015-10-28 13:11
  */
@@ -21,5 +21,4 @@ public interface DeadlineType {
      * 当前版本有效
      */
     int currentVersion = 2;
-
 }

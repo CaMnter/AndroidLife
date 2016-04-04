@@ -18,9 +18,11 @@ public class AutoAdjustSizeEditText extends EditText {
     private float minTextSize = DEFAULT_MIN_TEXT_SIZE;
     private float maxTextSize = DEFAULT_MAX_TEXT_SIZE;
 
+
     public AutoAdjustSizeEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
 
     private void initialise() {
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
@@ -28,13 +30,18 @@ public class AutoAdjustSizeEditText extends EditText {
             this.textPaint = new Paint();
             this.textPaint.set(this.getPaint());
         }
-        this.maxTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, this.maxTextSize, displayMetrics);
+        this.maxTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, this.maxTextSize,
+                displayMetrics);
         if (DEFAULT_MIN_TEXT_SIZE >= maxTextSize) {
-            this.maxTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, this.maxTextSize, displayMetrics);
+            this.maxTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                    this.maxTextSize, displayMetrics);
         }
-        this.maxTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, this.maxTextSize, displayMetrics);
-        this.minTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, this.minTextSize, displayMetrics);
+        this.maxTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, this.maxTextSize,
+                displayMetrics);
+        this.minTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, this.minTextSize,
+                displayMetrics);
     }
+
 
     /**
      * Re size the font so the specified text fits in the text box * assuming
@@ -67,12 +74,8 @@ public class AutoAdjustSizeEditText extends EditText {
     /**
      * 重写setText
      * 每次setText的时候
-     *
-     * @param text
-     * @param type
      */
-    @Override
-    public void setText(CharSequence text, BufferType type) {
+    @Override public void setText(CharSequence text, BufferType type) {
         this.initialise();
         String textString = text.toString();
         float trySize = maxTextSize;
@@ -89,8 +92,7 @@ public class AutoAdjustSizeEditText extends EditText {
     }
 
 
-    @Override
-    protected void onTextChanged(CharSequence text, int start, int before, int after) {
+    @Override protected void onTextChanged(CharSequence text, int start, int before, int after) {
         super.onTextChanged(text, start, before, after);
         this.fitText(text.toString(), this.getWidth());
     }
@@ -101,16 +103,13 @@ public class AutoAdjustSizeEditText extends EditText {
      * you were just added to the view hierarchy, you're called with the old
      * values of 0.
      *
-     * @param w    Current width of this view.
-     * @param h    Current height of this view.
+     * @param w Current width of this view.
+     * @param h Current height of this view.
      * @param oldw Old width of this view.
      * @param oldh Old height of this view.
      */
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         // 如果当前view的宽度 != 原来view的宽度
         if (w != oldw) this.fitText(this.getText().toString(), w);
     }
-
-
 }

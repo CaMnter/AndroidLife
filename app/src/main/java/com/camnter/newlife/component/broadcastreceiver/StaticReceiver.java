@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.widget.Toast;
-
 import com.camnter.newlife.R;
 
 /**
@@ -23,28 +22,28 @@ public class StaticReceiver extends BroadcastReceiver {
     public static final String INTENT_ACTION = "com.camnter.android.intent.static";
     public static final String STATIC_MESSAGE = "message";
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    @Override
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN) @Override
     public void onReceive(Context context, Intent intent) {
         String message = intent.getStringExtra(STATIC_MESSAGE);
         Intent data = new Intent();
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                context,
-                0,
-                data,
-                PendingIntent.FLAG_CANCEL_CURRENT
-        );
-        NotificationManager notificationManager = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = new Notification.Builder(context)
-                .setContentTitle("StaticBroadcastReceiver")
-                .setContentText(message)
-                .setSmallIcon(R.mipmap.ic_mm_normal)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_mm_normal))
-                .setContentIntent(pendingIntent)
-                .build();
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, data,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(
+                Context.NOTIFICATION_SERVICE);
+        Notification notification = new Notification.Builder(context).setContentTitle(
+                "StaticBroadcastReceiver")
+                                                                     .setContentText(message)
+                                                                     .setSmallIcon(
+                                                                             R.mipmap.ic_mm_normal)
+                                                                     .setLargeIcon(
+                                                                             BitmapFactory.decodeResource(
+                                                                                     context.getResources(),
+                                                                                     R.mipmap.ic_mm_normal))
+                                                                     .setContentIntent(
+                                                                             pendingIntent)
+                                                                     .build();
         notificationManager.notify(206, notification);
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
-
 }

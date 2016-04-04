@@ -5,9 +5,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-
 import com.camnter.newlife.views.activity.DownloadReceiverActivity;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,6 +30,7 @@ public class DownloadIntentService extends IntentService {
     // TODO: Rename parameters
     private static final String IMAGE_URL = "com.camnter.newlife.service.extra.image.url";
 
+
     /**
      * Starts this service to perform action Foo with the given parameters. If
      * the service is already performing a task this action will be queued.
@@ -51,8 +50,8 @@ public class DownloadIntentService extends IntentService {
         super("DownIntentService");
     }
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
+
+    @Override protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_DOWNLOAD.equals(action)) {
@@ -61,6 +60,7 @@ public class DownloadIntentService extends IntentService {
             }
         }
     }
+
 
     /**
      * Handle action Download in the provided background thread with the provided
@@ -71,6 +71,7 @@ public class DownloadIntentService extends IntentService {
         new DownloadImageAsyncTask(this).execute(url);
     }
 
+
     /**
      * 下载图片异步任务
      */
@@ -79,10 +80,12 @@ public class DownloadIntentService extends IntentService {
         private Service service;
         private String localFilePath;
 
+
         public DownloadImageAsyncTask(Service service) {
             super();
             this.service = service;
         }
+
 
         /**
          * 对应AsyncTask第一个参数
@@ -95,8 +98,7 @@ public class DownloadIntentService extends IntentService {
          * @see #onPostExecute
          * @see #publishProgress
          */
-        @Override
-        protected String doInBackground(String... params) {
+        @Override protected String doInBackground(String... params) {
             URL fileUrl = null;
             try {
                 fileUrl = new URL(params[0]);
@@ -143,6 +145,7 @@ public class DownloadIntentService extends IntentService {
             return null;
         }
 
+
         /**
          * 对应AsyncTask第三个参数 (接受doInBackground的返回值)
          * 在doInBackground方法执行结束之后在运行，此时已经回来主UI线程当中 能对UI控件进行修改
@@ -152,20 +155,16 @@ public class DownloadIntentService extends IntentService {
          * @see #doInBackground
          * @see #onCancelled(Object)
          */
-        @Override
-        protected void onPostExecute(String string) {
+        @Override protected void onPostExecute(String string) {
             super.onPostExecute(string);
             Intent intent = new Intent(DownloadReceiverActivity.DownloadReceiver.INTENT_ACTION);
-            intent.putExtra(
-                    DownloadReceiverActivity.DownloadReceiver.INTENT_TYPE,
-                    DownloadReceiverActivity.DownloadReceiver.TYPE_DOWNLOAD_SUCCESS
-            );
-            intent.putExtra(
-                    DownloadReceiverActivity.DownloadReceiver.INTENT_DATA_IMAGE_PATH,
-                    this.localFilePath
-            );
+            intent.putExtra(DownloadReceiverActivity.DownloadReceiver.INTENT_TYPE,
+                    DownloadReceiverActivity.DownloadReceiver.TYPE_DOWNLOAD_SUCCESS);
+            intent.putExtra(DownloadReceiverActivity.DownloadReceiver.INTENT_DATA_IMAGE_PATH,
+                    this.localFilePath);
             DownloadIntentService.this.sendBroadcast(intent);
         }
+
 
         /**
          * 对应AsyncTask第二个参数
@@ -176,10 +175,10 @@ public class DownloadIntentService extends IntentService {
          * @see #publishProgress
          * @see #doInBackground
          */
-        @Override
-        protected void onProgressUpdate(Integer... values) {
+        @Override protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
         }
+
 
         /**
          * 运行在主UI线程中，此时是预执行状态，下一步是doInBackground
@@ -187,10 +186,10 @@ public class DownloadIntentService extends IntentService {
          * @see #onPostExecute
          * @see #doInBackground
          */
-        @Override
-        protected void onPreExecute() {
+        @Override protected void onPreExecute() {
             super.onPreExecute();
         }
+
 
         /**
          * <p>Applications should preferably override {@link #onCancelled(Object)}.
@@ -204,17 +203,12 @@ public class DownloadIntentService extends IntentService {
          * @see #cancel(boolean)
          * @see #isCancelled()
          */
-        @Override
-        protected void onCancelled() {
+        @Override protected void onCancelled() {
             super.onCancelled();
             Intent intent = new Intent(DownloadReceiverActivity.DownloadReceiver.INTENT_ACTION);
-            intent.putExtra(
-                    DownloadReceiverActivity.DownloadReceiver.INTENT_TYPE,
-                    DownloadReceiverActivity.DownloadReceiver.TYPE_DOWNLOAD_FAILURE
-            );
+            intent.putExtra(DownloadReceiverActivity.DownloadReceiver.INTENT_TYPE,
+                    DownloadReceiverActivity.DownloadReceiver.TYPE_DOWNLOAD_FAILURE);
             DownloadIntentService.this.sendBroadcast(intent);
         }
-
     }
-
 }

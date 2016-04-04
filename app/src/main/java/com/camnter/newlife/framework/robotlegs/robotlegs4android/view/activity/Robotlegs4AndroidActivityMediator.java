@@ -4,7 +4,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
-
 import com.camnter.newlife.R;
 import com.camnter.newlife.framework.robotlegs.robotlegs4android.event.LoginEvent;
 import com.camnter.newlife.framework.robotlegs.robotlegs4android.view.adapter.Robotlegs4AndroidAdapter;
@@ -17,7 +16,6 @@ import com.camnter.robotlegs4android.base.Listener;
 import com.camnter.robotlegs4android.core.IListener;
 import com.camnter.robotlegs4android.core.IMediator;
 import com.camnter.robotlegs4android.mvcs.Mediator;
-
 
 /**
  * Description：MainActivityMediator
@@ -33,17 +31,18 @@ public class Robotlegs4AndroidActivityMediator extends Mediator {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+
     /**
      * {@inheritDoc}
      * {@linkplain IMediator #onRegister}
      */
-    @Override
-    public void onRegister() {
+    @Override public void onRegister() {
         this.activity = (Robotlegs4AndroidActivity) this.getViewComponent();
         this.initViews();
         this.initData();
         this.initListeners();
     }
+
 
     private void initViews() {
         this.tabLayout = (TabLayout) this.activity.findViewById(R.id.tab_layout_tl);
@@ -51,18 +50,18 @@ public class Robotlegs4AndroidActivityMediator extends Mediator {
         this.viewPager.setOffscreenPageLimit(4);
     }
 
+
     private void initData() {
-        String[] tabTitles = {"ONE", "TWO", "THR", "FOU"};
-        Fragment[] fragments = {
-                RobotlegsFirstFragment.getInstance(),
-                RobotlegsSecondFragment.getInstance(),
-                RobotlegsThirdFragment.getInstance(),
-                RobotlegsFourthFragment.getInstance()
-        };
-        Robotlegs4AndroidAdapter adapter = new Robotlegs4AndroidAdapter(this.activity.getSupportFragmentManager(), fragments, tabTitles);
+        String[] tabTitles = { "ONE", "TWO", "THR", "FOU" };
+        Fragment[] fragments = { RobotlegsFirstFragment.getInstance(),
+                RobotlegsSecondFragment.getInstance(), RobotlegsThirdFragment.getInstance(),
+                RobotlegsFourthFragment.getInstance() };
+        Robotlegs4AndroidAdapter adapter = new Robotlegs4AndroidAdapter(
+                this.activity.getSupportFragmentManager(), fragments, tabTitles);
         this.viewPager.setAdapter(adapter);
         this.tabLayout.setupWithViewPager(this.viewPager);
     }
+
 
     private void initListeners() {
         /*
@@ -71,23 +70,25 @@ public class Robotlegs4AndroidActivityMediator extends Mediator {
          * 监听你的自定义事件（例如监听一个USER_LOGIN_SUCCESS_FROM_CONTROLLER_TO_VIEW类型的LoginEvent）
          * 在这里监听从Controller层到View层
          */
-        this.getEventMap().mapListener(this.getEventDispatcher(), LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW, new ControllerListeners(), null, false, 0, false);
+        this.getEventMap()
+            .mapListener(this.getEventDispatcher(),
+                    LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW, new ControllerListeners(),
+                    null, false, 0, false);
     }
+
 
     private class ControllerListeners extends Listener {
         /**
          * {@inheritDoc}
          * <p/>
          * {@linkplain IListener #onHandle}
-         *
-         * @param event
          */
-        @Override
-        public void onHandle(Event event) {
+        @Override public void onHandle(Event event) {
             if (event instanceof LoginEvent) {
-                Toast.makeText(Robotlegs4AndroidActivityMediator.this.activity, "MainActivityMediator:Please see the TWO、THR and FOU", Toast.LENGTH_LONG).show();
+                Toast.makeText(Robotlegs4AndroidActivityMediator.this.activity,
+                        "MainActivityMediator:Please see the TWO、THR and FOU", Toast.LENGTH_LONG)
+                     .show();
             }
         }
     }
-
 }

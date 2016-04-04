@@ -1,7 +1,6 @@
 package com.camnter.newlife.utils;
 
 import android.content.Context;
-
 import java.lang.reflect.Field;
 
 /**
@@ -28,12 +27,13 @@ public class ReflectionUtils {
         anim
     }
 
+
     /**
      * 根据名字，反射取得资源
      *
      * @param context context
-     * @param name    resources name
-     * @param type    enum of ResourcesType
+     * @param name resources name
+     * @param type enum of ResourcesType
      * @return resources id
      */
     public static int getResourceId(Context context, String name, ResourcesType type) {
@@ -60,5 +60,4 @@ public class ReflectionUtils {
         }
         return -1;
     }
-
 }

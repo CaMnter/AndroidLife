@@ -7,9 +7,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.camnter.newlife.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,15 +53,18 @@ public class EasyFlowLayout extends ViewGroup {
         this.initStyleable(context, null);
     }
 
+
     public EasyFlowLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.initStyleable(context, attrs);
     }
 
+
     public EasyFlowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.initStyleable(context, attrs);
     }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public EasyFlowLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -71,12 +72,14 @@ public class EasyFlowLayout extends ViewGroup {
         this.initStyleable(context, attrs);
     }
 
+
     private void initStyleable(Context context, AttributeSet attrs) {
         if (attrs == null) return;
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.EasyFlowLayout);
         this.gravity = typedArray.getInt(R.styleable.EasyFlowLayout_gravity, LEFT);
         typedArray.recycle();
     }
+
 
     /**
      * <p>
@@ -109,12 +112,12 @@ public class EasyFlowLayout extends ViewGroup {
      * {@link #getSuggestedMinimumWidth()}).
      * </p>
      *
-     * @param widthMeasureSpec  horizontal space requirements as imposed by the parent.
-     *                          The requirements are encoded with
-     *                          {@link MeasureSpec}.
+     * @param widthMeasureSpec horizontal space requirements as imposed by the parent.
+     * The requirements are encoded with
+     * {@link MeasureSpec}.
      * @param heightMeasureSpec vertical space requirements as imposed by the parent.
-     *                          The requirements are encoded with
-     *                          {@link MeasureSpec}.
+     * The requirements are encoded with
+     * {@link MeasureSpec}.
      * @see #getMeasuredWidth()
      * @see #getMeasuredHeight()
      * @see #setMeasuredDimension(int, int)
@@ -123,8 +126,7 @@ public class EasyFlowLayout extends ViewGroup {
      * @see MeasureSpec#getMode(int)
      * @see MeasureSpec#getSize(int)
      */
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         int layoutWidth = MeasureSpec.getSize(widthMeasureSpec);
@@ -213,23 +215,21 @@ public class EasyFlowLayout extends ViewGroup {
          * If it is warp_content wrapWidth and wrapHeight is set records
          * Otherwise set layoutWidth and layoutHeight
          */
-        this.setMeasuredDimension(
-                (modeWidth == MeasureSpec.EXACTLY) ? layoutWidth : wrapWidth,
+        this.setMeasuredDimension((modeWidth == MeasureSpec.EXACTLY) ? layoutWidth : wrapWidth,
                 (modeHeight == MeasureSpec.EXACTLY) ? layoutHeight : wrapHeight);
-
     }
+
 
     /**
      * {@inheritDoc}
      *
      * @param changed changed
-     * @param l       l
-     * @param t       t
-     * @param r       r
-     * @param b       b
+     * @param l l
+     * @param t t
+     * @param r r
+     * @param b b
      */
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    @Override protected void onLayout(boolean changed, int l, int t, int r, int b) {
         this.allViews.clear();
         this.allHeight.clear();
         this.currentLineViews.clear();
@@ -238,7 +238,6 @@ public class EasyFlowLayout extends ViewGroup {
 
         int lineWidth = 0;
         int lineHeight = 0;
-
 
         int childCount = this.getChildCount();
 
@@ -252,7 +251,8 @@ public class EasyFlowLayout extends ViewGroup {
              * 如果在加入childView的时候，超出的最大宽度
              * If at the time of joining childView, beyond the maximum width
              */
-            if (childWidth + marginLayoutParams.leftMargin + marginLayoutParams.rightMargin + lineWidth > layoutWidth) {
+            if (childWidth + marginLayoutParams.leftMargin + marginLayoutParams.rightMargin +
+                    lineWidth > layoutWidth) {
                 this.allViews.add(this.currentLineViews);
                 this.allHeight.add(lineHeight);
 
@@ -264,8 +264,10 @@ public class EasyFlowLayout extends ViewGroup {
              * 不执行换行，继续叠加
              * Does not perform a newline, continue to stack
              */
-            lineWidth += childWidth + marginLayoutParams.leftMargin + marginLayoutParams.rightMargin;
-            lineHeight = Math.max(lineHeight, childHeight + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin);
+            lineWidth += childWidth + marginLayoutParams.leftMargin +
+                    marginLayoutParams.rightMargin;
+            lineHeight = Math.max(lineHeight,
+                    childHeight + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin);
             this.currentLineViews.add(child);
         }
 
@@ -276,7 +278,6 @@ public class EasyFlowLayout extends ViewGroup {
         this.allHeight.add(lineHeight);
         this.allViews.add(this.currentLineViews);
         this.lineWidths.add(lineWidth);
-
 
         int left = 0;
         int top = 0;
@@ -321,11 +322,10 @@ public class EasyFlowLayout extends ViewGroup {
              */
             for (int j = 0; j < this.currentLineViews.size(); j++) {
                 View child = this.currentLineViews.get(j);
-                if (child.getVisibility() == View.GONE)
-                    continue;
+                if (child.getVisibility() == View.GONE) continue;
 
-                MarginLayoutParams marginLayoutParams = (MarginLayoutParams) child
-                        .getLayoutParams();
+                MarginLayoutParams marginLayoutParams
+                        = (MarginLayoutParams) child.getLayoutParams();
                 /**
                  * childView的 左上点坐标 和 右下点坐标
                  * The upper left point coordinates and lower point coordinates childView
@@ -336,12 +336,13 @@ public class EasyFlowLayout extends ViewGroup {
                 int childBottom = childTop + child.getMeasuredHeight();
 
                 child.layout(childLeft, childTop, childRight, childBottom);
-                left += child.getMeasuredWidth() + marginLayoutParams.leftMargin + marginLayoutParams.rightMargin;
+                left += child.getMeasuredWidth() + marginLayoutParams.leftMargin +
+                        marginLayoutParams.rightMargin;
             }
             top += lineHeight;
         }
-
     }
+
 
     /**
      * Returns a new set of layout parameters based on the supplied attributes set.
@@ -350,10 +351,10 @@ public class EasyFlowLayout extends ViewGroup {
      * @return an instance of {@link LayoutParams} or one
      * of its descendants
      */
-    @Override
-    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+    @Override public LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new MarginLayoutParams(this.getContext(), attrs);
     }
+
 
     /**
      * Returns a safe set of layout parameters based on the supplied layout params.
@@ -364,14 +365,14 @@ public class EasyFlowLayout extends ViewGroup {
      * specified set of layout params.
      *
      * @param p The layout parameters to convert into a suitable set of layout parameters
-     *          for this ViewGroup.
+     * for this ViewGroup.
      * @return an instance of {@link LayoutParams} or one
      * of its descendants
      */
-    @Override
-    protected LayoutParams generateLayoutParams(LayoutParams p) {
+    @Override protected LayoutParams generateLayoutParams(LayoutParams p) {
         return new MarginLayoutParams(p);
     }
+
 
     /**
      * Returns a set of default layout parameters. These parameters are requested
@@ -380,17 +381,17 @@ public class EasyFlowLayout extends ViewGroup {
      *
      * @return a set of default layout parameters or null
      */
-    @Override
-    protected LayoutParams generateDefaultLayoutParams() {
+    @Override protected LayoutParams generateDefaultLayoutParams() {
         return new MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
     }
+
 
     public List<List<View>> getAllViews() {
         return allViews;
     }
 
+
     public List<Integer> getAllHeight() {
         return allHeight;
     }
-
 }

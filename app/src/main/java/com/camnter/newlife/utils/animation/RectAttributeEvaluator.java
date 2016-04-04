@@ -15,6 +15,7 @@ public class RectAttributeEvaluator implements TypeEvaluator<RectAttribute> {
         this.result = new RectAttribute(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     }
 
+
     @Override
     public RectAttribute evaluate(float fraction, RectAttribute startValue, RectAttribute endValue) {
         this.result.left = startValue.left + fraction * (endValue.left - startValue.left);

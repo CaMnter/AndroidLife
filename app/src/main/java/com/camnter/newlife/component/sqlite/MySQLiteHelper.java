@@ -5,13 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import com.camnter.newlife.bean.SQLiteData;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 
 /**
  * Description：MySQLiteHelper
@@ -24,23 +21,28 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
 
     private static final String TB_CAMNTER = "tb_camnter";
-    public static final String TB_CAMNTER_SQL = "CREATE TABLE IF NOT EXISTS " + TB_CAMNTER + "(_id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+    public static final String TB_CAMNTER_SQL = "CREATE TABLE IF NOT EXISTS " + TB_CAMNTER +
+            "(_id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
             " content text)";
 
     public static MySQLiteHelper ourInstance;
+
 
     public MySQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
+
     private MySQLiteHelper(Context context) {
         this(context, DB_NAME, null, VERSION);
     }
+
 
     public static MySQLiteHelper getInstance(Context context) {
         if (ourInstance == null) ourInstance = new MySQLiteHelper(context);
         return ourInstance;
     }
+
 
     /**
      * Called when the database is created for the first time. This is where the
@@ -49,10 +51,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
      *
      * @param db The database.
      */
-    @Override
-    public void onCreate(SQLiteDatabase db) {
+    @Override public void onCreate(SQLiteDatabase db) {
         db.execSQL(TB_CAMNTER_SQL);
     }
+
 
     /**
      * Called when the database needs to be upgraded. The implementation
@@ -74,17 +76,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
      * 这个方法执行了一个事务。如果抛出一个异常，所有更改将自动回滚。
      * </p>
      *
-     * @param db         The database. 数据库
+     * @param db The database. 数据库
      * @param oldVersion The old database version. 旧数据库版本
      * @param newVersion The new database version. 新数据库版本
      */
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion == 1 && newVersion == 2) {
             String sql = "ALTER TABLE " + TB_CAMNTER + " ADD " + "status" + " text default " + 0;
             db.execSQL(sql);
         }
     }
+
 
     /**
      * 删除表
@@ -94,10 +96,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         delete.execSQL("DROP TABLE " + TB_CAMNTER);
     }
 
+
     /**
      * 保存数据
-     *
-     * @param content
      */
     public void insert(String content) {
         SQLiteDatabase insert = this.getWritableDatabase();
@@ -116,6 +117,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         insert.endTransaction();
     }
 
+
     /**
      * 删除数据
      */
@@ -124,6 +126,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         deleteAll.delete(TB_CAMNTER, null, null);
         deleteAll.close();
     }
+
 
     /**
      * 修改第一条数据
@@ -136,10 +139,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         update.beginTransaction();
         ContentValues values = new ContentValues();
         values.put("content", UUID.randomUUID().toString());
-        update.update(TB_CAMNTER, values, "_id=?", new String[]{firstId + ""});
+        update.update(TB_CAMNTER, values, "_id=?", new String[] { firstId + "" });
         update.setTransactionSuccessful();
         update.endTransaction();
     }
+
 
     /**
      * 查询数据
@@ -163,5 +167,4 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         result.close();
         return allData;
     }
-
 }

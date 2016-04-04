@@ -19,12 +19,15 @@ public class BitmapUtils {
 
     }
 
+
     private static final float DENSITY = Resources.getSystem().getDisplayMetrics().density;
     private static final Canvas sCanvas = new Canvas();
+
 
     public static int dp2Px(int dp) {
         return Math.round(dp * DENSITY);
     }
+
 
     /**
      * 通过 View 创建 Bitmap
@@ -40,8 +43,8 @@ public class BitmapUtils {
             }
         }
         view.clearFocus();
-        Bitmap bitmap = createBitmapSafely(view.getWidth(),
-                view.getHeight(), Bitmap.Config.ARGB_8888, 1);
+        Bitmap bitmap = createBitmapSafely(view.getWidth(), view.getHeight(),
+                Bitmap.Config.ARGB_8888, 1);
         if (bitmap != null) {
             synchronized (sCanvas) {
                 Canvas canvas = sCanvas;
@@ -53,12 +56,13 @@ public class BitmapUtils {
         return bitmap;
     }
 
+
     /**
      * 安全地创建 Bitmap
      *
-     * @param width      width
-     * @param height     height
-     * @param config     config
+     * @param width width
+     * @param height height
+     * @param config config
      * @param retryCount retryCount
      * @return Bitmap
      */
@@ -74,5 +78,4 @@ public class BitmapUtils {
             return null;
         }
     }
-
 }

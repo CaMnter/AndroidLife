@@ -1,7 +1,7 @@
 package com.camnter.newlife.utils.cache;
 
 /**
- * Description：
+ * Description：CacheOption
  * Created by：CaMnter
  * Time：2015-10-28 18:11
  */
@@ -33,5 +33,4 @@ public class CacheOption {
      * 过期时间
      */
     public Long deadline;
-
 }

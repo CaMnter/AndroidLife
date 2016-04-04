@@ -4,17 +4,14 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-
 import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
 import com.camnter.easyrecyclerview.widget.decorator.EasyDividerItemDecoration;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseFragment;
-
 import java.util.LinkedList;
 import java.util.List;
-
 
 /**
  * Description：TabLayoutFirstFragment
@@ -26,50 +23,52 @@ public class TabLayoutFirstFragment extends BaseFragment {
     private static TabLayoutFirstFragment instance;
     private EasyRecyclerView firstRV;
 
-    @SuppressLint("ValidFragment")
-    private TabLayoutFirstFragment() {
+
+    @SuppressLint("ValidFragment") private TabLayoutFirstFragment() {
     }
+
 
     public static TabLayoutFirstFragment getInstance() {
         if (instance == null) instance = new TabLayoutFirstFragment();
         return instance;
     }
 
+
     /**
      * Fill in layout id
      *
      * @return layout id
      */
-    @Override
-    protected int getLayoutId() {
+    @Override protected int getLayoutId() {
         return R.layout.tablayout_first_fragment;
     }
+
 
     /**
      * Initialize the view in the layout
      *
-     * @param self               self
+     * @param self self
      * @param savedInstanceState savedInstanceState
      */
-    @Override
-    protected void initViews(View self, Bundle savedInstanceState) {
+    @Override protected void initViews(View self, Bundle savedInstanceState) {
         this.firstRV = this.findView(R.id.first_rv);
-        this.firstRV.addItemDecoration(new EasyDividerItemDecoration(this.getContext(), EasyDividerItemDecoration.VERTICAL_LIST));
+        this.firstRV.addItemDecoration(new EasyDividerItemDecoration(this.getContext(),
+                EasyDividerItemDecoration.VERTICAL_LIST));
     }
+
 
     /**
      * Initialize the View of the listener
      */
-    @Override
-    protected void initListeners() {
+    @Override protected void initListeners() {
 
     }
+
 
     /**
      * Initialize the Activity data
      */
-    @Override
-    protected void initData() {
+    @Override protected void initData() {
         FirstRecyclerViewAdapter adapter = new FirstRecyclerViewAdapter();
         List<Integer> resIds = new LinkedList<>();
         resIds.add(R.mipmap.mm_1);
@@ -85,10 +84,10 @@ public class TabLayoutFirstFragment extends BaseFragment {
 
     public class FirstRecyclerViewAdapter extends EasyRecyclerViewAdapter {
 
-        @Override
-        public int[] getItemLayouts() {
-            return new int[]{R.layout.item_first_recycler};
+        @Override public int[] getItemLayouts() {
+            return new int[] { R.layout.item_first_recycler };
         }
+
 
         @Override
         public void onBindRecycleViewHolder(EasyRecyclerViewHolder easyRecyclerViewHolder, int i) {
@@ -97,10 +96,9 @@ public class TabLayoutFirstFragment extends BaseFragment {
             firstIV.setImageResource(resId);
         }
 
-        @Override
-        public int getRecycleViewItemType(int i) {
+
+        @Override public int getRecycleViewItemType(int i) {
             return 0;
         }
     }
-
 }

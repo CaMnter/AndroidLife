@@ -12,5 +12,4 @@ public class RecyclerViewData implements Serializable {
     public int imageResId;
 
     public String content;
-
 }

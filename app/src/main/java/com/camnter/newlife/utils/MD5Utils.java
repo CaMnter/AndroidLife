@@ -10,9 +10,8 @@ import java.security.MessageDigest;
 public class MD5Utils {
 
     public static String getMD5String(String key) {
-        char hexDigits[] = {'0', '1', '2', '3', '4',
-                '5', '6', '7', '8', '9',
-                'A', 'B', 'C', 'D', 'E', 'F'};
+        char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
+                'E', 'F' };
         try {
             byte[] input = key.getBytes();
             // MD5算法的 MessageDigest 对象
@@ -36,6 +35,7 @@ public class MD5Utils {
         }
     }
 
+
     private static String bytesToHexString(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         for (byte aByte : bytes) {
@@ -47,5 +47,4 @@ public class MD5Utils {
         }
         return sb.toString();
     }
-
 }

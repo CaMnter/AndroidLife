@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.camnter.newlife.R;
 import com.camnter.newlife.framework.robotlegs.robotlegs4android.event.LoginEvent;
 import com.camnter.robotlegs4android.base.Event;
@@ -13,7 +12,6 @@ import com.camnter.robotlegs4android.base.Listener;
 import com.camnter.robotlegs4android.core.IListener;
 import com.camnter.robotlegs4android.core.IMediator;
 import com.camnter.robotlegs4android.mvcs.Mediator;
-
 
 /**
  * Description：TabLayoutFirstFragmentMediator
@@ -35,8 +33,7 @@ public class RobotlegsFirstFragmentMediator extends Mediator implements View.OnC
      * {@inheritDoc}
      * {@linkplain IMediator #onRegister}
      */
-    @Override
-    public void onRegister() {
+    @Override public void onRegister() {
         this.fragment = (RobotlegsFirstFragment) this.getViewComponent();
 
         this.activity = this.fragment.getActivity();
@@ -45,6 +42,7 @@ public class RobotlegsFirstFragmentMediator extends Mediator implements View.OnC
         this.initListeners();
     }
 
+
     private void initViews() {
         this.firstBT = (Button) this.fragment.self.findViewById(R.id.first_bt);
         this.firstTV = (TextView) this.fragment.self.findViewById(R.id.first_tv);
@@ -52,9 +50,11 @@ public class RobotlegsFirstFragmentMediator extends Mediator implements View.OnC
         this.controllerTV = (TextView) this.fragment.self.findViewById(R.id.first_controller_tv);
     }
 
+
     private void initData() {
         this.firstTV.setText("The ONE created by robotlegs4android frame");
     }
+
 
     private void initListeners() {
         this.firstBT.setOnClickListener(this);
@@ -65,22 +65,23 @@ public class RobotlegsFirstFragmentMediator extends Mediator implements View.OnC
          * 监听你的自定义事件（例如监听一个USER_LOGIN_SUCCESS_FROM_MODEL_TO_CONTROLLER_AND_VIEW类型的LoginEvent）
          * 在这里监听从Model层到View层
          */
-        this.getEventMap().mapListener(this.getEventDispatcher(), LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW, new Listener() {
-                    /**
-                     * {@inheritDoc}
-                     * <p/>
-                     * {@linkplain IListener #onHandle}
-                     *
-                     * @param event
-                     */
-                    @Override
-                    public void onHandle(Event event) {
-                        if (event instanceof LoginEvent) {
-                            RobotlegsFirstFragmentMediator.this.firstIV.setVisibility(View.VISIBLE);
+        this.getEventMap()
+            .mapListener(this.getEventDispatcher(),
+                    LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW, new Listener() {
+                        /**
+                         * {@inheritDoc}
+                         * <p/>
+                         * {@linkplain IListener #onHandle}
+                         *
+                         * @param event
+                         */
+                        @Override public void onHandle(Event event) {
+                            if (event instanceof LoginEvent) {
+                                RobotlegsFirstFragmentMediator.this.firstIV.setVisibility(
+                                        View.VISIBLE);
+                            }
                         }
-                    }
-                }, null,
-                false, 0, true);
+                    }, null, false, 0, true);
 
         /*
          * listening your custom event（such as listening to an USER_LOGIN_SUCCESS type of LoginEvent）
@@ -88,31 +89,32 @@ public class RobotlegsFirstFragmentMediator extends Mediator implements View.OnC
          * 监听你的自定义事件（例如监听一个USER_LOGIN_SUCCESS_FROM_CONTROLLER_TO_VIEW类型的LoginEvent）
          * 在这里监听从Controller层到View层
          */
-        this.getEventMap().mapListener(this.getEventDispatcher(), LoginEvent.USER_LOGIN_SUCCESS_FROM_CONTROLLER_TO_VIEW, new Listener() {
-            /**
-             * {@inheritDoc}
-             * <p/>
-             * {@linkplain IListener #onHandle}
-             *
-             * @param event
-             */
-            @Override
-            public void onHandle(Event event) {
-                if (event instanceof LoginEvent) {
-                    RobotlegsFirstFragmentMediator.this.controllerTV.setVisibility(View.VISIBLE);
-                }
-            }
-        }, null, false, 0, true);
-
+        this.getEventMap()
+            .mapListener(this.getEventDispatcher(),
+                    LoginEvent.USER_LOGIN_SUCCESS_FROM_CONTROLLER_TO_VIEW, new Listener() {
+                        /**
+                         * {@inheritDoc}
+                         * <p/>
+                         * {@linkplain IListener #onHandle}
+                         *
+                         * @param event
+                         */
+                        @Override public void onHandle(Event event) {
+                            if (event instanceof LoginEvent) {
+                                RobotlegsFirstFragmentMediator.this.controllerTV.setVisibility(
+                                        View.VISIBLE);
+                            }
+                        }
+                    }, null, false, 0, true);
     }
+
 
     /**
      * Called when a view has been clicked.
      *
      * @param v The view that was clicked.
      */
-    @Override
-    public void onClick(View v) {
+    @Override public void onClick(View v) {
         switch (v.getId()) {
             case R.id.first_bt: {
                 /*

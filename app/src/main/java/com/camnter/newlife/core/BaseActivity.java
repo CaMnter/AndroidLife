@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
 import com.camnter.newlife.R;
 import com.camnter.newlife.utils.ToastUtils;
 
@@ -18,14 +17,14 @@ import com.camnter.newlife.utils.ToastUtils;
  */
 public abstract class BaseActivity extends Activity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (this.getLayoutId() != 0) this.setContentView(this.getLayoutId());
         this.initViews(savedInstanceState);
         this.initData();
         this.initListeners();
     }
+
 
     /**
      * Fill in layout id
@@ -51,17 +50,18 @@ public abstract class BaseActivity extends Activity {
      */
     protected abstract void initData();
 
+
     /**
      * Find the view by id
      *
-     * @param id  id
+     * @param id id
      * @param <V> V
      * @return V
      */
-    @SuppressWarnings("unchecked")
-    protected <V extends View> V findView(int id) {
+    @SuppressWarnings("unchecked") protected <V extends View> V findView(int id) {
         return (V) this.findViewById(id);
     }
+
 
     /**
      * @param intent The intent to start.
@@ -69,63 +69,63 @@ public abstract class BaseActivity extends Activity {
      * @see {@link #startActivity(Intent, Bundle)}
      * @see #startActivityForResult
      */
-    @Override
-    public void startActivity(Intent intent) {
+    @Override public void startActivity(Intent intent) {
         super.startActivity(intent);
         this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
+
     /**
-     * @param intent  The intent to start.
+     * @param intent The intent to start.
      * @param options Additional options for how the Activity should be started.
-     *                See {@link Context#startActivity(Intent, Bundle)
-     *                Context.startActivity(Intent, Bundle)} for more details.
+     * See {@link Context#startActivity(Intent, Bundle)
+     * Context.startActivity(Intent, Bundle)} for more details.
      * @throws ActivityNotFoundException
      * @see {@link #startActivity(Intent)}
      * @see #startActivityForResult
      */
-    @Override
-    public void startActivity(Intent intent, Bundle options) {
+    @Override public void startActivity(Intent intent, Bundle options) {
         super.startActivity(intent, options);
         this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
+
     /**
-     * @param intent      The intent to start.
+     * @param intent The intent to start.
      * @param requestCode If >= 0, this code will be returned in
-     *                    onActivityResult() when the activity exits.
-     * @param options     Additional options for how the Activity should be started.
-     *                    See {@link Context#startActivity(Intent, Bundle)
-     *                    Context.startActivity(Intent, Bundle)} for more details.
+     * onActivityResult() when the activity exits.
+     * @param options Additional options for how the Activity should be started.
+     * See {@link Context#startActivity(Intent, Bundle)
+     * Context.startActivity(Intent, Bundle)} for more details.
      * @throws ActivityNotFoundException
      * @see #startActivity
      */
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
+    @Override public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
         super.startActivityForResult(intent, requestCode, options);
         this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
+
     /**
-     * @param intent      intent
+     * @param intent intent
      * @param requestCode requestCode
      */
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
+    @Override public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
         this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
+
 
     /**
      * Call this when your activity is done and should be closed.  The
      * ActivityResult is propagated back to whoever launched you via
      * onActivityResult().
      */
-    @Override
-    public void finish() {
+    @Override public void finish() {
         super.finish();
         this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
+
 
     /*********
      * Toast *
@@ -135,6 +135,7 @@ public abstract class BaseActivity extends Activity {
         this.showToast(msg, Toast.LENGTH_SHORT);
     }
 
+
     public void showToast(String msg, int duration) {
         if (msg == null) return;
         if (duration == Toast.LENGTH_SHORT || duration == Toast.LENGTH_LONG) {
@@ -143,6 +144,7 @@ public abstract class BaseActivity extends Activity {
             ToastUtils.show(this, msg, ToastUtils.LENGTH_SHORT);
         }
     }
+
 
     public void showToast(int resId) {
         this.showToast(resId, Toast.LENGTH_SHORT);

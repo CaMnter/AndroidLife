@@ -2,7 +2,6 @@ package com.camnter.newlife.utils;
 
 import android.content.Context;
 import android.os.Environment;
-
 import java.io.File;
 
 public class PathUtils {
@@ -22,8 +21,10 @@ public class PathUtils {
     private File videoPath = null;
     private File filePath;
 
+
     private PathUtils() {
     }
+
 
     public static PathUtils getInstance() {
         if (instance == null) {
@@ -32,6 +33,7 @@ public class PathUtils {
 
         return instance;
     }
+
 
     public void initDirs(String var1, String var2, Context var3) {
         String var4 = var3.getPackageName();
@@ -60,28 +62,33 @@ public class PathUtils {
         if (!this.filePath.exists()) {
             this.filePath.mkdirs();
         }
-
     }
+
 
     public File getImagePath() {
         return this.imagePath;
     }
 
+
     public File getVoicePath() {
         return this.voicePath;
     }
+
 
     public File getFilePath() {
         return this.filePath;
     }
 
+
     public File getVideoPath() {
         return this.videoPath;
     }
 
+
     public File getHistoryPath() {
         return this.historyPath;
     }
+
 
     private static File getStorageDir(Context context) {
         if (storageDir == null) {
@@ -96,6 +103,7 @@ public class PathUtils {
         return storageDir;
     }
 
+
     private static File generateImagePath(String var0, String var1, Context context) {
         String var3 = null;
         if (var0 == null) {
@@ -106,6 +114,7 @@ public class PathUtils {
 
         return new File(getStorageDir(context), var3);
     }
+
 
     private static File generateVoicePath(String var0, String var1, Context context) {
         String var3 = null;
@@ -118,6 +127,7 @@ public class PathUtils {
         return new File(getStorageDir(context), var3);
     }
 
+
     private static File generateFiePath(String var0, String var1, Context context) {
         String var3 = null;
         if (var0 == null) {
@@ -128,6 +138,7 @@ public class PathUtils {
 
         return new File(getStorageDir(context), var3);
     }
+
 
     private static File generateVideoPath(String var0, String var1, Context context) {
         String var3 = null;
@@ -140,6 +151,7 @@ public class PathUtils {
         return new File(getStorageDir(context), var3);
     }
 
+
     private static File generateHistoryPath(String var0, String var1, Context context) {
         String name = null;
         if (var0 == null) {
@@ -151,10 +163,13 @@ public class PathUtils {
         return new File(getStorageDir(context), name);
     }
 
+
     private static File generateMessagePath(String var0, String var1, Context context) {
-        File file = new File(generateHistoryPath(var0, var1, context), var1 + File.separator + "Msg.db");
+        File file = new File(generateHistoryPath(var0, var1, context),
+                var1 + File.separator + "Msg.db");
         return file;
     }
+
 
     public static File getTempPath(File file) {
         File tempFile = new File(file.getAbsoluteFile() + ".tmp");
