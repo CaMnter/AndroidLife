@@ -32,7 +32,8 @@ public class ViewUtils {
 
     /**
      * 根据Android系统版本，调用版本API中的设置View背景的方法
-     * According to the Android version, calls the Settings in the View background method of version
+     * According to the Android version, calls the Settings in the View background method of
+     * version
      * API
      *
      * @param view view
