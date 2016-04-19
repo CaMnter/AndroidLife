@@ -1,5 +1,6 @@
 package com.camnter.newlife.views.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -139,17 +140,32 @@ public class MainActivity extends BaseAppCompatActivity {
 
     public class MainRecyclerViewAdapter extends EasyRecyclerViewAdapter {
 
+        public final int camnterColor = 0xffC04F90;
+        public final int drakeetColor = 0xff5B64AF;
+
+
         @Override public int[] getItemLayouts() {
             return new int[] { R.layout.item_main };
         }
 
 
-        @Override
+        @SuppressLint("SetTextI18n") @Override
         public void onBindRecycleViewHolder(EasyRecyclerViewHolder easyRecyclerViewHolder, int i) {
             Class c = (Class) this.getList().get(i);
             if (c == null) return;
-            TextView textView = easyRecyclerViewHolder.findViewById(R.id.main_item_tv);
-            textView.setText(c.getSimpleName());
+            TextView content = easyRecyclerViewHolder.findViewById(R.id.main_item_tv);
+            TextView type = easyRecyclerViewHolder.findViewById(R.id.main_item_type);
+
+            content.setText(c.getSimpleName());
+            if (c.getName().contains("drakeet")) {
+                type.setText("drakeet");
+                type.setTextColor(drakeetColor);
+                type.setBackgroundResource(R.drawable.bg_main_item_type_drakeet);
+            } else {
+                type.setText("CaMnter");
+                type.setTextColor(camnterColor);
+                type.setBackgroundResource(R.drawable.bg_main_item_type_camnter);
+            }
         }
 
 
