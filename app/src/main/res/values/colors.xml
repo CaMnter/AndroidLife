@@ -18,11 +18,16 @@
 
     <color name="qzone_omit_tv">#ffBBBBBB</color>
     <color name="topic_omit_tv">#ffBBBBBB</color>
-
     <color name="topic_user_name_tv">#ff84A2BC</color>
     <color name="topic_user_location_tv">#ffBBBBBB</color>
     <color name="topic_tag_tv">#ffEB9F7B</color>
     <color name="topic_content_side_v">#ffEFEFEF</color>
-
     <color name="topic_content_button_v">#ff97A4AF</color>
+
+    <color name="section_header_tv">#ff666666</color>
+    <color name="section_header_tv_bg">#ffE8EDEE</color>
+    <color name="image_section_name_tv">#ff444444</color>
+
+    <dimen name="add_friend_name">16sp</dimen>
+    <dimen name="add_friend_by_contacts_header_tv">13sp</dimen>
 </resources>

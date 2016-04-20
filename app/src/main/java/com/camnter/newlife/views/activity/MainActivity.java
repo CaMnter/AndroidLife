@@ -28,6 +28,9 @@ import com.camnter.newlife.views.activity.design.tablayout.SetIconTabLayoutActiv
 import com.camnter.newlife.views.activity.easylikearea.EasyLikeAreaQZoneActivity;
 import com.camnter.newlife.views.activity.easylikearea.EasyLikeAreaStyleActivity;
 import com.camnter.newlife.views.activity.easylikearea.EasyLikeAreaTopicActivity;
+import com.camnter.newlife.views.activity.easyrecyclerviewsidebar.CircleImageSectionActivity;
+import com.camnter.newlife.views.activity.easyrecyclerviewsidebar.LetterSectionActivity;
+import com.camnter.newlife.views.activity.easyrecyclerviewsidebar.RoundImageSectionActivity;
 import com.camnter.newlife.views.activity.singletask.LaunchModeActivity;
 import com.camnter.newlife.views.activity.util.DateUtilActivity;
 import com.camnter.newlife.views.activity.util.DeviceUtilActivity;
@@ -135,6 +138,9 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(EasyLikeAreaTopicActivity.class);
         this.classes.add(EasyLikeAreaQZoneActivity.class);
         this.classes.add(EasyLikeAreaStyleActivity.class);
+        this.classes.add(LetterSectionActivity.class);
+        this.classes.add(CircleImageSectionActivity.class);
+        this.classes.add(RoundImageSectionActivity.class);
 
         this.adapter = new MainRecyclerViewAdapter();
         this.adapter.setList(classes);

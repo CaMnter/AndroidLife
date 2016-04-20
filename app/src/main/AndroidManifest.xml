@@ -193,6 +193,16 @@
         <activity
             android:name=".views.activity.easylikearea.EasyLikeAreaStyleActivity"
             android:label="@string/app_label"/>
+        <activity
+            android:name=".views.activity.easyrecyclerviewsidebar.LetterSectionActivity"
+            android:label="@string/app_label"/>
+        <activity
+            android:name=".views.activity.easyrecyclerviewsidebar.CircleImageSectionActivity"
+            android:label="@string/app_label"/>
+        <activity
+            android:name=".views.activity.easyrecyclerviewsidebar.RoundImageSectionActivity"
+            android:label="@string/app_label"/>
+
         <activity android:name="me.drakeet.newlife.RxBusActivity"/>
 
         <activity android:name="me.drakeet.newlife.RxBusConsumerActivity"/>

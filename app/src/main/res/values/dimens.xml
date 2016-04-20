@@ -16,4 +16,7 @@
     <dimen name="topic_user_location_tv">12sp</dimen>
     <dimen name="topic_tag_tv">12sp</dimen>
     <dimen name="topic_content_button_v">14sp</dimen>
+
+    <dimen name="section_name_tv">16sp</dimen>
+    <dimen name="section_header_tv">13sp</dimen>
 </resources>

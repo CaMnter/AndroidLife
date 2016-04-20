@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+
+ Copyright (C) 2016 CaMnter yuanyu.camnter@gmail.com
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/section_header_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/section_header_tv_bg"
+        android:paddingBottom="4dp"
+        android:paddingEnd="12dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingStart="12dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/section_header_tv"
+        android:textSize="@dimen/section_header_tv"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_image_section_item">
+
+        <ImageView
+            android:id="@+id/section_iv"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_margin="12dp"
+            android:src="@drawable/img_default_head"/>
+
+        <TextView
+            android:id="@+id/section_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="2dp"
+            android:layout_toEndOf="@id/section_iv"
+            android:layout_toRightOf="@id/section_iv"
+            android:textColor="@color/image_section_name_tv"
+            android:textSize="@dimen/section_name_tv"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/section_iv"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:background="#ffE5E5E5"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
