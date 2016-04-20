@@ -15,4 +15,14 @@
     <color name="blank_color">#ff999999</color>
     <color name="green">#ff5EBF60</color>
     <color name="gray">#FFcccccc</color>
+
+    <color name="qzone_omit_tv">#ffBBBBBB</color>
+    <color name="topic_omit_tv">#ffBBBBBB</color>
+
+    <color name="topic_user_name_tv">#ff84A2BC</color>
+    <color name="topic_user_location_tv">#ffBBBBBB</color>
+    <color name="topic_tag_tv">#ffEB9F7B</color>
+    <color name="topic_content_side_v">#ffEFEFEF</color>
+
+    <color name="topic_content_button_v">#ff97A4AF</color>
 </resources>

@@ -12,4 +12,16 @@
     <string name="activity_single_task_label">Activity:\n1.LaunchModeActivity\n2.VActivity\n3.SingleTaskActivity\n\nstart LActivity</string>
     <string name="activity_l_label">Activity:\n1.LaunchModeActivity\n2.VActivity\n3.SingleTaskActivity\n4.LActivity\n\nstart MActivity</string>
     <string name="activity_m_label">Activity:\n1.LaunchModeActivity\n2.VActivity\n3.SingleTaskActivity\n4.LActivity\n5.MActivity\n\nstart SingleTaskActivity:\nit will destroy:\n1.LActivity\n2.MActivity</string>
+
+    <string name="topic_content">女の子JKタイプ。\n約165センチ。\nブラジャーA - Bカップ。\nいいえ悪い黒歴史ません。</string>
+    <string name="view_omit_style_topic_content">%1$d人赞过</string>
+    <string name="view_omit_style_debug_content">1w人赞过</string>
+    <string name="view_omit_style_qzone_content">%1$d</string>
+
+    <string name="topic_user_name_tv">Kaede Akatsuki</string>
+    <string name="topic_user_location_tv">妖都</string>
+    <string name="topic_tag_tv">KAせんせい</string>
+    <string name="topic_chat_tv">评论</string>
+    <string name="topic_like_tv">赞</string>
+    <string name="topic_share_tv">分享</string>
 </resources>

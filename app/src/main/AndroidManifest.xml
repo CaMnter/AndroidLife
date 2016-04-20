@@ -184,6 +184,15 @@
         <activity
             android:name=".framework.rxandroid.RxMapActivity"
             android:label="@string/app_label"/>
+        <activity
+            android:name=".views.activity.easylikearea.EasyLikeAreaTopicActivity"
+            android:label="@string/app_label"/>
+        <activity
+            android:name=".views.activity.easylikearea.EasyLikeAreaQZoneActivity"
+            android:label="@string/app_label"/>
+        <activity
+            android:name=".views.activity.easylikearea.EasyLikeAreaStyleActivity"
+            android:label="@string/app_label"/>
         <activity android:name="me.drakeet.newlife.RxBusActivity"/>
 
         <activity android:name="me.drakeet.newlife.RxBusConsumerActivity"/>

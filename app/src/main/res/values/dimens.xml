@@ -6,4 +6,14 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="text_appearance_span">16sp</dimen>
+
+
+    <dimen name="qzone_omit_tv">12sp</dimen>
+    <dimen name="topic_omit_tv">12sp</dimen>
+
+    <dimen name="main_item_tv">15sp</dimen>
+    <dimen name="topic_user_name_tv">15sp</dimen>
+    <dimen name="topic_user_location_tv">12sp</dimen>
+    <dimen name="topic_tag_tv">12sp</dimen>
+    <dimen name="topic_content_button_v">14sp</dimen>
 </resources>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+
+ Copyright (C) 2016 CaMnter yuanyu.camnter@gmail.com
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/topic_content_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="13.5dp"
+        android:paddingEnd="12dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingStart="12dp"
+        android:paddingTop="13.5dp">
+
+        <com.camnter.easylikearea.widget.EasyLikeImageView
+            android:id="@+id/topic_user_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_kaede_akatsuki"/>
+
+        <TextView
+            android:id="@+id/topic_user_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/topic_user_iv"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/topic_user_iv"
+            android:layout_toRightOf="@id/topic_user_iv"
+            android:text="@string/topic_user_name_tv"
+            android:textColor="@color/topic_user_name_tv"
+            android:textSize="@dimen/topic_user_name_tv"/>
+
+        <TextView
+            android:id="@+id/topic_user_location_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/topic_user_iv"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/topic_user_iv"
+            android:layout_toRightOf="@id/topic_user_iv"
+            android:text="@string/topic_user_location_tv"
+            android:textColor="@color/topic_user_location_tv"
+            android:textSize="@dimen/topic_user_location_tv"/>
+
+        <TextView
+            android:id="@+id/topic_tag_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/topic_user_iv"
+            android:background="@drawable/bg_topic_tag_tv"
+            android:text="@string/topic_tag_tv"
+            android:textColor="@color/topic_tag_tv"
+            android:textSize="@dimen/topic_tag_tv"/>
+
+        <TextView
+            android:id="@+id/topic_content_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/topic_user_iv"
+            android:layout_marginTop="12.5dp"
+            android:text="@string/topic_content"/>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/topic_content_bottom_v"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/topic_content_rl"
+        android:background="@color/topic_content_side_v"/>
+
+    <com.camnter.easylikearea.EasyLikeArea
+        android:id="@+id/topic_ela"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topic_content_bottom_v"
+        android:background="@color/white"
+        android:paddingBottom="10dp"
+        android:paddingLeft="12.5dp"
+        android:paddingRight="12.5dp"
+        android:paddingTop="10dp"
+        app:easyLikeAreaLikeSpacing="5dp"
+        app:easyLikeAreaOmitCenter="true"
+        app:easyLikeAreaOmitSpacing="8dp"/>
+
+    <View
+        android:id="@+id/topic_ela_bottom_v"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/topic_ela"
+        android:background="@color/topic_content_side_v"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topic_ela_bottom_v"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/topic_like_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_topic_button"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="@string/topic_like_tv"
+            android:textColor="@color/topic_content_button_v"
+            android:textSize="@dimen/topic_content_button_v"/>
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="12dp"
+            android:background="@color/topic_content_side_v"/>
+
+        <TextView
+            android:id="@+id/topic_chat_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_topic_button"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="@string/topic_chat_tv"
+            android:textColor="@color/topic_content_button_v"
+            android:textSize="@dimen/topic_content_button_v"/>
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="12dp"
+            android:background="#ffE5E5E5"/>
+
+        <TextView
+            android:id="@+id/topic_share_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_topic_button"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="@string/topic_share_tv"
+            android:textColor="@color/topic_content_button_v"
+            android:textSize="@dimen/topic_content_button_v"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
