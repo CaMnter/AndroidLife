@@ -40,7 +40,7 @@
     <alpha
         android:duration="500"
         android:fromAlpha="0.0"
-        android:toAlpha="1.0" />
+        android:toAlpha="1.0"/>
 
     <!--
         scale 缩放动画
@@ -63,7 +63,7 @@
         android:pivotX="0%"
         android:pivotY="100%"
         android:toXScale="1.0"
-        android:toYScale="1.0" />
+        android:toYScale="1.0"/>
 
     <!--
         translate 平移动画
@@ -86,7 +86,7 @@
         android:fromXDelta="100%"
         android:fromYDelta="-100%"
         android:toXDelta="-100%"
-        android:toYDelta="100%" />
+        android:toYDelta="100%"/>
 
     <!--
         rotate 旋转动画
@@ -108,6 +108,6 @@
         android:fromDegrees="0"
         android:pivotX="50%"
         android:pivotY="50%"
-        android:toDegrees="360" />
+        android:toDegrees="360"/>
 
 </set>

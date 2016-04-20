@@ -2,97 +2,96 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="26dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="26dp">
+    android:paddingTop="26dp"
+    android:paddingBottom="26dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/exclusive_exclusive_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Spanned.SPAN_EXCLUSIVE_EXCLUSIVE"
-        android:textSize="14sp"/>
+        android:textSize="14sp"
+        android:text="Spanned.SPAN_EXCLUSIVE_EXCLUSIVE"/>
 
     <TextView
         android:id="@+id/exclusive_exclusive_content_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/exclusive_exclusive_tv"
         android:layout_marginLeft="26dp"
         android:layout_marginStart="26dp"
         android:layout_marginTop="16dp"
-        android:text="(a,b)"
-        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@id/exclusive_exclusive_tv"
         android:textSize="14sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="(a,b)"/>
 
     <TextView
         android:id="@+id/exclusive_inclusive_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/exclusive_exclusive_content_tv"
         android:layout_marginTop="16dp"
-        android:text="Spanned.SPAN_EXCLUSIVE_INCLUSIVE"
-        android:textSize="14sp"/>
+        android:layout_below="@id/exclusive_exclusive_content_tv"
+        android:textSize="14sp"
+        android:text="Spanned.SPAN_EXCLUSIVE_INCLUSIVE"/>
 
     <TextView
         android:id="@+id/exclusive_inclusive_content_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/exclusive_inclusive_tv"
         android:layout_marginLeft="26dp"
         android:layout_marginStart="26dp"
         android:layout_marginTop="16dp"
-        android:text="(a,b]"
-        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@id/exclusive_inclusive_tv"
         android:textSize="14sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="(a,b]"/>
 
     <TextView
         android:id="@+id/inclusive_exclusive_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/exclusive_inclusive_content_tv"
         android:layout_marginTop="16dp"
-        android:text="Spanned.SPAN_INCLUSIVE_EXCLUSIVE"
-        android:textSize="14sp"/>
+        android:layout_below="@id/exclusive_inclusive_content_tv"
+        android:textSize="14sp"
+        android:text="Spanned.SPAN_INCLUSIVE_EXCLUSIVE"/>
 
     <TextView
         android:id="@+id/inclusive_exclusive_content_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/inclusive_exclusive_tv"
         android:layout_marginLeft="26dp"
         android:layout_marginStart="26dp"
         android:layout_marginTop="16dp"
-        android:text="[a,b)"
-        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@id/inclusive_exclusive_tv"
         android:textSize="14sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="[a,b)"/>
 
     <TextView
         android:id="@+id/inclusive_inclusive_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/inclusive_exclusive_content_tv"
         android:layout_marginTop="16dp"
-        android:text="Spanned.SPAN_INCLUSIVE_INCLUSIVE"
-        android:textSize="14sp"/>
+        android:layout_below="@id/inclusive_exclusive_content_tv"
+        android:textSize="14sp"
+        android:text="Spanned.SPAN_INCLUSIVE_INCLUSIVE"/>
 
     <TextView
         android:id="@+id/inclusive_inclusive_content_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/inclusive_inclusive_tv"
         android:layout_marginLeft="26dp"
         android:layout_marginStart="26dp"
         android:layout_marginTop="16dp"
-        android:text="[a,b]"
-        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@id/inclusive_inclusive_tv"
         android:textSize="14sp"
-        android:textStyle="bold"/>
-
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="[a,b]"/>
 
 </RelativeLayout>

@@ -5,13 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <com.camnter.easyslidingtabs.widget.EasySlidingTabs
         android:id="@+id/easy_sliding_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
         android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         app:easyIndicatorColor="#ff57C1CC"
         app:easySelectedTagTextColor="#ff57C1CC"
         app:easyTabTextColor="#ffFF4081"

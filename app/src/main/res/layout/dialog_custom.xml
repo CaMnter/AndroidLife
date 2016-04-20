@@ -8,13 +8,13 @@
         android:id="@+id/custom_dialog_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:background="@drawable/bg_dialog_custom_tv"
         android:drawableLeft="@mipmap/dialog_custom_tv_drawable"
         android:drawablePadding="5dp"
         android:drawableStart="@mipmap/dialog_custom_tv_drawable"
-        android:gravity="center"
-        android:text="成功"
+        android:textSize="15sp"
         android:textColor="#ff666666"
-        android:textSize="15sp"/>
+        android:text="成功"/>
 
 </LinearLayout>

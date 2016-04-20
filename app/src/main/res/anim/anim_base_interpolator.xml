@@ -12,7 +12,7 @@
         对应的资源 @android:anim/accelerate_decelerate_interpolator
         作用 动画开始与结束时速率改变比较慢，在中间时加速
     -->
-    <accelerateDecelerateInterpolator />
+    <accelerateDecelerateInterpolator/>
 
     <!--
         对应的类 AccelerateInterpolator
@@ -21,7 +21,7 @@
 
         factor 加速速率，默认值1.0。
      -->
-    <accelerateInterpolator android:factor="1" />
+    <accelerateInterpolator android:factor="1"/>
 
     <!--
         对应的类 AnticipateInterpolator
@@ -30,7 +30,7 @@
 
         tension 向后的拉力，默认值2.0；0.0时，不会有向后的动画
      -->
-    <anticipateInterpolator android:tension="2" />
+    <anticipateInterpolator android:tension="2"/>
 
     <!--
         对应的类 AnticipateOvershootInterpolator
@@ -39,15 +39,14 @@
     -->
     <anticipateOvershootInterpolator
         android:extraTension="2"
-        android:tension="2" />
+        android:tension="2"/>
 
     <!--
         对应的类 BounceInterpolator
         对应的资源 @android:anim/bounce_interpolator
         作用 动画结束的时候会弹跳
     -->
-    <bounceInterpolator />
-
+    <bounceInterpolator/>
 
     <!--
         对应的类 CycleInterpolator
@@ -56,7 +55,7 @@
 
         cycles 循环次数，默认值1
     -->
-    <cycleInterpolator android:cycles="1" />
+    <cycleInterpolator android:cycles="1"/>
 
     <!--
         对应的类 DecelerateInterpolator
@@ -65,14 +64,14 @@
 
         factor 减速速率，默认为1.0
     -->
-    <decelerateInterpolator android:factor="1" />
+    <decelerateInterpolator android:factor="1"/>
 
     <!--
         对应的类 LinearInterpolator
         对应的资源 @android:anim/decelerate_interpolator
         作用 动画匀速播放，没有可更改设置的属性
      -->
-    <linearInterpolator />
+    <linearInterpolator/>
 
     <!--
        对应的类 OvershootInterpolator
@@ -81,6 +80,6 @@
 
        tension 超出后的拉力，默认为2.0
     -->
-    <overshootInterpolator android:tension="2" />
+    <overshootInterpolator android:tension="2"/>
 
 </set>

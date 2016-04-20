@@ -5,8 +5,8 @@
     android:orientation="vertical">
 
     <com.camnter.newlife.widget.TagTextView
-        android:id="@+id/tag_text_view_tv"
         style="@style/TextView"
+        android:id="@+id/tag_text_view_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

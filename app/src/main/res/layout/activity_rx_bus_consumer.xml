@@ -10,8 +10,8 @@
     tools:context="me.drakeet.newlife.RxBusConsumerActivity">
 
     <Button
-        android:id="@+id/send"
         style="@style/TestButtonStyle"
+        android:id="@+id/send"
         android:onClick="onSend"
         android:text="Send"/>
 

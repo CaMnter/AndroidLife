@@ -5,8 +5,8 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
 
     <!--
         android:fitsSystemWindows="true"
@@ -19,7 +19,6 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
         <!--android:fitsSystemWindows="true"-->
-
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -37,7 +36,6 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:title="Save you from anything"/>
 
-
         </android.support.design.widget.AppBarLayout>
 
         <com.camnter.easyrecyclerview.widget.EasyRecyclerView
@@ -45,7 +43,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
 
     </android.support.design.widget.CoordinatorLayout>
 
@@ -57,7 +54,4 @@
     <!--app:headerLayout="@layout/navigation_header"-->
     <!--app:menu="@menu/menu_navigation"/>-->
 
-
 </android.support.v4.widget.DrawerLayout>
-
-

@@ -5,8 +5,8 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/otto_send"
         style="@style/TextButton"
+        android:id="@+id/otto_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Send"/>

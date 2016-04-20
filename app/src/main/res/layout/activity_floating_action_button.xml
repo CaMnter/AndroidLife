@@ -6,60 +6,60 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_one"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email"
-        android:visibility="visible"/>
+        android:src="@android:drawable/ic_dialog_email"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_two"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/fab_margin"
+        android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/fab_one"
-        android:src="@android:drawable/ic_popup_sync"
-        android:visibility="visible"
         app:backgroundTint="#3435bb"
-        app:elevation="0dp"/>
+        app:elevation="0dp"
+        android:src="@android:drawable/ic_popup_sync"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_three"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/fab_margin"
+        android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/fab_two"
-        android:src="@android:drawable/ic_dialog_dialer"
-        android:visibility="visible"
         app:backgroundTint="#bba707"
-        app:fabSize="mini"/>
+        app:fabSize="mini"
+        android:src="@android:drawable/ic_dialog_dialer"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_four"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/fab_margin"
+        android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/fab_three"
-        android:src="@mipmap/mm_1"
-        android:visibility="visible"
         app:backgroundTint="#9406bb"
-        app:fabSize="normal"/>
+        app:fabSize="normal"
+        android:src="@mipmap/mm_1"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_five"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/fab_margin"
+        android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/fab_four"
-        android:src="@android:drawable/ic_dialog_alert"
-        android:visibility="visible"
-        app:backgroundTint="#bb6787"/>
+        app:backgroundTint="#bb6787"
+        android:src="@android:drawable/ic_dialog_alert"/>
 
 </RelativeLayout>

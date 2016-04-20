@@ -7,220 +7,220 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DeviceId："
+            android:textSize="15dp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="DeviceId："/>
 
         <TextView
             android:id="@+id/device_id_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="VersionCode："
+            android:textSize="15dp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="VersionCode："/>
 
         <TextView
             android:id="@+id/version_code_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="VersionName："
+            android:textSize="15dp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="VersionName："/>
 
         <TextView
             android:id="@+id/version_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="手机品牌："
+            android:textSize="15dp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="手机品牌："/>
 
         <TextView
             android:id="@+id/phone_brand_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="手机型号："
+            android:textSize="15dp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="手机型号："/>
 
         <TextView
             android:id="@+id/phone_model_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="API Level："
+            android:textSize="15dp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="API Level："/>
 
         <TextView
             android:id="@+id/phone_api_level_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="API Version："
+            android:textSize="15dp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="API Version："/>
 
         <TextView
             android:id="@+id/phone_api_version_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="App Process Id："
+            android:textSize="15dp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="App Process Id："/>
 
         <TextView
             android:id="@+id/app_process_id_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="App Name："
+            android:textSize="15dp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="App Name："/>
 
         <TextView
             android:id="@+id/app_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="meta-data："
+            android:textSize="15dp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="meta-data："/>
 
         <TextView
             android:id="@+id/meta_data_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 

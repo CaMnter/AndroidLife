@@ -2,13 +2,16 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 点击时 -->
-    <item android:state_pressed="true" android:drawable="@mipmap/pressed"/>
+    <item android:state_pressed="true"
+        android:drawable="@mipmap/pressed"/>
 
     <!-- 选中时 -->
-    <item android:state_selected="true" android:drawable="@mipmap/pressed"/>
+    <item android:state_selected="true"
+        android:drawable="@mipmap/pressed"/>
 
     <!-- 获得焦点时 -->
-    <item android:state_focused="true" android:drawable="@mipmap/pressed"/>
+    <item android:state_focused="true"
+        android:drawable="@mipmap/pressed"/>
 
     <!-- 正常时 -->
     <item android:drawable="@mipmap/normal"/>

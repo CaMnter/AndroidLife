@@ -9,40 +9,39 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:padding="16dp"
-        android:text="Save you from anything"
-        android:textColor="#ffFF4081"/>
+        android:textColor="#ffFF4081"
+        android:text="Save you from anything"/>
 
     <com.camnter.newlife.widget.AutoAdjustSizeTextView
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:padding="16dp"
-        android:text="Save you from anything Save you from anything"
-        android:textColor="#ffFF4081"/>
+        android:textColor="#ffFF4081"
+        android:text="Save you from anything Save you from anything"/>
 
     <com.camnter.newlife.widget.AutoAdjustSizeTextView
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:padding="16dp"
-        android:text="Save you from anything Save you from anything Save you from anything "
-        android:textColor="#ffFF4081"/>
+        android:textColor="#ffFF4081"
+        android:text="Save you from anything Save you from anything Save you from anything "/>
 
     <com.camnter.newlife.widget.AutoAdjustSizeTextView
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:padding="16dp"
-        android:text="Save you from anything Save you from anything Save you from anything Save you from anything "
-        android:textColor="#ffFF4081"/>
+        android:textColor="#ffFF4081"
+        android:text="Save you from anything Save you from anything Save you from anything Save you from anything "/>
 
     <com.camnter.newlife.widget.AutoAdjustSizeTextView
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:padding="16dp"
-        android:text="Save you from anything Save you from anything Save you from anything Save you from anything Save you from anything "
-        android:textColor="#ffFF4081"/>
-
+        android:textColor="#ffFF4081"
+        android:text="Save you from anything Save you from anything Save you from anything Save you from anything Save you from anything "/>
 
 </LinearLayout>

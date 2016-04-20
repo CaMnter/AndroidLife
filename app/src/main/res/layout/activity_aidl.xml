@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
-
     <TextView
         android:id="@+id/aidl_tv"
         android:layout_width="wrap_content"

@@ -37,4 +37,3 @@ class GraphicsActivity extends AppCompatActivity {
         super.setContentView(view);
     }
 }
-

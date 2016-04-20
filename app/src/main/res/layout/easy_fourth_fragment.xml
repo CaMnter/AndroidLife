@@ -7,7 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="四次元"
-        android:textColor="#ffFF4081"/>
+        android:textColor="#ffFF4081"
+        android:text="四次元"/>
 
 </RelativeLayout>

@@ -2,26 +2,35 @@
 <resources>
     <declare-styleable name="EasyFlowLayout">
         <attr name="gravity">
-            <enum name="left" value="-1" />
-            <enum name="center" value="0" />
-            <enum name="right" value="1" />
+            <enum name="left"
+                value="-1"/>
+            <enum name="center"
+                value="0"/>
+            <enum name="right"
+                value="1"/>
         </attr>
     </declare-styleable>
 
     <declare-styleable name="ShaderRoundImageView">
         <attr name="imageType">
-            <enum name="round" value="2601" />
-            <enum name="circle" value="2602" />
+            <enum name="round"
+                value="2601"/>
+            <enum name="circle"
+                value="2602"/>
         </attr>
-        <attr name="borderRadius" format="dimension" />
+        <attr name="borderRadius"
+            format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="XfermodeRoundImageView">
         <attr name="xfermodeImageType">
-            <enum name="round" value="2601" />
-            <enum name="circle" value="2602" />
+            <enum name="round"
+                value="2601"/>
+            <enum name="circle"
+                value="2602"/>
         </attr>
-        <attr name="xfermodeBorderRadius" format="dimension" />
+        <attr name="xfermodeBorderRadius"
+            format="dimension"/>
     </declare-styleable>
 
 </resources>

@@ -11,8 +11,8 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/animator_value_tv"
             style="@style/TextButton"
+            android:id="@+id/animator_value_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ValueAnimator"/>
@@ -21,56 +21,56 @@
             android:id="@+id/animator_sv"
             android:layout_width="match_parent"
             android:layout_height="66dp"
+            android:layout_margin="13dp"
             android:layout_alignEnd="@id/animator_value_tv"
             android:layout_alignLeft="@id/animator_value_tv"
             android:layout_alignRight="@id/animator_value_tv"
             android:layout_alignStart="@id/animator_value_tv"
-            android:layout_below="@id/animator_value_tv"
-            android:layout_margin="13dp"/>
+            android:layout_below="@id/animator_value_tv"/>
 
         <TextView
-            android:id="@+id/animator_alpha_tv"
             style="@style/TextButton"
+            android:id="@+id/animator_alpha_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animator_sv"
             android:text="AlphaAnimator"/>
 
         <TextView
-            android:id="@+id/animator_rotation_tv"
             style="@style/TextButton"
+            android:id="@+id/animator_rotation_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animator_alpha_tv"
             android:text="RotationAnimator"/>
 
         <TextView
-            android:id="@+id/animator_translation_tv"
             style="@style/TextButton"
+            android:id="@+id/animator_translation_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animator_rotation_tv"
             android:text="TranslationAnimator"/>
 
         <TextView
-            android:id="@+id/animator_scale_tv"
             style="@style/TextButton"
+            android:id="@+id/animator_scale_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animator_translation_tv"
             android:text="ScaleAnimator"/>
 
         <TextView
-            android:id="@+id/animator_set_tv"
             style="@style/TextButton"
+            android:id="@+id/animator_set_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animator_scale_tv"
             android:text="AnimatorSet"/>
 
         <TextView
-            android:id="@+id/animator_evaluator_tv"
             style="@style/TextButton"
+            android:id="@+id/animator_evaluator_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animator_set_tv"
@@ -80,16 +80,16 @@
             android:id="@+id/animator_evaluator_iv"
             android:layout_width="66dp"
             android:layout_height="66dp"
-            android:layout_below="@id/animator_set_tv"
             android:layout_margin="16dp"
+            android:layout_below="@id/animator_set_tv"
             android:layout_toEndOf="@id/animator_evaluator_tv"
             android:layout_toRightOf="@id/animator_evaluator_tv"
-            android:src="@mipmap/ic_mm_normal"
-            app:imageType="round"/>
+            app:imageType="round"
+            android:src="@mipmap/ic_mm_normal"/>
 
         <TextView
-            android:id="@+id/animator_property_tv"
             style="@style/TextButton"
+            android:id="@+id/animator_property_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animator_evaluator_tv"

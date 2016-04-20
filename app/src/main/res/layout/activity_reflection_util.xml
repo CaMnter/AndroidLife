@@ -8,16 +8,16 @@
         android:id="@+id/reflection_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:padding="16dp"
+        android:layout_centerInParent="true"
         android:text="反射取资源"/>
 
     <ImageView
         android:id="@+id/reflection_iv"
         android:layout_width="366dp"
         android:layout_height="366dp"
+        android:scaleType="centerCrop"
         android:layout_below="@id/reflection_bt"
-        android:layout_centerInParent="true"
-        android:scaleType="centerCrop"/>
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>

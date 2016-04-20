@@ -2,21 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#df000000"
+    android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:background="#df000000">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
         android:drawableLeft="@mipmap/popupwindow_read"
         android:drawablePadding="6.5dp"
         android:drawableStart="@mipmap/popupwindow_read"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="查看"
+        android:textSize="12sp"
         android:textColor="#ff97A4AF"
-        android:textSize="12sp"/>
+        android:text="查看"/>
 
     <View
         android:layout_width="match_parent"
@@ -26,14 +26,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
         android:drawableLeft="@mipmap/popupwindow_praise_unclick"
         android:drawablePadding="6.5dp"
         android:drawableStart="@mipmap/popupwindow_praise_unclick"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="点赞"
+        android:textSize="12sp"
         android:textColor="#ff97A4AF"
-        android:textSize="12sp"/>
+        android:text="点赞"/>
 
     <View
         android:layout_width="match_parent"
@@ -43,14 +43,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
         android:drawableLeft="@mipmap/popupwindow_discussion"
         android:drawablePadding="10dp"
         android:drawableStart="@mipmap/popupwindow_discussion"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="评论"
+        android:textSize="12sp"
         android:textColor="#ff97A4AF"
-        android:textSize="12sp"/>
+        android:text="评论"/>
 
     <View
         android:layout_width="match_parent"
@@ -60,13 +60,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
         android:drawableLeft="@mipmap/popupwindow_share"
         android:drawablePadding="6.5dp"
         android:drawableStart="@mipmap/popupwindow_share"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="分享"
+        android:textSize="12sp"
         android:textColor="#ff97A4AF"
-        android:textSize="12sp"/>
+        android:text="分享"/>
 
 </LinearLayout>

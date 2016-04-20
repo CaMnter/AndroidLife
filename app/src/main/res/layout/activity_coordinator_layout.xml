@@ -21,7 +21,6 @@
             app:title="Save you from anything"
             app:titleTextColor="#ffffffff"/>
 
-
     </android.support.design.widget.AppBarLayout>
 
     <com.camnter.easyrecyclerview.widget.EasyRecyclerView
@@ -31,5 +30,3 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>
-
-

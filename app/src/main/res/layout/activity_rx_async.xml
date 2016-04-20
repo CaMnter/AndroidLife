@@ -8,17 +8,17 @@
         android:id="@+id/rx_async_save_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:padding="16dp"/>
+        android:padding="16dp"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/rx_async_save_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rx_async_save_tv"
-        android:layout_centerHorizontal="true"
         android:layout_margin="6dp"
         android:padding="6dp"
+        android:layout_below="@id/rx_async_save_tv"
+        android:layout_centerHorizontal="true"
         android:text="下载"/>
 
     <ImageView

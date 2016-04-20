@@ -2,26 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="26dp">
+    android:padding="26dp"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/popupwindow_left_tv"
         style="@style/TextButton"
+        android:id="@+id/popupwindow_left_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ShowAtDropDownLeft"/>
 
     <TextView
-        android:id="@+id/popupwindow_center_tv"
         style="@style/TextButton"
+        android:id="@+id/popupwindow_center_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ShowAtDropDownCenter"/>
 
     <TextView
-        android:id="@+id/popupwindow_right_tv"
         style="@style/TextButton"
+        android:id="@+id/popupwindow_right_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ShowAtDropDownRight"/>

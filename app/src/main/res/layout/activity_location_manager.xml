@@ -2,117 +2,116 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
-
+    android:padding="16dp"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="经度："
+            android:textSize="15sp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="经度："/>
 
         <TextView
             android:id="@+id/location_longitude_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15sp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="纬度："
+            android:textSize="15sp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="纬度："/>
 
         <TextView
             android:id="@+id/location_latitude_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15sp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="海拔："
+            android:textSize="15sp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="海拔："/>
 
         <TextView
             android:id="@+id/location_altitude_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15sp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Providers："
+            android:textSize="15sp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="Providers："/>
 
         <TextView
             android:id="@+id/location_providers_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15sp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="6dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Best Provider："
+            android:textSize="15sp"
             android:textColor="@color/themeColor"
-            android:textSize="15dp"/>
+            android:text="Best Provider："/>
 
         <TextView
             android:id="@+id/location_best_provider_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"/>
+            android:textSize="15sp"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
