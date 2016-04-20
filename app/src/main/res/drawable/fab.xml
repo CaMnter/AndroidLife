@@ -90,7 +90,7 @@
                 </layer-list>
             </item>
 
-            <!-- Blue button pressed -->
+            <!-- Blue button img_pressed -->
             <item>
                 <shape android:shape="oval">
                     <solid android:color="#90CAF9"/>

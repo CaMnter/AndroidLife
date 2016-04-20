@@ -56,8 +56,8 @@ public class SetIconTabLayoutActivity extends BaseAppCompatActivity {
      * Initialize the Activity data
      */
     @Override protected void initData() {
-        int[] icons = { R.mipmap.icon_msg_unread, R.mipmap.icon_remark, R.mipmap.icon_time,
-                R.mipmap.icon_feedback };
+        int[] icons = { R.drawable.ic_msg_unread, R.drawable.ic_remark, R.drawable.ic_time,
+                R.drawable.ic_feedback };
         String[] tabTitles = { "一次元", "二次元", "三次元", "四次元" };
         Fragment[] fragments = { TabLayoutFirstFragment.getInstance(),
                 TabLayoutSecondFragment.getInstance(), TabLayoutThirdFragment.getInstance(),

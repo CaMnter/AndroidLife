@@ -64,7 +64,7 @@ public class ReflectionUtilActivity extends BaseAppCompatActivity implements Vie
                 /*
                  * 获取资源名为mm_1的mipmap类型文件
                  */
-                this.imageView.setImageResource(ReflectionUtils.getResourceId(this, "mm_1",
+                this.imageView.setImageResource(ReflectionUtils.getResourceId(this, "img_mm_1",
                         ReflectionUtils.ResourcesType.mipmap));
                 break;
         }

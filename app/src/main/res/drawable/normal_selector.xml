@@ -3,17 +3,17 @@
 
     <!-- 点击时 -->
     <item android:state_pressed="true"
-        android:drawable="@mipmap/pressed"/>
+        android:drawable="@drawable/img_pressed"/>
 
     <!-- 选中时 -->
     <item android:state_selected="true"
-        android:drawable="@mipmap/pressed"/>
+        android:drawable="@drawable/img_pressed"/>
 
     <!-- 获得焦点时 -->
     <item android:state_focused="true"
-        android:drawable="@mipmap/pressed"/>
+        android:drawable="@drawable/img_pressed"/>
 
     <!-- 正常时 -->
-    <item android:drawable="@mipmap/normal"/>
+    <item android:drawable="@drawable/img_normal"/>
 
 </selector>

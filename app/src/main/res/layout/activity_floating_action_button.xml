@@ -49,7 +49,7 @@
         android:layout_toLeftOf="@id/fab_three"
         app:backgroundTint="#9406bb"
         app:fabSize="normal"
-        android:src="@mipmap/mm_1"/>
+        android:src="@drawable/img_mm_1"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_five"

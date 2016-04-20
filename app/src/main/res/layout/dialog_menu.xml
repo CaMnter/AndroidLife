@@ -18,7 +18,7 @@
         android:gravity="center_horizontal"
         android:background="@drawable/bg_dialog_menu_item"
         android:drawablePadding="13dp"
-        android:drawableTop="@mipmap/dialog_menu_case"
+        android:drawableTop="@drawable/img_dialog_menu_case"
         android:textSize="14sp"
         android:textColor="#ff666666"
         android:text="Case"/>
@@ -28,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:paddingLeft="36dp"
         android:paddingEnd="36dp"
         android:paddingRight="36dp"
@@ -36,7 +37,7 @@
         android:gravity="center_horizontal"
         android:background="@drawable/bg_dialog_menu_item"
         android:drawablePadding="13dp"
-        android:drawableTop="@mipmap/dialog_menu_help"
+        android:drawableTop="@drawable/img_dialog_menu_help"
         android:textSize="14sp"
         android:textColor="#ff666666"
         android:text="Help"/>

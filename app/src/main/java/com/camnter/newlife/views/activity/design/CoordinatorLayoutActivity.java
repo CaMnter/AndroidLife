@@ -54,12 +54,12 @@ public class CoordinatorLayoutActivity extends BaseActivity {
     @Override protected void initData() {
         CoordinatorRecyclerViewAdapter adapter = new CoordinatorRecyclerViewAdapter();
         List<Integer> resIds = new LinkedList<>();
-        resIds.add(R.mipmap.mm_1);
-        resIds.add(R.mipmap.mm_2);
-        resIds.add(R.mipmap.mm_3);
-        resIds.add(R.mipmap.mm_4);
-        resIds.add(R.mipmap.mm_5);
-        resIds.add(R.mipmap.mm_6);
+        resIds.add(R.drawable.img_mm_1);
+        resIds.add(R.drawable.img_mm_2);
+        resIds.add(R.drawable.img_mm_3);
+        resIds.add(R.drawable.img_mm_4);
+        resIds.add(R.drawable.img_mm_5);
+        resIds.add(R.drawable.img_mm_6);
         this.coordinatorRV.setAdapter(adapter);
         adapter.setList(resIds);
     }

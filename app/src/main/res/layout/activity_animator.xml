@@ -85,7 +85,7 @@
             android:layout_toEndOf="@id/animator_evaluator_tv"
             android:layout_toRightOf="@id/animator_evaluator_tv"
             app:imageType="round"
-            android:src="@mipmap/ic_mm_normal"/>
+            android:src="@drawable/ic_mm_normal"/>
 
         <TextView
             style="@style/TextButton"

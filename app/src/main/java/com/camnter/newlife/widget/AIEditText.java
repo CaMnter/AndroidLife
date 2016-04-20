@@ -67,7 +67,7 @@ public class AIEditText extends AppCompatEditText
      * @param context
      */
     private void init(Context context) {
-        Drawable drawable = ContextCompat.getDrawable(context, R.mipmap.ic_clear_mtrl_alpha);
+        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_clear_mtrl_alpha);
         Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
         DrawableCompat.setTint(wrappedDrawable, super.getCurrentHintTextColor());
         this.mClearDrawable = wrappedDrawable;
@@ -145,17 +145,17 @@ public class AIEditText extends AppCompatEditText
 
 
     /**
-     * @param s
-     * @param start
-     * @param count
-     * @param after
+     * @param s s
+     * @param start start
+     * @param count count
+     * @param after after
      */
     @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
     }
 
 
     /**
-     * @param s
+     * @param s s
      */
     @Override public void afterTextChanged(Editable s) {
     }

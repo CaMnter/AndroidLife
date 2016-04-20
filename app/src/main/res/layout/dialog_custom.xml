@@ -10,9 +10,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:background="@drawable/bg_dialog_custom_tv"
-        android:drawableLeft="@mipmap/dialog_custom_tv_drawable"
+        android:drawableLeft="@drawable/ic_dialog_custom_tv_drawable"
         android:drawablePadding="5dp"
-        android:drawableStart="@mipmap/dialog_custom_tv_drawable"
+        android:drawableStart="@drawable/ic_dialog_custom_tv_drawable"
         android:textSize="15sp"
         android:textColor="#ff666666"
         android:text="成功"/>

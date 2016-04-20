@@ -55,6 +55,6 @@ public class ResourcesUtilActivity extends BaseAppCompatActivity {
         this.resourcesTV.setTextColor(
                 ResourcesUtils.getColor(this, ResourcesUtils.getColorId(this, "colorAccent")));
 
-        this.resourcesIV.setImageResource(ResourcesUtils.getMipmapId(this, "mm_1"));
+        this.resourcesIV.setImageResource(ResourcesUtils.getMipmapId(this, "img_mm_1"));
     }
 }

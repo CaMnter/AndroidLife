@@ -46,9 +46,9 @@ public class RobotlegsSecondFragmentMediator extends Mediator {
         this.secondRV = (RecyclerView) this.fragment.self.findViewById(R.id.second_rv);
         SecondRecyclerViewAdapter adapter = new SecondRecyclerViewAdapter();
         List<Integer> resIds = new LinkedList<>();
-        resIds.add(R.mipmap.mm_1);
-        resIds.add(R.mipmap.mm_2);
-        resIds.add(R.mipmap.mm_3);
+        resIds.add(R.drawable.img_mm_1);
+        resIds.add(R.drawable.img_mm_2);
+        resIds.add(R.drawable.img_mm_3);
         this.secondRV.setAdapter(adapter);
         adapter.setList(resIds);
 

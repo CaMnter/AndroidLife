@@ -29,7 +29,7 @@
             android:layout_height="200dp"
             android:layout_marginBottom="20dp"
             android:scaleType="center"
-            android:src="@mipmap/mm_1"/>
+            android:src="@drawable/img_mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
             android:layout_height="200dp"
             android:layout_marginBottom="20dp"
             android:scaleType="center"
-            android:src="@mipmap/mm_1"/>
+            android:src="@drawable/img_mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
             android:layout_height="200dp"
             android:layout_margin="20dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/mm_1"/>
+            android:src="@drawable/img_mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
             android:layout_height="200dp"
             android:layout_margin="20dp"
             android:scaleType="centerInside"
-            android:src="@mipmap/mm_1"/>
+            android:src="@drawable/img_mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -85,7 +85,7 @@
             android:layout_height="200dp"
             android:layout_margin="20dp"
             android:scaleType="fitCenter"
-            android:src="@mipmap/mm_1"/>
+            android:src="@drawable/img_mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -99,7 +99,7 @@
             android:layout_height="200dp"
             android:layout_margin="20dp"
             android:scaleType="fitEnd"
-            android:src="@mipmap/mm_1"/>
+            android:src="@drawable/img_mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -113,7 +113,7 @@
             android:layout_height="200dp"
             android:layout_margin="20dp"
             android:scaleType="fitStart"
-            android:src="@mipmap/mm_1"/>
+            android:src="@drawable/img_mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -127,7 +127,7 @@
             android:layout_height="200dp"
             android:layout_margin="20dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/mm_1"/>
+            android:src="@drawable/img_mm_1"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -141,7 +141,7 @@
             android:layout_height="200dp"
             android:layout_margin="20dp"
             android:scaleType="matrix"
-            android:src="@mipmap/mm_1"/>
+            android:src="@drawable/img_mm_1"/>
     </LinearLayout>
 
 </ScrollView>

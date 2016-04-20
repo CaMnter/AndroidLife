@@ -59,8 +59,8 @@ public class ResourcesUtils {
      * 创建一个ColorStateList
      * create a ColorStateList instance
      *
-     * @param normal normal
-     * @param pressed pressed
+     * @param normal img_normal
+     * @param pressed img_pressed
      * @param focused focused
      * @param unable unable
      * @return ColorStateList

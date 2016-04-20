@@ -12,7 +12,7 @@
         android:layout_height="260dp"
         android:layout_margin="16dp"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/mm_1"/>
+        android:src="@drawable/img_mm_1"/>
 
     <TextView
         android:id="@+id/first_tv"

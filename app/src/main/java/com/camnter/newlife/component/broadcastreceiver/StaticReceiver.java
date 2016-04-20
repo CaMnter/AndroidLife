@@ -35,11 +35,11 @@ public class StaticReceiver extends BroadcastReceiver {
                 "StaticBroadcastReceiver")
                                                                      .setContentText(message)
                                                                      .setSmallIcon(
-                                                                             R.mipmap.ic_mm_normal)
+                                                                             R.drawable.ic_mm_normal)
                                                                      .setLargeIcon(
                                                                              BitmapFactory.decodeResource(
                                                                                      context.getResources(),
-                                                                                     R.mipmap.ic_mm_normal))
+                                                                                     R.drawable.ic_mm_normal))
                                                                      .setContentIntent(
                                                                              pendingIntent)
                                                                      .build();
