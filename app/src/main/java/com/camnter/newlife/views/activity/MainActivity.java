@@ -31,6 +31,7 @@ import com.camnter.newlife.views.activity.easylikearea.EasyLikeAreaTopicActivity
 import com.camnter.newlife.views.activity.easyrecyclerviewsidebar.CircleImageSectionActivity;
 import com.camnter.newlife.views.activity.easyrecyclerviewsidebar.LetterSectionActivity;
 import com.camnter.newlife.views.activity.easyrecyclerviewsidebar.RoundImageSectionActivity;
+import com.camnter.newlife.views.activity.lrucache.LruCacheActivity;
 import com.camnter.newlife.views.activity.singletask.LaunchModeActivity;
 import com.camnter.newlife.views.activity.util.DateUtilActivity;
 import com.camnter.newlife.views.activity.util.DeviceUtilActivity;
@@ -141,6 +142,7 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(LetterSectionActivity.class);
         this.classes.add(CircleImageSectionActivity.class);
         this.classes.add(RoundImageSectionActivity.class);
+        this.classes.add(LruCacheActivity.class);
 
         this.adapter = new MainRecyclerViewAdapter();
         this.adapter.setList(classes);

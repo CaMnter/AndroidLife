@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/lru_cache_tip_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/lru_cache_tip_text"/>
+
+    <LinearLayout
+        style="@style/LruCacheItemLinearLayout"
+        android:id="@+id/camnter_item_layout"
+        android:layout_below="@id/lru_cache_tip_text">
+
+        <TextView
+            style="@style/LruCacheItemFirstText"
+            android:text="@string/lru_cache_picture_1"/>
+
+        <ImageView
+            style="@style/LruCacheItemImageView"
+            android:src="@drawable/ic_camnter"/>
+
+        <TextView
+            style="@style/LruCacheItemText"
+            android:id="@+id/camnter_size_text"/>
+
+        <TextView
+            style="@style/LruCacheItemText"
+            android:id="@+id/camnter_count_text"/>
+
+        <TextView
+            style="@style/LruCacheItemText"
+            android:id="@+id/camnter_hashCode_text"
+            android:singleLine="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/LruCacheItemLinearLayout"
+        android:id="@+id/drakeet_item_layout"
+        android:layout_below="@id/camnter_item_layout">
+
+        <TextView
+            style="@style/LruCacheItemFirstText"
+            android:text="@string/lru_cache_picture_2"/>
+
+        <ImageView
+            style="@style/LruCacheItemImageView"
+            android:src="@drawable/ic_drakeet"/>
+
+        <TextView
+            style="@style/LruCacheItemText"
+            android:id="@+id/drakeet_size_text"/>
+
+        <TextView
+            style="@style/LruCacheItemText"
+            android:id="@+id/drakeet_count_text"/>
+
+        <TextView
+            style="@style/LruCacheItemText"
+            android:id="@+id/drakeet_hashCode_text"
+            android:singleLine="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/LruCacheItemLinearLayout"
+        android:id="@+id/ka_item_layout"
+        android:layout_below="@id/drakeet_item_layout">
+
+        <TextView
+            style="@style/LruCacheItemFirstText"
+            android:text="@string/lru_cache_picture_3"/>
+
+        <ImageView
+            style="@style/LruCacheItemImageView"
+            android:src="@drawable/ic_kaede_akatsuki"/>
+
+        <TextView
+            style="@style/LruCacheItemText"
+            android:id="@+id/ka_size_text"/>
+
+        <TextView
+            style="@style/LruCacheItemText"
+            android:id="@+id/ka_count_text"/>
+
+        <TextView
+            style="@style/LruCacheItemText"
+            android:id="@+id/ka_hashCode_text"
+            android:singleLine="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/LruCacheItemLinearLayout"
+        android:id="@+id/peter_item_layout"
+        android:layout_below="@id/ka_item_layout">
+
+        <TextView
+            style="@style/LruCacheItemFirstText"
+            android:text="@string/lru_cache_picture_4"/>
+
+        <ImageView
+            style="@style/LruCacheItemImageView"
+            android:src="@drawable/ic_peter_cai"/>
+
+        <TextView
+            style="@style/LruCacheItemText"
+            android:id="@+id/peter_size_text"/>
+
+        <TextView
+            style="@style/LruCacheItemText"
+            android:id="@+id/peter_hashCode_text"
+            android:singleLine="true"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/recent_info_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="start|top"
+        android:layout_below="@id/peter_item_layout"
+        android:text="@string/lru_cache_recent_format"/>
+
+    <TextView
+        android:id="@+id/entryRemoved_info_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="start|top"
+        android:layout_below="@id/recent_info_text"
+        android:lineSpacingExtra="6dp"
+        android:text="@string/lru_cache_entry_removed_null_format"/>
+
+    <Button
+        android:id="@+id/get_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/lru_cache_get_1"/>
+
+    <Button
+        android:id="@+id/get_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/get_one"
+        android:layout_toEndOf="@id/get_one"
+        android:text="@string/lru_cache_get_2"/>
+
+    <Button
+        android:id="@+id/get_three"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/get_two"
+        android:layout_toEndOf="@id/get_two"
+        android:text="@string/lru_cache_get_3"/>
+
+    <Button
+        android:id="@+id/clear_remove_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:layout_above="@id/get_three"
+        android:layout_toRightOf="@id/get_two"
+        android:layout_toEndOf="@id/get_two"
+        android:text="@string/lru_cache_clear_info"/>
+
+    <Button
+        android:id="@+id/put_four"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:layout_above="@id/get_one"
+        android:text="@string/lru_cache_put_4"/>
+
+</RelativeLayout>

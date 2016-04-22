@@ -129,6 +129,10 @@ public class LruCache<K, V> {
             return null;
         }
 
+        /***************************
+         * 不复写create方法走不到下面 *
+         ***************************/
+
         /*
          * 正常情况走不到这里
          * 走到这里的话 说明 实现了自定义的 create(K key) 逻辑
@@ -137,13 +141,15 @@ public class LruCache<K, V> {
         synchronized (this) {
             // 记录 create 的次数
             createCount++;
+            // 将自定义create创建的值，放入LinkedHashMap中，如果key已经存在，会返回 之前相同key 的值
             mapValue = map.put(key, createdValue);
 
             // 如果之前存在相同key的value，即有冲突。
             if (mapValue != null) {
                 /*
-                 * There was a conflict so undo that last put
-                 * 有冲突所以撤销最后一把
+                 * 有冲突
+                 * 所以 撤销 刚才的 操作
+                 * 将 之前相同key 的值 重新放回去
                  */
                 map.put(key, mapValue);
             } else {
@@ -152,11 +158,16 @@ public class LruCache<K, V> {
             }
         }
 
-        // 如果发生冲突
+        // 如果上面 判断出了 将要放入的值发生冲突
         if (mapValue != null) {
+            /*
+             * 刚才create的值被删除了，原来的 之前相同key 的值被重新添加回去了
+             * 告诉 自定义 的 entryRemoved 方法
+             */
             entryRemoved(false, key, createdValue, mapValue);
             return mapValue;
         } else {
+            // 上面 进行了 size += 操作 所以这里要重整长度
             trimToSize(maxSize);
             return createdValue;
         }
@@ -173,19 +184,32 @@ public class LruCache<K, V> {
 
         V previous;
         synchronized (this) {
+            // 记录 put 的次数
             putCount++;
             // 拿到键值对，计算出在容量中的相对长度，然后加上
             size += safeSizeOf(key, value);
+            /*
+             * 放入 key value
+             * 如果 之前存在key 则返回 之前key 的value
+             * 记录在 previous
+             */
             previous = map.put(key, value);
+            // 如果存在冲突
             if (previous != null) {
+                // 计算出 冲突键值 在容量中的相对长度，然后减去
                 size -= safeSizeOf(key, previous);
             }
         }
 
+        // 如果上面发生冲突
         if (previous != null) {
+            /*
+             * previous值被剔除了，此次添加的 value 已经作为key的 新值
+             * 告诉 自定义 的 entryRemoved 方法
+             */
             entryRemoved(false, key, previous, value);
         }
-
+        // 上面 进行了 size -= 操作 所以这里要重整长度
         trimToSize(maxSize);
         return previous;
     }
@@ -244,6 +268,7 @@ public class LruCache<K, V> {
 
         V previous;
         synchronized (this) {
+            // 移除对应 键值对 ，并将移除的value 存放在 previous
             previous = map.remove(key);
             if (previous != null) {
                 // 拿到键值对，计算出在容量中的相对长度，然后减去。
@@ -251,7 +276,12 @@ public class LruCache<K, V> {
             }
         }
 
+        // 如果 Map 中存在 该key ，并且成功移除了
         if (previous != null) {
+            /*
+             * 会通知 自定义的 entryRemoved
+             * previous 已经被删除了
+             */
             entryRemoved(false, key, previous, null);
         }
 
@@ -263,7 +293,7 @@ public class LruCache<K, V> {
      * 1.当被回收或者删掉时调用。该方法当value被回收释放存储空间时被remove调用
      * 或者替换条目值时put调用，默认实现什么都没做。
      * 2.该方法没用同步调用，如果其他线程访问缓存时，该方法也会执行。
-     * 3.evicted=true：如果该条目被删除空间  evicted=false：put或remove导致
+     * 3.evicted=true：如果该条目被删除空间 （表示进行了trimToSize）  evicted=false：put或remove导致
      * 4.newValue!=null，那么则被put()或get()调用。
      */
     protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) {

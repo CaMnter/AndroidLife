@@ -89,4 +89,34 @@
         <item name="android:layout_marginTop">26dp</item>
     </style>
 
+    <style name="LruCacheItemLinearLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="LruCacheItemText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="LruCacheItemFirstText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="LruCacheItemImageView">
+        <item name="android:layout_width">36dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+    </style>
+
 </resources>
