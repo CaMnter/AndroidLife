@@ -391,7 +391,7 @@ Google Xfermodes Demo
 
 
 
-## 42.1.LetterSectionActivity && CircleImageSectionActivity && RoundImageSectionActivity
+## 42.LetterSectionActivity && CircleImageSectionActivity && RoundImageSectionActivity
 
 [EasyRecyclerViewSidebar](https://github.com/CaMnter/EasyRecyclerViewSidebar)     
  **Screenshot:**      
