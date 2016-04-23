@@ -235,8 +235,7 @@ Broadcastreceiver demo
 Broadcastreceiver的demo  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49995443)     
  **Screenshot:**    
-<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f371r6qis6j31401z4tey.jpg" width="320x"/> <img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f371roet3rj31401z4wks.jpg" width="320x"/>     
-
+<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f371r6qis6j31401z4tey.jpg" width="320x"/> <img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f371roet3rj31401z4wks.jpg" width="320x"/>      
 <img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f371saaut1j31401z4gzv.jpg" width="320x"/>  
  
 
@@ -263,7 +262,6 @@ Introduce the [RxAndroid](https://github.com/ReactiveX/RxAndroid)
 介绍RxAndroid    
  **Screenshot:**    
 <img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f371uj7dkfj31401z4tj0.jpg" width="320x"/> <img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f371ve4g70j31401z4tpd.jpg" width="320x"/>     
-
 <img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f371vp3h7bj31401z40vd.jpg" width="320x"/>
 
 
@@ -389,7 +387,6 @@ Google Xfermodes Demo
 [EasyLikeArea](https://github.com/CaMnter/EasyLikeArea)          
  **Screenshot:**        
 <img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f372g13x48j31401z47aw.jpg" width="320x"/> <img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f372g9s467j31401z4gsj.jpg" width="320x"/>   
-
 <img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f372go81pdj31401z4gvj.jpg" width="320x"/>     
 
 
@@ -399,7 +396,6 @@ Google Xfermodes Demo
 [EasyRecyclerViewSidebar](https://github.com/CaMnter/EasyRecyclerViewSidebar)     
  **Screenshot:**      
 <img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f372j1xu2ij31401z479w.jpg" width="320x"/> <img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f372j84o0bj31401z4qa1.jpg" width="320x"/>  
-
 <img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f372jig9qrj31401z4jyj.jpg" width="320x"/>      
 
 
