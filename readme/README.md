@@ -19,7 +19,7 @@ LruCache源码解析
 - **3.（记住）**LruCache是线程安全的，在内部的get、put、remove包括trimToSize都是安全的（因为都上锁了）。
 - **4.（选填）** 还有就是覆写 `create` 方法 
 
-一般做到 **1、2、3就足够了，3也可以无视** 。
+一般做到 **1、2、3就足够了，4可以无视** 。
 
 
 以下是 一个 **LruCache实现Bitmap小缓存的案例**，`entryRemoved`里的自定义逻辑可以无视，这里是我的展示demo里的自定义`entryRemoved`逻辑(｡>﹏<｡)
@@ -150,7 +150,7 @@ public final V get(K key) {
     }
 
     /***************************
-     * 不复写create方法走不到下面 *
+     * 不覆写create方法走不到下面 *
      ***************************/
 
     /*
@@ -371,5 +371,14 @@ protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) {
 
 [square/picasso](https://github.com/square/picasso) 
 
-## 6.个人评价
+## 6.资源下载
+
+[LruCacheActivity](https://github.com/CaMnter/AndroidLife/blob/master/app/src/main/java/com/camnter/newlife/views/activity/lrucache/LruCacheActivity.java)    
+
+
+[LruCache注释源码](https://github.com/CaMnter/AndroidLife/blob/master/app/src/main/java/com/camnter/newlife/utils/cache/LruCache.java)   
+
+ 
+
+ 
 
