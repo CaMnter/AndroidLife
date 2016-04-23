@@ -75,7 +75,7 @@ public class LruCache<K, V> {
             throw new IllegalArgumentException("maxSize <= 0");
         }
         this.maxSize = maxSize;
-        // 初始化LinkedHashMap 加载因子=0.75f accessOrder=true:基于访问顺序
+        // 初始化LinkedHashMap 负载因子=0.75f accessOrder=true:基于访问顺序
         this.map = new LinkedHashMap<K, V>(0, 0.75f, true);
     }
 
@@ -293,7 +293,8 @@ public class LruCache<K, V> {
      * 1.当被回收或者删掉时调用。该方法当value被回收释放存储空间时被remove调用
      * 或者替换条目值时put调用，默认实现什么都没做。
      * 2.该方法没用同步调用，如果其他线程访问缓存时，该方法也会执行。
-     * 3.evicted=true：如果该条目被删除空间 （表示 进行了trimToSize or remove）  evicted=false：put冲突后 或 get里成功create后 导致
+     * 3.evicted=true：如果该条目被删除空间 （表示 进行了trimToSize or remove）  evicted=false：put冲突后 或 get里成功create后
+     * 导致
      * 4.newValue!=null，那么则被put()或get()调用。
      */
     protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) {
