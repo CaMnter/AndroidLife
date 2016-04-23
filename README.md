@@ -142,130 +142,131 @@ Introduce the [EasyRecyclerView](https://github.com/CaMnter/EasyRecyclerView)
 <img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f36tznbbehj31401z4h6u.jpg"  width="320x"/>       
 
 
----
 
-### 16.NormalTabLayoutActivity & SetIconTabLayoutActivity & ImageSpanTabLayoutActivity & CustomViewTabLayoutActivity
+
+## 16.NormalTabLayoutActivity & SetIconTabLayoutActivity & ImageSpanTabLayoutActivity & CustomViewTabLayoutActivity
 Show the TabLayout of support design and four kinds of style design  
 展示 support design 中的 TabLayout ，及其四种设计样式  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49404537)    
 **Screenshot:**    
-![TabLayoutActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/16.TabLayoutActivity.png)    
+<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f371cwq66ij31401z4h1x.jpg" width="320x"/> <img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f371f0izfmj31401z418t.jpg" width="320x"/>   
+<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f371ghj0hbj31401z4qja.jpg" width="320x"/> <img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f371h4zb86j31401z4h2g.jpg" width="320x"/>
 
----
 
-###  17.CoordinatorLayoutActivity
+
+##  17.CoordinatorLayoutActivity
 
 Introduce the CoordinatorLayout of support design   
 Here only including: `app:layout_scrollFlags` and `app:layout_behavior`  
 介绍 support design 中的 CoordinatorLayout  
 这里仅仅包括：`app:layout_scrollFlags` 和 `app:layout_behavior`      
 **Screenshot:**    
-![CoordinatorLayoutActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/17.CoordinatorLayoutActivity.png)    
+<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f371jk9ri1j31401z4k8w.jpg" width="320x"/>      
 
 
----
 
-### 18.SensorManagerActivity
+
+## 18.SensorManagerActivity
 Show the Android sensors  
 展示Android中的传感器  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49498567)   
 **Screenshot:**    
-![SensorManagerActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/18.SensorManagerActivity.png)    
+<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f371kb0slbj31401z47ij.jpg" width="320x"/>  
+   
 
 
----
-
-### 19.MvpActivity
+## 19.MvpActivity
 Introduce the MVP design patterns  
 介绍MVP设计模式  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49620017)
 
----
 
-### 20.SQLiteActivity
+
+## 20.SQLiteActivity
 A demo of SQLite  
 一个关于SQLite的demo  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49641519)    
 **Screenshot:**    
-![SQLiteActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/20.SQLiteActivity.png)    
+<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f371l5rg7mj31401z443y.jpg" width="320x"/>   
+    
 
 
----
 
-### 21.Robotlegs4AndroidActivity
+## 21.Robotlegs4AndroidActivity
 Introduce an Android MVC framework - [Robotlegs4Android](https://github.com/CaMnter/Robotlegs4Android)  
 介绍一个 Android MVC 框架 - [Robotlegs4Android](https://github.com/CaMnter/Robotlegs4Android)  
 [Github](https://github.com/CaMnter/Robotlegs4Android)
  [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49788259)     
  **Screenshot:**    
-![Robotlegs4AndroidActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/21.Robotlegs4AndroidActivity.png)    
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f371mtrpyej31401z4tjj.jpg" width="320x"/>         
  
- ---
+
  
-### 22.CustomContentProviderActivity
+## 22.CustomContentProviderActivity
 A about custom contentprovicer demo  
 一个关于自定义contentprovicer的demo  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49849663)    
  **Screenshot:**    
-![CustomContentProviderActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/22.CustomContentProviderActivity.png)    
+<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f371nk7m51j31401z4afr.jpg" width="320x"/>         
 
----
+
 
 ### 23.DownloadServiceActivity & AIDLActivity
 A demo of Android Service,introduces the remote Service (AIDL) and local Service  
 一个关于Android Service的demo，介绍了远程Service（AIDL）和本地Service  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49910627)    
  **Screenshot:**    
-![DownloadServiceActivityAndAIDLActivity.png](https://github.com/CaMnter/AndroidLife/raw/master/readme/23.DownloadServiceActivityAndAIDLActivity.png)    
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f371p8kzvej31401z416a.jpg"  width="320x"/>           
+    
 
----
 
-### 24.ReflectionUtilActivity
+## 24.ReflectionUtilActivity
 Introduce the ReflectionUtil  
 介绍ReflectionUtil  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49962997)    
  **Screenshot:**    
-![ReflectionUtilActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/24.ReflectionUtilActivity.png)    
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f371q6b00pj31401z4qfl.jpg" width="320x"/>         
 
 
----
 
-### 25.StaticReceiverActivity & DynamicReceiverActivity & DownloadReceiverActivity
+
+## 25.StaticReceiverActivity & DynamicReceiverActivity & DownloadReceiverActivity
 Broadcastreceiver demo  
 Broadcastreceiver的demo  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49995443)     
  **Screenshot:**    
-![StaticReceiverActivityAndDynamicReceiverActivityAndDownloadReceiverActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/25.StaticReceiverActivityAndDynamicReceiverActivityAndDownloadReceiverActivity.png)    
+<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f371r6qis6j31401z4tey.jpg" width="320x"/> <img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f371roet3rj31401z4wks.jpg" width="320x"/>     
 
+<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f371saaut1j31401z4gzv.jpg" width="320x"/>  
  
- 
- ---
 
 
-### 26.ResourcesUtilActivity
+
+## 26.ResourcesUtilActivity
 Introduce the ResourcesUtil  
 介绍ResourcesUtil  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50056747)    
- **Screenshot:**    
-![ResourcesUtilActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/26.ResourcesUtilActivity.png)    
+    
 
 
----
 
-### 27.LocationManagerActivity
+
+## 27.LocationManagerActivity
 Introduce the LocationManager  
 介绍LocationManager  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50097333)  
 
----
 
-### 28.RxSyncActivity & RxAsyncActivity & RxMapActivity
+
+## 28.RxSyncActivity & RxAsyncActivity & RxMapActivity
 Introduce the [RxAndroid](https://github.com/ReactiveX/RxAndroid)  
 介绍RxAndroid    
  **Screenshot:**    
-![RxSyncActivityAndRxAsyncActivityAndRxMapActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/28.RxSyncActivityAndRxAsyncActivityAndRxMapActivity.png) 
+<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f371uj7dkfj31401z4tj0.jpg" width="320x"/> <img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f371ve4g70j31401z4tpd.jpg" width="320x"/>     
 
----
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f371vp3h7bj31401z40vd.jpg" width="320x"/>
+
+
 
 ### 29.DialogActivity
 Provide two sets of custom Dialog template.  
@@ -276,44 +277,138 @@ Second, the menu Dialog for user interaction.
 第二种，菜单Dialog，用于用户交互。  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50283987)     
  **Screenshot:**    
-![DialogActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/29.DialogActivity.png) 
+<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f371w4aqx2j31401z4dil.jpg" width="320x"/>   
 
----
 
-### 30.PopupWindowActivity
+
+
+## 30.PopupWindowActivity
 A scalable, easy-to-use PopupWindow.  
 一个可扩展的、好用的PopupWindow。  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50380802)    
  **Screenshot:**    
-![PopupWindowActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/30.PopupWindowActivity.png) 
+<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f371wt7ztpj31401z478e.jpg" width="320x"/>   
+ 
 
----
 
-### 31.TagTextViewActivity
+
+## 31.TagTextViewActivity
+    
 Rich text textview with a clickable label  
 有可点击的标签的富文本textview  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50386502)    
  **Screenshot:**    
-![TagTextViewActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/31.TagTextViewActivity.png)   
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f371xlcynzj31401z4aet.jpg" width="320x"/>     
+   
 
----
 
 
-### 32.EasyFlowLayout  
 
+## 32.EasyFlowLayout  
+     
 Use and rewrite it again the [FlowLayout](https://github.com/hongyangAndroid/FlowLayout)    
 使用和重写了一遍 [FlowLayout](https://github.com/hongyangAndroid/FlowLayout)    
  **Screenshot:**    
-![EasyFlowLayout](https://github.com/CaMnter/AndroidLife/raw/master/readme/32.EasyFlowLayout.png)    
+ <img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f371y323qsj31401z4ah5.jpg" width="320x"/>       
 
----
+    
 
-### 33.SpanActivity  
+
+
+## 33.SpanActivity  
+     
 Show the effect of various Span  
 展示各种Span的效果  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50427978)    
  **Screenshot:**    
-![SpanActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/33.SpanActivity.png)   
+<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f371yw7s7oj31401z4dlo.jpg" width="320x"/>        
 
+
+
+
+## 34.OttoActivity
+     
+Demo Otto subscribe mechanism   
+演示Otto的订阅机制     
+ **Screenshot:**   
+<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f372196bvsj31401z4tb7.jpg" width="320x"/>      
+ 
+
+## 35.AnimatorActivity
+
+Android animation     
+Android动画      
+ **Screenshot:**     
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f3725cqq7aj31401z4jxk.jpg" width="320x"/>     
+
+
+
+## 36.CanvasClipViewActivity
+
+ **Screenshot:**     
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f37260i3gmj31401z4tcr.jpg" width="320x"/>      
+
+
+
+
+## 37.RoundImageSectionActivity
+
+ **Screenshot:**     
+<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f37281o2t8j31401z4aew.jpg" width="320x"/>     
+ 
+ 
+ 
+ 
+## 38.XfermodesActivity
+
+Google Xfermodes Demo     
+ **Screenshot:**      
+<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f372915jmwj31401z4n91.jpg" width="320x"/>     
+
+
+
+
+## 39.EasyArcLoadingActivity
+
+[EasyArcLoading](https://github.com/CaMnter/EasyArcLoading)   
+ **Screenshot:**      
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f372anv2lvj31401z477q.jpg" width="320x"/>      
+
+
+
+## 40.RxBusActivity
+
+ **drakeet Life**     
+ **Screenshot:**     
+<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f372cjf7jtj31401z4djx.jpg" width="320x"/>     
+
+
+
+##  41.EasyLikeAreaTopicActivity && EasyLikeAreaQZoneActivity && EasyLikeAreaStyleActivity
+
+[EasyLikeArea](https://github.com/CaMnter/EasyLikeArea)          
+ **Screenshot:**        
+<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f372g13x48j31401z47aw.jpg" width="320x"/> <img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f372g9s467j31401z4gsj.jpg" width="320x"/>   
+
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f372go81pdj31401z4gvj.jpg" width="320x"/>     
+
+
+
+## 42.1.LetterSectionActivity && CircleImageSectionActivity && RoundImageSectionActivity
+
+[EasyRecyclerViewSidebar](https://github.com/CaMnter/EasyRecyclerViewSidebar)     
+ **Screenshot:**      
+<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f372j1xu2ij31401z479w.jpg" width="320x"/> <img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f372j84o0bj31401z4qa1.jpg" width="320x"/>  
+
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f372jig9qrj31401z4jyj.jpg" width="320x"/>      
+
+
+
+
+
+## 43.LruCacheActivity
+
+ **Screenshot:**    
+<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f372kh2x5tj31401z4dn4.jpg" width="320x"/> 
 
 
