@@ -1,14 +1,14 @@
 LruCache源码解析
 ==
 
-### 1.简介
+## 1.简介
 
 >Lru是Least Recently Used 最近最少使用算法。
 
 >曾经，在各大缓存图片的框架没流行的时候。有一种很常用的内存缓存技术：SoftReference 和 WeakReference（软引用和弱引用）。但是走到了Android2.3（Level 9）时代，垃圾回收机制更倾向于回收SoftReference 或 WeakReference的对象。后来，又来到了Android3.0，图片缓存在内容中，因为不知道要在是什么时候释放内存，没有策略，没用一种可以预见的场合去将其释放。这就造成了内存溢出。
 
 
-### 2.使用方法
+## 2.使用方法
 
 **当成一个Map用就可以了，只不过实现了Lru缓存策略**
 
@@ -67,7 +67,7 @@ this.bitmapCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
 };
 ```
 
-### 3.效果展示
+## 3.效果展示
 
 **效果一（验证Lru，最近没访问的，在溢出时优先被清理）：**   
 <img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36odh8wjdg31401z4u0x.gif" width="320x"/> 
@@ -91,7 +91,7 @@ this.bitmapCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
 
 **执行操作**：再一次put图4，发生冲突，拿到key、冲突value以及put的value，这里我放到是同一个hashcode的bitmap，所以hashcode一样，但是无关紧要吧。
 
-### 4.源码分析	
+## 4.源码分析	
 
 LruCache 就是 **利用 LinkedHashMap的一个特性再加上对LinkedHashMap的数据操作上锁实现的缓存策略**。
 
@@ -367,9 +367,9 @@ protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) {
 ```
 可以参考我的demo里的`entryRemoved`(｡>﹏<｡)
 
-### 5.开源项目中的使用
+## 5.开源项目中的使用
 
 [square/picasso](https://github.com/square/picasso) 
 
-### 6.个人评价
+## 6.个人评价
 
