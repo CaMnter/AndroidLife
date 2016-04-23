@@ -29,9 +29,10 @@ import java.util.Map;
         extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final String LRU_CACHE_ENTRY_REMOVED_NULL_FORMAT = "entryRemoved:";
-    private static final String LRU_CACHE_RECENT_FORMAT = "Recent:%s";
+    private static final String LRU_CACHE_RECENT_FORMAT = "Recent visit:%s";
+    private static final String LRU_CACHE_CACHE_DATA_FORMAT = "Cache data:%s";
     private static final String LRU_CACHE_ENTRY_REMOVED_INFO_FORMAT
-            = "entryRemoved:\nevicted:%1$s\nkey:%2$s\noldValue:%3$s\nnewValue:%4$s";
+            = "entryRemoved:\nevicted: %1$s\nkey: %2$s\noldValue: %3$s\nnewValue: %4$s";
 
     private static final float ONE_MIB = 1024 * 1024;
     // 6MB
@@ -57,6 +58,7 @@ import java.util.Map;
     @Bind(R.id.ka_hashCode_text) TextView mKaHashCodeText;
     @Bind(R.id.peter_hashCode_text) TextView mPeterHashCodeText;
     @Bind(R.id.recent_info_text) TextView mRecentInfoText;
+    @Bind(R.id.cache_data_text) TextView mCacheDataText;
 
     private LruCache<String, Bitmap> bitmapCache;
 
@@ -71,6 +73,7 @@ import java.util.Map;
 
     private final Map<Bitmap, String> bitmap2Key = new HashMap<>();
     private final List<String> recentList = new LinkedList<>();
+    private final List<String> cacheList = new LinkedList<>();
 
 
     /**
@@ -149,7 +152,7 @@ import java.util.Map;
              * 1.当被回收或者删掉时调用。该方法当value被回收释放存储空间时被remove调用
              * 或者替换条目值时put调用，默认实现什么都没做。
              * 2.该方法没用同步调用，如果其他线程访问缓存时，该方法也会执行。
-             * 3.evicted=true：如果该条目被删除空间 （表示进行了trimToSize）  evicted=false：put或remove导致
+             * 3.evicted=true：如果该条目被删除空间 （表示 进行了trimToSize or remove）  evicted=false：put冲突后 或 get里成功create后 导致
              * 4.newValue!=null，那么则被put()或get()调用。
              */
             @Override
@@ -158,14 +161,31 @@ import java.util.Map;
                         String.format(Locale.getDefault(), LRU_CACHE_ENTRY_REMOVED_INFO_FORMAT,
                                 evicted, key, oldValue != null ? oldValue.hashCode() : "null",
                                 newValue != null ? newValue.hashCode() : "null"));
-                if (recentList.contains(key)) {
+                // 见上述 3.
+                if (evicted) {
+                    // 进行了trimToSize or remove (一般是溢出了 或 key-value被删除了 )
+                    if (recentList.contains(key)) {
+                        recentList.remove(key);
+                        refreshText(mRecentInfoText, LRU_CACHE_RECENT_FORMAT, recentList);
+                    }
+                } else {
+                    // put冲突后 或 get里成功create 后
                     recentList.remove(key);
+                    refreshText(mRecentInfoText, LRU_CACHE_RECENT_FORMAT, recentList);
+                }
+                if (cacheList.contains(key)) {
+                    cacheList.remove(key);
+                    refreshText(mCacheDataText, LRU_CACHE_CACHE_DATA_FORMAT, cacheList);
                 }
             }
         };
         this.bitmapCache.put(this.bitmap2Key.get(this.camnterBitmap), this.camnterBitmap);
         this.bitmapCache.put(this.bitmap2Key.get(this.drakeetBitmap), this.drakeetBitmap);
         this.bitmapCache.put(this.bitmap2Key.get(this.kaBitmap), this.kaBitmap);
+        this.cacheList.add(this.bitmap2Key.get(this.camnterBitmap));
+        this.cacheList.add(this.bitmap2Key.get(this.drakeetBitmap));
+        this.cacheList.add(this.bitmap2Key.get(this.kaBitmap));
+        this.refreshText(this.mCacheDataText, LRU_CACHE_CACHE_DATA_FORMAT, this.cacheList);
     }
 
 
@@ -222,6 +242,8 @@ import java.util.Map;
                 break;
             case R.id.put_four:
                 this.bitmapCache.put(this.bitmap2Key.get(this.peterBitmap), this.peterBitmap);
+                this.cacheList.add(this.bitmap2Key.get(peterBitmap));
+                this.refreshText(this.mCacheDataText, LRU_CACHE_CACHE_DATA_FORMAT, this.cacheList);
                 break;
             case R.id.clear_remove_info:
                 this.mEntryRemovedInfoText.setText(LRU_CACHE_ENTRY_REMOVED_NULL_FORMAT);
@@ -232,18 +254,17 @@ import java.util.Map;
                 this.recentList.remove(key);
             }
             this.recentList.add(0, key);
-            this.refreshRecentText(this.recentList);
+            this.refreshText(this.mRecentInfoText, LRU_CACHE_RECENT_FORMAT, this.recentList);
         }
     }
 
 
-    private void refreshRecentText(List<String> recentList) {
+    private void refreshText(TextView textView, String format, List<String> recentList) {
         Iterator<String> iterator = recentList.iterator();
         String recentText = "";
         while (iterator.hasNext()) {
             recentText += iterator.next() + "  ";
         }
-        this.mRecentInfoText.setText(
-                String.format(Locale.getDefault(), LRU_CACHE_RECENT_FORMAT, recentText));
+        textView.setText(String.format(Locale.getDefault(), format, recentText));
     }
 }

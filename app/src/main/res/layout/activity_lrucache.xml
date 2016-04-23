@@ -27,15 +27,15 @@
             android:src="@drawable/ic_camnter"/>
 
         <TextView
-            style="@style/LruCacheItemText"
+            style="@style/LruCacheItemInfoText"
             android:id="@+id/camnter_size_text"/>
 
         <TextView
-            style="@style/LruCacheItemText"
+            style="@style/LruCacheItemInfoText"
             android:id="@+id/camnter_count_text"/>
 
         <TextView
-            style="@style/LruCacheItemText"
+            style="@style/LruCacheItemInfoText"
             android:id="@+id/camnter_hashCode_text"
             android:singleLine="true"/>
 
@@ -55,15 +55,15 @@
             android:src="@drawable/ic_drakeet"/>
 
         <TextView
-            style="@style/LruCacheItemText"
+            style="@style/LruCacheItemInfoText"
             android:id="@+id/drakeet_size_text"/>
 
         <TextView
-            style="@style/LruCacheItemText"
+            style="@style/LruCacheItemInfoText"
             android:id="@+id/drakeet_count_text"/>
 
         <TextView
-            style="@style/LruCacheItemText"
+            style="@style/LruCacheItemInfoText"
             android:id="@+id/drakeet_hashCode_text"
             android:singleLine="true"/>
 
@@ -83,15 +83,15 @@
             android:src="@drawable/ic_kaede_akatsuki"/>
 
         <TextView
-            style="@style/LruCacheItemText"
+            style="@style/LruCacheItemInfoText"
             android:id="@+id/ka_size_text"/>
 
         <TextView
-            style="@style/LruCacheItemText"
+            style="@style/LruCacheItemInfoText"
             android:id="@+id/ka_count_text"/>
 
         <TextView
-            style="@style/LruCacheItemText"
+            style="@style/LruCacheItemInfoText"
             android:id="@+id/ka_hashCode_text"
             android:singleLine="true"/>
 
@@ -111,35 +111,31 @@
             android:src="@drawable/ic_peter_cai"/>
 
         <TextView
-            style="@style/LruCacheItemText"
+            style="@style/LruCacheItemInfoText"
             android:id="@+id/peter_size_text"/>
 
         <TextView
-            style="@style/LruCacheItemText"
+            style="@style/LruCacheItemInfoText"
             android:id="@+id/peter_hashCode_text"
             android:singleLine="true"/>
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/recent_info_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:gravity="start|top"
+        style="@style/LruCacheItemText"
+        android:id="@+id/cache_data_text"
         android:layout_below="@id/peter_item_layout"
+        android:text="@string/lru_cache_cache_data_format"/>
+
+    <TextView
+        style="@style/LruCacheItemText"
+        android:id="@+id/recent_info_text"
+        android:layout_below="@id/cache_data_text"
         android:text="@string/lru_cache_recent_format"/>
 
     <TextView
+        style="@style/LruCacheItemText"
         android:id="@+id/entryRemoved_info_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:gravity="start|top"
         android:layout_below="@id/recent_info_text"
         android:lineSpacingExtra="6dp"
         android:text="@string/lru_cache_entry_removed_null_format"/>

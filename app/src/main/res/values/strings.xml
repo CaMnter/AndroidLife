@@ -29,7 +29,8 @@
     <string name="lru_cache_count_format">Count:%s</string>
     <string name="lru_cache_hashcode_format">Hashcode:%s</string>
     <string name="lru_cache_entry_removed_null_format">entryRemoved:</string>
-    <string name="lru_cache_recent_format">Recent:</string>
+    <string name="lru_cache_recent_format">Recent visit:</string>
+    <string name="lru_cache_cache_data_format">Cache data:</string>
     <string name="lru_cache_entry_removed_info_format">entryRemoved:\nevicted:%1$s\nkey:%2$s\noldValue:%3$s\nnewValue:%4$s</string>
     <string name="lru_cache_get_1"><![CDATA[get <1>]]></string>
     <string name="lru_cache_get_2"><![CDATA[get <2>]]></string>
