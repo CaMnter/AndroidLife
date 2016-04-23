@@ -29,186 +29,190 @@
         </activity>
         <activity
             android:name=".views.activity.ImageScaleTypesActivity"
-            android:label="@string/app_label"/>
+            android:label="ImageScaleTypesActivity"/>
         <activity
             android:name=".views.activity.AsyncTaskActivity"
-            android:label="@string/app_label"/>
+            android:label="AsyncTaskActivity"/>
         <activity
             android:name=".views.activity.design.TextInputLayoutActivity"
-            android:label="@string/app_label"/>
+            android:label="TextInputLayoutActivity"/>
         <activity
             android:name=".views.activity.RefreshUIActivity"
-            android:label="@string/app_label"/>
+            android:label="RefreshUIActivity"/>
         <activity
             android:name=".views.activity.design.NavigationViewActivity"
-            android:label="@string/app_label"/>
+            android:label="NavigationViewActivity"/>
         <activity
             android:name=".views.activity.util.DeviceUtilActivity"
-            android:label="@string/app_label"/>
+            android:label="DeviceUtilActivity"/>
         <activity
             android:name=".views.activity.design.FloatingActionButtonActivity"
-            android:label="@string/app_label"/>
+            android:label="FloatingActionButtonActivity"/>
         <activity
             android:name=".views.activity.design.SnackbarActivity"
-            android:label="@string/app_label"/>
+            android:label="SnackbarActivity"/>
         <activity
             android:name=".views.activity.util.DateUtilActivity"
-            android:label="@string/app_label"/>
+            android:label="DateUtilActivity"/>
         <activity
             android:name=".views.activity.EasySlidingTabsActivity"
-            android:label="@string/app_label"/>
+            android:label="EasySlidingTabsActivity"/>
         <activity
             android:name=".views.activity.AutoAdjustSizeEditTextActivity"
-            android:label="@string/app_label"/>
+            android:label="AutoAdjustSizeEditTextActivity"/>
         <activity
             android:name=".views.activity.AutoAdjustSizeTextViewActivity"
-            android:label="@string/app_label"/>
+            android:label="AutoAdjustSizeTextViewActivity"/>
         <activity
             android:name=".views.activity.DownloadImageToGalleryActivity"
-            android:label="@string/app_label"/>
+            android:label="DownloadImageToGalleryActivity"/>
         <activity
             android:name=".views.activity.SensorManagerActivity"
-            android:label="@string/app_label"/>
+            android:label="SensorManagerActivity"/>
         <activity
             android:name=".views.activity.EasyRecyclerViewActivity"
-            android:label="@string/app_label"/>
+            android:label="EasyRecyclerViewActivity"/>
         <activity
             android:name=".views.activity.design.tablayout.NormalTabLayoutActivity"
-            android:label="@string/app_label"/>
+            android:label="NormalTabLayoutActivity"/>
         <activity
             android:name=".views.activity.design.tablayout.SetIconTabLayoutActivity"
-            android:label="@string/app_label"/>
+            android:label="SetIconTabLayoutActivity"/>
         <activity
             android:name=".views.activity.design.tablayout.ImageSpanTabLayoutActivity"
-            android:label="@string/app_label"/>
+            android:label="ImageSpanTabLayoutActivity"/>
         <activity
             android:name=".views.activity.design.tablayout.CustomViewTabLayoutActivity"
-            android:label="@string/app_label"/>
+            android:label="CustomViewTabLayoutActivity"/>
         <activity
             android:name=".views.activity.design.CoordinatorLayoutActivity"
-            android:label="@string/app_label"/>
+            android:label="CoordinatorLayoutActivity"/>
         <activity
             android:name=".views.activity.singletask.LaunchModeActivity"
-            android:label="@string/app_label"/>
+            android:label="LaunchModeActivity"/>
         <activity
             android:name=".views.activity.singletask.VActivity"
-            android:label="@string/app_label"/>
+            android:label="VActivity"/>
         <activity
             android:name=".views.activity.singletask.LActivity"
-            android:label="@string/app_label"/>
+            android:label="LActivity"/>
         <activity
             android:name=".views.activity.singletask.MActivity"
-            android:label="@string/app_label"/>
+            android:label="MActivity"/>
         <activity
             android:name=".views.activity.singletask.SingleTaskActivity"
-            android:label="@string/app_label"
+            android:label="SingleTaskActivity"
             android:launchMode="singleTask"
             android:taskAffinity=""/>
         <activity
             android:name=".mvp.MvpActivity"
-            android:label="@string/app_label"/>
+            android:label="MvpActivity"/>
         <activity
             android:name=".views.activity.SQLiteActivity"
-            android:label="@string/app_label"/>
+            android:label="SQLiteActivity"/>
         <activity
             android:name=".framework.robotlegs.robotlegs4android.view.activity.Robotlegs4AndroidActivity"
-            android:label="@string/app_label"/>
+            android:label="Robotlegs4AndroidActivity"/>
         <activity
             android:name=".views.activity.CustomContentProviderActivity"
-            android:label="@string/app_label"/>
+            android:label="CustomContentProviderActivity"/>
         <activity
             android:name=".views.activity.DownloadServiceActivity"
-            android:label="@string/app_label"/>
+            android:label="DownloadServiceActivity"/>
         <activity
             android:name=".views.activity.AIDLActivity"
-            android:label="@string/app_label"/>
+            android:label="AIDLActivity"/>
         <activity
             android:name=".views.activity.util.ReflectionUtilActivity"
-            android:label="@string/app_label"/>
+            android:label="ReflectionUtilActivity"/>
         <activity
             android:name=".views.activity.StaticReceiverActivity"
-            android:label="@string/app_label"/>
+            android:label="StaticReceiverActivity"/>
         <activity
             android:name=".views.activity.DynamicReceiverActivity"
-            android:label="@string/app_label"/>
+            android:label="DynamicReceiverActivity"/>
         <activity
             android:name=".views.activity.DownloadReceiverActivity"
-            android:label="@string/app_label"/>
+            android:label="DownloadReceiverActivity"/>
         <activity
             android:name=".views.activity.util.ResourcesUtilActivity"
-            android:label="@string/app_label"/>
+            android:label="ResourcesUtilActivity"/>
         <activity
             android:name=".views.activity.LocationManagerActivity"
-            android:label="@string/app_label"/>
+            android:label="LocationManagerActivity"/>
         <activity
             android:name=".views.activity.DialogActivity"
-            android:label="@string/app_label"/>
+            android:label="DialogActivity"/>
         <activity
             android:name=".views.activity.PopupWindowActivity"
-            android:label="@string/app_label"/>
+            android:label="PopupWindowActivity"/>
         <activity
             android:name=".views.activity.TagTextViewActivity"
-            android:label="@string/app_label"/>
+            android:label="TagTextViewActivity"/>
         <activity
             android:name=".views.activity.EasyFlowLayoutActivity"
-            android:label="@string/app_label"/>
+            android:label="EasyFlowLayoutActivity"/>
         <activity
             android:name=".views.activity.SpanActivity"
             android:hardwareAccelerated="false"
-            android:label="@string/app_label"
+            android:label="SpanActivity"
             tools:ignore="UnusedAttribute"/>
         <activity
             android:name=".views.activity.OttoActivity"
-            android:label="@string/app_label"/>
+            android:label="OttoActivity"/>
         <activity
             android:name=".views.activity.AnimatorActivity"
-            android:label="@string/app_label"/>
+            android:label="AnimatorActivity"/>
         <activity
             android:name=".views.activity.CanvasClipViewActivity"
-            android:label="@string/app_label"/>
+            android:label="CanvasClipViewActivity"/>
         <activity
             android:name=".views.activity.RoundImageViewActivity"
-            android:label="@string/app_label"/>
+            android:label="RoundImageViewActivity"/>
         <activity
             android:name=".views.activity.EasyArcLoadingActivity"
-            android:label="@string/app_label"/>
+            android:label="EasyArcLoadingActivity"/>
         <activity
             android:name="com.camnter.xfermode.XfermodesActivity"
-            android:label="@string/app_label"/>
+            android:label="XfermodesActivity"/>
         <activity
             android:name=".framework.rxandroid.RxSyncActivity"
-            android:label="@string/app_label"/>
+            android:label="RxSyncActivity"/>
         <activity
             android:name=".framework.rxandroid.RxAsyncActivity"
-            android:label="@string/app_label"/>
+            android:label="RxAsyncActivity"/>
         <activity
             android:name=".framework.rxandroid.RxMapActivity"
-            android:label="@string/app_label"/>
+            android:label="RxMapActivity"/>
         <activity
             android:name=".views.activity.easylikearea.EasyLikeAreaTopicActivity"
-            android:label="@string/app_label"/>
+            android:label="EasyLikeAreaTopicActivity"/>
         <activity
             android:name=".views.activity.easylikearea.EasyLikeAreaQZoneActivity"
-            android:label="@string/app_label"/>
+            android:label="EasyLikeAreaQZoneActivity"/>
         <activity
             android:name=".views.activity.easylikearea.EasyLikeAreaStyleActivity"
-            android:label="@string/app_label"/>
+            android:label="EasyLikeAreaStyleActivity"/>
         <activity
             android:name=".views.activity.easyrecyclerviewsidebar.LetterSectionActivity"
-            android:label="@string/app_label"/>
+            android:label="LetterSectionActivity"/>
         <activity
             android:name=".views.activity.easyrecyclerviewsidebar.CircleImageSectionActivity"
-            android:label="@string/app_label"/>
+            android:label="CircleImageSectionActivity"/>
         <activity
             android:name=".views.activity.easyrecyclerviewsidebar.RoundImageSectionActivity"
-            android:label="@string/app_label"/>
+            android:label="RoundImageSectionActivity"/>
         <activity
             android:name=".views.activity.lrucache.LruCacheActivity"
-            android:label="@string/app_label"/>
+            android:label="LruCacheActivity"/>
 
-        <activity android:name="me.drakeet.newlife.RxBusActivity"/>
+        <activity
+            android:name="me.drakeet.newlife.RxBusActivity"
+            android:label="RxBusActivity"/>
 
-        <activity android:name="me.drakeet.newlife.RxBusConsumerActivity"/>
+        <activity
+            android:name="me.drakeet.newlife.RxBusConsumerActivity"
+            android:label="RxBusConsumerActivity"/>
 
         <service android:name=".component.service.DownloadService"/>
         <service android:name=".component.service.DownloadIntentService"/>

@@ -37,7 +37,7 @@
     <string name="lru_cache_get_3"><![CDATA[get <3>]]></string>
     <string name="lru_cache_put_4"><![CDATA[put <4>]]></string>
     <string name="lru_cache_clear_info">Clear Info</string>
-    <string name="lru_cache_tip_text">LruCache max size : 6MB</string>
+    <string name="lru_cache_tip_text">LruCache max size : 7MB</string>
     <string name="lru_cache_picture_1"><![CDATA[<1>]]></string>
     <string name="lru_cache_picture_2"><![CDATA[<2>]]></string>
     <string name="lru_cache_picture_3"><![CDATA[<3>]]></string>

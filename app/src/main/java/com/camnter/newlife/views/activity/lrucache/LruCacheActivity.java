@@ -35,8 +35,8 @@ import java.util.Map;
             = "entryRemoved:\nevicted: %1$s\nkey: %2$s\noldValue: %3$s\nnewValue: %4$s";
 
     private static final float ONE_MIB = 1024 * 1024;
-    // 6MB
-    private static final int CACHE_SIZE = (int) (6 * ONE_MIB);
+    // 7MB
+    private static final int CACHE_SIZE = (int) (7 * ONE_MIB);
 
     @Bind(R.id.camnter_size_text) TextView mCamnterSizeText;
     @Bind(R.id.camnter_count_text) TextView mCamnterCountText;
