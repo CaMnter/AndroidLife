@@ -57,7 +57,7 @@ public class DynamicReceiver extends BroadcastReceiver {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(
                 Context.NOTIFICATION_SERVICE);
         Notification notification = new Notification.Builder(context).setContentTitle(
-                "StaticBroadcastReceiver")
+                "DynamicBroadcastReceiver")
                                                                      .setContentText(message)
                                                                      .setSmallIcon(
                                                                              R.drawable.ic_mm_normal)
