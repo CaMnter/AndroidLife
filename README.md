@@ -3,142 +3,143 @@ AndroidLife
 
 **The Android's life is very interesting and rich.**
 
+<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36u099qk5j31401z4drv.jpg" width="320x"/>     
 
----
 
-### 1. ImageScaleTypesActivity
+
+
+## 1. ImageScaleTypesActivity
 Introduce the ImageView scale properties      
 介绍ImageView scale属性  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/48424095)  
 **Screenshot:**    
-![ImageScaleTypesActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/1.%20ImageScaleTypesActivity.png)  
+<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36tricmftj31401z415b.jpg" width="320x"/>        
+
    
- ---
-   
-### 2.AsyncTaskActivity
+## 2.AsyncTaskActivity
 Analysis of AsyncTask, and provide an AsyncTask template  
 分析AsyncTask，并提供一个AsyncTask的模板  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/48525013)  
 **Screenshot:**    
-![ImageScaleTypesActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/2.AsyncTaskActivity.png)  
+<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36ts31c6rj31401z4di2.jpg" width="320x"/>   
 
----
 
-### 3.TextInputLayoutActivity
+
+## 3.TextInputLayoutActivity
 Show the TextInputLayout of support design  
 展示 support design 的 TextInputLayout  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/48808005)   
 **Screenshot:**    
-![TextInputLayoutActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/3.TextInputLayoutActivity.png)  	   
+<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f36tsnou5mj31401z4mzo.jpg" width="320x"/>   	   
 
----
 
-### 4.RefreshUIActivity
+
+## 4.RefreshUIActivity
 Introduced the Android UI refresh four ways  
 介绍 Android UI 刷新的四种方式  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/48629073)   
 **Screenshot:**    
-![RefreshUIActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/4.RefreshUIActivity.png)  
+<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36tt4bqamj31401z4417.jpg" width="320x"/>    
 
----
 
-### 5.LaunchModeActivity
+
+## 5.LaunchModeActivity
 Show the singleTask launchmode effect  
 展示 singleTask launchmode 效果  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/48682525)   
 **Screenshot:**    
-![LaunchModeActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/5.LaunchModeActivity.png)  
+<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36tto6mooj31401z4k3k.jpg" width="320x"/>       
 
----
 
-### 6.NavigationViewActivity
+
+## 6.NavigationViewActivity
 Show the NavigationView of support design  
 展示 support design 的 NavigationView  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49106163)    
 **Screenshot:**    
-![NavigationViewActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/6.NavigationViewActivity.png)  
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f36tuf0tqij31401z4qct.jpg" width="320x"/>       
 
----
 
-### 7.DeviceUtilActivity
+
+## 7.DeviceUtilActivity
 Introduce the DeviceUtil  
 介绍 DeviceUtil  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49126033)   
 **Screenshot:**    
-![DeviceUtilActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/7.DeviceUtilActivity.png)  	  
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f36tuttddtj31401z47ay.jpg" width="320x"/>       	  
 
----
 
-### 8.FloatingActionButtonActivity
+
+## 8.FloatingActionButtonActivity
 Show the FloatingActionButton of support design  
 展示 support design 的 FloatingActionButton  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49133395)    
 **Screenshot:**     
-![FloatingActionButtonActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/8.FloatingActionButtonActivity.png)  
+<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f36tvb4jz9j31401z4adm.jpg" width="320x"/>     
 
----
 
-### 9.SnackbarActivity
+
+## 9.SnackbarActivity
 Show the Snackbar of support design  
 展示 support design 的 Snackbar  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49161233)   
 **Screenshot:**    
-![SnackbarActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/9.SnackbarActivity.png)  
+<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f36tvscfemj31401z4q5l.jpg" width="320x"/>    
 
----
 
-### 10.DateUtilActivity
+
+## 10.DateUtilActivity
 Introduce the DateUtil  
 介绍 DateUtil  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49181669)   
 **Screenshot:**      
-![DateUtilActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/10.DateUtilActivity.png)   
+<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f36tw79vpfj31401z4ajg.jpg" width="320x"/>        
 
----
 
-### 11.EasySlidingTabsActivity
+
+## 11.EasySlidingTabsActivity
 Introduce the [EasySlidingTabs](https://github.com/CaMnter/EasySlidingTabs)  
 介绍 [EasySlidingTabs](https://github.com/CaMnter/EasySlidingTabs)      
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49229189)   
 **Screenshot:**     
-![11.EasySlidingTabsActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/11.EasySlidingTabsActivity.png)  
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f36tx5p0j0j31401z4q5n.jpg" width="320x"/>       
 
----
 
-### 12.AutoAdjustSizeEditTextActivity
+
+## 12.AutoAdjustSizeEditTextActivity
 Show the AutoAdjustSizeEditText  
 展示 AutoAdjustSizeEditText  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49666243)   
 **Screenshot:**      
-![AutoAdjustSizeEditTextActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/12.AutoAdjustSizeEditTextActivity.png)  
+<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f36txnotfmj31401z4qad.jpg" width="320x"/>      
 
----
 
-### 13.AutoAdjustSizeTextViewActivity
+
+## 13.AutoAdjustSizeTextViewActivity
 Show the AutoAdjustSizeTextView  
 展示 AutoAdjustSizeTextView  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49666243)   
 **Screenshot:**      
-![AutoAdjustSizeTextViewActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/13.AutoAdjustSizeTextViewActivity.png)  
+<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f36ty1zbicj31401z4n4c.jpg" width="320x"/>       
 
----
 
-### 14.DownloadImageToGalleryActivity
+
+## 14.DownloadImageToGalleryActivity
 Small functions: download the pictures, and save the Android album.This involves a util - [ImageUtil](https://github.com/CaMnter/AndroidLife/blob/master/app/src/main/java/com/camnter/newlife/utils/ImageUtil.java)  
 小功能：下载图片，并且保存到Android相册里。这里涉及到一个util -  [ImageUtil](https://github.com/CaMnter/AndroidLife/blob/master/app/src/main/java/com/camnter/newlife/utils/ImageUtil.java)  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49285919)   
 **Screenshot:**    
-![DownloadImageToGalleryActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/14.DownloadImageToGalleryActivity.png)  
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f36tynxa22j31401z4ao5.jpg"  width="320x"/>       
 
 ---
 
 
-### 15.EasyRecyclerViewActivity
+## 15.EasyRecyclerViewActivity
 Introduce the [EasyRecyclerView](https://github.com/CaMnter/EasyRecyclerView)  
 介绍 [EasyRecyclerView](https://github.com/CaMnter/EasyRecyclerView)  
 [Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49341563)   
 **Screenshot:**    
-![EasyRecyclerViewActivity](https://github.com/CaMnter/AndroidLife/raw/master/readme/15.EasyRecyclerViewActivity.png)   
+<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f36tznbbehj31401z4h6u.jpg"  width="320x"/>       
 
 
 ---
