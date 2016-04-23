@@ -12,6 +12,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.utils.cache.LruCache;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -267,5 +268,4 @@ import java.util.Map;
         }
         textView.setText(String.format(Locale.getDefault(), format, recentText));
     }
-
 }

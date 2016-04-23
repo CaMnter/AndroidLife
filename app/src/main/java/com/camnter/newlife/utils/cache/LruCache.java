@@ -47,64 +47,56 @@ public class LruCache<K, V> {
     private final LinkedHashMap<K, V> map;
 
     /**
-     * Size of this cache in units. Not necessarily the number of elements.
-     * 这个缓存大小的单位。不规定元素的数量。
+     * 缓存大小的单位。不规定元素的数量。
      */
-
     // 已经存储的数据大小
     private int size;
     // 最大存储大小
     private int maxSize;
 
-    // 调用put方法的次数
+    // 调用put的次数
     private int putCount;
-    // 调用create方法的次数
+    // 调用create的次数
     private int createCount;
-    // 回收的次数
+    // 收回的次数 (如果出现)
     private int evictionCount;
     // 命中的次数（取出数据的成功次数）
     private int hitCount;
-    // 丢失的次数（取出数据的失败次数）
+    // 丢失的次数（取出数据的丢失次数）
     private int missCount;
 
 
     /**
-     * @param maxSize for caches that do not override {@link #sizeOf}, this is
-     * the maximum number of entries in the cache. For all other caches,
-     * this is the maximum sum of the sizes of the entries in this cache.
+     * LruCache的构造方法：需要传入最大缓存个数
      */
     public LruCache(int maxSize) {
+        // 最大缓存个数小于0，会抛出IllegalArgumentException
         if (maxSize <= 0) {
             throw new IllegalArgumentException("maxSize <= 0");
         }
         this.maxSize = maxSize;
+        // 初始化LinkedHashMap 负载因子=0.75f accessOrder=true:基于访问顺序
         this.map = new LinkedHashMap<K, V>(0, 0.75f, true);
     }
 
 
     /**
-     * Sets the size of the cache.
      * 设置缓存的大小。
-     *
-     * @param maxSize The new maximum size.
      */
     public void resize(int maxSize) {
         if (maxSize <= 0) {
             throw new IllegalArgumentException("maxSize <= 0");
         }
-
+        // 防止外部多线程的情况下设置缓存大小造成的线程不安全
         synchronized (this) {
             this.maxSize = maxSize;
         }
+        // 重整数据
         trimToSize(maxSize);
     }
 
 
     /**
-     * Returns the value for {@code key} if it exists in the cache or can be
-     * created by {@code #create}. If a value was returned, it is moved to the
-     * head of the queue. This returns null if a value is not cached and cannot
-     * be created.
      * 根据key查询缓存，如果存在于缓存或者被create方法创建了。
      * 如果值返回了，那么它将被移动到队列的头部。
      * 如果如果没有缓存的值，则返回null。
@@ -116,51 +108,66 @@ public class LruCache<K, V> {
 
         V mapValue;
         synchronized (this) {
+            // LinkHashMap 如果设置按照访问顺序的话，这里每次get都会重整数据顺序
             mapValue = map.get(key);
+            // 计算 命中次数
             if (mapValue != null) {
                 hitCount++;
                 return mapValue;
             }
+            // 计算 丢失次数
             missCount++;
         }
 
         /*
-         * Attempt to create a value. This may take a long time, and the map
-         * may be different when create() returns. If a conflicting value was
-         * added to the map while create() was working, we leave that value in
-         * the map and release the created value.
-         *
+         * 官方解释：
          * 尝试创建一个值，这可能需要很长时间，并且Map可能在create()返回的值时有所不同。如果在create()执行的时
          * 候，一个冲突的值被添加到Map，我们在Map中删除这个值，释放被创造的值。
          */
-
         V createdValue = create(key);
         if (createdValue == null) {
             return null;
         }
 
+        /***************************
+         * 不复写create方法走不到下面 *
+         ***************************/
+
+        /*
+         * 正常情况走不到这里
+         * 走到这里的话 说明 实现了自定义的 create(K key) 逻辑
+         * 因为默认的 create(K key) 逻辑为null
+         */
         synchronized (this) {
+            // 记录 create 的次数
             createCount++;
+            // 将自定义create创建的值，放入LinkedHashMap中，如果key已经存在，会返回 之前相同key 的值
             mapValue = map.put(key, createdValue);
 
             // 如果之前存在相同key的value，即有冲突。
             if (mapValue != null) {
                 /*
-                 * There was a conflict so undo that last put
-                 * 有冲突所以撤销最后一把
+                 * 有冲突
+                 * 所以 撤销 刚才的 操作
+                 * 将 之前相同key 的值 重新放回去
                  */
                 map.put(key, mapValue);
             } else {
+                // 拿到键值对，计算出在容量中的相对长度，然后加上
                 size += safeSizeOf(key, createdValue);
             }
         }
 
-        // 如果发生冲突
+        // 如果上面 判断出了 将要放入的值发生冲突
         if (mapValue != null) {
-
+            /*
+             * 刚才create的值被删除了，原来的 之前相同key 的值被重新添加回去了
+             * 告诉 自定义 的 entryRemoved 方法
+             */
             entryRemoved(false, key, createdValue, mapValue);
             return mapValue;
         } else {
+            // 上面 进行了 size += 操作 所以这里要重整长度
             trimToSize(maxSize);
             return createdValue;
         }
@@ -168,11 +175,7 @@ public class LruCache<K, V> {
 
 
     /**
-     * Caches {@code value} for {@code key}. The value is moved to the head of
-     * the queue.
      * 给对应key缓存value，该value将被移动到队头。
-     *
-     * @return the previous value mapped by {@code key}.
      */
     public final V put(K key, V value) {
         if (key == null || value == null) {
@@ -181,41 +184,55 @@ public class LruCache<K, V> {
 
         V previous;
         synchronized (this) {
+            // 记录 put 的次数
             putCount++;
+            // 拿到键值对，计算出在容量中的相对长度，然后加上
             size += safeSizeOf(key, value);
+            /*
+             * 放入 key value
+             * 如果 之前存在key 则返回 之前key 的value
+             * 记录在 previous
+             */
             previous = map.put(key, value);
+            // 如果存在冲突
             if (previous != null) {
+                // 计算出 冲突键值 在容量中的相对长度，然后减去
                 size -= safeSizeOf(key, previous);
             }
         }
 
+        // 如果上面发生冲突
         if (previous != null) {
+            /*
+             * previous值被剔除了，此次添加的 value 已经作为key的 新值
+             * 告诉 自定义 的 entryRemoved 方法
+             */
             entryRemoved(false, key, previous, value);
         }
-
         trimToSize(maxSize);
         return previous;
     }
 
 
     /**
-     * Remove the eldest entries until the total of remaining entries is at or
-     * below the requested size.
      * 删除最旧的数据直到剩余的数据的总数以下要求的大小。
-     *
-     * @param maxSize the maximum size of the cache before returning. May be -1
-     * to evict even 0-sized elements.
      */
     public void trimToSize(int maxSize) {
+        /*
+         * 这是一个死循环，
+         * 1.只有 扩容 的情况下能立即跳出
+         * 2.非扩容的情况下，map的数据会一个一个删除，直到map里没有值了，就会跳出
+         */
         while (true) {
             K key;
             V value;
             synchronized (this) {
+                // 在重新调整容量大小前，本身容量就为空的话，会出异常的。
                 if (size < 0 || (map.isEmpty() && size != 0)) {
                     throw new IllegalStateException(
                             getClass().getName() + ".sizeOf() is reporting inconsistent results!");
                 }
-
+                // 如果是 扩容 或者 map为空了，就会中断，因为扩容不会涉及到丢弃数据的情况
                 if (size <= maxSize || map.isEmpty()) {
                     break;
                 }
@@ -224,20 +241,21 @@ public class LruCache<K, V> {
                 key = toEvict.getKey();
                 value = toEvict.getValue();
                 map.remove(key);
+                // 拿到键值对，计算出在容量中的相对长度，然后减去。
                 size -= safeSizeOf(key, value);
+                // 添加一次收回次数
                 evictionCount++;
             }
-
+            /*
+             * 将最后一次删除的最少访问数据回调出去
+             */
             entryRemoved(true, key, value, null);
         }
     }
 
 
     /**
-     * Removes the entry for {@code key} if it exists.
      * 如果对应key的entry存在，则删除。
-     *
-     * @return the previous value mapped by {@code key}.
      */
     public final V remove(K key) {
         if (key == null) {
@@ -246,13 +264,20 @@ public class LruCache<K, V> {
 
         V previous;
         synchronized (this) {
+            // 移除对应 键值对 ，并将移除的value 存放在 previous
             previous = map.remove(key);
             if (previous != null) {
+                // 拿到键值对，计算出在容量中的相对长度，然后减去。
                 size -= safeSizeOf(key, previous);
             }
         }
 
+        // 如果 Map 中存在 该key ，并且成功移除了
         if (previous != null) {
+            /*
+             * 会通知 自定义的 entryRemoved
+             * previous 已经被删除了
+             */
             entryRemoved(false, key, previous, null);
         }
 
@@ -261,53 +286,23 @@ public class LruCache<K, V> {
 
 
     /**
-     * Called for entries that have been evicted or removed. This method is
-     * invoked when a value is evicted to make space, removed by a call to
-     * {@link #remove}, or replaced by a call to {@link #put}. The default
-     * implementation does nothing.
-     * <p/>
-     * 当被回收或者删掉时调用。该方法当value被回收释放存储空间时被remove调用
+     * 1.当被回收或者删掉时调用。该方法当value被回收释放存储空间时被remove调用
      * 或者替换条目值时put调用，默认实现什么都没做。
-     * <p/>
-     * <p>The method is called without synchronization: other threads may
-     * access the cache while this method is executing.
-     * 该方法没用同步调用，如果其他线程访问缓存时，该方法也会执行。
-     *
-     * @param evicted true if the entry is being removed to make space, false
-     * if the removal was caused by a {@link #put} or {@link #remove}.
-     * <p/>
-     * true：如果该条目被删除空间
-     * false：put或remove导致
-     * @param newValue the new value for {@code key}, if it exists. If non-null,
-     * this removal was caused by a {@link #put}. Otherwise it was caused by
-     * an eviction or a {@link #remove}.
-     * <p/>
-     * 如果存在key对应的新value。如果不为null，那么被put()或remove()调用。
+     * 2.该方法没用同步调用，如果其他线程访问缓存时，该方法也会执行。
+     * 3.evicted=true：如果该条目被删除空间 （表示 进行了trimToSize or remove）  evicted=false：put冲突后 或 get里成功create后
+     * 导致
+     * 4.newValue!=null，那么则被put()或get()调用。
      */
     protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) {
     }
 
 
     /**
-     * Called after a cache miss to compute a value for the corresponding key.
-     * Returns the computed value or null if no value can be computed. The
-     * default implementation returns null.
-     * <p/>
-     * 缓存丢失之后计算相应的key的value后调用。
+     * 1.缓存丢失之后计算相应的key的value后调用。
      * 返回计算后的值，如果没有value可以计算返回null。
      * 默认的实现返回null。
-     * <p>The method is called without synchronization: other threads may
-     * access the cache while this method is executing.
-     * 该方法没用同步调用，如果其他线程访问缓存时，该方法也会执行。
-     * <p/>
-     * <p>If a value for {@code key} exists in the cache when this method
-     * returns, the created value will be released with {@link #entryRemoved}
-     * and discarded. This can occur when multiple threads request the same key
-     * at the same time (causing multiple values to be created), or when one
-     * thread calls {@link #put} while another is creating a value for the same
-     * key.
-     * <p/>
-     * 当这个方法返回的时候，如果对应key的value存在缓存内，被创建的value将会被entryRemoved()释放或者丢弃。
+     * 2.该方法没用同步调用，如果其他线程访问缓存时，该方法也会执行。
+     * 3.当这个方法返回的时候，如果对应key的value存在缓存内，被创建的value将会被entryRemoved()释放或者丢弃。
      * 这情况可以发生在多线程在同一时间上请求相同key（导致多个value被创建了），或者单线程中调用了put()去创建一个
      * 相同key的value
      */
@@ -316,6 +311,10 @@ public class LruCache<K, V> {
     }
 
 
+    /**
+     * 计算 该 键值对 的相对长度
+     * 如果不覆写 sizeOf 实现特殊逻辑的话，默认长度是1。
+     */
     private int safeSizeOf(K key, V value) {
         int result = sizeOf(key, value);
         if (result < 0) {
@@ -326,12 +325,7 @@ public class LruCache<K, V> {
 
 
     /**
-     * Returns the size of the entry for {@code key} and {@code value} in
-     * user-defined units.  The default implementation returns 1 so that size
-     * is the number of entries and max size is the maximum number of entries.
      * 返回条目在用户定义单位的大小。默认实现返回1，这样的大小是条目的数量并且最大的大小是条目的最大数量。
-     * <p/>
-     * <p>An entry's size must not change while it is in the cache.
      * 一个条目的大小必须不能在缓存中改变
      */
     protected int sizeOf(K key, V value) {
@@ -349,10 +343,6 @@ public class LruCache<K, V> {
 
 
     /**
-     * For caches that do not override {@link #sizeOf}, this returns the number
-     * of entries in the cache. For all other caches, this returns the sum of
-     * the sizes of the entries in this cache
-     * <p/>
      * 对于这个缓存，如果不覆写sizeOf()方法，这个方法返回的是条目的在缓存中的数量。但是对于其他缓存，返回的是
      * 条目在缓存中大小的总和。
      */
@@ -362,10 +352,6 @@ public class LruCache<K, V> {
 
 
     /**
-     * For caches that do not override {@link #sizeOf}, this returns the maximum
-     * number of entries in the cache. For all other caches, this returns the
-     * maximum sum of the sizes of the entries in this cache.
-     * <p/>
      * 对于这个缓存，如果不覆写sizeOf()方法，这个方法返回的是条目的在缓存中的最大数量。但是对于其他缓存，返回的是
      * 条目在缓存中最大大小的总和。
      */
@@ -385,8 +371,6 @@ public class LruCache<K, V> {
 
 
     /**
-     * Returns the number of times {@link #get} returned null or required a new
-     * value to be created.
      * 返回的次数{@link #get}返回null或需要一个新的要创建价值。
      */
     public synchronized final int missCount() {
@@ -395,7 +379,6 @@ public class LruCache<K, V> {
 
 
     /**
-     * Returns the number of times {@link #create(Object)} returned a value.
      * 返回的次数{@link #create(Object)}返回一个值。
      */
     public synchronized final int createCount() {
@@ -404,8 +387,7 @@ public class LruCache<K, V> {
 
 
     /**
-     * Returns the number of times {@link #put} was called.
-     * 返回{@link #put}的次数。
+     * 返回put的次数。
      */
     public synchronized final int putCount() {
         return putCount;
@@ -413,8 +395,7 @@ public class LruCache<K, V> {
 
 
     /**
-     * Returns the number of values that have been evicted.
-     * 返回被回收的value数量。
+     * 返回被收回的value数量。
      */
     public synchronized final int evictionCount() {
         return evictionCount;
@@ -422,9 +403,6 @@ public class LruCache<K, V> {
 
 
     /**
-     * Returns a copy of the current contents of the cache, ordered from least
-     * recently accessed to most recently accessed.
-     *
      * 返回当前缓存内容的一个副本，从最近很少访问到最最近经常访问。
      */
     public synchronized final Map<K, V> snapshot() {

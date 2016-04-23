@@ -60,11 +60,11 @@ public class EasyRecyclerViewActivity extends BaseAppCompatActivity {
         for (int i = 1; i <= 5; i++) {
             RecyclerViewData dataSingle = new RecyclerViewData();
             RecyclerViewData dataMultiple = new RecyclerViewData();
-            String mipmapName = "mm_" + i;
-            int mipmapId = this.getMipmapId(this, mipmapName);
-            dataSingle.imageResId = mipmapId;
+            String name = "img_mm_" + i;
+            int redId = this.getDrawableId(this, name);
+            dataSingle.imageResId = redId;
             dataMultiple.content = "Save you from anything " + "26" + "-" + i + "6";
-            dataMultiple.imageResId = mipmapId;
+            dataMultiple.imageResId = redId;
             allData.add(dataSingle);
             allData.add(dataMultiple);
         }
@@ -73,7 +73,7 @@ public class EasyRecyclerViewActivity extends BaseAppCompatActivity {
     }
 
 
-    public int getMipmapId(Context context, String mipmapName) {
-        return context.getResources().getIdentifier(mipmapName, "mipmap", context.getPackageName());
+    public int getDrawableId(Context context, String name) {
+        return context.getResources().getIdentifier(name, "drawable", context.getPackageName());
     }
 }
