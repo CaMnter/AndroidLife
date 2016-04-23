@@ -209,7 +209,6 @@ public class LruCache<K, V> {
              */
             entryRemoved(false, key, previous, value);
         }
-        // 上面 进行了 size -= 操作 所以这里要重整长度
         trimToSize(maxSize);
         return previous;
     }
@@ -248,10 +247,7 @@ public class LruCache<K, V> {
                 evictionCount++;
             }
             /*
-             * 走到这是拿到LinkHashMap的最后一个数据
-             * 就是 最少访问的数据，就会被删除
-             * 比如LinkHashMap：A B C D E F G （ A访问最多，G访问最少）
-             * 每次那第一个然后删掉，必然最后一个是访问最少的
+             * 将最后一次删除的最少访问数据回调出去
              */
             entryRemoved(true, key, value, null);
         }
