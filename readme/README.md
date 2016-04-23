@@ -22,7 +22,7 @@ LruCache源码解析
 一般做到 **1、2、3就足够了，3也可以无视** 。
 
 
-以下是 一个 **LruCache实现Bitmap小缓存的案例**，`entryRemoved`里的自定义逻辑可以无视，这是我的展示demo里的逻辑(｡>﹏<｡)
+以下是 一个 **LruCache实现Bitmap小缓存的案例**，`entryRemoved`里的自定义逻辑可以无视，这里是我的展示demo里的自定义`entryRemoved`逻辑(｡>﹏<｡)
 ```java
 private static final float ONE_MIB = 1024 * 1024;
 // 7MB
@@ -71,7 +71,8 @@ this.bitmapCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
 
 **效果一（验证Lru，最近没访问的，在溢出时优先被清理）：**   
 <img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36odh8wjdg31401z4u0x.gif" width="320x"/> 
-<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f36p56qcjzj31401z4qa7.jpg" width="320"/>
+<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f36p56qcjzj31401z4qa7.jpg" width="320"/>  
+
 **前提：** 设置LruCache最大容量为 7MB，把图1、2、3放入了，此时占用容量为：1.87+0.38+2.47=4.47MB。
 
 **执行操作**：
@@ -84,10 +85,10 @@ this.bitmapCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
 ---
 
 **效果二（验证entryRemoved的evicted=false，可以验证冲突）：**  
-<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f36oy2uii5g31401z44l6.gif" width="320x"/>  
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f36p6e8t4jj31401z4gt0.jpg" width="320x"/>
+<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f36oy2uii5g31401z44l6.gif" width="320x"/> <img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f36p6e8t4jj31401z4gt0.jpg" width="320x"/>
   
-**前提：**执行了效果一，put了图4，删除了最近没访问的图3。
+**前提：**执行了效果一，put了图4，删除了最近没访问的图3。  
+
 **执行操作**：再一次put图4，发生冲突，拿到key、冲突value以及put的value，这里我放到是同一个hashcode的bitmap，所以hashcode一样，但是无关紧要吧。
 
 ### 4.源码分析	
@@ -259,10 +260,11 @@ private void makeTail(LinkedEntry<K, V> e) {
 }
 ```
 
-*// Unlink e*
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f36m59c4tgj31kw2c7tgn.jpg" width="320x"/> 
-*// Relink e as tail*
-<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f36m68rkisj31kw1eswnd.jpg" width="320x"/> 
+*// Unlink e*  
+<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f36m59c4tgj31kw2c7tgn.jpg" width="500x"/>  
+
+*// Relink e as tail*  
+<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f36m68rkisj31kw1eswnd.jpg" width="500x"/>  
 
 LinkedHashMap是双向循环链表，然后此次 **LruCache.get -> LinkedHashMap.get** 的数据就被放到最末尾了。
 
