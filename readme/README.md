@@ -106,10 +106,17 @@ public LruCache(int maxSize) {
         throw new IllegalArgumentException("maxSize <= 0");
     }
     this.maxSize = maxSize;
-    // 初始化LinkedHashMap 负载因子=0.75f accessOrder=true:基于访问顺序
+    /*
+     * 初始化LinkedHashMap
+     * 第一个参数：initialCapacity，初始大小
+     * 第二个参数：loadFactor，负载因子=0.75f
+     * 第三个参数：accessOrder=true，基于访问顺序。
+     */
     this.map = new LinkedHashMap<K, V>(0, 0.75f, true);
 }
 ```
+第一个参数`initialCapacity`用于初始化改LinkedHashMap的大小。
+
 先简单介绍一下 第二个参数 `loadFactor`，这个其实的HashMap里的构造参数，涉及到**扩容问题**，比如 HashMap的最大容量是100，那么这里设置0.75f的话，到75容量的时候就会扩容。
 
 主要是第三个参数 `accessOrder=true` ，**这样的话 LinkedHashMap 数据排序就会基于数据的访问顺序，从而实现了LruCache核心工作原理**。
@@ -371,7 +378,13 @@ protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) {
 
 [square/picasso](https://github.com/square/picasso) 
 
-## 6.资源下载
+
+## 6.总结
+
+
+
+
+## 7.资源
 
 [LruCacheActivity](https://github.com/CaMnter/AndroidLife/blob/master/app/src/main/java/com/camnter/newlife/views/activity/lrucache/LruCacheActivity.java)    
 
