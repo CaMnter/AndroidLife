@@ -115,7 +115,7 @@ public LruCache(int maxSize) {
     this.map = new LinkedHashMap<K, V>(0, 0.75f, true);
 }
 ```
-第一个参数`initialCapacity`用于初始化改LinkedHashMap的大小。
+第一个参数`initialCapacity`用于初始化该LinkedHashMap的大小。
 
 先简单介绍一下 第二个参数 `loadFactor`，这个其实的HashMap里的构造参数，涉及到**扩容问题**，比如 HashMap的最大容量是100，那么这里设置0.75f的话，到75容量的时候就会扩容。
 
