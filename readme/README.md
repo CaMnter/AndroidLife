@@ -110,7 +110,7 @@ public LruCache(int maxSize) {
      * 初始化LinkedHashMap
      * 第一个参数：initialCapacity，初始大小
      * 第二个参数：loadFactor，负载因子=0.75f
-     * 第三个参数：accessOrder=true，基于访问顺序。
+     * 第三个参数：accessOrder=true，基于访问顺序；accessOrder=false，基于插入顺序
      */
     this.map = new LinkedHashMap<K, V>(0, 0.75f, true);
 }
