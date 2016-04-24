@@ -381,6 +381,19 @@ protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) {
 
 ## 6.总结
 
+LruCache重要的几点：
+
+- **1.**LruCache是通过LinkedHashMap构造方法的第三个参数的`accessOrder=true`实现了 Lru算法缓存机制。
+
+- **2.**LruCache在内部的get、put、remove包括trimToSize都是安全的（因为都上锁了）。
+
+- **3.**覆写`entryRemoved`方法能知道LruCache数据移除是是否发生了冲突。
+
+- **4.**`maxSize`和`sizeOf(K key, V value)`方法的覆写息息相关，必须相同单位。（ 比如maxSize是7MB，自定义的sizeOf计算每个数据大小的时候必须能算出与MB之间有联系的单位 ）
+
+- **5.**LruCache自身并没有释放内存，将LinkedHashMap的数据移除了，如果数据还在别的地方被引用了，还是有泄漏问题，还需要手动释放内存。
+
+
 
 
 
