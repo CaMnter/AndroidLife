@@ -304,7 +304,7 @@ public final V put(K key, V value) {
 - **3.** 说到 `safeSizeOf` 就要讲到 `sizeOf(K key, V value)` 会计算出此次添加数据的大小 （像上面的 Demo，我的容量是7MB，我每次添加进来的 Bitmap 要是不覆写 sizeOf 方法的话，会视为该 bitmap 的容量计算为默认的容量计算 return 1。如此一来，这样的话 7MB 的 LruCache 容量可以放7x1024x1024张图片？明显这样的逻辑是不对的！）
 - **4.**直到 put 要结束时，进行了 `trimToSize` 才判断 `size` 是否 大于 `maxSize` 然后进行最近很少访问数据的移除
 
-**LruCache.trimToSize(int maxSize)**
+### 4.6 LruCache.trimToSize(int maxSize)
 ```java
 public void trimToSize(int maxSize) {
     /*
@@ -348,7 +348,7 @@ public void trimToSize(int maxSize) {
 
 最后看看 
 
-### 4.6 覆写 entryRemoved 的作用
+### 4.7 覆写 entryRemoved 的作用
 
 entryRemoved被LruCache调用的场景：
 - **1.（put）** put 发生 key 冲突时被调用，**evicted=false，key=此次 put 的 key，oldValue=被覆盖的冲突 value，newValue=此次 put 的 value**
