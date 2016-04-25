@@ -1,14 +1,14 @@
-LruCache源码解析
+LruCache 源码解析
 ==
 
-## 1.简介
+## 1. 简介
 
 > Lru 是 Least Recently Used 最近最少使用算法。
 
 >曾经，在各大缓存图片的框架没流行的时候。有一种很常用的内存缓存技术：SoftReference 和 WeakReference（软引用和弱引用）。但是走到了 Android 2.3（Level 9）时代，垃圾回收机制更倾向于回收 SoftReference 或 WeakReference 的对象。后来，又来到了 Android3.0，图片缓存在内容中，因为不知道要在是什么时候释放内存，没有策略，没用一种可以预见的场合去将其释放。这就造成了内存溢出。
 
 
-## 2.使用方法
+## 2. 使用方法
 
 **当成一个 Map 用就可以了，只不过实现了 Lru 缓存策略**
 
@@ -67,7 +67,7 @@ this.bitmapCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
 };
 ```
 
-## 3.效果展示
+## 3. 效果展示
 
 ### 3.1 效果一（验证 Lru，最近没访问的，在溢出时优先被清理）
 <img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36odh8wjdg31401z4u0x.gif" width="320x"/> 
@@ -91,7 +91,7 @@ this.bitmapCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
 
 **执行操作**：再一次 put 图4，发生冲突，拿到 key、冲突 value 以及 put 的 value，这里我放到是同一个 hashcode 的 bitmap，所以 hashcode 一样，但是无关紧要吧。
 
-## 4.源码分析	
+## 4. 源码分析	
 
 LruCache 就是 **利用 LinkedHashMap 的一个特性再加上对 LinkedHashMap 的数据操作上锁实现的缓存策略**。
 
@@ -299,9 +299,9 @@ public final V put(K key, V value) {
 }
 ```
 记住几点：
-- **1.**put开始的时候确实是把值放入 LinkedHashMap 了，**不管超不超过你设定的缓存容量**。
-- **2.**然后 根据 `safeSizeOf` 方法计算 此次添加数据的容量是多少，并且加到 `size` 里 。
-- **3.** 说到 `safeSizeOf` 就要讲到 `sizeOf(K key, V value)` 会计算出此次添加数据的大小 （像上面的 Demo，我的容量是7MB，我每次添加进来的 Bitmap 要是不覆写 sizeOf 方法的话，会视为该 bitmap 的容量计算为默认的容量计算 return 1。如此一来，这样的话 7MB 的 LruCache 容量可以放7x1024x1024张图片？明显这样的逻辑是不对的！）
+- **1.**put 开始的时候确实是把值放入 LinkedHashMap 了，**不管超不超过你设定的缓存容量**。
+- **2.**然后根据 `safeSizeOf` 方法计算 此次添加数据的容量是多少，并且加到 `size` 里 。
+- **3.**说到 `safeSizeOf` 就要讲到 `sizeOf(K key, V value)` 会计算出此次添加数据的大小 （像上面的 Demo，我的容量是7MB，我每次添加进来的 Bitmap 要是不覆写 sizeOf 方法的话，会视为该 bitmap 的容量计算为默认的容量计算 return 1。如此一来，这样的话 7MB 的 LruCache 容量可以放7x1024x1024张图片？明显这样的逻辑是不对的！）
 - **4.**直到 put 要结束时，进行了 `trimToSize` 才判断 `size` 是否 大于 `maxSize` 然后进行最近很少访问数据的移除
 
 ### 4.6 LruCache.trimToSize(int maxSize)
@@ -376,12 +376,12 @@ protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) {
 ```
 可以参考我的 demo 里的 `entryRemoved` (｡>﹏<｡)
 
-## 5.开源项目中的使用
+## 5. 开源项目中的使用
 
 [square/picasso](https://github.com/square/picasso) 
 
 
-## 6.总结
+## 6. 总结
 
 LruCache重要的几点：
 
@@ -399,7 +399,7 @@ LruCache重要的几点：
 
 
 
-## 7.资源
+## 7. 资源
 
 [LruCacheActivity](https://github.com/CaMnter/AndroidLife/blob/master/app/src/main/java/com/camnter/newlife/views/activity/lrucache/LruCacheActivity.java)    
 
