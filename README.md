@@ -404,6 +404,9 @@ Google Xfermodes Demo
 
 ## 43.LruCacheActivity
 
+LruCache source code analysis  
+LruCache的源码解析  
+[LruCache analysis](http://blog.csdn.net/qq_16430735/article/details/49534159) 
  **Screenshot:**    
 <img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f372kh2x5tj31401z4dn4.jpg" width="320x"/> 
 
