@@ -22,7 +22,7 @@ LruCache 源码解析
 一般做到 **1、2、3就足够了，4可以无视** 。
 
 
-以下是 一个 **LruCache 实现 Bitmap 小缓存的案例**, `entryRemoved` 里的自定义逻辑可以无视，这里是我的展示 demo 里的自定义 `entryRemoved` 逻辑(｡>﹏<｡)
+以下是 一个 **LruCache 实现 Bitmap 小缓存的案例**, `entryRemoved` 里的自定义逻辑可以无视，这里是我的展示 demo 里的自定义 `entryRemoved` 逻辑。
 ```java
 private static final float ONE_MIB = 1024 * 1024;
 // 7MB
@@ -69,7 +69,7 @@ this.bitmapCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
 
 ## 3. 效果展示
 
-[效果展示](https://github.com/CaMnter/AndroidLife/blob/master/article/LruCache%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90_%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA.md)  
+[LruCache 效果展示](https://github.com/CaMnter/AndroidLife/blob/master/article/LruCache%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90_%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA.md)  
 
 
 ## 4. 源码分析	
@@ -325,7 +325,7 @@ public void trimToSize(int maxSize) {
 ```
 简单描述：会判断之前 `size` 是否大于 `maxSize` 。是的话，直接跳出后什么也不做。不是的话，证明已经溢出容量了。由 `makeTail` 图已知，最近经常访问的数据在最末尾。拿到一个存放 key 的 Set，然后一直一直从头开始删除，删一个判断是否溢出，直到没有溢出。
 
----
+---  
 
 最后看看 
 
@@ -355,7 +355,16 @@ entryRemoved被LruCache调用的场景：
 protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) {
 }
 ```
-可以参考我的 demo 里的 `entryRemoved` (｡>﹏<｡)
+可以参考我的 demo 里的 `entryRemoved` 。   
+
+### 4.8 LruCache 局部同步锁
+
+在 `get`, `put`, `trimToSize`, `remove` 四个方法里的 `entryRemoved` 方法都不在同步块里。因为 `entryRemoved` 回调的参数都属于方法域参数，不会线程不安全。
+
+> 本地方法栈和程序计数器是线程隔离的数据区  
+
+
+
 
 ## 5. 开源项目中的使用
 
@@ -370,12 +379,11 @@ LruCache重要的几点：
 
 - **2.**LruCache 在内部的get、put、remove包括 trimToSize 都是安全的（因为都上锁了）。
 
-- **3.**覆写 `entryRemoved` 方法能知道 LruCache 数据移除是是否发生了冲突。
+- **3.**LruCache 自身并没有释放内存，将 LinkedHashMap 的数据移除了，如果数据还在别的地方被引用了，还是有泄漏问题，还需要手动释放内存。
 
-- **4.**`maxSize` 和 `sizeOf(K key, V value)` 方法的覆写息息相关，必须相同单位。（ 比如 maxSize 是7MB，自定义的 sizeOf 计算每个数据大小的时候必须能算出与MB之间有联系的单位 ）
+- **4.**覆写 `entryRemoved` 方法能知道 LruCache 数据移除是是否发生了冲突，也可以去手动释放资源。
 
-- **5.**LruCache 自身并没有释放内存，将 LinkedHashMap 的数据移除了，如果数据还在别的地方被引用了，还是有泄漏问题，还需要手动释放内存。
-
+- **5.**`maxSize` 和 `sizeOf(K key, V value)` 方法的覆写息息相关，必须相同单位。（ 比如 maxSize 是7MB，自定义的 sizeOf 计算每个数据大小的时候必须能算出与MB之间有联系的单位 ）
 
 
 
@@ -385,7 +393,7 @@ LruCache重要的几点：
 [LruCacheActivity](https://github.com/CaMnter/AndroidLife/blob/master/app/src/main/java/com/camnter/newlife/views/activity/lrucache/LruCacheActivity.java)    
 
 
-[LruCache注释源码](https://github.com/CaMnter/AndroidLife/blob/master/app/src/main/java/com/camnter/newlife/utils/cache/LruCache.java)   
+[LruCache 注释源码](https://github.com/CaMnter/AndroidLife/blob/master/app/src/main/java/com/camnter/newlife/utils/cache/LruCache.java)   
 
  
 
