@@ -69,7 +69,7 @@ this.bitmapCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
 
 ## 3. 效果展示
 
-
+[效果展示](https://github.com/CaMnter/AndroidLife/blob/master/article/LruCache%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90_%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA.md)  
 
 
 ## 4. 源码分析	
