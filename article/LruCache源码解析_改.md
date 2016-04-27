@@ -104,7 +104,7 @@ public final V get(K key) {
       
     V mapValue;
     synchronized (this) {
-        // LinkHashMap 如果设置按照访问顺序的话，这里每次get都会重整数据顺序
+        // 关键点：LinkedHashMap每次get都会基于访问顺序来重整数据顺序
         mapValue = map.get(key);
         // 计算 命中次数
         if (mapValue != null) {
