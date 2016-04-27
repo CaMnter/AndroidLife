@@ -36,6 +36,11 @@ android {
             manifestPlaceholders = [DEBUG: "debug"]
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 
