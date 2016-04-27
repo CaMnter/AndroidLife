@@ -10,14 +10,14 @@ LruCache 源码解析
 
 ## 2. 使用方法
 
-**当成一个 Map 用就可以了，只不过实现了 LRU 缓存策略**
+**当成一个 Map 用就可以了，只不过实现了 LRU 缓存策略**。
 
 使用的时候记住几点即可：
-- **1.（必填）**你需要提供一个缓存容量作为构造参数
+- **1.（必填）**你需要提供一个缓存容量作为构造参数。
 - **2.（必填）**  覆写  `sizeOf` 方法 ，自定义设计一条数据放进来的容量计算，如果不覆写就无法预知数据的容量，不能保证缓存容量限定在最大容量以内。
-- **3.（选填）** 覆写 `entryRemoved` 方法 ，你可以知道最少使用的缓存被清除时的数据（ evicted, key, oldValue, newVaule ）
+- **3.（选填）** 覆写 `entryRemoved` 方法 ，你可以知道最少使用的缓存被清除时的数据（ evicted, key, oldValue, newVaule ）。
 - **4.（记住）**LruCache是线程安全的，在内部的 get、put、remove 包括 trimToSize 都是安全的（因为都上锁了）。
-- **5.（选填）** 还有就是覆写 `create` 方法 
+- **5.（选填）** 还有就是覆写 `create` 方法。 
 
 一般做到 **1、2、3、4就足够了，5可以无视** 。
 
@@ -76,11 +76,11 @@ this.bitmapCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
 **前提：** 设置 LruCache 最大容量为 7MB，把图1、2、3放入了，此时占用容量为：1.87+0.38+2.47=4.47MB。
 
 **执行操作**：
-- **1.**然后点 get 图3一共16次（**证明访问次数和 LRU 没关系，只有访问顺序有关系**）。Recent visit显示了图3
-- **2.**先 get 图2，再 get 图1，**制造最近访问顺序为：<1> <2> <3>**
+- **1.**然后点 get 图3一共16次（**证明访问次数和 LRU 没关系，只有访问顺序有关系**）。Recent visit显示了图3。
+- **2.**先 get 图2，再 get 图1，**制造最近访问顺序为：<1> <2> <3>**。
 - **3.** put 图4，预算容量需要4.47+2.47=7.19MB。会溢出。
 - **4.**溢出了，删除最近没访问的图3。
-- **5.**观察 `entryRemoved` 数据 图三被移除了（对照hashcode）
+- **5.**观察 `entryRemoved` 数据 图三被移除了（对照hashcode）。
 
 ---
 
@@ -98,7 +98,7 @@ this.bitmapCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
 
 LruCache 就是 **利用 LinkedHashMap 的一个特性（ accessOrder＝true 基于访问顺序 ）再加上对 LinkedHashMap 的数据操作上锁实现的缓存策略**。
 
-**LruCache 的数据缓存是内存中的**  
+**LruCache 的数据缓存是内存中的**。  
 
 - 1.首先设置了内部 `LinkedHashMap` 构造参数 `accessOrder=true`， 实现了数据排序按照访问顺序。
 
@@ -292,11 +292,11 @@ private void makeTail(LinkedEntry<K, V> e) {
 
 LinkedHashMap 是双向循环链表，然后此次 **LruCache.get -> LinkedHashMap.get** 的数据就被放到最末尾了。
 
-**以上就是 LruCache 核心工作原理**
+**以上就是 LruCache 核心工作原理**。
 
 ---
 
-接下来介绍 **LruCache 的容量溢出策略**
+接下来介绍 **LruCache 的容量溢出策略**。
 
 上述展示场景中，7M的容量，我添加三张图后，不会溢出，put<4>后必然会超过7MB。
 
@@ -318,8 +318,8 @@ public final V put(K key, V value) {
 记住几点：
 - **1.**put 开始的时候确实是把值放入 LinkedHashMap 了，**不管超不超过你设定的缓存容量**。
 - **2.**然后根据 `safeSizeOf` 方法计算 此次添加数据的容量是多少，并且加到 `size` 里 。
-- **3.**说到 `safeSizeOf` 就要讲到 `sizeOf(K key, V value)` 会计算出此次添加数据的大小 （像上面的 Demo，我的容量是7MB，我每次添加进来的 Bitmap 要是不覆写 sizeOf 方法的话，会视为该 bitmap 的容量计算为默认的容量计算 return 1。如此一来，这样的话 7MB 的 LruCache 容量可以放7x1024x1024张图片？明显这样的逻辑是不对的！）
-- **4.**直到 put 要结束时，进行了 `trimToSize` 才判断 `size` 是否 大于 `maxSize` 然后进行最近很少访问数据的移除
+- **3.**说到 `safeSizeOf` 就要讲到 `sizeOf(K key, V value)` 会计算出此次添加数据的大小 （像上面的 Demo，我的容量是7MB，我每次添加进来的 Bitmap 要是不覆写 sizeOf 方法的话，会视为该 bitmap 的容量计算为默认的容量计算 return 1。如此一来，这样的话 7MB 的 LruCache 容量可以放7x1024x1024张图片？明显这样的逻辑是不对的！）。
+- **4.**直到 put 要结束时，进行了 `trimToSize` 才判断 `size` 是否 大于 `maxSize` 然后进行最近很少访问数据的移除。
 
 ### 4.7 LruCache.trimToSize(int maxSize)
 ```java
@@ -363,14 +363,14 @@ public void trimToSize(int maxSize) {
 
 ---  
 
-最后看看 
+最后看看： 
 
 ### 4.8 覆写 entryRemoved 的作用
 
 entryRemoved被LruCache调用的场景：
-- **1.（put）** put 发生 key 冲突时被调用，**evicted=false，key=此次 put 的 key，oldValue=被覆盖的冲突 value，newValue=此次 put 的 value**
-- **2.（trimToSize）** trimToSize 的时候，只会被调用一次，就是最后一次被删除的最少访问数据带回来。**evicted=true，key=最后一次被删除的 key，oldValue=最后一次被删除的 value，newValue=null（此次没有冲突，只是 remove）**
-- **3.（remove）** remove的时候，存在对应 key，并且被成功删除后被调用。**evicted=false，key=此次 put的 key，oldValue=此次删除的 value，newValue=null（此次没有冲突，只是 remove）**
+- **1.（put）** put 发生 key 冲突时被调用，**evicted=false，key=此次 put 的 key，oldValue=被覆盖的冲突 value，newValue=此次 put 的 value**。
+- **2.（trimToSize）** trimToSize 的时候，只会被调用一次，就是最后一次被删除的最少访问数据带回来。**evicted=true，key=最后一次被删除的 key，oldValue=最后一次被删除的 value，newValue=null（此次没有冲突，只是 remove）**。
+- **3.（remove）** remove的时候，存在对应 key，并且被成功删除后被调用。**evicted=false，key=此次 put的 key，oldValue=此次删除的 value，newValue=null（此次没有冲突，只是 remove）**。
 - **4.（get后半段，查询丢失后处理情景，不过建议忽略）** get 的时候，正常的话不实现自定义 `create` 的话，代码上看 get 方法只会走一半，如果你实现了自定义的 `create(K key)` 方法，并且在 你 create 后的值放入 LruCache 中发生 key 冲突时被调用，**evicted=false，key=此次 get 的 key，oldValue=被你自定义 create(key)后的 value，newValue=原本存在 map 里的 key-value**。
 
 解释一下第四点吧：**<1>.**第四点是这样的，先 get(key)，然后没拿到，丢失。**<2>.**如果你提供了 自定义的 `create(key)` 方法，那么 LruCache 会根据你的逻辑自造一个 value，但是当放入的时候发现冲突了，但是已经放入了。**<3>.**此时，会将那个冲突的值再让回去覆盖，此时调用上述4.的 entryRemoved。
@@ -397,7 +397,7 @@ protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) {
 
 在 `get`, `put`, `trimToSize`, `remove` 四个方法里的 `entryRemoved` 方法都不在同步块里。因为 `entryRemoved` 回调的参数都属于方法域参数，不会线程不安全。
 
-> 本地方法栈和程序计数器是线程隔离的数据区  
+> 本地方法栈和程序计数器是线程隔离的数据区。  
 
 
 
@@ -419,7 +419,7 @@ LruCache重要的几点：
 
 - **4.**覆写 `entryRemoved` 方法能知道 LruCache 数据移除是是否发生了冲突，也可以去手动释放资源。
 
-- **5.**`maxSize` 和 `sizeOf(K key, V value)` 方法的覆写息息相关，必须相同单位。（ 比如 maxSize 是7MB，自定义的 sizeOf 计算每个数据大小的时候必须能算出与MB之间有联系的单位 ）
+- **5.**`maxSize` 和 `sizeOf(K key, V value)` 方法的覆写息息相关，必须相同单位。（ 比如 maxSize 是7MB，自定义的 sizeOf 计算每个数据大小的时候必须能算出与MB之间有联系的单位 ）。
 
 
 
