@@ -90,6 +90,8 @@ LruCache 就是 **利用 LinkedHashMap 的一个特性再加上对 LinkedHashMap
 
 - 5.在 `put` 和 `trimToSize` 的方法执行下，如果发成数据量移除了，会优先移除掉最前面的数据（因为最新访问的数据在尾部）。
 
+**具体解析在：** *4.2*、*4.3*、*4.4*、*4.5* 。
+
 
 ### 4.2 LruCache 的唯一构造方法
 ```java
@@ -270,7 +272,7 @@ private void makeTail(LinkedEntry<K, V> e) {
 
 LinkedHashMap 是双向循环链表，然后此次 **LruCache.get -> LinkedHashMap.get** 的数据就被放到最末尾了。
 
-**以上就是 LruCache 核心工作原理(｡>﹏<｡)**
+**以上就是 LruCache 核心工作原理**
 
 ---
 
