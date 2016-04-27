@@ -22,7 +22,7 @@ LruCache 源码解析
 一般做到 **1、2、3就足够了，4可以无视** 。
 
 
-以下是 一个 **LruCache 实现 Bitmap 小缓存的案例**, `entryRemoved` 里的自定义逻辑可以无视，这里是我的展示 demo 里的自定义 `entryRemoved` 逻辑。
+以下是 一个 **LruCache 实现 Bitmap 小缓存的案例**, `entryRemoved` 里的自定义逻辑可以无视，想看的可以去到我的我的展示 [demo](https://github.com/CaMnter/AndroidLife/blob/master/app/src/main/java/com/camnter/newlife/views/activity/lrucache/LruCacheActivity.java) 里的看自定义 `entryRemoved` 逻辑。
 ```java
 private static final float ONE_MIB = 1024 * 1024;
 // 7MB
@@ -33,36 +33,9 @@ this.bitmapCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
         return value.getByteCount();
     }
 
-
-    /**
-     * 1.当被回收或者删掉时调用。该方法当value被回收释放存储空间时被remove调用
-     * 或者替换条目值时put调用，默认实现什么都没做。
-     * 2.该方法没用同步调用，如果其他线程访问缓存时，该方法也会执行。
-     * 3.evicted=true：如果该条目被删除空间 （表示 进行了trimToSize or remove）  evicted=false：put冲突后 或 get里成功create后 导致
-     * 4.newValue!=null，那么则被put()或get()调用。
-     */
     @Override
     protected void entryRemoved(boolean evicted, String key, Bitmap oldValue, Bitmap newValue) {
-        mEntryRemovedInfoText.setText(
-                String.format(Locale.getDefault(), LRU_CACHE_ENTRY_REMOVED_INFO_FORMAT,
-                        evicted, key, oldValue != null ? oldValue.hashCode() : "null",
-                        newValue != null ? newValue.hashCode() : "null"));
-        // 见上述 3.
-        if (evicted) {
-            // 进行了trimToSize or remove (一般是溢出了 或 key-value被删除了 )
-            if (recentList.contains(key)) {
-                recentList.remove(key);
-                refreshText(mRecentInfoText, LRU_CACHE_RECENT_FORMAT, recentList);
-            }
-        } else {
-            // put冲突后 或 get里成功create 后
-            recentList.remove(key);
-            refreshText(mRecentInfoText, LRU_CACHE_RECENT_FORMAT, recentList);
-        }
-        if (cacheList.contains(key)) {
-            cacheList.remove(key);
-            refreshText(mCacheDataText, LRU_CACHE_CACHE_DATA_FORMAT, cacheList);
-        }
+        ...
     }
 };
 ```
