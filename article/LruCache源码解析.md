@@ -3,23 +3,23 @@ LruCache 源码解析
 
 ## 1. 简介
 
-> Lru 是 Least Recently Used 最近最少使用算法。
+> LRU 是 Least Recently Used 最近最少使用算法。
 
 >曾经，在各大缓存图片的框架没流行的时候。有一种很常用的内存缓存技术：SoftReference 和 WeakReference（软引用和弱引用）。但是走到了 Android 2.3（Level 9）时代，垃圾回收机制更倾向于回收 SoftReference 或 WeakReference 的对象。后来，又来到了 Android3.0，图片缓存在内容中，因为不知道要在是什么时候释放内存，没有策略，没用一种可以预见的场合去将其释放。这就造成了内存溢出。
 
 
 ## 2. 使用方法
 
-**当成一个 Map 用就可以了，只不过实现了 Lru 缓存策略**
+**当成一个 Map 用就可以了，只不过实现了 LRU 缓存策略**
 
 使用的时候记住几点即可：
 - **1.（必填）**你需要提供一个缓存容量作为构造参数
-- **2.（个人认为必填）**  覆写  `sizeOf` 方法 ，自定义设计一条数据放进来的容量计算。
-- **2.（选填）** 覆写 `entryRemoved` 方法 ，你可以知道最少使用的缓存被清除时的数据（ evicted, key, oldValue, newVaule ）
-- **3.（记住）**LruCache是线程安全的，在内部的 get、put、remove 包括 trimToSize 都是安全的（因为都上锁了）。
-- **4.（选填）** 还有就是覆写 `create` 方法 
+- **2.（必填）**  覆写  `sizeOf` 方法 ，自定义设计一条数据放进来的容量计算，如果不覆写就无法预知数据的容量，不能保证缓存容量限定在最大容量以内。
+- **3.（选填）** 覆写 `entryRemoved` 方法 ，你可以知道最少使用的缓存被清除时的数据（ evicted, key, oldValue, newVaule ）
+- **4.（记住）**LruCache是线程安全的，在内部的 get、put、remove 包括 trimToSize 都是安全的（因为都上锁了）。
+- **5.（选填）** 还有就是覆写 `create` 方法 
 
-一般做到 **1、2、3就足够了，4可以无视** 。
+一般做到 **1、2、3、4就足够了，5可以无视** 。
 
 
 以下是 一个 **LruCache 实现 Bitmap 小缓存的案例**, `entryRemoved` 里的自定义逻辑可以无视，这里是我的展示 demo 里的自定义 `entryRemoved` 逻辑。
@@ -69,14 +69,14 @@ this.bitmapCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
 
 ## 3. 效果展示
 
-### 3.1 效果一（验证 Lru，最近没访问的，在溢出时优先被清理）
+### 3.1 效果一（验证 LRU，最近没访问的，在溢出时优先被清理）
 <img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36odh8wjdg31401z4u0x.gif" width="320x"/> 
 <img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f36p56qcjzj31401z4qa7.jpg" width="320"/>  
 
 **前提：** 设置 LruCache 最大容量为 7MB，把图1、2、3放入了，此时占用容量为：1.87+0.38+2.47=4.47MB。
 
 **执行操作**：
-- **1.**然后点 get 图3一共16次（**证明访问次数和Lru没关系，只有访问顺序有关系**）。Recent visit显示了图3
+- **1.**然后点 get 图3一共16次（**证明访问次数和 LRU 没关系，只有访问顺序有关系**）。Recent visit显示了图3
 - **2.**先 get 图2，再 get 图1，**制造最近访问顺序为：<1> <2> <3>**
 - **3.** put 图4，预算容量需要4.47+2.47=7.19MB。会溢出。
 - **4.**溢出了，删除最近没访问的图3。
@@ -217,7 +217,7 @@ public final V get(K key) {
     }
 }
 ```
-上述的 `get` 方法表面并没有看出哪里有实现了Lru的缓存策略。主要在 `mapValue = map.get(key)`;里，**调用了 LinkedHashMap 的 get 方法，再加上 LruCache 构造里默认设置 LinkedHashMap 的 accessOrder=true**。
+上述的 `get` 方法表面并没有看出哪里有实现了 LRU 的缓存策略。主要在 `mapValue = map.get(key)`;里，**调用了 LinkedHashMap 的 get 方法，再加上 LruCache 构造里默认设置 LinkedHashMap 的 accessOrder=true**。
 
 
 ### 4.4 LinkedHashMap.get(Object key)
@@ -411,7 +411,7 @@ protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) {
 
 LruCache重要的几点：
 
-- **1.**LruCache 是通过 LinkedHashMap 构造方法的第三个参数的 `accessOrder=true` 实现了 `LinkedHashMap` 的数据排序**基于访问顺序** （最近访问的数据会在链表尾部），在容量溢出的时候，将链表头部的数据移除。从而，实现了 Lru 数据缓存机制。
+- **1.**LruCache 是通过 LinkedHashMap 构造方法的第三个参数的 `accessOrder=true` 实现了 `LinkedHashMap` 的数据排序**基于访问顺序** （最近访问的数据会在链表尾部），在容量溢出的时候，将链表头部的数据移除。从而，实现了 LRU 数据缓存机制。
 
 - **2.**LruCache 在内部的get、put、remove包括 trimToSize 都是安全的（因为都上锁了）。
 
