@@ -251,7 +251,7 @@ LinkedHashMap 是双向循环链表，然后此次 **LruCache.get -> LinkedHashM
 
 接下来介绍 **LruCache 的容量溢出策略**
 
-上述展示场景中，7M的容量，我添加三张图后，不会溢出，put<4>后必然会超过7MB。
+
 
 ### 4.6 LruCache.put(K key, V value)
 ```java
@@ -271,7 +271,7 @@ public final V put(K key, V value) {
 记住几点：
 - **1.**put 开始的时候确实是把值放入 LinkedHashMap 了，**不管超不超过你设定的缓存容量**。
 - **2.**然后根据 `safeSizeOf` 方法计算 此次添加数据的容量是多少，并且加到 `size` 里 。
-- **3.**说到 `safeSizeOf` 就要讲到 `sizeOf(K key, V value)` 会计算出此次添加数据的大小 （像上面的 Demo，我的容量是7MB，我每次添加进来的 Bitmap 要是不覆写 sizeOf 方法的话，会视为该 bitmap 的容量计算为默认的容量计算 return 1。如此一来，这样的话 7MB 的 LruCache 容量可以放7x1024x1024张图片？明显这样的逻辑是不对的！）
+- **3.**说到 `safeSizeOf` 就要讲到 `sizeOf(K key, V value)` 会计算出此次添加数据的大小 。
 - **4.**直到 put 要结束时，进行了 `trimToSize` 才判断 `size` 是否 大于 `maxSize` 然后进行最近很少访问数据的移除
 
 ### 4.7 LruCache.trimToSize(int maxSize)
