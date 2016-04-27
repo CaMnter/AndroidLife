@@ -49,7 +49,7 @@ this.bitmapCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
 
 ### 4.1 LruCache 原理概要解析
 
-LruCache 就是 **利用 LinkedHashMap 的一个特性再加上对 LinkedHashMap 的数据操作上锁实现的缓存策略**。
+LruCache 就是 **利用 LinkedHashMap 的一个特性（ accessOrder＝true 基于访问顺序 ）再加上对 LinkedHashMap 的数据操作上锁实现的缓存策略**。
 
 **LruCache 的数据缓存是内存中的**  
 
