@@ -103,7 +103,7 @@ public class LruCache<K, V> {
 
     /**
      * 根据key查询缓存，如果存在于缓存或者被create方法创建了。
-     * 如果值返回了，那么它将被移动到队列的头部。
+     * 如果值返回了，那么它将被移动到双向循环链表的的尾部。
      * 如果如果没有缓存的值，则返回null。
      */
     public final V get(K key) {

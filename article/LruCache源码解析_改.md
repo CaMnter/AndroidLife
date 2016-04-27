@@ -74,9 +74,24 @@ this.bitmapCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
 
 ## 4. 源码分析	
 
+### 4.1 LruCache 原理概要解析
+
 LruCache 就是 **利用 LinkedHashMap 的一个特性再加上对 LinkedHashMap 的数据操作上锁实现的缓存策略**。
 
-### 4.1 LruCache 的唯一构造方法
+**LruCache 的数据缓存是内存中的**  
+
+- 1.首先设置了内部 `LinkedHashMap` 构造参数 `accessOrder=true`， 实现了数据排序按照访问顺序。
+
+- 2.然后在每次 `LruCache.get(K key)` 方法里都会调用 `LinkedHashMap.get(Object key)`。
+
+- 3.如上述设置了 `accessOrder=true` 后，每次 `LinkedHashMap.get(Object key)` 都会进行 `LinkedHashMap.makeTail(LinkedEntry<K, V> e)`。
+
+- 4.`LinkedHashMap` 是双向循环链表，然后每次 `LruCache.get` -> `LinkedHashMap.get` 的数据就被放到最末尾了。
+
+- 5.在 `put` 和 `trimToSize` 的方法执行下，如果发成数据量移除了，会优先移除掉最前面的数据（因为最新访问的数据在尾部）。
+
+
+### 4.2 LruCache 的唯一构造方法
 ```java
 /**
  * LruCache的构造方法：需要传入最大缓存个数
@@ -102,18 +117,17 @@ public LruCache(int maxSize) {
 
 主要是第三个参数 `accessOrder=true` ，**这样的话 LinkedHashMap 数据排序就会基于数据的访问顺序，从而实现了 LruCache 核心工作原理**。
 
-### 4.2 LruCache.get(K key)  
+### 4.3 LruCache.get(K key)  
 ```java
 /**
  * 根据 key 查询缓存，如果存在于缓存或者被 create 方法创建了。
- * 如果值返回了，那么它将被移动到队列的头部。
+ * 如果值返回了，那么它将被移动到双向循环链表的的尾部。
  * 如果如果没有缓存的值，则返回 null。
  */
 public final V get(K key) {
-    if (key == null) {
-        throw new NullPointerException("key == null");
-    }
-
+    
+    ...  
+      
     V mapValue;
     synchronized (this) {
         // LinkHashMap 如果设置按照访问顺序的话，这里每次get都会重整数据顺序
@@ -184,7 +198,7 @@ public final V get(K key) {
 上述的 `get` 方法表面并没有看出哪里有实现了Lru的缓存策略。主要在 `mapValue = map.get(key)`;里，**调用了 LinkedHashMap 的 get 方法，再加上 LruCache 构造里默认设置 LinkedHashMap 的 accessOrder=true**。
 
 
-### 4.3 LinkedHashMap.get(Object key)
+### 4.4 LinkedHashMap.get(Object key)
 ```java
 /**
  * Returns the value of the mapping with the specified key.
@@ -226,7 +240,7 @@ public final V get(K key) {
 
 接下来看看
 
-### 4.4 LinkedHashMap.makeTail(LinkedEntry<K, V> e)
+### 4.5 LinkedHashMap.makeTail(LinkedEntry<K, V> e)
 ```java
 /**
  * Relinks the given entry to the tail of the list. Under access ordering,
@@ -254,7 +268,7 @@ private void makeTail(LinkedEntry<K, V> e) {
 *// Relink e as tail*  
 <img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f36m68rkisj31kw1eswnd.jpg" width="500x"/>  
 
-LinkedHashMap是双向循环链表，然后此次 **LruCache.get -> LinkedHashMap.get** 的数据就被放到最末尾了。
+LinkedHashMap 是双向循环链表，然后此次 **LruCache.get -> LinkedHashMap.get** 的数据就被放到最末尾了。
 
 **以上就是 LruCache 核心工作原理(｡>﹏<｡)**
 
@@ -264,7 +278,7 @@ LinkedHashMap是双向循环链表，然后此次 **LruCache.get -> LinkedHashMa
 
 上述展示场景中，7M的容量，我添加三张图后，不会溢出，put<4>后必然会超过7MB。
 
-### 4.5 LruCache.put(K key, V value)
+### 4.6 LruCache.put(K key, V value)
 ```java
 public final V put(K key, V value) {
     ...
@@ -285,7 +299,7 @@ public final V put(K key, V value) {
 - **3.**说到 `safeSizeOf` 就要讲到 `sizeOf(K key, V value)` 会计算出此次添加数据的大小 （像上面的 Demo，我的容量是7MB，我每次添加进来的 Bitmap 要是不覆写 sizeOf 方法的话，会视为该 bitmap 的容量计算为默认的容量计算 return 1。如此一来，这样的话 7MB 的 LruCache 容量可以放7x1024x1024张图片？明显这样的逻辑是不对的！）
 - **4.**直到 put 要结束时，进行了 `trimToSize` 才判断 `size` 是否 大于 `maxSize` 然后进行最近很少访问数据的移除
 
-### 4.6 LruCache.trimToSize(int maxSize)
+### 4.7 LruCache.trimToSize(int maxSize)
 ```java
 public void trimToSize(int maxSize) {
     /*
@@ -329,7 +343,7 @@ public void trimToSize(int maxSize) {
 
 最后看看 
 
-### 4.7 覆写 entryRemoved 的作用
+### 4.8 覆写 entryRemoved 的作用
 
 entryRemoved被LruCache调用的场景：
 - **1.（put）** put 发生 key 冲突时被调用，**evicted=false，key=此次 put 的 key，oldValue=被覆盖的冲突 value，newValue=此次 put 的 value**
@@ -357,7 +371,7 @@ protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) {
 ```
 可以参考我的 demo 里的 `entryRemoved` 。   
 
-### 4.8 LruCache 局部同步锁
+### 4.9 LruCache 局部同步锁
 
 在 `get`, `put`, `trimToSize`, `remove` 四个方法里的 `entryRemoved` 方法都不在同步块里。因为 `entryRemoved` 回调的参数都属于方法域参数，不会线程不安全。
 
