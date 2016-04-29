@@ -1,5 +1,8 @@
 AndroidLife
-==
+===========
+
+[![Build Status](https://travis-ci.org/CaMnter/AndroidLife.svg?branch=master)](https://travis-ci.org/CaMnter/AndroidLife)  
+gs
 
 **The Android's life is very interesting and rich.**
 
