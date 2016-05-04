@@ -2,10 +2,12 @@ package com.camnter.newlife.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 /**
  * Description：LayoutParamsUtil
@@ -24,7 +26,7 @@ public class LayoutParamsUtils {
      * @param activity activity
      * @return widthPixels
      */
-    public static int getScreenWidth(Activity activity) {
+    public static int getDeviceWidth(Activity activity) {
         if (dm == null) {
             dm = new DisplayMetrics();
             activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -40,12 +42,44 @@ public class LayoutParamsUtils {
      * @param activity activity
      * @return heightPixels
      */
-    public static int getScreenHeigh(Activity activity) {
+    public static int getDeviceHeigh(Activity activity) {
         if (dm == null) {
             dm = new DisplayMetrics();
             activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
         }
         return dm.heightPixels;
+    }
+
+
+    /**
+     * Get the app width and height
+     * App 宽高 包括标题栏
+     * appMatchRect.width()
+     * appMatchRect.height()
+     *
+     * @param activity activity
+     * @return Rect
+     */
+    public static Rect getAppMatchWidthHeight(Activity activity) {
+        Rect appMatchRect = new Rect();
+        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(appMatchRect);
+        return appMatchRect;
+    }
+
+
+    /**
+     * Get the app wrap content width and height
+     * App 宽高 不包括标题栏
+     * appWrapRect.width()
+     * appWrapRect.height()
+     *
+     * @param activity activity
+     * @return Rect
+     */
+    public static Rect getAppWrapWidthHeight(Activity activity) {
+        Rect appWrapRect = new Rect();
+        activity.getWindow().findViewById(Window.ID_ANDROID_CONTENT).getDrawingRect(appWrapRect);
+        return appWrapRect;
     }
 
 
