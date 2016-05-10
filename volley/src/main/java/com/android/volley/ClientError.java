@@ -22,6 +22,13 @@ package com.android.volley;
  * For backwards compatibility, extends ServerError which used to be thrown for all server errors,
  * including 4xx error codes indicating a client error.
  */
+
+/* @formatter:off
+ *
+ * ClientError 扩展了 ServerError 的概念
+ * 表示：客户端错误，即 4xx 错误
+ *
+ */
 @SuppressWarnings("serial")
 public class ClientError extends ServerError {
     public ClientError(NetworkResponse networkResponse) {
