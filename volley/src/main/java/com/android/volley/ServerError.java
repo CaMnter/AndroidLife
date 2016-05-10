@@ -19,6 +19,18 @@ package com.android.volley;
 /**
  * Indicates that the server responded with an error response.
  */
+
+/* @formatter:off
+ *
+ * ServerError 继承了 VolleyError
+ * 表示：服务端错误
+ *
+ * 添加了
+ * 1.无参构造方法
+ * 2.有参构造方法
+ *
+ * 参数只能为 NetworkResponse
+ */
 @SuppressWarnings("serial")
 public class ServerError extends VolleyError {
     public ServerError(NetworkResponse networkResponse) {

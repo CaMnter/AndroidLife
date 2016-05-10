@@ -19,6 +19,19 @@ package com.android.volley;
 /**
  * Indicates that there was a network error when performing a Volley request.
  */
+
+/* @formatter:off
+ *
+ * NetworkError 继承了 VolleyError
+ * 表示：网络错误
+ *
+ * 添加了
+ * 1.无参构造方法
+ * 2.NetworkError(NetworkResponse networkResponse)
+ * 3.NetworkError(Throwable cause)
+ *
+ * 和 ParseError 一样
+ */
 @SuppressWarnings("serial")
 public class NetworkError extends VolleyError {
     public NetworkError() {

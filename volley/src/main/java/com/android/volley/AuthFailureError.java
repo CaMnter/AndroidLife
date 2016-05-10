@@ -21,6 +21,17 @@ import android.content.Intent;
 /**
  * Error indicating that there was an authentication failure when performing a Request.
  */
+
+/* @formatter:off
+ *
+ * AuthFailureError 继承了 VolleyError
+ * 表示：请求认证失败错误，如 RespondCode 的 401 和 403
+ *
+ * 实现了很多 基于 VolleyError 的构造方法
+ *
+ * 特殊的地方在于提供了一个 Intent mResolutionIntent
+ * 比如 认证失败了，要通过这个 Intent 弹出一个密码对话框之类的事情
+ */
 @SuppressWarnings("serial")
 public class AuthFailureError extends VolleyError {
     /** An intent that can be used to resolve this exception. (Brings up the password dialog.) */

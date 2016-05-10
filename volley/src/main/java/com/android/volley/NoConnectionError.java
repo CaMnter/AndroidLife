@@ -19,6 +19,18 @@ package com.android.volley;
 /**
  * Error indicating that no connection could be established when performing a Volley request.
  */
+
+/* @formatter:off
+ *
+ * NoConnectionError 继承了 NetworkError
+ * 表示：网络错误
+ *
+ * 添加了
+ * 1.无参构造方法
+ * 2.NoConnectionError(Throwable reason)
+ *
+ * 到底层都是调用了 Exception 的构造方法
+ */
 @SuppressWarnings("serial")
 public class NoConnectionError extends NetworkError {
     public NoConnectionError() {

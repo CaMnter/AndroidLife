@@ -20,12 +20,14 @@ package com.android.volley;
  * Exception style class encapsulating Volley errors
  */
 
-/*
+/* @formatter:off
+ *
  * 继承自 Exception
  * 用于描述 Volley 中所有的错误异常
  * 可以设置 NetworkResponse 和 请求消耗时间
  */
-@SuppressWarnings("serial") public class VolleyError extends Exception {
+@SuppressWarnings("serial")
+public class VolleyError extends Exception {
 
     // NetworkResponse
     public final NetworkResponse networkResponse;
