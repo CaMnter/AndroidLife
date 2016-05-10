@@ -19,39 +19,90 @@ package com.android.volley;
 /**
  * Exception style class encapsulating Volley errors
  */
-@SuppressWarnings("serial")
-public class VolleyError extends Exception {
+
+/*
+ * 继承自 Exception
+ * 用于描述 Volley 中所有的错误异常
+ * 可以设置 NetworkResponse 和 请求消耗时间
+ */
+@SuppressWarnings("serial") public class VolleyError extends Exception {
+
+    // NetworkResponse
     public final NetworkResponse networkResponse;
+    // 请求用时
     private long networkTimeMs;
 
+
+    /**
+     * 无参构造方法
+     */
     public VolleyError() {
         networkResponse = null;
     }
 
+
+    /**
+     * 如果传入 NetworkResponse
+     * 那么就是自己的构造方法
+     *
+     * @param response response
+     */
     public VolleyError(NetworkResponse response) {
         networkResponse = response;
     }
 
+
+    /**
+     * 如果只传入一个 String 进来
+     * 那么会走 Exception(String detailMessage)
+     *
+     * @param exceptionMessage exceptionMessage
+     */
     public VolleyError(String exceptionMessage) {
-       super(exceptionMessage);
-       networkResponse = null;
+        super(exceptionMessage);
+        networkResponse = null;
     }
 
+
+    /**
+     * 如果只传入一个 String 和 Throwable 进来
+     * 那么会走 Exception(String detailMessage, Throwable throwable)
+     *
+     * @param exceptionMessage exceptionMessage
+     * @param reason reason
+     */
     public VolleyError(String exceptionMessage, Throwable reason) {
         super(exceptionMessage, reason);
         networkResponse = null;
     }
 
+
+    /**
+     * 如果只传入一个 Throwable 进来
+     * 那么会走 Exception(Throwable throwable)
+     *
+     * @param cause cause
+     */
     public VolleyError(Throwable cause) {
         super(cause);
         networkResponse = null;
     }
 
+
+    /**
+     * 设置 请求用时
+     */
     /* package */ void setNetworkTimeMs(long networkTimeMs) {
-       this.networkTimeMs = networkTimeMs;
+        this.networkTimeMs = networkTimeMs;
     }
 
+
+    /**
+     * 获取 请求用时
+     *
+     * @return networkTimeMs
+     */
     public long getNetworkTimeMs() {
-       return networkTimeMs;
+        return networkTimeMs;
     }
 }
