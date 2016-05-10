@@ -53,7 +53,10 @@ import java.util.List;
  * least-recently-used buffers are disposed.
  */
 
-// 这是一个 byte[] 缓存池，用于 byte[] 的回收再利用，减少内存分配和回收。
+/*
+ * 这是一个 byte[] 缓存池
+ * 用于 byte[] 的回收再利用，减少内存分配和回收。
+ */
 public class ByteArrayPool {
 
     /** The buffer pool, arranged both by last use and by buffer size */
@@ -95,6 +98,7 @@ public class ByteArrayPool {
     public ByteArrayPool(int sizeLimit) {
         mSizeLimit = sizeLimit;
     }
+
 
     /**
      * Returns a buffer from the pool if one is available in the requested size, or allocates a new
