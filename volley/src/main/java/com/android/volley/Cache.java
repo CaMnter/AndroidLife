@@ -54,7 +54,9 @@ public interface Cache {
     /*
      * 初始化缓存操作
      * 实现该接口的缓存，初始化操作时都需要做一些事情
-     * 比如 DiskBasedCache.initialize() 初始化时，对文件目录以及文件进行了创建和写入
+     * 比如 DiskBasedCache.initialize() 初始化时，
+     * 1.对文件目录以及文件进行了检查
+     * 2.扫描目录中文件，得到所有缓存数据信息放入内存中
      */
     public void initialize();
 
