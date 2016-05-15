@@ -177,18 +177,28 @@ public class HurlStack implements HttpStack {
             // Signal to the caller that something was wrong with the connection.
             throw new IOException("Could not retrieve response code from HttpUrlConnection.");
         }
+        // 实例化  org.apache.http.StatusLine 对象
         StatusLine responseStatus = new BasicStatusLine(protocolVersion,
                 connection.getResponseCode(), connection.getResponseMessage());
+        // 用 org.apache.http.StatusLine 去实例化一个 Apache 的 Response
         BasicHttpResponse response = new BasicHttpResponse(responseStatus);
+        /*
+         * 判断请求结果 Response 是否存在 body
+         *
+         * 有的话，给刚才实例话的 Apache Response 设置 HttpEntity（ 调用 entityFromConnection(...)
+         * 通过一个 HttpURLConnection 获取其对应的 HttpEntity ）
+         */
         if (hasResponseBody(request.getMethod(), responseStatus.getStatusCode())) {
             response.setEntity(entityFromConnection(connection));
         }
+        // 设置 请求结果 Response 的头信息
         for (Entry<String, List<String>> header : connection.getHeaderFields().entrySet()) {
             if (header.getKey() != null) {
                 Header h = new BasicHeader(header.getKey(), header.getValue().get(0));
                 response.addHeader(h);
             }
         }
+        // 返回设置好的 Apache Response
         return response;
     }
 
