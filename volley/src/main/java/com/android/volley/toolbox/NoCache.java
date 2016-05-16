@@ -21,6 +21,11 @@ import com.android.volley.Cache;
 /**
  * A cache that doesn't.
  */
+/*
+ * 继承扩展了 Cache，不做任何操作的缓存实现类
+ * 可以作为 RequestQueue 构造方法的参数
+ * 实现一个不带缓存的请求队列。
+ */
 public class NoCache implements Cache {
     @Override
     public void clear() {
