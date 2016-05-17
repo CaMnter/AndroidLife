@@ -46,6 +46,9 @@ public class ClearCacheRequest extends Request<Object> {
      * @param callback Callback to make on the main thread once the cache is clear,
      * or null for none
      */
+    /*
+     * 默认请求方法为 GET 请求
+     */
     public ClearCacheRequest(Cache cache, Runnable callback) {
         super(Method.GET, null, null);
         mCache = cache;
@@ -81,6 +84,7 @@ public class ClearCacheRequest extends Request<Object> {
         return Priority.IMMEDIATE;
     }
 
+
     /*
      * 被强制覆写的抽象方法，由于该请求用于清空缓存
      * 不处理，网络请求
@@ -89,6 +93,7 @@ public class ClearCacheRequest extends Request<Object> {
     @Override protected Response<Object> parseNetworkResponse(NetworkResponse response) {
         return null;
     }
+
 
     /*
      * 被强制覆写的抽象方法，由于该请求用于清空缓存
