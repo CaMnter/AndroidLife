@@ -16,23 +16,32 @@
 
 package com.android.volley.toolbox;
 
+import android.os.Handler;
+import android.os.Looper;
 import com.android.volley.Cache;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 
-import android.os.Handler;
-import android.os.Looper;
-
 /**
  * A synthetic request used for clearing the cache.
  */
+
+/*
+ * ClearCacheRequest 用于情况 HTTP 缓存的请求
+ *
+ * 如果该请求被添加到请求队列（ RequestQueue ）中，由于覆写了 getPriority() 方法
+ * 将优先级设置为 Priority.IMMEDIATE （ 立即执行 ）
+ */
 public class ClearCacheRequest extends Request<Object> {
     private final Cache mCache;
+    // 保存 清空缓存后的 回调执行线程
     private final Runnable mCallback;
+
 
     /**
      * Creates a synthetic request for clearing the cache.
+     *
      * @param cache Cache to clear
      * @param callback Callback to make on the main thread once the cache is clear,
      * or null for none
@@ -43,28 +52,49 @@ public class ClearCacheRequest extends Request<Object> {
         mCallback = callback;
     }
 
-    @Override
-    public boolean isCanceled() {
+
+    @Override public boolean isCanceled() {
         // This is a little bit of a hack, but hey, why not.
+
+        /*
+         * 这里进行了 Hack 操作
+         * 如果在 网络请求线程中（ NetworkDispatcher ）run() 循环内，执行到 ClearCacheRequest.isCanceled()
+         * 会进行缓存清空；然而其他 Request.isCanceled() 不会
+         */
         mCache.clear();
+        // 存在 清空缓存后的 回调执行线程
         if (mCallback != null) {
+            // 实例化一个主（ UI ）线程的 Handler
             Handler handler = new Handler(Looper.getMainLooper());
+            // 放在主（ UI ）线程的消息队列（ MessageQueue ）立即执行，因为没有设置时间间隔
             handler.postAtFrontOfQueue(mCallback);
         }
         return true;
     }
 
-    @Override
-    public Priority getPriority() {
+
+    /*
+     * 覆写该请求优先级方法
+     * 设置优先级 = Priority.IMMEDIATE（ 立即执行 ）
+     */
+    @Override public Priority getPriority() {
         return Priority.IMMEDIATE;
     }
 
-    @Override
-    protected Response<Object> parseNetworkResponse(NetworkResponse response) {
+    /*
+     * 被强制覆写的抽象方法，由于该请求用于清空缓存
+     * 不处理，网络请求
+     * 所以，没有指定，请求结果的解析步骤
+     */
+    @Override protected Response<Object> parseNetworkResponse(NetworkResponse response) {
         return null;
     }
 
-    @Override
-    protected void deliverResponse(Object response) {
+    /*
+     * 被强制覆写的抽象方法，由于该请求用于清空缓存
+     * 不处理，网络请求
+     * 所欲，没有可以传递的 请求结果解析数据
+     */
+    @Override protected void deliverResponse(Object response) {
     }
 }
