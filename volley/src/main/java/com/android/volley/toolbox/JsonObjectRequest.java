@@ -21,32 +21,43 @@ import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
-
+import java.io.UnsupportedEncodingException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 
 /**
  * A request for retrieving a {@link JSONObject} response body at a given URL, allowing for an
  * optional {@link JSONObject} to be passed in as part of the request body.
  */
+
+/*
+ * JsonObjectRequest 继承自 JsonRequest<JSONObject>
+ * 将 JsonRequest<T> 的泛型 T，设置为 JSONObject
+ *
+ * 由于 JsonRequest<T> 只是
+ * 要求 返回请求结果数据的 格式 ( Response.body ) 指定为 json ( Content-Type：application/json; charset=utf-8 )
+ * 再将 请求结果数据 ( Response.body ) 转换为 utf-8 的 byte[]
+ *
+ * 所以，JsonRequest<T> 没有解析 body 内的数据为 真正的 Json 数据
+ * 这里的 JsonObjectRequest 要单独将 body 内的数据解析为 JSONObject 类型
+ */
 public class JsonObjectRequest extends JsonRequest<JSONObject> {
 
     /**
      * Creates a new request.
+     *
      * @param method the HTTP method to use
      * @param url URL to fetch the JSON from
      * @param jsonRequest A {@link JSONObject} to post with the request. Null is allowed and
-     *   indicates no parameters will be posted along with request.
+     * indicates no parameters will be posted along with request.
      * @param listener Listener to receive the JSON response
      * @param errorListener Error listener, or null to ignore errors.
      */
-    public JsonObjectRequest(int method, String url, JSONObject jsonRequest,
-            Listener<JSONObject> listener, ErrorListener errorListener) {
+    public JsonObjectRequest(int method, String url, JSONObject jsonRequest, Listener<JSONObject> listener, ErrorListener errorListener) {
         super(method, url, (jsonRequest == null) ? null : jsonRequest.toString(), listener,
-                    errorListener);
+                errorListener);
     }
+
 
     /**
      * Constructor which defaults to <code>GET</code> if <code>jsonRequest</code> is
@@ -54,14 +65,25 @@ public class JsonObjectRequest extends JsonRequest<JSONObject> {
      *
      * @see #JsonObjectRequest(int, String, JSONObject, Listener, ErrorListener)
      */
-    public JsonObjectRequest(String url, JSONObject jsonRequest, Listener<JSONObject> listener,
-            ErrorListener errorListener) {
-        this(jsonRequest == null ? Method.GET : Method.POST, url, jsonRequest,
-                listener, errorListener);
+    /*
+     * 如果 请求数据 jsonRequest 为 null，方法设置为 GET 请求
+     * 如果 请求数据 jsonRequest 不为 null，方法设置为 POST 请求
+     */
+    public JsonObjectRequest(String url, JSONObject jsonRequest, Listener<JSONObject> listener, ErrorListener errorListener) {
+        this(jsonRequest == null ? Method.GET : Method.POST, url, jsonRequest, listener,
+                errorListener);
     }
 
-    @Override
-    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+
+    /*
+     * 解析请求结果 （ NetworkResponse ）
+     * 将 body 返回的 json byte[] 转换为 json String
+     * 再将 json String 转换为 JSONObject
+     *
+     * 1. 成功转为 JSONObject 的话，调用 解析数据回调接口
+     * 2. 失败的话，Response.error(...) new 一个只有 error 的 Response
+     */
+    @Override protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
         try {
             String jsonString = new String(response.data,
                     HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
