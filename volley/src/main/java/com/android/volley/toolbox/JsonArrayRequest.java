@@ -30,6 +30,17 @@ import java.io.UnsupportedEncodingException;
 /**
  * A request for retrieving a {@link JSONArray} response body at a given URL.
  */
+
+/*
+ * JsonArrayRequest 继承自 JsonRequest<JSONArray>
+ * 将 JsonRequest<T> 的泛型 T，设置为 JSONArray
+ *
+ * 由于 JsonRequest<T> 只是
+ * 要求 返回请求结果数据的 格式 ( Response.body ) 指定为 json ( Content-Type：application/json; charset=utf-8 )
+ * 再将 请求结果数据 ( Response.body ) 转换为 utf-8 的 byte[]
+ *
+ *
+ */
 public class JsonArrayRequest extends JsonRequest<JSONArray> {
 
     /**
@@ -37,6 +48,9 @@ public class JsonArrayRequest extends JsonRequest<JSONArray> {
      * @param url URL to fetch the JSON from
      * @param listener Listener to receive the JSON response
      * @param errorListener Error listener, or null to ignore errors.
+     */
+    /*
+     * Method 默认为：GET 请求
      */
     public JsonArrayRequest(String url, Listener<JSONArray> listener, ErrorListener errorListener) {
         super(Method.GET, url, null, listener, errorListener);
@@ -57,6 +71,14 @@ public class JsonArrayRequest extends JsonRequest<JSONArray> {
                 errorListener);
     }
 
+    /*
+     * 解析请求结果 （ NetworkResponse ）
+     * 将 body 返回的 json byte[] 转换为 json String
+     * 再将 json String 转换为 JSONArray
+     *
+     * 1. 成功转为 JSONArray 的话，调用 解析数据回调接口
+     * 2. 失败的话，Response.error(...) new 一个只有 error 的 Response
+     */
     @Override
     protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
         try {
