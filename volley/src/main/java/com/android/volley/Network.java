@@ -19,12 +19,24 @@ package com.android.volley;
 /**
  * An interface for performing requests.
  */
+
+/*
+ * Volley 中 用于 处理 网络请求 的接口
+ * 只有一个方法：performRequest(...) 执行请求
+ * performRequest(...) 的要做的事情是：
+ * 调用  HttpStack 接口的实现类 （ HurlStack, HttpClientStack ） 去执行网络请求
+ *
+ * Network 的 实现类有 BasicNetwork
+ */
 public interface Network {
     /**
      * Performs the specified request.
      * @param request Request to process
      * @return A {@link NetworkResponse} with data and caching metadata; will never be null
      * @throws VolleyError on errors
+     */
+    /*
+     * 执行请求 Request<?>
      */
     public NetworkResponse performRequest(Request<?> request) throws VolleyError;
 }
