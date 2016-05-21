@@ -95,6 +95,12 @@ public class HttpClientStack implements HttpStack {
     }
 
 
+    /*
+     * 执行处理 Volley内的 抽象请求 Request<?>
+     * 这里会调用 HttpClient 去处理网络请求
+     * 但是 HttpClient 处理后，都返回 Apache 的请求结果（ HttpResponse ）
+     * performRequest(...) 接下来会将：Apache HttpResponse -> Volley NetworkResponse 进行转化
+     */
     @Override
     public HttpResponse performRequest(Request<?> request, Map<String, String> additionalHeaders)
             throws IOException, AuthFailureError {
