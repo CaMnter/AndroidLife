@@ -220,6 +220,8 @@ public class ExecutorDelivery implements ResponseDelivery {
              * 属于 刷新缓存 的情况，会将请求加入到 NetworkQueue 内。
              *
              * 所以得出了 如果从缓存中拿出 Request 判断需要刷新的话
+             *
+             * 其实：主要为了打印一个 intermediate-response 的 MarkLog
              */
             if (mResponse.intermediate) {
                 /*
