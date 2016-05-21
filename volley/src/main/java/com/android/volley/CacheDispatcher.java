@@ -140,6 +140,7 @@ public class CacheDispatcher extends Thread {
                 if (request.isCanceled()) {
                     // 关闭请求，打印 请求中的 MarkLog
                     request.finish("cache-discard-canceled");
+                    // 跳过此次，然后继续循环
                     continue;
                 }
 
@@ -159,6 +160,7 @@ public class CacheDispatcher extends Thread {
                      * 重新请求
                      */
                     mNetworkQueue.put(request);
+                    // 跳过此次，然后继续循环
                     continue;
                 }
 
@@ -174,6 +176,7 @@ public class CacheDispatcher extends Thread {
                      * 重新请求
                      */
                     mNetworkQueue.put(request);
+                    // 跳过此次，然后继续循环
                     continue;
                 }
 
