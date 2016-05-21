@@ -249,7 +249,7 @@ public class CacheDispatcher extends Thread {
                     // 退出 循环体
                     return;
                 }
-                // 结束标记 为 false，继续循环
+                // 结束标记 为 false，跳过此次，然后继续循环
                 continue;
             }
         }
