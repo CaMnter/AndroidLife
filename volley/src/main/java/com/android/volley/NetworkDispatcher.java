@@ -214,7 +214,7 @@ public class NetworkDispatcher extends Thread {
 
                 // 修改 传递标识，标识已经被传递了（ 下面就开始传递 ）
                 request.markDelivered();
-                // 传递 Reqeust 和 Response
+                // 传递 Request 和 Response
                 mDelivery.postResponse(request, response);
             } catch (VolleyError volleyError) {
                 /*
