@@ -21,16 +21,23 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.http.AndroidHttpClient;
 import android.os.Build;
-
 import com.android.volley.Network;
 import com.android.volley.RequestQueue;
-
 import java.io.File;
 
+/**
+ * Volley 框架对外暴露的 API
+ * 也是 Volley 框架使用的入口
+ *
+ * RequestQueue queue = Volley.newRequestQueue(this);
+ * queue.add(request);
+ */
 public class Volley {
 
     /** Default on-disk cache directory. */
+    // 默认的 缓存 文件夹 名称
     private static final String DEFAULT_CACHE_DIR = "volley";
+
 
     /**
      * Creates a default instance of the worker pool and calls {@link RequestQueue#start()} on it.
@@ -39,40 +46,68 @@ public class Volley {
      * @param stack An {@link HttpStack} to use for the network, or null for default.
      * @return A started {@link RequestQueue} instance.
      */
+
     public static RequestQueue newRequestQueue(Context context, HttpStack stack) {
+        // 创建 缓存文件夹
         File cacheDir = new File(context.getCacheDir(), DEFAULT_CACHE_DIR);
 
         String userAgent = "volley/0";
         try {
             String packageName = context.getPackageName();
             PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
+            // 重新编辑 userAgent
             userAgent = packageName + "/" + info.versionCode;
         } catch (NameNotFoundException e) {
         }
 
+        // 如果已经提供了 HttpStack
         if (stack == null) {
+            /*
+             * API 9 以上：Android 2.3 以上
+             * 网络请求用的是 HttpUrlConnection
+             */
             if (Build.VERSION.SDK_INT >= 9) {
                 stack = new HurlStack();
             } else {
                 // Prior to Gingerbread, HttpUrlConnection was unreliable.
                 // See: http://android-developers.blogspot.com/2011/09/androids-http-clients.html
+                /*
+                 * API 9 以上：Android 2.3 以上
+                 * 网络请求用的是 Apache HttpClient
+                 * 需要 设置 Apache HttpClient userAgent
+                 */
                 stack = new HttpClientStack(AndroidHttpClient.newInstance(userAgent));
             }
         }
 
+        /*
+         * 创建一个 BasicNetwork
+         * 提供给 RequestQueue 使用
+         */
         Network network = new BasicNetwork(stack);
 
+        /*
+         * 创建一个 RequestQueue
+         * 需要提供的：
+         * 1. cacheDir，去创建一个 DiskBasedCache
+         * 2. network，BasicNetwork
+         */
         RequestQueue queue = new RequestQueue(new DiskBasedCache(cacheDir), network);
+        // 启动 请求队列
         queue.start();
 
         return queue;
     }
+
 
     /**
      * Creates a default instance of the worker pool and calls {@link RequestQueue#start()} on it.
      *
      * @param context A {@link Context} to use for creating the cache dir.
      * @return A started {@link RequestQueue} instance.
+     */
+    /*
+     * 默认 HttpStack = null
      */
     public static RequestQueue newRequestQueue(Context context) {
         return newRequestQueue(context, null);
