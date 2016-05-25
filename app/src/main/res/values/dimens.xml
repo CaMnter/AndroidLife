@@ -7,7 +7,6 @@
 
     <dimen name="text_appearance_span">16sp</dimen>
 
-
     <dimen name="qzone_omit_tv">12sp</dimen>
     <dimen name="topic_omit_tv">12sp</dimen>
 
@@ -19,4 +18,6 @@
 
     <dimen name="section_name_tv">16sp</dimen>
     <dimen name="section_header_tv">13sp</dimen>
+
+    <dimen name="volley_get_label">16sp</dimen>
 </resources>

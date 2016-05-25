@@ -143,6 +143,7 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(CircleImageSectionActivity.class);
         this.classes.add(RoundImageSectionActivity.class);
         this.classes.add(LruCacheActivity.class);
+        this.classes.add(VolleyActivity.class);
 
         this.adapter = new MainRecyclerViewAdapter();
         this.adapter.setList(classes);

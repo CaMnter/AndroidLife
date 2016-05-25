@@ -53,6 +53,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:recyclerview-v7:23.2.0'
     compile 'com.android.support:design:23.2.0'
+    compile 'com.google.code.gson:gson:2.4'
+
     // camnter
     compile 'com.camnter.easyslidingtabs:easyslidingtabs:0.2.1'
     compile 'com.camnter.easyrecyclerview:easyrecyclerview:1.3'
@@ -80,5 +82,6 @@ dependencies {
 
     compile project(':otto')
     compile project(':xfermode')
+    compile project(':volley')
 
 }

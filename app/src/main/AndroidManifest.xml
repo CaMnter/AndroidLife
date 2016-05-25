@@ -173,6 +173,9 @@
             android:name=".views.activity.EasyArcLoadingActivity"
             android:label="EasyArcLoadingActivity"/>
         <activity
+            android:name=".views.activity.VolleyActivity"
+            android:label="VolleyActivity"/>
+        <activity
             android:name="com.camnter.xfermode.XfermodesActivity"
             android:label="XfermodesActivity"/>
         <activity
