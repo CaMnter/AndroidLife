@@ -22,20 +22,19 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
-
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowBitmapFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
-
-@RunWith(RobolectricTestRunner.class)
-public class ImageRequestTest {
+@RunWith(RobolectricTestRunner.class) public class ImageRequestTest {
 
     @Test public void parseNetworkResponse_resizing() throws Exception {
         // This is a horrible hack but Robolectric doesn't have a way to provide
@@ -73,7 +72,6 @@ public class ImageRequestTest {
         // No resize
         verifyResize(jpeg, 0, 0, scalteType, 1024, 500);
 
-
         // Scale the image uniformly (maintain the image's aspect ratio) so that
         // both dimensions (width and height) of the image will be equal to or
         // larger than the corresponding dimension of the view.
@@ -97,7 +95,6 @@ public class ImageRequestTest {
 
         // No resize
         verifyResize(jpeg, 0, 0, scalteType, 1024, 500);
-
 
         // Scale in X and Y independently, so that src matches dst exactly. This
         // may change the aspect ratio of the src.
@@ -123,8 +120,8 @@ public class ImageRequestTest {
         verifyResize(jpeg, 0, 0, scalteType, 1024, 500);
     }
 
-    private void verifyResize(NetworkResponse networkResponse, int maxWidth, int maxHeight,
-                              ScaleType scaleType, int expectedWidth, int expectedHeight) {
+
+    private void verifyResize(NetworkResponse networkResponse, int maxWidth, int maxHeight, ScaleType scaleType, int expectedWidth, int expectedHeight) {
         ImageRequest request = new ImageRequest("", null, maxWidth, maxHeight, scaleType,
                 Config.RGB_565, null);
         Response<Bitmap> response = request.parseNetworkResponse(networkResponse);
@@ -135,6 +132,7 @@ public class ImageRequestTest {
         assertEquals(expectedWidth, bitmap.getWidth());
         assertEquals(expectedHeight, bitmap.getHeight());
     }
+
 
     @Test public void findBestSampleSize() {
         // desired == actual == 1
@@ -150,6 +148,7 @@ public class ImageRequestTest {
         assertEquals(4, ImageRequest.findBestSampleSize(100, 200, 24, 50));
     }
 
+
     private static byte[] readInputStream(InputStream in) throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
@@ -161,16 +160,18 @@ public class ImageRequestTest {
         return bytes.toByteArray();
     }
 
-    @Test
-    public void publicMethods() throws Exception {
+
+    @Test public void publicMethods() throws Exception {
         // Catch-all test to find API-breaking changes.
-        assertNotNull(ImageRequest.class.getConstructor(String.class, Response.Listener.class,
-                int.class, int.class, Bitmap.Config.class, Response.ErrorListener.class));
-        assertNotNull(ImageRequest.class.getConstructor(String.class, Response.Listener.class,
-                int.class, int.class, ImageView.ScaleType.class, Bitmap.Config.class,
-                Response.ErrorListener.class));
+        assertNotNull(
+                ImageRequest.class.getConstructor(String.class, Response.Listener.class, int.class,
+                        int.class, Bitmap.Config.class, Response.ErrorListener.class));
+        assertNotNull(
+                ImageRequest.class.getConstructor(String.class, Response.Listener.class, int.class,
+                        int.class, ImageView.ScaleType.class, Bitmap.Config.class,
+                        Response.ErrorListener.class));
         assertEquals(ImageRequest.DEFAULT_IMAGE_TIMEOUT_MS, 1000);
         assertEquals(ImageRequest.DEFAULT_IMAGE_MAX_RETRIES, 2);
-        assertEquals(ImageRequest.DEFAULT_IMAGE_BACKOFF_MULT, 2f);
+        assertEquals(ImageRequest.DEFAULT_IMAGE_BACKOFF_MULT, 2f, 2f);
     }
 }
