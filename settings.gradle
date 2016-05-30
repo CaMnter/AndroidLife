@@ -1,1 +1,4 @@
-include ':app', ':otto', ':xfermode', ':volley', ':agera'
+include ':app',
+        ':otto',
+        ':volley',
+        ':agera'

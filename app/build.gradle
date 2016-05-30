@@ -81,7 +81,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
 
     compile project(':otto')
-    compile project(':xfermode')
     compile project(':volley')
     compile project(':agera')
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.camnter.xfermode;
+package com.camnter.newlife.ui.activity.xfermode;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

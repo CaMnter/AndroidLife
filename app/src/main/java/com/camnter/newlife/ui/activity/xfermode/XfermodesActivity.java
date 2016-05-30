@@ -1,4 +1,4 @@
-package com.camnter.xfermode;
+package com.camnter.newlife.ui.activity.xfermode;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -176,7 +176,7 @@
             android:name=".ui.activity.VolleyActivity"
             android:label="VolleyActivity"/>
         <activity
-            android:name="com.camnter.xfermode.XfermodesActivity"
+            android:name=".ui.activity.xfermode.XfermodesActivity"
             android:label="XfermodesActivity"/>
         <activity
             android:name=".framework.rxandroid.RxSyncActivity"

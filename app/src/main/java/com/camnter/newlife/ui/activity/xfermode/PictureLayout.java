@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.camnter.xfermode;
+package com.camnter.newlife.ui.activity.xfermode;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -25,7 +25,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-
 
 public class PictureLayout extends ViewGroup {
     private final Picture mPicture = new Picture();

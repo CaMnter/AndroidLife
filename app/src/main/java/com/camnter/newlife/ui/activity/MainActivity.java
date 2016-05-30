@@ -38,7 +38,7 @@ import com.camnter.newlife.ui.activity.util.DateUtilActivity;
 import com.camnter.newlife.ui.activity.util.DeviceUtilActivity;
 import com.camnter.newlife.ui.activity.util.ReflectionUtilActivity;
 import com.camnter.newlife.ui.activity.util.ResourcesUtilActivity;
-import com.camnter.xfermode.XfermodesActivity;
+import com.camnter.newlife.ui.activity.xfermode.XfermodesActivity;
 import java.util.ArrayList;
 import me.drakeet.newlife.RxBusActivity;
 

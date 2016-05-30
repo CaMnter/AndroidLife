@@ -9,11 +9,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:onClick="call"
-        android:text="@string/agera_call"/>
+        android:onClick="call1"
+        android:text="@string/agera_call_1"/>
 
     <TextView
-        android:id="@+id/agera_observable_text"
+        android:id="@+id/agera_observable_text_one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
@@ -21,6 +21,25 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:textStyle="bold"
-        android:text="@string/agera_waiting_for_call"/>
+        android:text="@string/agera_waiting_for_call_1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:textSize="17sp"
+        android:text="@string/agera_repository"/>
+
+    <TextView
+        android:id="@+id/agera_observable_text_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/theme_purple"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:text="@string/agera_waiting_for_call_2"/>
 
 </LinearLayout>
