@@ -45,7 +45,11 @@
     <string name="volley_get_label_text">GET</string>
     <string name="agera_call_1">Call-1</string>
     <string name="agera_call_2">Call-2</string>
-    <string name="agera_waiting_for_call_1">waiting for call-1</string>
-    <string name="agera_waiting_for_call_2">waiting for call-2</string>
-    <string name="agera_repository">Repository:</string>
+    <string name="agera_waiting_for_test">waiting for test</string>
+    <string name="agera_repository_test_1">Test-1 Observable:</string>
+    <string name="agera_repository_test_2">Test-2 Repository:</string>
+    <string name="agera_repository_test_3">Test-3 Transform Repository:</string>
+    <string name="agera_repository_test_4">Test-4 Executor Repository:</string>
+    <string name="agera_repository_test_5">Test-5 Error Handling Repository:</string>
+    <string name="agera_repository_test_6">Test-6 Receiver Repository:</string>
 </resources>

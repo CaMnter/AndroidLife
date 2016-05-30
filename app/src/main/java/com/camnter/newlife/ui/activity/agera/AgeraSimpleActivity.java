@@ -1,19 +1,25 @@
 package com.camnter.newlife.ui.activity.agera;
 
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.google.android.agera.Function;
+import com.google.android.agera.Merger;
 import com.google.android.agera.Observable;
+import com.google.android.agera.Receiver;
 import com.google.android.agera.Repositories;
 import com.google.android.agera.Repository;
+import com.google.android.agera.Result;
 import com.google.android.agera.Supplier;
 import com.google.android.agera.Updatable;
 import java.util.UUID;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Description：AgeraSimpleActivity
@@ -24,8 +30,16 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.agera_observable_text_one) TextView observableOneText;
     @Bind(R.id.agera_observable_text_two) TextView observableTwoText;
+    @Bind(R.id.agera_observable_text_three) TextView observableThreeText;
+    @Bind(R.id.agera_observable_text_four) TextView observableFourText;
+    @Bind(R.id.agera_observable_text_five) TextView observableFiveText;
+    @Bind(R.id.agera_observable_text_six) TextView observableSixText;
 
-    private Observable observable = new Observable() {
+    /*************************
+     * Test - 1 - Observable *
+     *************************/
+
+    private Observable observableTestOne = new Observable() {
         @Override public void addUpdatable(@NonNull Updatable updatable) {
             updatable.update();
         }
@@ -42,22 +56,173 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
         }
     };
 
-    private Supplier<String> supplier = new Supplier<String>() {
+    /*************************
+     * Test - 2 - Repository *
+     *************************/
+
+    private Supplier<String> supplierTestTwo = new Supplier<String>() {
         @NonNull @Override public String get() {
             return "Jud: " + UUID.randomUUID().toString();
         }
     };
 
-    private Repository<String> repository = Repositories
+    private Repository<String> repositoryTestTwo = Repositories
             .repositoryWithInitialValue("Tes")
             .observe()
             .onUpdatesPerLoop()
-            .thenGetFrom(this.supplier)
+            .thenGetFrom(this.supplierTestTwo)
             .compile();
 
     private Updatable updatableTwo = new Updatable() {
         @Override public void update() {
             observableTwoText.setText("Jud: " + UUID.randomUUID().toString());
+        }
+    };
+
+    /************************
+     * Test - 3 - Transform *
+     ************************/
+
+    private Repository<String> repositoryTestThree = Repositories
+            .repositoryWithInitialValue("Tes")
+            .observe()
+            .onUpdatesPerLoop()
+            .getFrom(new Supplier<Integer>() {
+                @NonNull @Override public Integer get() {
+                    return 6;
+                }
+            })
+            .transform(new Function<Integer, String>() {
+                @NonNull @Override public String apply(@NonNull Integer input) {
+                    return "Save you from anything " + input;
+                }
+            })
+            .thenMergeIn(new Supplier<Integer>() {
+                @NonNull @Override public Integer get() {
+                    return 7;
+                }
+            }, new Merger<String, Integer, String>() {
+                @NonNull @Override
+                public String merge(@NonNull String s, @NonNull Integer integer) {
+                    return s + " and " + integer;
+                }
+            })
+            .compile();
+
+    private Updatable updatableThree = new Updatable() {
+        @Override public void update() {
+            observableThreeText.setText(repositoryTestThree.get());
+        }
+    };
+
+    /***********************
+     * Test - 4 - Executor *
+     ***********************/
+
+    private Executor executor = Executors.newFixedThreadPool(
+            Runtime.getRuntime().availableProcessors());
+
+    private Repository<String> repositoryTestFour = Repositories
+            .repositoryWithInitialValue("Tes")
+            .observe()
+            .onUpdatesPerLoop()
+            .goTo(executor)
+            .thenGetFrom(new Supplier<String>() {
+                @NonNull @Override public String get() {
+                    if (Looper.myLooper() != null || Looper.myLooper() == Looper.getMainLooper()) {
+                        return "Main UI Thread: Save you from anything";
+                    } else {
+                        return "Child Thread(" + Thread.currentThread().getId() +
+                                "): Save you from anything";
+                    }
+                }
+            })
+            .compile();
+
+    private Updatable updatableFour = new Updatable() {
+        @Override public void update() {
+            observableFourText.setText(repositoryTestFour.get());
+        }
+    };
+
+    /*****************************
+     * Test - 5 - Error Handling *
+     *****************************/
+
+    private Repository<String> repositoryTestFive = Repositories
+            .repositoryWithInitialValue("Tes")
+            .observe()
+            .onUpdatesPerLoop()
+            .attemptGetFrom(new Supplier<Result<String>>() {
+                @NonNull @Override public Result<String> get() {
+                    try {
+                        throw new RuntimeException("Save you from anything 06");
+                    } catch (Exception e) {
+                        return Result.failure(e);
+                    }
+                }
+            })
+            .orEnd(new Function<Throwable, String>() {
+                @NonNull @Override public String apply(@NonNull Throwable input) {
+                    return "Throwable message: " + input.getMessage();
+                }
+            })
+            .thenTransform(new Function<String, String>() {
+                @NonNull @Override public String apply(@NonNull String input) {
+                    return input;
+                }
+            })
+            .compile();
+
+    private Updatable updatableFive = new Updatable() {
+        @Override public void update() {
+            observableFiveText.setText(repositoryTestFive.get());
+        }
+    };
+
+    /***********************
+     * Test - 6 - Receiver *
+     ***********************/
+
+    private Repository<Result<String>> repositoryTestSix = Repositories
+            .repositoryWithInitialValue(Result.<String>absent())
+            .observe()
+            .onUpdatesPerLoop()
+            .attemptGetFrom(new Supplier<Result<String>>() {
+                @NonNull @Override public Result<String> get() {
+                    try {
+                        throw new RuntimeException("Save you from anything 06");
+                    } catch (Exception e) {
+                        return Result.failure(e);
+                    }
+                }
+            })
+            .orEnd(new Function<Throwable, Result<String>>() {
+                @NonNull @Override public Result<String> apply(@NonNull Throwable input) {
+                    return Result.failure(input);
+                }
+            })
+            .thenTransform(new Function<String, Result<String>>() {
+                @NonNull @Override public Result<String> apply(@NonNull String input) {
+                    return Result.absentIfNull(input);
+                }
+            })
+            .compile();
+
+    private Updatable updatableSix = new Updatable() {
+        @Override public void update() {
+            repositoryTestSix
+                    .get()
+                    .ifFailedSendTo(new Receiver<Throwable>() {
+                        @Override public void accept(@NonNull Throwable value) {
+                            observableSixText.setText("ifFailedSendTo -> " + value);
+                        }
+                    })
+                    .ifSucceededSendTo(new Receiver<String>() {
+                        @Override public void accept(@NonNull String value) {
+                            observableSixText.setText("ifSucceededSendTo -> " + value);
+                        }
+                    });
         }
     };
 
@@ -80,7 +245,17 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
     @Override protected void initViews(Bundle savedInstanceState) {
         this.setTitle("AgeraSimpleActivity");
         ButterKnife.bind(this);
-        this.repository.addUpdatable(this.updatableTwo);
+        this.playAgera();
+    }
+
+
+    private void playAgera() {
+        this.observableTestOne.addUpdatable(this.updatableOne);
+        this.repositoryTestTwo.addUpdatable(this.updatableTwo);
+        this.repositoryTestThree.addUpdatable(this.updatableThree);
+        this.repositoryTestFour.addUpdatable(this.updatableFour);
+        this.repositoryTestFive.addUpdatable(this.updatableFive);
+        this.repositoryTestSix.addUpdatable(this.updatableSix);
     }
 
 
@@ -97,10 +272,5 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
      */
     @Override protected void initData() {
 
-    }
-
-
-    public void call1(View view) {
-        observable.addUpdatable(this.updatableOne);
     }
 }
