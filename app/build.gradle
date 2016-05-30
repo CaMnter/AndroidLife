@@ -83,5 +83,6 @@ dependencies {
     compile project(':otto')
     compile project(':xfermode')
     compile project(':volley')
+    compile project(':agera')
 
 }
