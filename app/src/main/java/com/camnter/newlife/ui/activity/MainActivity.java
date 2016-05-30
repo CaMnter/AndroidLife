@@ -16,6 +16,7 @@ import com.camnter.newlife.framework.rxandroid.RxAsyncActivity;
 import com.camnter.newlife.framework.rxandroid.RxMapActivity;
 import com.camnter.newlife.framework.rxandroid.RxSyncActivity;
 import com.camnter.newlife.mvp.MvpActivity;
+import com.camnter.newlife.ui.activity.agera.AgeraActivity;
 import com.camnter.newlife.ui.activity.design.CoordinatorLayoutActivity;
 import com.camnter.newlife.ui.activity.design.FloatingActionButtonActivity;
 import com.camnter.newlife.ui.activity.design.NavigationViewActivity;
@@ -154,6 +155,7 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(RoundImageSectionActivity.class);
         this.classes.add(LruCacheActivity.class);
         this.classes.add(VolleyActivity.class);
+        this.classes.add(AgeraActivity.class);
     }
 
 

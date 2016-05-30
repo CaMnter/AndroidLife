@@ -208,6 +208,12 @@
         <activity
             android:name=".ui.activity.lrucache.LruCacheActivity"
             android:label="LruCacheActivity"/>
+        <activity
+            android:name=".ui.activity.agera.AgeraActivity"
+            android:label="AgeraActivity"/>
+        <activity
+            android:name=".ui.activity.agera.AgeraSimpleActivity"
+            android:label="AgeraSimpleActivity"/>
 
         <activity
             android:name="me.drakeet.newlife.RxBusActivity"

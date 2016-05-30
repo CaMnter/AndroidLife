@@ -43,4 +43,6 @@
     <string name="lru_cache_picture_3"><![CDATA[<3>]]></string>
     <string name="lru_cache_picture_4"><![CDATA[<4>]]></string>
     <string name="volley_get_label_text">GET</string>
+    <string name="agera_call">Call</string>
+    <string name="agera_waiting_for_call">waiting for call</string>
 </resources>
