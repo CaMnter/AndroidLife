@@ -214,6 +214,9 @@
         <activity
             android:name=".ui.activity.agera.AgeraSimpleActivity"
             android:label="AgeraSimpleActivity"/>
+        <activity
+            android:name=".ui.activity.agera.AgeraClickActivity"
+            android:label="AgeraClickActivity"/>
 
         <activity
             android:name="me.drakeet.newlife.RxBusActivity"

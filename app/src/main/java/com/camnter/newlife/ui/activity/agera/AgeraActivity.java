@@ -12,6 +12,7 @@ public class AgeraActivity extends MainActivity {
     @Override protected void setListData() {
         this.showTag = false;
         this.classes.add(AgeraSimpleActivity.class);
+        this.classes.add(AgeraClickActivity.class);
     }
 
 
