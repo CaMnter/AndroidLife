@@ -9,14 +9,20 @@ import butterknife.ButterKnife;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.google.android.agera.Function;
+import com.google.android.agera.Functions;
 import com.google.android.agera.Merger;
 import com.google.android.agera.Observable;
+import com.google.android.agera.Predicate;
 import com.google.android.agera.Receiver;
 import com.google.android.agera.Repositories;
 import com.google.android.agera.Repository;
+import com.google.android.agera.Reservoir;
+import com.google.android.agera.Reservoirs;
 import com.google.android.agera.Result;
 import com.google.android.agera.Supplier;
 import com.google.android.agera.Updatable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -34,6 +40,8 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
     @Bind(R.id.agera_observable_text_four) TextView observableFourText;
     @Bind(R.id.agera_observable_text_five) TextView observableFiveText;
     @Bind(R.id.agera_observable_text_six) TextView observableSixText;
+    @Bind(R.id.agera_observable_text_seven) TextView observableSevenText;
+    @Bind(R.id.agera_observable_text_eight) TextView observableEightText;
 
     /*************************
      * Test - 1 - Observable *
@@ -226,6 +234,100 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
         }
     };
 
+    /************************
+     * Test - 7 - Reservoir *
+     ************************/
+
+    private Reservoir<String> reservoir = Reservoirs.reservoir();
+
+    private Repository<String> repositoryTestSeven = Repositories
+            .repositoryWithInitialValue("Tes")
+            .observe()
+            .onUpdatesPerLoop()
+            .attemptGetFrom(reservoir)
+            .orSkip()
+            .thenTransform(new Function<String, String>() {
+                @NonNull @Override public String apply(@NonNull String input) {
+                    return "Reservoir test: Save you from anything";
+                }
+            })
+            .compile();
+
+    private Updatable updatableSeven = new Updatable() {
+        @Override public void update() {
+        }
+    };
+
+    /***********************
+     * Test - 8 - Function *
+     ***********************/
+
+    private static final String filterString = "???";
+
+    private Function<String, Integer> function = Functions
+            .functionFrom(String.class)
+            .unpack(
+                    new Function<String, List<String>>() {
+                        @NonNull @Override public List<String> apply(@NonNull String input) {
+                            List<String> list = new ArrayList<>();
+                            list.add("Function test:");
+                            list.add(" ");
+                            list.add(input);
+                            list.add(" ");
+                            list.add("you");
+                            list.add(" ");
+                            list.add("from");
+                            list.add(" ");
+                            list.add("anything");
+                            list.add(" ");
+                            list.add(filterString);
+                            return list;
+                        }
+                    })
+            .filter(new Predicate<String>() {
+                @Override public boolean apply(@NonNull String value) {
+                    return value.equals(filterString);
+                }
+            })
+            .map(new Function<String, byte[]>() {
+                @NonNull @Override public byte[] apply(@NonNull String input) {
+                    return input.getBytes();
+                }
+            })
+            .thenApply(new Function<List<byte[]>, Integer>() {
+                @NonNull @Override public Integer apply(@NonNull List<byte[]> input) {
+                    int totalLength = 0;
+                    for (byte[] byteArray : input) {
+                        totalLength += byteArray.length;
+                    }
+                    return totalLength;
+                }
+            });
+
+    private Repository<String> repositoryTestEight = Repositories
+            .repositoryWithInitialValue("Tes")
+            .observe()
+            .onUpdatesPerLoop()
+            .getFrom(
+                    new Supplier<String>() {
+                        @NonNull @Override public String get() {
+                            return "Save";
+                        }
+                    })
+            .transform(function)
+            .thenTransform(new Function<Integer, String>() {
+                @NonNull @Override public String apply(@NonNull Integer input) {
+                    return "Function test: list size = " + input;
+                }
+            })
+            .compile();
+
+    private Updatable updatableEight = new Updatable() {
+        @Override public void update() {
+            observableEightText.setText(repositoryTestEight.get());
+        }
+    };
+
 
     /**
      * Fill in layout id
@@ -256,6 +358,9 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
         this.repositoryTestFour.addUpdatable(this.updatableFour);
         this.repositoryTestFive.addUpdatable(this.updatableFive);
         this.repositoryTestSix.addUpdatable(this.updatableSix);
+        // Reservoir
+        this.repositoryTestSeven.addUpdatable(this.updatableSeven);
+        this.repositoryTestEight.addUpdatable(this.updatableEight);
     }
 
 
