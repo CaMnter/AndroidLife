@@ -21,11 +21,18 @@ import android.support.annotation.NonNull;
  * Determines a true or false value for a given input.
  *
  * <p>The {@link Predicates} class provides common predicates and related utilities.
+ *
+ * Agera 中抽象出来的 断定 接口
+ * 用于 断定 给定的数据 是 正确的 还是 错误的
+ * Predicates 中 提供常见的 断定实现类 和 相关工具
  */
 public interface Predicate<T> {
 
-  /**
-   * Returns whether the predicate applies to the input {@code value}.
-   */
-  boolean apply(@NonNull T value);
+    /**
+     * Returns whether the predicate applies to the input {@code value}.
+     * 通过给定值，根据相应的 断定逻辑 去断定这个值是 正确的 还是 错误的
+     * true = 正确的
+     * false = 错误的
+     */
+    boolean apply(@NonNull T value);
 }

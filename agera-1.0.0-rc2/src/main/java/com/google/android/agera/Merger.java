@@ -19,12 +19,18 @@ import android.support.annotation.NonNull;
 
 /**
  * Takes two inputs and merges them into one output.
+ *
+ * Agera 中抽象出来的 合并 接口
+ * 用于将 两个输入值，合成一个值
+ * 可以是不同类型之间的转换: A+B=C
+ * 也可以是 O+O=O
+ * 默认三个类型为：Object, Object, Object
  */
 public interface Merger<TFirst, TSecond, TTo> {
 
-  /**
-   * Computes the return value merged from the two given input values.
-   */
-  @NonNull
-  TTo merge(@NonNull TFirst first, @NonNull TSecond second);
+    /**
+     * Computes the return value merged from the two given input values.
+     * 合并方法
+     */
+    @NonNull TTo merge(@NonNull TFirst first, @NonNull TSecond second);
 }

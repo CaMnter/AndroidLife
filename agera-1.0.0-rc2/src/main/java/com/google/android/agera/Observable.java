@@ -31,6 +31,10 @@ import android.support.annotation.NonNull;
  * that the {@code Observable} is <i>active</i>, add an {@link Updatable}.
  *
  * <p>Added {@link Updatable}s shall be called back on the same thread they were added from.
+ *
+ * Agera 中抽象出来的 被观察者 接口
+ * 可以通过 addUpdatable(...) 添加一个 观察者（ Updatable ）
+ * 也可以通过 removeUpdatable(...) 删除一个 观察者 （ Updatable ）
  */
 public interface Observable {
 
@@ -39,6 +43,11 @@ public interface Observable {
    *
    * @throws IllegalStateException if the {@link Updatable} was already added or if it was called
    * from a non-Looper thread
+   *
+   * 添加一个 观察者（ Updatable ）
+   *
+   * 如果已经 添加了 观察者（ Updatable ）或者 在一个没有 Looper.prepare() 的线程被调用的话
+   * 会抛出 IllegalStateException
    */
   void addUpdatable(@NonNull Updatable updatable);
 
@@ -46,6 +55,9 @@ public interface Observable {
    * Removes {@code updatable} from the {@code Observable}.
    *
    * @throws IllegalStateException if the {@link Updatable} was not added
+   *
+   * 删除一个 观察者（ Updatable ）
+   * 如果 这个 观察者（ Updatable ）没有被添加，会抛出 IllegalStateException
    */
   void removeUpdatable(@NonNull Updatable updatable);
 }
