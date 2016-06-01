@@ -39,11 +39,11 @@ package com.google.android.agera;
  * balancing.
  *
  * Agera 中抽象出来的 水库 接口
- * 继承了 数据接受者（ Receiver ）和 仓库（ Repository ）接口
- * 然而，仓库（ Repository ）接口 又继承了 被观察者（ Observable ）和 数据供应者（ Supplier ）接口
- * 就同时具备了它们（ Receiver, Observable, Supplier  ）的基本功能：
+ * 继承了 数据接受者（ Receiver ）和 仓库（ Repository<Result<T>> ）接口
+ * 然而，仓库（ Repository<Result<T>> ）接口 又继承了 被观察者（ Observable ）和 数据供应者（ Supplier<Result<T>> ）接口
+ * 就同时具备了它们（ Receiver, Observable, Supplier<Result<T>>  ）的基本功能：
  * 1.作为被观察者，去通知观察者（ Updatable ）去更新数据
- * 2.作为数据供应者，去提供数据
+ * 2.作为数据供应者，去提供数据 ( Result<T> )
  * 3.作为数据接受者，去接受外部数据
  */
 public interface Reservoir<T> extends Receiver<T>, Repository<Result<T>> {}
