@@ -19,11 +19,15 @@ import android.support.annotation.NonNull;
 
 /**
  * A receiver of objects.
+ *
+ * Agera 中抽象出来的 数据接受者 接口
+ * 用于接收 外部给定的数据
  */
 public interface Receiver<T> {
 
-  /**
-   * Accepts the given {@code value}.
-   */
-  void accept(@NonNull T value);
+    /**
+     * Accepts the given {@code value}.
+     * 接收 外部给定的数据
+     */
+    void accept(@NonNull T value);
 }

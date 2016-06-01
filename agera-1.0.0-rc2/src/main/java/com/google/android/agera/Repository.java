@@ -23,18 +23,18 @@ package com.google.android.agera;
  *
  * <p>A {@code Repository} can either be implemented as
  * <ul>
- *   <li><i>Direct</i> - The contained data is always available, or can be calculated synchronously
- *   <li><i>Deferred</i> - The contained data is calculated/fetched asynchronously
+ * <li><i>Direct</i> - The contained data is always available, or can be calculated synchronously
+ * <li><i>Deferred</i> - The contained data is calculated/fetched asynchronously
  * </ul>
  *
  * <p>A {@code Repository} thus have two primary states (in addition to the different state of the
  * data it contains)
  * <ul>
- *   <li><i>Inactive</i> - There are no added {@link Updatable}s and the {@link Repository} is
- *   <i>deferred</i>. The {@link Repository} may choose to free up data to save memory and the
- *   data it returns calling {@link Repository#get()} will not be fresh.
- *   <li><i>Active</i> - There are added {@link Updatable}s or the {@link Repository} is
- *   <i>direct</i>. The {@link Repository} is keeping it's data updated based on external events.
+ * <li><i>Inactive</i> - There are no added {@link Updatable}s and the {@link Repository} is
+ * <i>deferred</i>. The {@link Repository} may choose to free up data to save memory and the
+ * data it returns calling {@link Repository#get()} will not be fresh.
+ * <li><i>Active</i> - There are added {@link Updatable}s or the {@link Repository} is
+ * <i>direct</i>. The {@link Repository} is keeping it's data updated based on external events.
  * </ul>
  *
  * <p>A <i>direct</i> {@code Repository} is always <i>active</i>.
@@ -43,7 +43,14 @@ package com.google.android.agera;
  * the fresh data can be fetched using {@link Supplier#get()}.
  *
  * <p>When using the {@code Repository} interface it is not possible to know if the implementation
- * is <i>direct</i> or <i>deferred</i>. It is therefore important to always add an {@link Updatable}
+ * is <i>direct</i> or <i>deferred</i>. It is therefore important to always add an {@link
+ * Updatable}
  * to wake up the {@code Repository} when it is needed.
+ *
+ * Agera 中抽象出来的 仓库 接口
+ * 继承了 被观察者（ Observable ）和 数据供应者（ Supplier ）接口
+ * 说明了 仓库 可以
+ * 1.作为被观察者，去通知观察者（ Updatable ）去更新数据
+ * 2.作为数据供应者，去提供数据
  */
 public interface Repository<T> extends Observable, Supplier<T> {}
