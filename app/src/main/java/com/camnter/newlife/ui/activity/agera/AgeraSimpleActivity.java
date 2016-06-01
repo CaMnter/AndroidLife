@@ -248,13 +248,14 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
             .orSkip()
             .thenTransform(new Function<String, String>() {
                 @NonNull @Override public String apply(@NonNull String input) {
-                    return "Reservoir test: Save you from anything";
+                    return "Reservoir test: Save you from anything " + input;
                 }
             })
             .compile();
 
     private Updatable updatableSeven = new Updatable() {
         @Override public void update() {
+            observableSevenText.setText(repositoryTestSeven.get());
         }
     };
 

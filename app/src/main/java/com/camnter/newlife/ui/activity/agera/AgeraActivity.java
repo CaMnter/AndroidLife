@@ -13,6 +13,7 @@ public class AgeraActivity extends MainActivity {
         this.showTag = false;
         this.classes.add(AgeraSimpleActivity.class);
         this.classes.add(AgeraClickActivity.class);
+        this.classes.add(AgeraBroadcastActivity.class);
     }
 
 
