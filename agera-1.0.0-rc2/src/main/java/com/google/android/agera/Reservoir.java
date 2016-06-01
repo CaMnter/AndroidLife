@@ -45,5 +45,7 @@ package com.google.android.agera;
  * 1.作为被观察者，去通知观察者（ Updatable ）去更新数据
  * 2.作为数据供应者，去提供数据 ( Result<T> )
  * 3.作为数据接受者，去接受外部数据
+ *
+ * 与 MutableRepository 几乎一模一样。但是，这里的 Repository 指定了 类型 Result<T>
  */
 public interface Reservoir<T> extends Receiver<T>, Repository<Result<T>> {}
