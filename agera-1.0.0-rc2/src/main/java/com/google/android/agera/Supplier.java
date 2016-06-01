@@ -20,13 +20,17 @@ import android.support.annotation.NonNull;
 /**
  * A supplier of data. Semantically, this could be a factory, generator, builder, or something else
  * entirely. No guarantees are implied by this interface.
+ *
+ * Agera 中抽象出来的 数据供应者 接口
+ * 可以指定类型，默认为 Object
  */
 public interface Supplier<T> {
 
-  /**
-   * Returns an instance of the appropriate type. The returned object may or may not be a new
-   * instance, depending on the implementation.
-   */
-  @NonNull
-  T get();
+    /**
+     * Returns an instance of the appropriate type. The returned object may or may not be a new
+     * instance, depending on the implementation.
+     *
+     * 提供对应的数据类型的数据，由开发者指定
+     */
+    @NonNull T get();
 }

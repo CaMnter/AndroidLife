@@ -18,11 +18,17 @@ package com.google.android.agera;
 /**
  * Called when when an event has occurred. Can be added to {@link Observable}s to be notified
  * of {@link Observable} events.
+ *
+ * Agera 中抽象出来的 观察者 接口
+ * 只有一个 唯一 的方法 update()
  */
 public interface Updatable {
 
-  /**
-   * Called when an event has occurred.
-   */
-  void update();
+    /**
+     * Called when an event has occurred.
+     *
+     * 观察者的 更新方法
+     * 事件发生时调用
+     */
+    void update();
 }
