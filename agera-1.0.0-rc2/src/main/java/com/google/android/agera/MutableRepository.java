@@ -21,5 +21,15 @@ package com.google.android.agera;
  * <p>If the new data does not {@linkplain Object#equals equal} to the old data, the added
  * {@link Updatable}s will be notified. {@link MutableRepository#accept(Object)} can be called on
  * any thread.
+ *
+ * Agera 中抽象出来的 可变仓库 接口
+ * 继承了 数据接受者（ Receiver ）和 仓库（ Repository ）
+ * 然而，仓库（ Repository ）接口 又继承了 被观察者（ Observable ）和 数据供应者（ Supplier ）接口
+ * 就同时具备了它们（ Receiver, Observable, Supplier  ）的基本功能：
+ * 1.作为被观察者，去通知观察者（ Updatable ）去更新数据
+ * 2.作为数据供应者，去提供数据
+ * 3.作为数据接受者，去接受外部数据
+ *
+ * 与 Reservoir 几乎一模一样。但是，Reservoir 中的 Repository 指定了 类型 Result<T>
  */
 public interface MutableRepository<T> extends Repository<T>, Receiver<T> {}
