@@ -2,6 +2,15 @@ AndroidLife
 ===========
 
 
+
+
+
+
+
+
+
+
+
 **The Android's life is very interesting and rich.**
 
 <img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36u099qk5j31401z4drv.jpg" width="320x"/>     
