@@ -19,11 +19,16 @@ import android.support.annotation.NonNull;
 
 /**
  * A receiver of two input objects.
+ *
+ * Agera 中抽象出来的 绑定 接口
+ * 可用于执行两个 数据流的合并
+ * 可以指定两个数据流的类型，默认都是 Object 类型
  */
 public interface Binder<TFirst, TSecond> {
 
-  /**
-   * Accepts the given values {@code first} and {@code second}.
-   */
-  void bind(@NonNull TFirst first, @NonNull TSecond second);
+    /**
+     * Accepts the given values {@code first} and {@code second}.
+     * 绑定、合并数据
+     */
+    void bind(@NonNull TFirst first, @NonNull TSecond second);
 }

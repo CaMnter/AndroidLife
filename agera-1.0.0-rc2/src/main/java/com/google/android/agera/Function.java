@@ -21,12 +21,19 @@ import android.support.annotation.NonNull;
  * Determines an output value based on an input value.
  *
  * <p>The {@link Functions} class provides common functions and related utilities.
+ *
+ * Agera 中抽象出来的 方法 接口
+ * 用于将 一个输入值 转换成 另一个值
+ * 可以是不同类型之间的转换: A->B
+ * 也可以是相同类型之间的转换：A->A
+ * 默认三个类型为：Object, Object
+ * 和 断定（ Merger ）接口的区别在于：Function 是 一对一 的关系，Merger 是 二次一 的关系
  */
 public interface Function<TFrom, TTo> {
 
-  /**
-   * Returns the result of applying this function to {@code input}.
-   */
-  @NonNull
-  TTo apply(@NonNull TFrom input);
+    /**
+     * Returns the result of applying this function to {@code input}.
+     * 转换方法
+     */
+    @NonNull TTo apply(@NonNull TFrom input);
 }

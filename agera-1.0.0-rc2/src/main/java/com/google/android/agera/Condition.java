@@ -19,11 +19,17 @@ package com.google.android.agera;
  * Determines whether a condition applies.
  *
  * <p>The {@link Conditions} class provides common conditions and related utilities.
+ *
+ * Agera 中抽象出来的 条件 接口
+ * 用于判断一个条件是否适用
+ * Conditions 中 提供常见的 条件实现类 和 相关工具
+ * 和 断定（ Predicate ）接口的区别在于：没有根据输入值去判断
  */
 public interface Condition {
 
-  /**
-   * Returns whether the condition applies.
-   */
-  boolean applies();
+    /**
+     * Returns whether the condition applies.
+     * 返回 条件是否适用
+     */
+    boolean applies();
 }
