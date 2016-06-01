@@ -1,4 +1,4 @@
 include ':app',
         ':otto',
         ':volley',
-        ':agera'
+        ':agera-1.0.0-rc2'

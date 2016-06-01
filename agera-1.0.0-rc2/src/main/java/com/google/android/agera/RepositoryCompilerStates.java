@@ -119,19 +119,18 @@ public interface RepositoryCompilerStates {
     @NonNull
     @Override
     <TCur> RTermination<TVal, Throwable, RFlow<TVal, TCur, ?>> attemptGetFrom(
-            @NonNull Supplier<Result<TCur>> attemptSupplier);
+        @NonNull Supplier<Result<TCur>> attemptSupplier);
 
     @NonNull
     @Override
     <TAdd, TCur> RFlow<TVal, TCur, ?> mergeIn(@NonNull Supplier<TAdd> supplier,
-                                              @NonNull
-                                              Merger<? super TPre, ? super TAdd, TCur> merger);
+        @NonNull Merger<? super TPre, ? super TAdd, TCur> merger);
 
     @NonNull
     @Override
     <TAdd, TCur> RTermination<TVal, Throwable, RFlow<TVal, TCur, ?>> attemptMergeIn(
-            @NonNull Supplier<TAdd> supplier,
-            @NonNull Merger<? super TPre, ? super TAdd, Result<TCur>> attemptMerger);
+        @NonNull Supplier<TAdd> supplier,
+        @NonNull Merger<? super TPre, ? super TAdd, Result<TCur>> attemptMerger);
 
     @NonNull
     @Override
@@ -140,7 +139,7 @@ public interface RepositoryCompilerStates {
     @NonNull
     @Override
     <TCur> RTermination<TVal, Throwable, RFlow<TVal, TCur, ?>> attemptTransform(
-            @NonNull Function<? super TPre, Result<TCur>> attemptFunction);
+        @NonNull Function<? super TPre, Result<TCur>> attemptFunction);
 
     // Asynchronous directives:
 
@@ -193,7 +192,7 @@ public interface RepositoryCompilerStates {
     @NonNull
     <TCur>
     RTermination<TVal, Throwable, ? extends RSyncFlow<TVal, TCur, ?>> attemptGetFrom(
-            @NonNull Supplier<Result<TCur>> attemptSupplier);
+        @NonNull Supplier<Result<TCur>> attemptSupplier);
 
     /**
      * Take the input value and the value newly obtained from the given supplier, merge them using
@@ -201,8 +200,7 @@ public interface RepositoryCompilerStates {
      */
     @NonNull
     <TAdd, TCur> RSyncFlow<TVal, TCur, ?> mergeIn(@NonNull Supplier<TAdd> supplier,
-                                                  @NonNull
-                                                  Merger<? super TPre, ? super TAdd, TCur> merger);
+        @NonNull Merger<? super TPre, ? super TAdd, TCur> merger);
 
     /**
      * Like {@link #mergeIn}, take the input value and the value newly obtained from the given
@@ -217,8 +215,8 @@ public interface RepositoryCompilerStates {
     @NonNull
     <TAdd, TCur>
     RTermination<TVal, Throwable, ? extends RSyncFlow<TVal, TCur, ?>> attemptMergeIn(
-            @NonNull Supplier<TAdd> supplier,
-            @NonNull Merger<? super TPre, ? super TAdd, Result<TCur>> attemptMerger);
+        @NonNull Supplier<TAdd> supplier,
+        @NonNull Merger<? super TPre, ? super TAdd, Result<TCur>> attemptMerger);
 
     /**
      * Transform the input value using the given function into the output value.
@@ -234,7 +232,7 @@ public interface RepositoryCompilerStates {
      */
     @NonNull
     <TCur> RTermination<TVal, Throwable, ? extends RSyncFlow<TVal, TCur, ?>> attemptTransform(
-            @NonNull Function<? super TPre, Result<TCur>> attemptFunction);
+        @NonNull Function<? super TPre, Result<TCur>> attemptFunction);
 
     /**
      * Check the input value with the given predicate. If the predicate applies, continue the data
@@ -252,8 +250,8 @@ public interface RepositoryCompilerStates {
      */
     @NonNull
     <TCase> RTermination<TVal, TCase, TSelf> check(
-            @NonNull Function<? super TPre, TCase> caseFunction,
-            @NonNull Predicate<? super TCase> casePredicate);
+        @NonNull Function<? super TPre, TCase> caseFunction,
+        @NonNull Predicate<? super TCase> casePredicate);
 
     /**
      * Send the input value to the given receiver, and then pass on the input value as the output of
@@ -289,7 +287,7 @@ public interface RepositoryCompilerStates {
      */
     @NonNull
     <TAdd> TSelf bindWith(@NonNull Supplier<TAdd> secondValueSupplier,
-                          @NonNull Binder<? super TPre, ? super TAdd> binder);
+        @NonNull Binder<? super TPre, ? super TAdd> binder);
 
     /**
      * End the data processing flow but without using the output value and without notifying the
@@ -319,8 +317,7 @@ public interface RepositoryCompilerStates {
      */
     @NonNull
     <TAdd> RConfig<TVal> thenMergeIn(@NonNull Supplier<TAdd> supplier,
-                                     @NonNull
-                                     Merger<? super TPre, ? super TAdd, ? extends TVal> merger);
+        @NonNull Merger<? super TPre, ? super TAdd, ? extends TVal> merger);
 
     /**
      * Perform the {@link #attemptMergeIn} directive and use the successful output value as the new
@@ -330,7 +327,7 @@ public interface RepositoryCompilerStates {
     <TAdd> RTermination<TVal, Throwable, RConfig<TVal>> thenAttemptMergeIn(
             @NonNull Supplier<TAdd> supplier,
             @NonNull Merger<? super TPre, ? super TAdd,
-                    ? extends Result<? extends TVal>> attemptMerger);
+                ? extends Result<? extends TVal>> attemptMerger);
 
     /**
      * Perform the {@link #transform} directive and use the output value as the new value of the
@@ -338,7 +335,7 @@ public interface RepositoryCompilerStates {
      */
     @NonNull
     RConfig<TVal> thenTransform(
-            @NonNull Function<? super TPre, ? extends TVal> function);
+        @NonNull Function<? super TPre, ? extends TVal> function);
 
     /**
      * Perform the {@link #attemptTransform} directive and use the successful output value as the

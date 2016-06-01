@@ -15,15 +15,6 @@
  */
 package com.google.android.agera;
 
-import android.os.Looper;
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
-import java.util.concurrent.Executor;
-
 import static com.google.android.agera.CompiledRepository.addBindWith;
 import static com.google.android.agera.CompiledRepository.addCheck;
 import static com.google.android.agera.CompiledRepository.addEnd;
@@ -39,6 +30,16 @@ import static com.google.android.agera.Functions.identityFunction;
 import static com.google.android.agera.Mergers.objectsUnequal;
 import static com.google.android.agera.Preconditions.checkNotNull;
 import static com.google.android.agera.Preconditions.checkState;
+
+import android.os.Looper;
+import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.concurrent.Executor;
 
 @SuppressWarnings({"unchecked, rawtypes"})
 final class RepositoryCompiler implements
