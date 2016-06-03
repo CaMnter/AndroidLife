@@ -24,11 +24,12 @@ import java.util.List;
  * using the type-safe declarative language.
  *
  * Agera 中抽象出来的 方法编译状态 接口
- * 由 FunctionCompilerStates 来编译（ create ）一个 Function
- * 并且规定了状态的执行顺序：
- * 1. FBase: 定义了 基本的 转换方法（ apply(...), thenApply(...) ）
- * 2. FItem，继承了 FBase，拥有 FBase 的基本方法
+ * 由 FunctionCompilerStates 编译（ create ）出 一个 Function
+ * 并且规定了方法状态的执行顺序：
+ * 1. FBase: 定义了 基本的 转换方法（ apply(...), thenApply(...) ），可以用 thenApply(...) 跳出流程，并完成编译
+ * 2. FItem，继承了 FBase，拥有 FBase 的基本方法，可以用 thenApply(...) 跳出流程，并完成编译
  * 3. FList，也继承了 FBase，也拥有 FBase 的基本方法
+ *           可以用 自带的 thenXxx(...) 方法跳出流程，并完成编译，包括 thenApply(...)
  *
  * FItem 中自身虽然没有 thenXxx 方法，去完成编译，但是 可以调用 FBase.thenApply(...) 去完成编译
  * FList 也是，可以调用 FBase.thenApply(...) 去完成编译
