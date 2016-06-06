@@ -220,7 +220,7 @@ public interface RepositoryCompilerStates {
          * @param attemptMerger 合并者
          * @param <TAdd> 供应者 的 目标类型
          * @param <TCur> 合并者 的 Result 目标类型
-         * @return 返回一个 RTermination 终止状态
+         * @return 返回 一个 RTermination 终止状态
          *
          * TVal 类型 作为 RTermination 仓库数据类型
          * Throwable 类型 作为 RTermination 流终止类型
@@ -231,10 +231,37 @@ public interface RepositoryCompilerStates {
                 @NonNull Supplier<TAdd> supplier,
                 @NonNull Merger<? super TPre, ? super TAdd, Result<TCur>> attemptMerger);
 
+        /**
+         * RFlow 转换操作
+         * 用于类型转换
+         * 与 getFrom(...) 的区别：
+         * getFrom(...) 是通过 Supplier 可以在提供数据时，进行间接的类型转换
+         * transform(...) 是通过 Function 进行直接的类型之间转换
+         *
+         * @param function 转换方法
+         * @param <TCur> 转换方法 的 目标类型
+         * @return 返回 一个 RFlow 流状态
+         *
+         * TVal 类型 作为 RFlow 仓库数据类型
+         * TCur 类型 作为 RFlow 上一个数据流输出类型
+         */
         @NonNull
         @Override <TCur> RFlow<TVal, TCur, ?> transform(
                 @NonNull Function<? super TPre, TCur> function);
 
+        /**
+         * RFlow 尝试转换操作
+         * 用于类型转换
+         * 可以截获异常，进行处理（ 转换方法+Result ）
+         *
+         * @param attemptFunction 转换方法
+         * @param <TCur> 转换方法 的 Result 目标类型
+         * @return 返回 一个 RTermination 终止状态
+         *
+         * TVal 类型 作为 RTermination 仓库数据类型
+         * Throwable 类型 作为 RTermination 流终止类型
+         * RFlow<TVal, TCur, ?> 类型 作为 RTermination 编译返回状态类型
+         */
         @NonNull
         @Override <TCur> RTermination<TVal, Throwable, RFlow<TVal, TCur, ?>> attemptTransform(
                 @NonNull Function<? super TPre, Result<TCur>> attemptFunction);
@@ -254,6 +281,14 @@ public interface RepositoryCompilerStates {
          * directives
          * with the same executor to achieve fairness.
          */
+        /**
+         * RFlow 线程池操作
+         *
+         * @param executor 线程池
+         * @return 一个 RFlow 流状态
+         *
+         * 所有类型跟执行 goTo 前的类型一样
+         */
         @NonNull TSelf goTo(@NonNull Executor executor);
 
         /**
@@ -267,6 +302,11 @@ public interface RepositoryCompilerStates {
          * should
          * be fairly lightweight in order not to block the callers of {@code get()} for too long.
          */
+        /**
+         * RFlow 懒加载操作
+         *
+         * @return 返回 一个 所有类型相同 RSyncFlow 同步流状态
+         */
         @NonNull RSyncFlow<TVal, TPre, ?> goLazy();
     }
 
@@ -276,12 +316,28 @@ public interface RepositoryCompilerStates {
      * @param <TVal> Value type of the repository.
      * @param <TPre> The output value type of the previous directive.
      * @param <TSelf> Self-type; for Java compiler type inference only.
+     *
+     * RSyncFlow 同步流状态
+     *
+     * TVal 类型 作为 RSyncFlow 仓库数据类型
+     * TPre 类型 作为 RSyncFlow 上一个数据流输出类型
      */
     interface RSyncFlow<TVal, TPre, TSelf extends RSyncFlow<TVal, TPre, TSelf>> {
 
         /**
          * Ignore the input value, and use the value newly obtained from the given supplier as the
          * output value.
+         */
+        /**
+         * RSyncFlow 获取数据操作
+         * 可类型转换（ 供应者 ）
+         *
+         * @param supplier 供应者
+         * @param <TCur> 供应者 的 目标类型
+         * @return 返回 一个 RSyncFlow 同步流状态
+         *
+         * TVal 类型 作为 RSyncFlow 仓库数据类型
+         * TCur 类型 作为 RSyncFlow 上一个数据流输出类型
          */
         @NonNull <TCur> RSyncFlow<TVal, TCur, ?> getFrom(@NonNull Supplier<TCur> supplier);
 
@@ -295,6 +351,18 @@ public interface RepositoryCompilerStates {
          * of
          * this directive.
          */
+        /**
+         * RSyncFlow 尝试获取数据操作
+         * 可以截获异常，进行处理（ 供应者+Result ）
+         *
+         * @param attemptSupplier Result 供应者
+         * @param <TCur> Result 供应者 的 目标类型
+         * @return 返回一个 RTermination 终止状态
+         *
+         * TVal 类型 作为 RTermination 仓库数据类型
+         * Throwable 类型 作为 RTermination 流终止类型
+         * RSyncFlow<TVal, TCur, ?> 类型 作为 RTermination 编译返回状态类型
+         */
         @NonNull <TCur>
         RTermination<TVal, Throwable, ? extends RSyncFlow<TVal, TCur, ?>> attemptGetFrom(
                 @NonNull Supplier<Result<TCur>> attemptSupplier);
@@ -303,6 +371,20 @@ public interface RepositoryCompilerStates {
          * Take the input value and the value newly obtained from the given supplier, merge them
          * using
          * the given merger, and use the resulting value as the output value.
+         */
+        /**
+         * RSyncFlow 合并操作
+         * 可类型转换（ 供应者 ）
+         * 可以合并供应者转换后的数据 和 之前的流处理结果数据（ 合并者 ）
+         *
+         * @param supplier 供应者
+         * @param merger 合并者
+         * @param <TAdd> 供应者 的 目标类型
+         * @param <TCur> 合并者 的 目标类型
+         * @return 返回 一个 RSyncFlow 同步流状态
+         *
+         * TVal 类型 作为 RSyncFlow 仓库数据类型
+         * TCur 类型 作为 RSyncFlow 上一个数据流输出类型
          */
         @NonNull <TAdd, TCur> RSyncFlow<TVal, TCur, ?> mergeIn(@NonNull Supplier<TAdd> supplier,
                                                                @NonNull
@@ -320,6 +402,22 @@ public interface RepositoryCompilerStates {
          * choose
          * to pass the failure on as the result of the merge.
          */
+        /**
+         * RSyncFlow 尝试合并操作
+         * 可类型转换（ 供应者 ）
+         * 可以合并供应者转换后的数据 和 之前的流处理结果数据（ 合并者 ）
+         * 可以截获异常，进行处理（ 合并者+Result ）
+         *
+         * @param supplier 供应者
+         * @param attemptMerger 合并者
+         * @param <TAdd> 供应者 的 目标类型
+         * @param <TCur> 合并者 的 Result 目标类型
+         * @return 返回 一个 RTermination 终止状态
+         *
+         * TVal 类型 作为 RTermination 仓库数据类型
+         * Throwable 类型 作为 RTermination 流终止类型
+         * RSyncFlow<TVal, TCur, ?> 类型 作为 RTermination 编译返回状态类型
+         */
         @NonNull <TAdd, TCur>
         RTermination<TVal, Throwable, ? extends RSyncFlow<TVal, TCur, ?>> attemptMergeIn(
                 @NonNull Supplier<TAdd> supplier,
@@ -327,6 +425,20 @@ public interface RepositoryCompilerStates {
 
         /**
          * Transform the input value using the given function into the output value.
+         */
+        /**
+         * RSyncFlow 转换操作
+         * 用于类型转换
+         * 与 getFrom(...) 的区别：
+         * getFrom(...) 是通过 Supplier 可以在提供数据时，进行间接的类型转换
+         * transform(...) 是通过 Function 进行直接的类型之间转换
+         *
+         * @param function 转换方法
+         * @param <TCur> 转换方法 的 目标类型
+         * @return 返回 一个 RFlow 流状态
+         *
+         * TVal 类型 作为 RSyncFlow 仓库数据类型
+         * TCur 类型 作为 RSyncFlow 上一个数据流输出类型
          */
         @NonNull <TCur> RSyncFlow<TVal, TCur, ?> transform(
                 @NonNull Function<? super TPre, TCur> function);
@@ -339,6 +451,19 @@ public interface RepositoryCompilerStates {
          * this
          * directive.
          */
+        /**
+         * RSyncFlow 尝试转换操作
+         * 用于类型转换
+         * 可以截获异常，进行处理（ 转换方法+Result ）
+         *
+         * @param attemptFunction 转换方法
+         * @param <TCur> 转换方法 的 Result 目标类型
+         * @return 返回 一个 RTermination 终止状态
+         *
+         * TVal 类型 作为 RTermination 仓库数据类型
+         * Throwable 类型 作为 RTermination 流终止类型
+         * RSyncFlow<TVal, TCur, ?> 类型 作为 RTermination 编译返回状态类型
+         */
         @NonNull
         <TCur> RTermination<TVal, Throwable, ? extends RSyncFlow<TVal, TCur, ?>> attemptTransform(
                 @NonNull Function<? super TPre, Result<TCur>> attemptFunction);
@@ -350,6 +475,15 @@ public interface RepositoryCompilerStates {
          * clause
          * that follows. The termination clause takes the input value as its input.
          */
+        /**
+         * RSyncFlow 检查方法
+         * 需要传入一个 断定者，进行上个流传入类型数据的检查操作
+         *
+         * @param predicate 断定者
+         * @return 返回 一个 RTermination 终止状态
+         *
+         * 类型全部不变地传下去
+         */
         @NonNull RTermination<TVal, TPre, TSelf> check(@NonNull Predicate<? super TPre> predicate);
 
         /**
@@ -360,6 +494,19 @@ public interface RepositoryCompilerStates {
          * flow with the <i>input value</i>, otherwise terminate the flow with the termination
          * clause
          * that follows. The termination clause takes the <i>case value</i> as its input.
+         */
+        /**
+         * RSyncFlow 检查方法
+         * 需要
+         * 传入一个 转换方法，进行上个流类型数据的转换，转换为 TCase 类型
+         * 再传入一个 断定者，进行转换后类型数据的检查操作
+         *
+         * @param caseFunction 转换方法
+         * @param casePredicate 断定者
+         * @param <TCase> 转换后的数据类型，也是要判断的数据类型
+         * @return 返回 一个 RTermination 终止状态
+         *
+         * 类型全部不变地传下去
          */
         @NonNull <TCase> RTermination<TVal, TCase, TSelf> check(
                 @NonNull Function<? super TPre, TCase> caseFunction,
@@ -400,6 +547,15 @@ public interface RepositoryCompilerStates {
          * instance
          * after mutation.
          */
+        /**
+         * RSyncFlow 发送操作
+         * 其实就是 添加一个 Receiver
+         *
+         * @param receiver 接受者
+         * @return 返回一个 RSyncFlow 同步流状态
+         *
+         * 所有类型跟执行 sendTo 前的类型一样
+         */
         @NonNull TSelf sendTo(@NonNull Receiver<? super TPre> receiver);
 
         /**
@@ -409,6 +565,19 @@ public interface RepositoryCompilerStates {
          *
          * <p>The same usage notes for {@link #sendTo} apply to this directive.
          */
+        /**
+         * RSyncFlow 绑定操作
+         * 需要
+         * 传入一个 供应者，提供 TAdd 类型数据
+         * 再传入一个 绑定者，进行上一个流的类型 TPre 数据 与 供应者提供的 TAdd 数据进行绑定
+         *
+         * @param secondValueSupplier 供应者
+         * @param binder 绑定者
+         * @param <TAdd> 供应者 的 目标类型
+         * @return 返回一个 RSyncFlow 同步流状态
+         *
+         * 所有类型跟执行 bindWith 前的类型一样
+         */
         @NonNull <TAdd> TSelf bindWith(@NonNull Supplier<TAdd> secondValueSupplier,
                                        @NonNull Binder<? super TPre, ? super TAdd> binder);
 
@@ -417,11 +586,28 @@ public interface RepositoryCompilerStates {
          * the
          * registered {@link Updatable}s.
          */
+        /**
+         * RSyncFlow 快进操作
+         * 什么也不做，直接快进到 RConfig 配置状态
+         *
+         * @return 返回一个 RConfig 配置状态
+         *
+         * TVal 类型 作为 RConfig 的仓库类型
+         */
         @NonNull RConfig<TVal> thenSkip();
 
         /**
          * Perform the {@link #getFrom} directive and use the output value as the new value of the
          * compiled repository, with notification if necessary.
+         */
+        /**
+         * RSyncFlow 快进获取数据操作
+         * 可类型转换（ 供应者 ）
+         *
+         * @param supplier 供应者
+         * @return 返回 一个 RConfig 配置状态
+         *
+         * TVal 类型 作为 RConfig 仓库数据类型
          */
         @NonNull RConfig<TVal> thenGetFrom(@NonNull Supplier<? extends TVal> supplier);
 
@@ -430,12 +616,37 @@ public interface RepositoryCompilerStates {
          * new
          * value of the compiled repository, with notification if necessary.
          */
+
+        /**
+         * RSyncFlow 快进尝试获取数据操作
+         * 可以截获异常，进行处理（ 供应者+Result ）
+         *
+         * @param attemptSupplier Result 供应者
+         * @return 返回一个 RTermination 终止状态
+         *
+         * TVal 类型 作为 RTermination 仓库数据类型
+         * Throwable 类型 作为 RTermination 流终止类型
+         * RConfig<TVal> 类型 作为 RTermination 编译返回状态类型
+         */
         @NonNull RTermination<TVal, Throwable, RConfig<TVal>> thenAttemptGetFrom(
                 @NonNull Supplier<? extends Result<? extends TVal>> attemptSupplier);
 
         /**
          * Perform the {@link #mergeIn} directive and use the output value as the new value of the
          * compiled repository, with notification if necessary.
+         */
+
+        /**
+         * RSyncFlow 快进合并操作
+         * 可类型转换（ 供应者 ）
+         * 可以合并供应者转换后的数据 和 之前的流处理结果数据（ 合并者 ）
+         *
+         * @param supplier 供应者
+         * @param merger 合并者
+         * @param <TAdd> 供应者 的 目标类型
+         * @return 返回 一个 RConfig 配置状态
+         *
+         * TVal 类型 作为 RConfig 仓库数据类型
          */
         @NonNull <TAdd> RConfig<TVal> thenMergeIn(@NonNull Supplier<TAdd> supplier,
                                                   @NonNull
@@ -445,6 +656,21 @@ public interface RepositoryCompilerStates {
          * Perform the {@link #attemptMergeIn} directive and use the successful output value as the
          * new
          * value of the compiled repository, with notification if necessary.
+         */
+        /**
+         * RSyncFlow 快进尝试合并操作
+         * 可类型转换（ 供应者 ）
+         * 可以合并供应者转换后的数据 和 之前的流处理结果数据（ 合并者 ）
+         * 可以截获异常，进行处理（ 合并者+Result ）
+         *
+         * @param supplier 供应者
+         * @param attemptMerger 合并者
+         * @param <TAdd> 供应者 的 目标类型
+         * @return 返回 一个 RTermination 终止状态
+         *
+         * TVal 类型 作为 RTermination 仓库数据类型
+         * Throwable 类型 作为 RTermination 流终止类型
+         * RConfig<TVal> 类型 作为 RTermination 编译返回状态类型
          */
         @NonNull <TAdd> RTermination<TVal, Throwable, RConfig<TVal>> thenAttemptMergeIn(
                 @NonNull Supplier<TAdd> supplier,
@@ -456,6 +682,15 @@ public interface RepositoryCompilerStates {
          * the
          * compiled repository, with notification if necessary.
          */
+        /**
+         * RSyncFlow 快进转换操作
+         * 用于类型转换
+         *
+         * @param function 转换方法
+         * @return 返回 一个 RConfig 配置状态
+         *
+         * TVal 类型 作为 RConfig 仓库数据类型
+         */
         @NonNull RConfig<TVal> thenTransform(
                 @NonNull Function<? super TPre, ? extends TVal> function);
 
@@ -463,6 +698,18 @@ public interface RepositoryCompilerStates {
          * Perform the {@link #attemptTransform} directive and use the successful output value as
          * the
          * new value of the compiled repository, with notification if necessary.
+         */
+        /**
+         * RSyncFlow 快进尝试转换操作
+         * 用于类型转换
+         * 可以截获异常，进行处理（ 转换方法+Result ）
+         *
+         * @param attemptFunction 转换方法
+         * @return 返回 一个 RConfig 配置状态
+         *
+         * TVal 类型 作为 RTermination 仓库数据类型
+         * Throwable 类型 作为 RTermination 流终止类型
+         * RConfig<TVal> 类型 作为 RTermination 编译返回状态类型
          */
         @NonNull RTermination<TVal, Throwable, RConfig<TVal>> thenAttemptTransform(
                 @NonNull Function<? super TPre, ? extends Result<? extends TVal>> attemptFunction);
@@ -474,6 +721,12 @@ public interface RepositoryCompilerStates {
      * @param <TVal> Value type of the repository.
      * @param <TTerm> Value type from which to terminate the flow.
      * @param <TRet> Compiler state to return to.
+     *
+     * RTermination 终止状态
+     *
+     * TVal 类型 作为 RTermination 仓库数据类型
+     * TTerm 类型 作为 RTermination 流终止时的状态，一般为 Throwable
+     * TRet 类型 作为 RTermination 编译返回的状态，只有两种状态（ RFlow（ RSyncFlow ）、RConfig ）
      */
     interface RTermination<TVal, TTerm, TRet> {
 
@@ -481,6 +734,11 @@ public interface RepositoryCompilerStates {
          * If the previous check failed, skip the rest of the data processing flow, and do not
          * notify
          * any registered {@link Updatable}s.
+         */
+        /**
+         * RTermination 快进操作
+         *
+         * @return 只有可能返回 RFlow（ RSyncFlow ）、RConfig 状态
          */
         @NonNull TRet orSkip();
 
@@ -490,6 +748,13 @@ public interface RepositoryCompilerStates {
          * this
          * termination clause, with notification if necessary.
          */
+        /**
+         * RTermination 结束状态
+         * 其实又一次进行转换
+         *
+         * @param valueFunction 转换方法
+         * @return 只有可能返回 RFlow（ RSyncFlow ）、RConfig 状态
+         */
         @NonNull TRet orEnd(@NonNull Function<? super TTerm, ? extends TVal> valueFunction);
     }
 
@@ -497,6 +762,10 @@ public interface RepositoryCompilerStates {
      * Compiler state allowing to configure and end the declaration of the repository.
      *
      * @param <TVal> Repository value type.
+     *
+     * RConfig 配置状态
+     *
+     * TVal 类型 作为 RConfig 仓库数据类型
      */
     interface RConfig<TVal> {
 
@@ -526,6 +795,15 @@ public interface RepositoryCompilerStates {
          * the
          * notification.
          */
+        /**
+         * RConfig 通知操作
+         * 会传入一个 合并者，合并出一个 Boolean 类型
+         *
+         * @param checker 合并者
+         * @return 返回一个 RConfig 状态
+         *
+         * TVal 类型 作为 RConfig 仓库数据类型
+         */
         @NonNull RConfig<TVal> notifyIf(
                 @NonNull Merger<? super TVal, ? super TVal, Boolean> checker);
 
@@ -537,6 +815,14 @@ public interface RepositoryCompilerStates {
          * @param deactivationConfig A bitwise combination of the constants in {@link
          * RepositoryConfig}.
          */
+        /**
+         * RConfig 失效时的操作（ 一些特殊的行为：导致仓库失效，从观察状态变为不观察状态 ）
+         *
+         * @param deactivationConfig RepositoryConfig 类型
+         * @return 返回一个 RConfig 配置状态
+         *
+         * TVal 类型 作为 RConfig 仓库数据类型
+         */
         @NonNull RConfig<TVal> onDeactivation(@RepositoryConfig int deactivationConfig);
 
         /**
@@ -546,10 +832,25 @@ public interface RepositoryCompilerStates {
          * @param concurrentUpdateConfig A bitwise combination of the constants in
          * {@link RepositoryConfig}.
          */
+        /**
+         * RConfig 并发更新时（ 一些特殊的行为：一个观察者从事件源中被观察了，然后一个数据处理流还在运行 ）
+         *
+         * @param concurrentUpdateConfig RepositoryConfig 类型
+         * @return 返回一个 RConfig 配置状态
+         *
+         * TVal 类型 作为 RConfig 仓库数据类型
+         */
         @NonNull RConfig<TVal> onConcurrentUpdate(@RepositoryConfig int concurrentUpdateConfig);
 
         /**
          * Compiles a {@link Repository} that exhibits the previously defined behaviors.
+         */
+        /**
+         * RConfig 完成操作
+         *
+         * @return 返回一个 仓库 Repository
+         *
+         * TVal 类型 作为 Repository 仓库数据类型
          */
         @NonNull Repository<TVal> compile();
 
@@ -587,6 +888,16 @@ public interface RepositoryCompilerStates {
          * former repository is not exposed anywhere else. If this is undesirable, consider using
          * the
          * full form, where the former repository is explicitly compiled.
+         */
+        /**
+         * RConfig 重构操作
+         * 重新将一个仓库编译过程后得到 的  RConfig 状态，还有最终目标数据 TVal
+         * 作为重构仓库的材料，会直接跳到 仓库类型为 TVal2 的编译状态中的
+         * RFrequency 频率状态
+         *
+         * @param value 新仓库的目标数据类型初始值
+         * @param <TVal2> 新仓库的目标数据类型
+         * @return 新仓库编译状态中的 RFrequency 频率状态
          */
         @NonNull <TVal2> RFrequency<TVal2, TVal> compileIntoRepositoryWithInitialValue(
                 @NonNull TVal2 value);
