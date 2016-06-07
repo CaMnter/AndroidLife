@@ -15,54 +15,87 @@
  */
 package com.google.android.agera;
 
-import static com.google.android.agera.Preconditions.checkNotNull;
-
+import android.support.annotation.NonNull;
 import com.google.android.agera.Common.StaticProducer;
 
-import android.support.annotation.NonNull;
+import static com.google.android.agera.Preconditions.checkNotNull;
 
 /**
  * Utility methods for obtaining {@link Supplier} instances.
+ *
+ * Supplier 的工具类
+ * 可以获取 Supplier
  */
 public final class Suppliers {
 
-  /**
-   * Returns a {@link Supplier} that always supplies the given {@code object} when its
-   * {@link Supplier#get()} is called.
-   */
-  @NonNull
-  public static <T> Supplier<T> staticSupplier(@NonNull final T object) {
-    return new StaticProducer<>(object);
-  }
-
-  /**
-   * Returns a {@link Supplier} that always supplies the value returned from the given
-   * {@link Function} {@code function} when called with {@code from}.
-   */
-  @NonNull
-  public static <T, F> Supplier<T> functionAsSupplier(
-      @NonNull final Function<F, T> function, @NonNull final F from) {
-    return new FunctionToSupplierConverter<>(function, from);
-  }
-
-  private static final class FunctionToSupplierConverter<T, F> implements Supplier<T> {
+    /**
+     * Returns a {@link Supplier} that always supplies the given {@code object} when its
+     * {@link Supplier#get()} is called.
+     *
+     * 构造一个 StaticProducer 实例
+     * StaticProducer 实现了 Supplier、Function、Merger
+     */
     @NonNull
-    private final Function<F, T> function;
-    @NonNull
-    private final F from;
-
-    private FunctionToSupplierConverter(@NonNull final Function<F, T> function,
-        @NonNull final F from) {
-      this.function = checkNotNull(function);
-      this.from = checkNotNull(from);
+    public static <T> Supplier<T> staticSupplier(@NonNull final T object) {
+        return new StaticProducer<>(object);
     }
 
-    @NonNull
-    @Override
-    public T get() {
-      return function.apply(from);
-    }
-  }
 
-  private Suppliers() {}
+    /**
+     * Returns a {@link Supplier} that always supplies the value returned from the given
+     * {@link Function} {@code function} when called with {@code from}.
+     *
+     * 构造一个 Function -> Supplier 转换器实例
+     */
+    @NonNull
+    public static <T, F> Supplier<T> functionAsSupplier(
+            @NonNull final Function<F, T> function, @NonNull final F from) {
+        return new FunctionToSupplierConverter<>(function, from);
+    }
+
+
+    /**
+     * FunctionToSupplierConverter 作为
+     * Function -> Supplier 的 转换器
+     * FunctionToSupplierConverter 实现了 Supplier 接口
+     * 实现了 get() 方法，并且用 Function 的 apply(...) 方法，将原生类型目标类型数据
+     * 作为 Supplier 提供的数据
+     *
+     * @param <T> Function 的原始类型
+     * @param <F> Function 的目标类型，也是 Supplier 的目标类型
+     */
+    private static final class FunctionToSupplierConverter<T, F> implements Supplier<T> {
+        // 转换方法
+        @NonNull
+        private final Function<F, T> function;
+        // 原始数据
+        @NonNull
+        private final F from;
+
+
+        private FunctionToSupplierConverter(@NonNull final Function<F, T> function,
+                                            @NonNull final F from) {
+            // Preconditions.checkNotNull(...) 方法检查数据
+            this.function = checkNotNull(function);
+            // Preconditions.checkNotNull(...) 方法检查数据
+            this.from = checkNotNull(from);
+        }
+
+
+        @NonNull
+        @Override
+        public T get() {
+            /*
+             * 利用 Function 的 apply(...) 方法，将原生类型目标类型数据
+             * 作为 Supplier 提供的数据
+             */
+            return function.apply(from);
+        }
+    }
+
+
+    /**
+     * 屏蔽默认的构造方法
+     */
+    private Suppliers() {}
 }
