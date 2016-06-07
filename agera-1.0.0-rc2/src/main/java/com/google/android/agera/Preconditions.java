@@ -19,28 +19,53 @@ import android.support.annotation.NonNull;
 
 /**
  * Precondition checks.
+ *
+ * 通用 检查 工具类
  */
 public final class Preconditions {
-  public static void checkState(final boolean expression, @NonNull final String errorMessage) {
-    if (!expression) {
-      throw new IllegalStateException(errorMessage);
+    /**
+     * 检查状态
+     * 只要 expression = false，就抛出 指定错误信息的 IllegalStateException
+     *
+     * @param expression 状态
+     * @param errorMessage 错误信息
+     */
+    public static void checkState(final boolean expression, @NonNull final String errorMessage) {
+        if (!expression) {
+            throw new IllegalStateException(errorMessage);
+        }
     }
-  }
 
-  public static void checkArgument(final boolean expression, @NonNull final String errorMessage) {
-    if (!expression) {
-      throw new IllegalArgumentException(errorMessage);
+
+    /**
+     * 目前，同 checkState(...) 方法
+     */
+    public static void checkArgument(final boolean expression, @NonNull final String errorMessage) {
+        if (!expression) {
+            throw new IllegalArgumentException(errorMessage);
+        }
     }
-  }
 
-  @SuppressWarnings("ConstantConditions")
-  @NonNull
-  public static <T> T checkNotNull(@NonNull final T object) {
-    if (object == null) {
-      throw new NullPointerException();
+
+    /**
+     * 检查 数据是否不为 null
+     *
+     * @param object 目标数据
+     * @param <T> 目标类型
+     * @return 合法的目标数据
+     */
+    @SuppressWarnings("ConstantConditions")
+    @NonNull
+    public static <T> T checkNotNull(@NonNull final T object) {
+        if (object == null) {
+            throw new NullPointerException();
+        }
+        return object;
     }
-    return object;
-  }
 
-  private Preconditions() {}
+
+    /**
+     * 屏蔽默认的构造方法
+     */
+    private Preconditions() {}
 }
