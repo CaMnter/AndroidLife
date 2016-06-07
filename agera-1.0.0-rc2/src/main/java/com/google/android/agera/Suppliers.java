@@ -32,7 +32,7 @@ public final class Suppliers {
      * Returns a {@link Supplier} that always supplies the given {@code object} when its
      * {@link Supplier#get()} is called.
      *
-     * 构造一个 StaticProducer 实例
+     * 构造一个 StaticProducer 实例 作为 Supplier
      * StaticProducer 实现了 Supplier、Function、Merger
      */
     @NonNull
@@ -58,11 +58,11 @@ public final class Suppliers {
      * FunctionToSupplierConverter 作为
      * Function -> Supplier 的 转换器
      * FunctionToSupplierConverter 实现了 Supplier 接口
-     * 实现了 get() 方法，并且用 Function 的 apply(...) 方法，将原生类型目标类型数据
+     * 实现了 get() 方法，并且用 Function 的 apply(...) 方法，将原生类型转为目标类型数据，然后目标数据
      * 作为 Supplier 提供的数据
      *
-     * @param <T> Function 的原始类型
-     * @param <F> Function 的目标类型，也是 Supplier 的目标类型
+     * @param <T> Function 原始类型
+     * @param <F> Function 目标类型，也是 Supplier 目标类型
      */
     private static final class FunctionToSupplierConverter<T, F> implements Supplier<T> {
         // 转换方法
@@ -82,13 +82,15 @@ public final class Suppliers {
         }
 
 
+        /**
+         * 利用 Function 的 apply(...) 方法，将原生类型转为目标类型数据，然后目标数据
+         * 作为 Supplier 提供的数据
+         *
+         * @return
+         */
         @NonNull
         @Override
         public T get() {
-            /*
-             * 利用 Function 的 apply(...) 方法，将原生类型目标类型数据
-             * 作为 Supplier 提供的数据
-             */
             return function.apply(from);
         }
     }
