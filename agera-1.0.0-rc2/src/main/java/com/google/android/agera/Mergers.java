@@ -15,42 +15,68 @@
  */
 package com.google.android.agera;
 
-import com.google.android.agera.Common.StaticProducer;
-
 import android.support.annotation.NonNull;
+import com.google.android.agera.Common.StaticProducer;
 
 /**
  * Utility methods for obtaining {@link Merger} instances.
+ *
+ * Merger 的工具类
+ * 可以获取 Merger
  */
 public final class Mergers {
 
-  private static final ObjectsUnequalMerger OBJECTS_UNEQUAL_MERGER = new ObjectsUnequalMerger();
+    /**
+     * 实例化一个 对象不相等 合并者
+     */
+    private static final ObjectsUnequalMerger OBJECTS_UNEQUAL_MERGER = new ObjectsUnequalMerger();
 
-  /**
-   * Returns a {@link Merger} that outputs the given {@code value} regardless of the input values.
-   */
-  @NonNull
-  public static <TFirst, TSecond, TTo> Merger<TFirst, TSecond, TTo> staticMerger(
-      @NonNull final TTo value) {
-    return new StaticProducer<>(value);
-  }
 
-  /**
-   * Returns a {@link Merger} that outputs the <i>negated</i> result of {@link Object#equals} called
-   * on the first input value, using the second input value as the argument of that call.
-   */
-  @NonNull
-  public static Merger<Object, Object, Boolean> objectsUnequal() {
-    return OBJECTS_UNEQUAL_MERGER;
-  }
-
-  private static final class ObjectsUnequalMerger implements Merger<Object, Object, Boolean> {
+    /**
+     * Returns a {@link Merger} that outputs the given {@code value} regardless of the input
+     * values.
+     *
+     * 构造一个 StaticProducer 实例 作为 Merger
+     * StaticProducer 实现了 Supplier、Function、Merger
+     */
     @NonNull
-    @Override
-    public Boolean merge(@NonNull final Object oldValue, @NonNull final Object newValue) {
-      return !oldValue.equals(newValue);
+    public static <TFirst, TSecond, TTo> Merger<TFirst, TSecond, TTo> staticMerger(
+            @NonNull final TTo value) {
+        return new StaticProducer<>(value);
     }
-  }
 
-  private Mergers() {}
+
+    /**
+     * Returns a {@link Merger} that outputs the <i>negated</i> result of {@link Object#equals}
+     * called
+     * on the first input value, using the second input value as the argument of that call.
+     *
+     * 获取一个 对象不相等 合并者，用于比较
+     */
+    @NonNull
+    public static Merger<Object, Object, Boolean> objectsUnequal() {
+        return OBJECTS_UNEQUAL_MERGER;
+    }
+
+
+    /**
+     * ObjectsUnequalMerger - 对象不相等 合并者
+     * 一个很普通的 Merger 实现类，目标类型是 Boolean
+     * 用的是 !Object.equals(...)  判断 TFirst 和 TSecond 是否 "不是一个对象"
+     *
+     * 这个 Merger 的作用是用于比较
+     */
+    private static final class ObjectsUnequalMerger implements Merger<Object, Object, Boolean> {
+        @NonNull
+        @Override
+        public Boolean merge(@NonNull final Object oldValue, @NonNull final Object newValue) {
+            return !oldValue.equals(newValue);
+        }
+    }
+
+
+    /**
+     * 屏蔽默认的构造方法
+     */
+    private Mergers() {}
 }
