@@ -54,10 +54,10 @@ public class Robotlegs4AndroidActivityMediator extends Mediator {
     private void initData() {
         String[] tabTitles = { "ONE", "TWO", "THR", "FOU" };
         Fragment[] fragments = { RobotlegsFirstFragment.getInstance(),
-                RobotlegsSecondFragment.getInstance(), RobotlegsThirdFragment.getInstance(),
-                RobotlegsFourthFragment.getInstance() };
+            RobotlegsSecondFragment.getInstance(), RobotlegsThirdFragment.getInstance(),
+            RobotlegsFourthFragment.getInstance() };
         Robotlegs4AndroidAdapter adapter = new Robotlegs4AndroidAdapter(
-                this.activity.getSupportFragmentManager(), fragments, tabTitles);
+            this.activity.getSupportFragmentManager(), fragments, tabTitles);
         this.viewPager.setAdapter(adapter);
         this.tabLayout.setupWithViewPager(this.viewPager);
     }
@@ -72,8 +72,8 @@ public class Robotlegs4AndroidActivityMediator extends Mediator {
          */
         this.getEventMap()
             .mapListener(this.getEventDispatcher(),
-                    LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW, new ControllerListeners(),
-                    null, false, 0, false);
+                LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW, new ControllerListeners(),
+                null, false, 0, false);
     }
 
 
@@ -86,8 +86,8 @@ public class Robotlegs4AndroidActivityMediator extends Mediator {
         @Override public void onHandle(Event event) {
             if (event instanceof LoginEvent) {
                 Toast.makeText(Robotlegs4AndroidActivityMediator.this.activity,
-                        "MainActivityMediator:Please see the TWO、THR and FOU", Toast.LENGTH_LONG)
-                     .show();
+                    "MainActivityMediator:Please see the TWO、THR and FOU", Toast.LENGTH_LONG)
+                    .show();
             }
         }
     }

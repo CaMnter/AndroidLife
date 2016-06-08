@@ -70,12 +70,12 @@ public class SnackbarActivity extends BaseAppCompatActivity implements View.OnCl
 
     public void popSnackbar(View view, CharSequence text) {
         Snackbar.make(view, text, Snackbar.LENGTH_SHORT)
-                .setAction("CaMnter", new View.OnClickListener() {
-                    @Override public void onClick(View v) {
-                        Toast.makeText(SnackbarActivity.this, "Hello World", Toast.LENGTH_LONG)
-                             .show();
-                    }
-                })
-                .show();
+            .setAction("CaMnter", new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    Toast.makeText(SnackbarActivity.this, "Hello World", Toast.LENGTH_LONG)
+                        .show();
+                }
+            })
+            .show();
     }
 }

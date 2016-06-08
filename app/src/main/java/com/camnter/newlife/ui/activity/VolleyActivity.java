@@ -96,6 +96,7 @@ public class VolleyActivity extends BaseAppCompatActivity {
         }
     }
 
+
     public class GankResultData {
 
         private static final String TAG = "GankResultData";
@@ -113,31 +114,31 @@ public class VolleyActivity extends BaseAppCompatActivity {
 
         @Override public String toString() {
             return TAG + "id: " +
-                    this.id +
-                    "\n" +
-                    "createdAt: " +
-                    this.createdAt +
-                    "\n" +
-                    "desc: " +
-                    this.desc +
-                    "\n" +
-                    "publishedAt: " +
-                    this.publishedAt +
-                    "\n" +
-                    "source: " +
-                    this.source +
-                    "\n" +
-                    "type: " +
-                    this.type +
-                    "\n" +
-                    "url: " +
-                    this.url +
-                    "\n" +
-                    "used: " +
-                    this.used +
-                    "\n" +
-                    "who: " +
-                    this.who;
+                this.id +
+                "\n" +
+                "createdAt: " +
+                this.createdAt +
+                "\n" +
+                "desc: " +
+                this.desc +
+                "\n" +
+                "publishedAt: " +
+                this.publishedAt +
+                "\n" +
+                "source: " +
+                this.source +
+                "\n" +
+                "type: " +
+                this.type +
+                "\n" +
+                "url: " +
+                this.url +
+                "\n" +
+                "used: " +
+                this.used +
+                "\n" +
+                "who: " +
+                this.who;
         }
     }
 }

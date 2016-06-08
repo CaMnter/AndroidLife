@@ -120,7 +120,13 @@ import java.util.List;
  */
 public class UriMatcher {
     public static final int NO_MATCH = -1;
-
+    private static final int EXACT = 0;
+    private static final int NUMBER = 1;
+    private static final int TEXT = 2;
+    private int mCode;
+    private int mWhich;
+    private String mText;
+    private ArrayList<UriMatcher> mChildren;
 
     /**
      * Creates the root node of the URI tree.
@@ -134,8 +140,6 @@ public class UriMatcher {
         mChildren = new ArrayList<UriMatcher>();
         mText = null;
     }
-
-
     private UriMatcher() {
         mCode = NO_MATCH;
         mWhich = -1;
@@ -244,7 +248,7 @@ public class UriMatcher {
             int lj = list.size();
             for (int j = 0; j < lj; j++) {
                 UriMatcher n = list.get(j);
-which_switch:
+                which_switch:
                 switch (n.mWhich) {
                     case EXACT:
                         if (n.mText.equals(u)) {
@@ -276,14 +280,4 @@ which_switch:
 
         return node.mCode;
     }
-
-
-    private static final int EXACT = 0;
-    private static final int NUMBER = 1;
-    private static final int TEXT = 2;
-
-    private int mCode;
-    private int mWhich;
-    private String mText;
-    private ArrayList<UriMatcher> mChildren;
 }

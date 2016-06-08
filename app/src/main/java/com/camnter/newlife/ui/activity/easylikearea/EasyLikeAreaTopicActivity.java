@@ -37,18 +37,14 @@ import com.camnter.newlife.utils.GlideUtils;
  */
 public class EasyLikeAreaTopicActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private DisplayMetrics mMetrics;
-
-    public EasyLikeArea topicEla;
-    private EasyLikeImageView addIv;
-    private boolean added = false;
-
-    private TextView likeTv;
-
     private static final int likeAddedColor = 0xff38B8C1;
     private static final int likeColor = 0xff97A4AF;
-
+    public EasyLikeArea topicEla;
     public TextView omitTv;
+    private DisplayMetrics mMetrics;
+    private EasyLikeImageView addIv;
+    private boolean added = false;
+    private TextView likeTv;
 
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,13 +117,13 @@ public class EasyLikeAreaTopicActivity extends AppCompatActivity implements View
                     this.added = true;
                     this.likeTv.setTextColor(likeAddedColor);
                     this.omitTv.setText(this.getString(this.getOmitVieStringFormatId(),
-                            Constant.AVATARS.length + 1));
+                        Constant.AVATARS.length + 1));
                 } else {
                     this.topicEla.removeView(this.addIv);
                     this.added = false;
                     this.likeTv.setTextColor(likeColor);
                     this.omitTv.setText(this.getString(this.getOmitVieStringFormatId(),
-                            Constant.AVATARS.length));
+                        Constant.AVATARS.length));
                 }
                 break;
             case R.id.topic_share_tv:

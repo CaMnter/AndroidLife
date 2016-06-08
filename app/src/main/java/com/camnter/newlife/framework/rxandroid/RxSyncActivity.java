@@ -42,56 +42,15 @@ public class RxSyncActivity extends BaseAppCompatActivity implements View.OnClic
     private static final String OBJECT_IMAGE_URL = "http://img.blog.csdn.net/20150913233900119";
 
     private static final int HANDLER_LOADING = 262;
-
+    private final LoadingHandler loadingHandler = new LoadingHandler(RxSyncActivity.this);
     private TextView syncRxJustTV;
     private TextView syncRxFromTV;
     private ImageView syncRxIV;
     private Button syncRxSaveBT;
-
     private Subscription justSubscription;
     private Subscription fromSubscription;
     private Subscription downloadSubscription;
-
     private CustomProgressBarDialog dialog;
-
-    /**
-     * 刷新Dialog显示的进度
-     */
-    private static class LoadingHandler extends Handler {
-        private final WeakReference<RxSyncActivity> mActivity;
-
-
-        public LoadingHandler(RxSyncActivity activity) {
-            mActivity = new WeakReference<>(activity);
-        }
-
-
-        /**
-         * Subclasses must implement this to receive messages.
-         */
-        @Override public void handleMessage(Message msg) {
-            final RxSyncActivity activity = this.mActivity.get();
-            if (activity != null) {
-                switch (msg.what) {
-                    case HANDLER_LOADING: {
-                        final int progressValue = (int) msg.obj;
-                        activity.runOnUiThread(new Runnable() {
-                            @Override public void run() {
-                                try {
-                                    activity.dialog.setLoadPrompt(progressValue + "%");
-                                    activity.dialog.show();
-                                } catch (Exception ignored) {
-                                }
-                            }
-                        });
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    private final LoadingHandler loadingHandler = new LoadingHandler(RxSyncActivity.this);
 
 
     /**
@@ -143,27 +102,27 @@ public class RxSyncActivity extends BaseAppCompatActivity implements View.OnClic
          * 一次onCompleted
          */
         this.justSubscription = Observable.just("Just", "save", "you", "from", "anything")
-                                          .subscribe(new Subscriber<String>() {
-                                              @Override public void onCompleted() {
+            .subscribe(new Subscriber<String>() {
+                @Override public void onCompleted() {
 
-                                              }
-
-
-                                              @Override public void onError(Throwable e) {
-
-                                              }
+                }
 
 
-                                              @Override public void onNext(String s) {
-                                                  RxSyncActivity.this.checkThread(
-                                                          "just -> Subscriber.onNext()");
-                                                  String text
-                                                          = RxSyncActivity.this.syncRxJustTV.getText()
-                                                                                            .toString();
-                                                  text += s + " ";
-                                                  RxSyncActivity.this.syncRxJustTV.setText(text);
-                                              }
-                                          });
+                @Override public void onError(Throwable e) {
+
+                }
+
+
+                @Override public void onNext(String s) {
+                    RxSyncActivity.this.checkThread(
+                        "just -> Subscriber.onNext()");
+                    String text
+                        = RxSyncActivity.this.syncRxJustTV.getText()
+                        .toString();
+                    text += s + " ";
+                    RxSyncActivity.this.syncRxJustTV.setText(text);
+                }
+            });
 
         String[] sign = { "From", "save", "you", "from", "anything" };
         this.fromSubscription = Observable.from(sign).subscribe(new Action1<String>() {
@@ -174,6 +133,118 @@ public class RxSyncActivity extends BaseAppCompatActivity implements View.OnClic
                 RxSyncActivity.this.syncRxFromTV.setText(text);
             }
         });
+    }
+
+
+    /**
+     * 检查线程
+     */
+    private void checkThread(String info) {
+        Log.i(TAG, ThreadUtils.getThreadMsg(info));
+    }
+
+
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
+    @Override public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rx_sync_save_bt:
+                /**
+                 * create添加OnSubscribe对象（观察者）
+                 * 此时要实现OnSubscribe（观察者）的call方法，如果是异步的话，这里的call就应该写后台的I/O操作
+                 * 当你调用了subscribe方法时，就会自动调用OnSubscribe对象（观察者）的call方法去执行
+                 * （可以参考subscribe方法的源码）
+                 * 失败会走到onError方法
+                 * 成功的话，因为call方法有Subscriber对象，这是添加的订阅者，可以调用它的onNext或onCompleted
+                 */
+                this.downloadSubscription = Observable.create(new Observable.OnSubscribe<String>() {
+                    @Override public void call(Subscriber<? super String> subscriber) {
+                        RxSyncActivity.this.checkThread("create -> OnSubscribe.create()");
+                        new RxSyncActivity.DownloadImageAsyncTask(RxSyncActivity.this,
+                            subscriber).execute(OBJECT_IMAGE_URL);
+                    }
+                }).subscribe(new Subscriber<String>() {
+                    @Override public void onCompleted() {
+
+                    }
+
+
+                    @Override public void onError(Throwable e) {
+
+                    }
+
+
+                    @Override public void onNext(String s) {
+                        RxSyncActivity.this.checkThread("create -> Subscriber.onNext()");
+                        /**
+                         * 设置按钮可用，并隐藏Dialog
+                         */
+                        RxSyncActivity.this.syncRxSaveBT.setEnabled(true);
+                        RxSyncActivity.this.dialog.hide();
+
+                        DisplayMetrics metrics = new DisplayMetrics();
+                        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                        int screenWidth = metrics.widthPixels;
+                        int screenHeight = metrics.heightPixels;
+                        /**
+                         * ImageUtil.decodeScaleImage 解析图片
+                         */
+                        Bitmap bitmap = ImageUtil.decodeScaleImage(s, screenWidth, screenHeight);
+                        RxSyncActivity.this.syncRxIV.setImageBitmap(bitmap);
+                    }
+                });
+                break;
+        }
+    }
+
+
+    @Override protected void onDestroy() {
+        this.justSubscription.unsubscribe();
+        this.fromSubscription.unsubscribe();
+        if (this.downloadSubscription != null) this.downloadSubscription.unsubscribe();
+        this.dialog.dismiss();
+        super.onDestroy();
+    }
+
+
+    /**
+     * 刷新Dialog显示的进度
+     */
+    private static class LoadingHandler extends Handler {
+        private final WeakReference<RxSyncActivity> mActivity;
+
+
+        public LoadingHandler(RxSyncActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+
+        /**
+         * Subclasses must implement this to receive messages.
+         */
+        @Override public void handleMessage(Message msg) {
+            final RxSyncActivity activity = this.mActivity.get();
+            if (activity != null) {
+                switch (msg.what) {
+                    case HANDLER_LOADING: {
+                        final int progressValue = (int) msg.obj;
+                        activity.runOnUiThread(new Runnable() {
+                            @Override public void run() {
+                                try {
+                                    activity.dialog.setLoadPrompt(progressValue + "%");
+                                    activity.dialog.show();
+                                } catch (Exception ignored) {
+                                }
+                            }
+                        });
+                        break;
+                    }
+                }
+            }
+        }
     }
 
 
@@ -320,79 +391,5 @@ public class RxSyncActivity extends BaseAppCompatActivity implements View.OnClic
             RxSyncActivity.this.syncRxSaveBT.setEnabled(true);
             super.onCancelled();
         }
-    }
-
-
-    /**
-     * 检查线程
-     */
-    private void checkThread(String info) {
-        Log.i(TAG, ThreadUtils.getThreadMsg(info));
-    }
-
-
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
-    @Override public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.rx_sync_save_bt:
-                /**
-                 * create添加OnSubscribe对象（观察者）
-                 * 此时要实现OnSubscribe（观察者）的call方法，如果是异步的话，这里的call就应该写后台的I/O操作
-                 * 当你调用了subscribe方法时，就会自动调用OnSubscribe对象（观察者）的call方法去执行
-                 * （可以参考subscribe方法的源码）
-                 * 失败会走到onError方法
-                 * 成功的话，因为call方法有Subscriber对象，这是添加的订阅者，可以调用它的onNext或onCompleted
-                 */
-                this.downloadSubscription = Observable.create(new Observable.OnSubscribe<String>() {
-                    @Override public void call(Subscriber<? super String> subscriber) {
-                        RxSyncActivity.this.checkThread("create -> OnSubscribe.create()");
-                        new RxSyncActivity.DownloadImageAsyncTask(RxSyncActivity.this,
-                                subscriber).execute(OBJECT_IMAGE_URL);
-                    }
-                }).subscribe(new Subscriber<String>() {
-                    @Override public void onCompleted() {
-
-                    }
-
-
-                    @Override public void onError(Throwable e) {
-
-                    }
-
-
-                    @Override public void onNext(String s) {
-                        RxSyncActivity.this.checkThread("create -> Subscriber.onNext()");
-                        /**
-                         * 设置按钮可用，并隐藏Dialog
-                         */
-                        RxSyncActivity.this.syncRxSaveBT.setEnabled(true);
-                        RxSyncActivity.this.dialog.hide();
-
-                        DisplayMetrics metrics = new DisplayMetrics();
-                        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                        int screenWidth = metrics.widthPixels;
-                        int screenHeight = metrics.heightPixels;
-                        /**
-                         * ImageUtil.decodeScaleImage 解析图片
-                         */
-                        Bitmap bitmap = ImageUtil.decodeScaleImage(s, screenWidth, screenHeight);
-                        RxSyncActivity.this.syncRxIV.setImageBitmap(bitmap);
-                    }
-                });
-                break;
-        }
-    }
-
-
-    @Override protected void onDestroy() {
-        this.justSubscription.unsubscribe();
-        this.fromSubscription.unsubscribe();
-        if (this.downloadSubscription != null) this.downloadSubscription.unsubscribe();
-        this.dialog.dismiss();
-        super.onDestroy();
     }
 }

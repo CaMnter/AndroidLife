@@ -235,7 +235,7 @@ public class LruCache<K, V> {
                 // 在重新调整容量大小前，本身容量就为空的话，会出异常的。
                 if (size < 0 || (map.isEmpty() && size != 0)) {
                     throw new IllegalStateException(
-                            getClass().getName() + ".sizeOf() is reporting inconsistent results!");
+                        getClass().getName() + ".sizeOf() is reporting inconsistent results!");
                 }
                 // 如果是 扩容 或者 map为空了，就会中断，因为扩容不会涉及到丢弃数据的情况
                 if (size <= maxSize || map.isEmpty()) {
@@ -419,6 +419,6 @@ public class LruCache<K, V> {
         int accesses = hitCount + missCount;
         int hitPercent = accesses != 0 ? (100 * hitCount / accesses) : 0;
         return String.format("LruCache[maxSize=%d,hits=%d,misses=%d,hitRate=%d%%]", maxSize,
-                hitCount, missCount, hitPercent);
+            hitCount, missCount, hitPercent);
     }
 }

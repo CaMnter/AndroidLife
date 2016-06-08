@@ -21,7 +21,7 @@ public class ImeUtils {
      */
     public static void popSoftKeyboard(Context context, View view, boolean wantPop) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
+            Context.INPUT_METHOD_SERVICE);
         if (wantPop) {
             view.requestFocus();
             imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
@@ -39,7 +39,7 @@ public class ImeUtils {
     public static void showSoftKeyboard(View view) {
         Context context = view.getContext();
         InputMethodManager imm = (InputMethodManager) context.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
+            Context.INPUT_METHOD_SERVICE);
         view.requestFocus();
         imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
@@ -53,7 +53,7 @@ public class ImeUtils {
     public static void hideSoftKeyboard(View view) {
         Context context = view.getContext();
         InputMethodManager imm = (InputMethodManager) context.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
+            Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

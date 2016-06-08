@@ -53,9 +53,9 @@ public class AnimatorShaderRoundImageView extends ShaderRoundImageView {
 
     public void startAnimation(RectAttribute newCoordinates, Animator.AnimatorListener listener) {
         RectAttribute oldCoordinates = new RectAttribute(this.mRoundRect.left, this.mRoundRect.top,
-                this.mRoundRect.right, this.mRoundRect.bottom, this.mBorderRadius);
+            this.mRoundRect.right, this.mRoundRect.bottom, this.mBorderRadius);
         ValueAnimator valueAnimator = ValueAnimator.ofObject(new RectAttributeEvaluator(),
-                oldCoordinates, newCoordinates, oldCoordinates);
+            oldCoordinates, newCoordinates, oldCoordinates);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override public void onAnimationUpdate(ValueAnimator animation) {
                 currentCoordinates = (RectAttribute) animation.getAnimatedValue();

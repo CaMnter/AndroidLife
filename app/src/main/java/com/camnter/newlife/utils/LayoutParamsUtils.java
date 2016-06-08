@@ -108,7 +108,7 @@ public class LayoutParamsUtils {
      */
     public static int dp2px(Context context, float dpValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue,
-                context.getResources().getDisplayMetrics());
+            context.getResources().getDisplayMetrics());
     }
 
 
@@ -126,9 +126,9 @@ public class LayoutParamsUtils {
     public static void setMargins(Context context, View view, int leftDpValue, int topDpValue, int rightDpValue, int bottomDpValue) {
         if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams layoutParams
-                    = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
             layoutParams.setMargins(dp2px(context, leftDpValue), dp2px(context, topDpValue),
-                    dp2px(context, rightDpValue), dp2px(context, bottomDpValue));
+                dp2px(context, rightDpValue), dp2px(context, bottomDpValue));
             view.requestLayout();
         }
     }
@@ -145,7 +145,7 @@ public class LayoutParamsUtils {
     public static void setWidth(Context context, View view, int widthDpValue) {
         if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams layoutParams
-                    = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
             layoutParams.width = dp2px(context, widthDpValue);
             view.requestLayout();
         }
@@ -163,7 +163,7 @@ public class LayoutParamsUtils {
     public static void setHeight(Context context, View view, int heightDpValue) {
         if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams layoutParams
-                    = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
             layoutParams.height = dp2px(context, heightDpValue);
             view.requestLayout();
         }
@@ -183,6 +183,6 @@ public class LayoutParamsUtils {
      */
     public static void setPadding(Context context, View view, int leftDpValue, int topDpValue, int rightDpValue, int bottomDpValue) {
         view.setPadding(dp2px(context, leftDpValue), dp2px(context, topDpValue),
-                dp2px(context, rightDpValue), dp2px(context, bottomDpValue));
+            dp2px(context, rightDpValue), dp2px(context, bottomDpValue));
     }
 }

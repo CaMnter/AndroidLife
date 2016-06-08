@@ -24,7 +24,7 @@ import com.camnter.newlife.utils.ImageUtil;
  * Time：2015-11-16 14:58
  */
 public class DownloadServiceActivity extends BaseAppCompatActivity
-        implements View.OnClickListener, IBinderView {
+    implements View.OnClickListener, IBinderView {
 
     private static final String OBJECT_IMAGE_URL = "http://img.blog.csdn.net/20150913233900119";
 
@@ -63,7 +63,7 @@ public class DownloadServiceActivity extends BaseAppCompatActivity
         this.connection = new ServiceConnection() {
             @Override public void onServiceConnected(ComponentName name, IBinder service) {
                 DownloadService.DownloadServiceBinder binder
-                        = (DownloadService.DownloadServiceBinder) service;
+                    = (DownloadService.DownloadServiceBinder) service;
                 binder.iBinderView = DownloadServiceActivity.this;
                 DownloadServiceActivity.this.service = binder.getService();
             }
@@ -75,8 +75,8 @@ public class DownloadServiceActivity extends BaseAppCompatActivity
         };
 
         DownloadServiceActivity.this.bindService(
-                new Intent(DownloadServiceActivity.this, DownloadService.class),
-                DownloadServiceActivity.this.connection, Context.BIND_AUTO_CREATE);
+            new Intent(DownloadServiceActivity.this, DownloadService.class),
+            DownloadServiceActivity.this.connection, Context.BIND_AUTO_CREATE);
     }
 
 

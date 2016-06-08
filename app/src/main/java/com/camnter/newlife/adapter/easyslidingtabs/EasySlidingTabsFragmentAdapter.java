@@ -14,7 +14,7 @@ import java.util.List;
  * Time：2015-10-15 14:58
  */
 public class EasySlidingTabsFragmentAdapter extends FragmentPagerAdapter
-        implements EasySlidingTabs.TabsTitleInterface {
+    implements EasySlidingTabs.TabsTitleInterface {
 
     private String[] titles;
     private List<Fragment> fragments;

@@ -46,7 +46,7 @@ public class CustomProgressBarDialog extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.mContext = context;
         this.mInflater = (LayoutInflater) mContext.getSystemService(
-                Context.LAYOUT_INFLATER_SERVICE);
+            Context.LAYOUT_INFLATER_SERVICE);
         this.mView = this.mInflater.inflate(R.layout.dialog_progressbar, null);
         setContentView(this.mView);
 

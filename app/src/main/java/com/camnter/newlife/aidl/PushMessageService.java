@@ -18,6 +18,26 @@ public class PushMessageService extends Service {
 
     private IPushMessageImpl binder;
 
+
+    /**
+     * Called by the system when the service is first created.  Do not call this method directly.
+     */
+    @Override public void onCreate() {
+        super.onCreate();
+        this.binder = new IPushMessageImpl();
+    }
+
+
+    @Override public int onStartCommand(Intent intent, int flags, int startId) {
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+
+    @Nullable @Override public IBinder onBind(Intent intent) {
+        return this.binder;
+    }
+
+
     /**
      * AIDL implement
      * 实现AIDL生成静态抽象类 IPushMessage.Stub
@@ -36,7 +56,7 @@ public class PushMessageService extends Service {
          */
         @Override
         public void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString)
-                throws RemoteException {
+            throws RemoteException {
 
         }
 
@@ -44,24 +64,5 @@ public class PushMessageService extends Service {
         @Override public String onMessage() throws RemoteException {
             return UUID.randomUUID().toString();
         }
-    }
-
-
-    /**
-     * Called by the system when the service is first created.  Do not call this method directly.
-     */
-    @Override public void onCreate() {
-        super.onCreate();
-        this.binder = new IPushMessageImpl();
-    }
-
-
-    @Override public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-
-    @Nullable @Override public IBinder onBind(Intent intent) {
-        return this.binder;
     }
 }

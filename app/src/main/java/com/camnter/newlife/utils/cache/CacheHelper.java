@@ -65,7 +65,7 @@ public abstract class CacheHelper {
          *              false：如果排序应该是顺序插入的条目
          */
         mSoftCache = new LinkedHashMap<String, SoftReference<Object>>(SOFT_CACHE_SIZE, 0.75f,
-                true) {
+            true) {
             /**
              * 移除最旧的数据
              * @param eldest

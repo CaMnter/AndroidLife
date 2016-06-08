@@ -41,14 +41,13 @@ import java.text.SimpleDateFormat;
  */
 public class ImageUtil {
 
-    private static final String TAG = "ImageUtil";
-
     public static final int ACTION_SET_AVATAR = 260;
     public static final int ACTION_SET_COVER = 261;
     public static final int ACTION_TAKE_PIC = 262;
     public static final int ACTION_TAKE_PIC_FOR_GRIDVIEW = 263;
     public static final int ACTION_PICK_PIC = 264;
     public static final int ACTION_ACTION_CROP = 265;
+    private static final String TAG = "ImageUtil";
 
 
     /**
@@ -171,7 +170,7 @@ public class ImageUtil {
      */
     public static Bitmap getRoundedCornerBitmap(Bitmap srcBitmap, float radius) {
         Bitmap resultBitmap = Bitmap.createBitmap(srcBitmap.getWidth(), srcBitmap.getHeight(),
-                Bitmap.Config.ARGB_8888);
+            Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(resultBitmap);
         Paint paint = new Paint();
         Rect rect = new Rect(0, 0, srcBitmap.getWidth(), srcBitmap.getHeight());
@@ -192,7 +191,7 @@ public class ImageUtil {
     public static Bitmap decodeScaleImage(String path, int targetWidth, int targetHeight) {
         BitmapFactory.Options bitmapOptions = getBitmapOptions(path);
         bitmapOptions.inSampleSize = calculateInSampleSize(bitmapOptions, targetWidth,
-                targetHeight);
+            targetHeight);
         bitmapOptions.inJustDecodeBounds = false;
         Bitmap noRotatingBitmap = BitmapFactory.decodeFile(path, bitmapOptions);
         int degree = readPictureDegree(path);
@@ -303,7 +302,7 @@ public class ImageUtil {
         Matrix matrix = new Matrix();
         matrix.postRotate((float) degree);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix,
-                true);
+            true);
     }
 
 
@@ -313,7 +312,7 @@ public class ImageUtil {
     public static Bitmap getVideoThumbnail(String filePath, int width, int height, int kind) {
         Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(filePath, kind);
         bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,
-                ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+            ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
         return bitmap;
     }
 

@@ -19,7 +19,7 @@ import java.util.UUID;
  * Time：2016-05-31 22:37
  */
 public class AgeraBroadcastActivity extends BaseAppCompatActivity
-        implements Updatable, View.OnClickListener {
+    implements Updatable, View.OnClickListener {
 
     private static final String AGERA_BROADCAST_ACTION = "agera";
 

@@ -44,11 +44,10 @@ import me.drakeet.newlife.RxBusActivity;
 
 public class MainActivity extends BaseAppCompatActivity {
 
-    private EasyRecyclerView menuList;
-    private MenuRecyclerViewAdapter adapter;
-
     protected ArrayList<Class> classes;
     protected boolean showTag = true;
+    private EasyRecyclerView menuList;
+    private MenuRecyclerViewAdapter adapter;
 
 
     /**
@@ -69,7 +68,7 @@ public class MainActivity extends BaseAppCompatActivity {
     @Override protected void initViews(Bundle savedInstanceState) {
         this.menuList = this.findView(R.id.menu_list);
         this.menuList.addItemDecoration(
-                new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST));
+            new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST));
     }
 
 

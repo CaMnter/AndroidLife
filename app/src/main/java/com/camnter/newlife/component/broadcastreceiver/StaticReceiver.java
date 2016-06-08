@@ -28,21 +28,21 @@ public class StaticReceiver extends BroadcastReceiver {
         String message = intent.getStringExtra(STATIC_MESSAGE);
         Intent data = new Intent();
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, data,
-                PendingIntent.FLAG_CANCEL_CURRENT);
+            PendingIntent.FLAG_CANCEL_CURRENT);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(
-                Context.NOTIFICATION_SERVICE);
+            Context.NOTIFICATION_SERVICE);
         Notification notification = new Notification.Builder(context).setContentTitle(
-                "StaticBroadcastReceiver")
-                                                                     .setContentText(message)
-                                                                     .setSmallIcon(
-                                                                             R.drawable.ic_mm_normal)
-                                                                     .setLargeIcon(
-                                                                             BitmapFactory.decodeResource(
-                                                                                     context.getResources(),
-                                                                                     R.drawable.ic_mm_normal))
-                                                                     .setContentIntent(
-                                                                             pendingIntent)
-                                                                     .build();
+            "StaticBroadcastReceiver")
+            .setContentText(message)
+            .setSmallIcon(
+                R.drawable.ic_mm_normal)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    context.getResources(),
+                    R.drawable.ic_mm_normal))
+            .setContentIntent(
+                pendingIntent)
+            .build();
         notificationManager.notify(206, notification);
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }

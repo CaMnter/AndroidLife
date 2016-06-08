@@ -32,7 +32,7 @@ public class SQLiteActivity extends BaseAppCompatActivity {
     @Override protected void initViews(Bundle savedInstanceState) {
         this.recyclerView = this.findView(R.id.data_base_rv);
         this.recyclerView.addItemDecoration(
-                new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST));
+            new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST));
     }
 
 

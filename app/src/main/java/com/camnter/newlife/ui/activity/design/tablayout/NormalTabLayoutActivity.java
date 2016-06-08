@@ -58,10 +58,10 @@ public class NormalTabLayoutActivity extends BaseAppCompatActivity {
     @Override protected void initData() {
         String[] tabTitles = { "一次元", "二次元", "三次元", "四次元" };
         Fragment[] fragments = { TabLayoutFirstFragment.getInstance(),
-                TabLayoutSecondFragment.getInstance(), TabLayoutThirdFragment.getInstance(),
-                TabLayoutFourthFragment.getInstance() };
+            TabLayoutSecondFragment.getInstance(), TabLayoutThirdFragment.getInstance(),
+            TabLayoutFourthFragment.getInstance() };
         NormalTabLayoutFragmentAdapter fragmentAdapter = new NormalTabLayoutFragmentAdapter(
-                this.getSupportFragmentManager(), fragments, tabTitles);
+            this.getSupportFragmentManager(), fragments, tabTitles);
         this.viewPager.setAdapter(fragmentAdapter);
         this.tabLayout.setupWithViewPager(this.viewPager);
     }

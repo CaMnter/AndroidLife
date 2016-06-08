@@ -57,6 +57,12 @@ public class DownloadService extends Service {
     }
 
 
+    public void startDownload(String imageUrl) {
+        ((DownloadServiceBinder) DownloadService.this.binder).iBinderView.downloadStart();
+        new DownloadImageAsyncTask(this).execute(imageUrl);
+    }
+
+
     /**
      * Service Binder
      */
@@ -67,12 +73,6 @@ public class DownloadService extends Service {
         public DownloadService getService() {
             return DownloadService.this;
         }
-    }
-
-
-    public void startDownload(String imageUrl) {
-        ((DownloadServiceBinder) DownloadService.this.binder).iBinderView.downloadStart();
-        new DownloadImageAsyncTask(this).execute(imageUrl);
     }
 
 
@@ -162,7 +162,7 @@ public class DownloadService extends Service {
         @Override protected void onPostExecute(String string) {
             super.onPostExecute(string);
             ((DownloadServiceBinder) DownloadService.this.binder).iBinderView.downloadSuccess(
-                    this.localFilePath);
+                this.localFilePath);
         }
 
 

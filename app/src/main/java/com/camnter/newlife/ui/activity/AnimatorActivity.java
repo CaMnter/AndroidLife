@@ -74,7 +74,7 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
         this.setTv = (TextView) this.findViewById(R.id.animator_set_tv);
         this.valueSv = (SurfaceView) this.findViewById(R.id.animator_sv);
         this.evaluatorIv = (AnimatorShaderRoundImageView) this.findViewById(
-                R.id.animator_evaluator_iv);
+            R.id.animator_evaluator_iv);
         this.evaluatorTv = (TextView) this.findViewById(R.id.animator_evaluator_tv);
         this.propertyTv = (TextView) this.findViewById(R.id.animator_property_tv);
         this.holder = this.valueSv.getHolder();
@@ -121,9 +121,9 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
                 surfacePaint.setColor(Color.WHITE);
                 surfacePaint.setTextSize(30);
                 holderCanvas.drawText(value,
-                        surfaceLocation[0] + valueSv.getWidth() / 2 - property[0] / 2,
-                        surfaceLocation[1] + valueSv.getHeight() / 2 + property[1] / 2,
-                        surfacePaint);
+                    surfaceLocation[0] + valueSv.getWidth() / 2 - property[0] / 2,
+                    surfaceLocation[1] + valueSv.getHeight() / 2 + property[1] / 2,
+                    surfacePaint);
                 holder.unlockCanvasAndPost(holderCanvas);
             }
         });
@@ -172,7 +172,7 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
         });
 
         this.rotationAnimator = ObjectAnimator.ofFloat(this.rotationTv, "rotation", 0f, 180f, 0f,
-                180f, 0f);
+            180f, 0f);
         this.rotationAnimator.setDuration(2000);
         this.rotationAnimator.addListener(new Animator.AnimatorListener() {
             @Override public void onAnimationStart(Animator animation) {
@@ -196,7 +196,7 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
         });
 
         this.scaleAnimator = ObjectAnimator.ofFloat(this.scaleTv, "scaleY", 1f, 1.5f, 1f, 1.5f, 1f,
-                1.5f, 1f, 1.5f, 1f);
+            1.5f, 1f, 1.5f, 1f);
         this.scaleAnimator.setDuration(3000);
         this.scaleAnimator.addListener(new Animator.AnimatorListener() {
             @Override public void onAnimationStart(Animator animation) {
@@ -246,7 +246,7 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
                 int totalHeight = this.translationTv.getHeight() + translationTvLocation[1];
                 float tY = this.translationTv.getTranslationY();
                 this.translationAnimator = ObjectAnimator.ofFloat(this.translationTv,
-                        "translationY", tY, -totalHeight, tY, -totalHeight, tY);
+                    "translationY", tY, -totalHeight, tY, -totalHeight, tY);
                 this.translationAnimator.setDuration(3000);
                 this.translationAnimator.addListener(new Animator.AnimatorListener() {
                     @Override public void onAnimationStart(Animator animation) {
@@ -282,13 +282,13 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
                 int totalHeight = this.setTv.getHeight() + setTvLocation[1];
                 float tY = this.setTv.getTranslationY();
                 ObjectAnimator translation = ObjectAnimator.ofFloat(this.setTv, "translationY", tY,
-                        -totalHeight, tY, -totalHeight, tY);
+                    -totalHeight, tY, -totalHeight, tY);
                 ObjectAnimator rotation = ObjectAnimator.ofFloat(this.setTv, "rotation", 0f, 180f,
-                        0f, 180f, 0f);
+                    0f, 180f, 0f);
                 ObjectAnimator alpha = ObjectAnimator.ofFloat(this.setTv, "alpha", 1f, 0f, 1f, 0f,
-                        1f);
+                    1f);
                 ObjectAnimator scale = ObjectAnimator.ofFloat(this.setTv, "scaleY", 1f, 1.5f, 1f,
-                        1.5f, 1f, 1.5f, 1f, 1.5f, 1f);
+                    1.5f, 1f, 1.5f, 1f, 1.5f, 1f);
                 AnimatorSet set = new AnimatorSet();
                 set.play(alpha).with(rotation).after(translation).before(scale);
                 set.setDuration(4000);
@@ -297,8 +297,8 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
             }
             case R.id.animator_evaluator_tv:
                 RectAttribute newRectAttribute = new RectAttribute(this.evaluatorIv.getWidth() / 2,
-                        this.evaluatorIv.getHeight() / 2, this.evaluatorIv.getWidth() / 2,
-                        this.evaluatorIv.getHeight() / 2, 0.0f);
+                    this.evaluatorIv.getHeight() / 2, this.evaluatorIv.getWidth() / 2,
+                    this.evaluatorIv.getHeight() / 2, 0.0f);
                 this.evaluatorIv.startAnimation(newRectAttribute, new Animator.AnimatorListener() {
                     @Override public void onAnimationStart(Animator animation) {
                         evaluatorTv.setEnabled(false);
@@ -323,28 +323,28 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
             case R.id.animator_property_tv: {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
                     v.animate()
-                     .alpha(0.0f)
-                     .setDuration(3000)
-                     .setListener(new Animator.AnimatorListener() {
-                         @Override public void onAnimationStart(Animator animation) {
-                             v.setEnabled(false);
-                         }
+                        .alpha(0.0f)
+                        .setDuration(3000)
+                        .setListener(new Animator.AnimatorListener() {
+                            @Override public void onAnimationStart(Animator animation) {
+                                v.setEnabled(false);
+                            }
 
 
-                         @Override public void onAnimationEnd(Animator animation) {
-                             v.setEnabled(true);
-                         }
+                            @Override public void onAnimationEnd(Animator animation) {
+                                v.setEnabled(true);
+                            }
 
 
-                         @Override public void onAnimationCancel(Animator animation) {
+                            @Override public void onAnimationCancel(Animator animation) {
 
-                         }
+                            }
 
 
-                         @Override public void onAnimationRepeat(Animator animation) {
+                            @Override public void onAnimationRepeat(Animator animation) {
 
-                         }
-                     });
+                            }
+                        });
                 }
                 break;
             }
@@ -376,9 +376,9 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
         this.holderCanvas.drawColor(Color.BLACK);
         this.surfacePaint.setColor(Color.WHITE);
         this.holderCanvas.drawText(initText,
-                this.surfaceLocation[0] + this.valueSv.getWidth() / 2 - this.property[0] / 2,
-                this.surfaceLocation[1] + this.valueSv.getHeight() / 2 + this.property[1] / 2,
-                this.surfacePaint);
+            this.surfaceLocation[0] + this.valueSv.getWidth() / 2 - this.property[0] / 2,
+            this.surfaceLocation[1] + this.valueSv.getHeight() / 2 + this.property[1] / 2,
+            this.surfacePaint);
         this.holder.unlockCanvasAndPost(this.holderCanvas);
     }
 }

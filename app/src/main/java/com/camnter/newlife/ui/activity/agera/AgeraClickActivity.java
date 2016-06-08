@@ -70,6 +70,7 @@ public class AgeraClickActivity extends BaseAppCompatActivity {
         }
     }
 
+
     private class ClickAgeraObservable extends BaseObservable implements View.OnClickListener {
 
         /**

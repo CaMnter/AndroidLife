@@ -18,7 +18,7 @@ import com.camnter.newlife.R;
  * Time：2015-09-29 14:18
  */
 public class AIEditText extends AppCompatEditText
-        implements View.OnTouchListener, View.OnFocusChangeListener, TextWatcher {
+    implements View.OnTouchListener, View.OnFocusChangeListener, TextWatcher {
 
     private Drawable mClearDrawable;
     private OnFocusChangeListener mOnFocusChangeListener;
@@ -72,7 +72,7 @@ public class AIEditText extends AppCompatEditText
         DrawableCompat.setTint(wrappedDrawable, super.getCurrentHintTextColor());
         this.mClearDrawable = wrappedDrawable;
         this.mClearDrawable.setBounds(0, 0, this.mClearDrawable.getIntrinsicHeight(),
-                this.mClearDrawable.getIntrinsicHeight());
+            this.mClearDrawable.getIntrinsicHeight());
         this.setClearDrawableVisible(false);
         super.setOnTouchListener(this);
         super.setOnFocusChangeListener(this);
@@ -84,7 +84,7 @@ public class AIEditText extends AppCompatEditText
         this.mClearDrawable.setVisible(visible, false);
         final Drawable[] compoundDrawables = this.getCompoundDrawables();
         this.setCompoundDrawables(compoundDrawables[0], compoundDrawables[1],
-                visible ? this.mClearDrawable : null, compoundDrawables[3]);
+            visible ? this.mClearDrawable : null, compoundDrawables[3]);
     }
 
 
@@ -102,7 +102,7 @@ public class AIEditText extends AppCompatEditText
          * so , when clearDrawable is visible and onClick it.
          */
         if (this.mClearDrawable.isVisible() && x > this.getWidth() - this.getPaddingRight() -
-                this.mClearDrawable.getIntrinsicWidth()) {
+            this.mClearDrawable.getIntrinsicWidth()) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 this.setError(null);
                 this.setText("");

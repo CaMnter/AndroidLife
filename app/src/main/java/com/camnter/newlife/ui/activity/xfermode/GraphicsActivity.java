@@ -27,6 +27,7 @@ class GraphicsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
+
     @Override
     public void setContentView(View view) {
         if (false) { // set to true to test Picture

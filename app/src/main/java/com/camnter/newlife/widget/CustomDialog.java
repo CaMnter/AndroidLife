@@ -15,12 +15,10 @@ import com.camnter.newlife.R;
  */
 public class CustomDialog extends Dialog {
 
-    private Context context;
-    private TextView dialogTV;
-
     private static final long DEFAULT_DURATION = 1000L;
     private static final String DEFAULT_CONTENT = "";
-
+    private Context context;
+    private TextView dialogTV;
     private long duration;
     private String content;
 
@@ -89,11 +87,6 @@ public class CustomDialog extends Dialog {
     }
 
 
-    public interface DialogCallback {
-        void onDismiss();
-    }
-
-
     public CustomDialog setDuration(long duration) {
         this.duration = duration;
         return this;
@@ -115,5 +108,10 @@ public class CustomDialog extends Dialog {
     public CustomDialog setCallback(DialogCallback callback) {
         this.callback = callback;
         return this;
+    }
+
+
+    public interface DialogCallback {
+        void onDismiss();
     }
 }

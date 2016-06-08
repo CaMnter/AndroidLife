@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Time：2015-12-22 11:42
  */
 public class TagTextViewActivity extends BaseAppCompatActivity
-        implements ClickableSpanNoUnderline.OnClickListener<TagTextView.TagClickableSpan> {
+    implements ClickableSpanNoUnderline.OnClickListener<TagTextView.TagClickableSpan> {
 
     private TagTextView tagTV;
 

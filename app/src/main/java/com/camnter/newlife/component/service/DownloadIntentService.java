@@ -31,6 +31,11 @@ public class DownloadIntentService extends IntentService {
     private static final String IMAGE_URL = "com.camnter.newlife.service.extra.image.url";
 
 
+    public DownloadIntentService() {
+        super("DownIntentService");
+    }
+
+
     /**
      * Starts this service to perform action Foo with the given parameters. If
      * the service is already performing a task this action will be queued.
@@ -43,11 +48,6 @@ public class DownloadIntentService extends IntentService {
         intent.setAction(ACTION_DOWNLOAD);
         intent.putExtra(IMAGE_URL, url);
         context.startService(intent);
-    }
-
-
-    public DownloadIntentService() {
-        super("DownIntentService");
     }
 
 
@@ -159,9 +159,9 @@ public class DownloadIntentService extends IntentService {
             super.onPostExecute(string);
             Intent intent = new Intent(DownloadReceiverActivity.DownloadReceiver.INTENT_ACTION);
             intent.putExtra(DownloadReceiverActivity.DownloadReceiver.INTENT_TYPE,
-                    DownloadReceiverActivity.DownloadReceiver.TYPE_DOWNLOAD_SUCCESS);
+                DownloadReceiverActivity.DownloadReceiver.TYPE_DOWNLOAD_SUCCESS);
             intent.putExtra(DownloadReceiverActivity.DownloadReceiver.INTENT_DATA_IMAGE_PATH,
-                    this.localFilePath);
+                this.localFilePath);
             DownloadIntentService.this.sendBroadcast(intent);
         }
 
@@ -207,7 +207,7 @@ public class DownloadIntentService extends IntentService {
             super.onCancelled();
             Intent intent = new Intent(DownloadReceiverActivity.DownloadReceiver.INTENT_ACTION);
             intent.putExtra(DownloadReceiverActivity.DownloadReceiver.INTENT_TYPE,
-                    DownloadReceiverActivity.DownloadReceiver.TYPE_DOWNLOAD_FAILURE);
+                DownloadReceiverActivity.DownloadReceiver.TYPE_DOWNLOAD_FAILURE);
             DownloadIntentService.this.sendBroadcast(intent);
         }
     }

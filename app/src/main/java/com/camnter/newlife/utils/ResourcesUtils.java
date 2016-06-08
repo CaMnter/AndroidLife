@@ -66,8 +66,8 @@ public class ResourcesUtils {
      * @return ColorStateList
      */
     public static ColorStateList createColorStateList(
-            @ColorInt int normal,
-            @ColorInt int pressed, @ColorInt int focused, @ColorInt int unable) {
+        @ColorInt int normal,
+        @ColorInt int pressed, @ColorInt int focused, @ColorInt int unable) {
         colors[0] = pressed;
         colors[1] = focused;
         colors[2] = normal;
@@ -96,17 +96,17 @@ public class ResourcesUtils {
                                                             @DrawableRes int unableRes) {
         StateListDrawable stateListDrawable = new StateListDrawable();
         stateListDrawable.addState(
-                new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled },
-                getDrawable(context, pressedRes));
+            new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled },
+            getDrawable(context, pressedRes));
         stateListDrawable.addState(
-                new int[] { android.R.attr.state_enabled, android.R.attr.state_focused },
-                getDrawable(context, focusedRes));
+            new int[] { android.R.attr.state_enabled, android.R.attr.state_focused },
+            getDrawable(context, focusedRes));
         stateListDrawable.addState(new int[] { android.R.attr.state_enabled },
-                getDrawable(context, normalRes));
+            getDrawable(context, normalRes));
         stateListDrawable.addState(new int[] { android.R.attr.state_focused },
-                getDrawable(context, focusedRes));
+            getDrawable(context, focusedRes));
         stateListDrawable.addState(new int[] { android.R.attr.state_window_focused },
-                getDrawable(context, unableRes));
+            getDrawable(context, unableRes));
         stateListDrawable.addState(new int[] {}, getDrawable(context, normalRes));
         return stateListDrawable;
     }

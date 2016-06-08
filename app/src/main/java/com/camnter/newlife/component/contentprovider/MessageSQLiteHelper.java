@@ -12,16 +12,13 @@ import android.util.Log;
  */
 public class MessageSQLiteHelper extends SQLiteOpenHelper {
 
-    private static final String TAG = "MessageSQLiteHelper";
-
-    private static final String DB_NAME = "message.db";
-    private static final int VERSION = 1;
-
     public static final String TB_MESSAGE = "tb_message";
     public static final String TB_MESSAGE_SQL = "CREATE TABLE IF NOT EXISTS " + TB_MESSAGE +
-            "(_id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-            " content text)";
-
+        "(_id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+        " content text)";
+    private static final String TAG = "MessageSQLiteHelper";
+    private static final String DB_NAME = "message.db";
+    private static final int VERSION = 1;
     private static MessageSQLiteHelper ourInstance;
 
 
@@ -30,14 +27,14 @@ public class MessageSQLiteHelper extends SQLiteOpenHelper {
     }
 
 
-    public static MessageSQLiteHelper getInstance(Context context) {
-        if (ourInstance == null) ourInstance = new MessageSQLiteHelper(context);
-        return ourInstance;
+    public MessageSQLiteHelper(Context context) {
+        this(context, DB_NAME, null, VERSION);
     }
 
 
-    public MessageSQLiteHelper(Context context) {
-        this(context, DB_NAME, null, VERSION);
+    public static MessageSQLiteHelper getInstance(Context context) {
+        if (ourInstance == null) ourInstance = new MessageSQLiteHelper(context);
+        return ourInstance;
     }
 
 

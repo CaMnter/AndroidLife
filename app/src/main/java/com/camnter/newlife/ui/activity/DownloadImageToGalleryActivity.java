@@ -33,48 +33,15 @@ import java.util.UUID;
  * Time：2015-10-20 15:00
  */
 public class DownloadImageToGalleryActivity extends BaseAppCompatActivity
-        implements View.OnClickListener {
+    implements View.OnClickListener {
 
     private static final String OBJECT_IMAGE_URL = "http://img.blog.csdn.net/20150913233900119";
-
+    private static final int HANDLER_LOADING = 262;
+    private final LoadingHandler loadingHandler = new LoadingHandler(
+        DownloadImageToGalleryActivity.this);
     private Button saveBT;
     private ImageView saveIV;
     private CustomProgressBarDialog dialog;
-
-    private static final int HANDLER_LOADING = 262;
-
-    /**
-     * 刷新Dialog显示的进度
-     */
-    private static class LoadingHandler extends Handler {
-        private final WeakReference<DownloadImageToGalleryActivity> mActivity;
-
-
-        public LoadingHandler(DownloadImageToGalleryActivity activity) {
-            mActivity = new WeakReference<>(activity);
-        }
-
-
-        /**
-         * Subclasses must implement this to receive messages.
-         */
-        @Override public void handleMessage(Message msg) {
-            DownloadImageToGalleryActivity activity = this.mActivity.get();
-            if (activity != null) {
-                switch (msg.what) {
-                    case HANDLER_LOADING: {
-                        int progressValue = (int) msg.obj;
-                        activity.dialog.setLoadPrompt(progressValue + "%");
-                        activity.dialog.show();
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    private final LoadingHandler loadingHandler = new LoadingHandler(
-            DownloadImageToGalleryActivity.this);
 
 
     /**
@@ -129,6 +96,37 @@ public class DownloadImageToGalleryActivity extends BaseAppCompatActivity
                  */
                 new DownloadImageAsyncTask(this).execute(OBJECT_IMAGE_URL);
                 break;
+            }
+        }
+    }
+
+
+    /**
+     * 刷新Dialog显示的进度
+     */
+    private static class LoadingHandler extends Handler {
+        private final WeakReference<DownloadImageToGalleryActivity> mActivity;
+
+
+        public LoadingHandler(DownloadImageToGalleryActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+
+        /**
+         * Subclasses must implement this to receive messages.
+         */
+        @Override public void handleMessage(Message msg) {
+            DownloadImageToGalleryActivity activity = this.mActivity.get();
+            if (activity != null) {
+                switch (msg.what) {
+                    case HANDLER_LOADING: {
+                        int progressValue = (int) msg.obj;
+                        activity.dialog.setLoadPrompt(progressValue + "%");
+                        activity.dialog.show();
+                        break;
+                    }
+                }
             }
         }
     }
@@ -232,16 +230,16 @@ public class DownloadImageToGalleryActivity extends BaseAppCompatActivity
              * ImageUtil.decodeScaleImage 解析图片
              */
             Bitmap bitmap = ImageUtil.decodeScaleImage(this.localFilePath, screenWidth,
-                    screenHeight);
+                screenHeight);
             DownloadImageToGalleryActivity.this.saveIV.setImageBitmap(bitmap);
             /**
              * 保存图片到相册
              */
             String imageName = System.currentTimeMillis() + ".jpg";
             MediaStore.Images.Media.insertImage(
-                    DownloadImageToGalleryActivity.this.getApplicationContext()
-                                                       .getContentResolver(), bitmap, imageName,
-                    "camnter");
+                DownloadImageToGalleryActivity.this.getApplicationContext()
+                    .getContentResolver(), bitmap, imageName,
+                "camnter");
             Toast.makeText(this.activity, "已保存：" + imageName, Toast.LENGTH_LONG).show();
         }
 

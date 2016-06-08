@@ -94,7 +94,7 @@ public class DeviceUtils {
     public static boolean isNetworkConnected(Context context) {
         if (context != null) {
             ConnectivityManager mConnectivityManager
-                    = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
             if (mNetworkInfo != null) {
                 return mNetworkInfo.isAvailable();
@@ -152,7 +152,7 @@ public class DeviceUtils {
      */
     public static String getDeviceId(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(
-                Context.TELEPHONY_SERVICE);
+            Context.TELEPHONY_SERVICE);
         String deviceId = tm.getDeviceId();
         if (deviceId == null) {
             return "-";
@@ -228,11 +228,11 @@ public class DeviceUtils {
         PackageManager pm = context.getPackageManager();
         while (i.hasNext()) {
             ActivityManager.RunningAppProcessInfo info
-                    = (ActivityManager.RunningAppProcessInfo) (i.next());
+                = (ActivityManager.RunningAppProcessInfo) (i.next());
             try {
                 if (info.pid == processId) {
                     CharSequence c = pm.getApplicationLabel(
-                            pm.getApplicationInfo(info.processName, PackageManager.GET_META_DATA));
+                        pm.getApplicationInfo(info.processName, PackageManager.GET_META_DATA));
 
                     processName = info.processName;
                     return processName;
@@ -307,10 +307,10 @@ public class DeviceUtils {
         File file;
         String[] project = { MediaStore.Images.Media.DATA };
         Cursor actualImageCursor = context.getContentResolver()
-                                          .query(uri, project, null, null, null);
+            .query(uri, project, null, null, null);
         if (actualImageCursor != null) {
             int actual_image_column_index = actualImageCursor.getColumnIndexOrThrow(
-                    MediaStore.Images.Media.DATA);
+                MediaStore.Images.Media.DATA);
             actualImageCursor.moveToFirst();
             String img_path = actualImageCursor.getString(actual_image_column_index);
             file = new File(img_path);
@@ -333,8 +333,8 @@ public class DeviceUtils {
         String value = null;
         try {
             ApplicationInfo appInfo = context.getPackageManager()
-                                             .getApplicationInfo(context.getPackageName(),
-                                                     PackageManager.GET_META_DATA);
+                .getApplicationInfo(context.getPackageName(),
+                    PackageManager.GET_META_DATA);
             value = appInfo.metaData.getString(name);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -353,7 +353,7 @@ public class DeviceUtils {
     public static void copy2Clipboard(Context context, String content) {
         ClipData clipData = ClipData.newPlainText(context.getString(R.string.app_name), content);
         ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(
-                Context.CLIPBOARD_SERVICE);
+            Context.CLIPBOARD_SERVICE);
         clipboardManager.setPrimaryClip(clipData);
     }
 }

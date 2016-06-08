@@ -211,7 +211,7 @@ public class FileCacheHelper extends CacheHelper {
      */
     private void saveCacheIndex(CacheOption cacheOption) {
         SharedPreferences sp = context.getSharedPreferences(
-                cacheOption.scope + SHARED_PREFERENCE_NAME, 0);
+            cacheOption.scope + SHARED_PREFERENCE_NAME, 0);
         String model = cacheOption.model;
         SharedPreferences.Editor edt = sp.edit();
         switch (cacheOption.deadlineType) {
@@ -244,8 +244,8 @@ public class FileCacheHelper extends CacheHelper {
      **/
     private String getCacheFile(String scope, String model) {
         return DeviceUtils.createAPPFolder(
-                DeviceUtils.getAppProcessName(this.context, DeviceUtils.getAppProcessId()),
-                MainApplication.getInstance()) + File.separator + CACHE_DIR + File.separator +
-                scope + "_" + model + ".data";
+            DeviceUtils.getAppProcessName(this.context, DeviceUtils.getAppProcessId()),
+            MainApplication.getInstance()) + File.separator + CACHE_DIR + File.separator +
+            scope + "_" + model + ".data";
     }
 }

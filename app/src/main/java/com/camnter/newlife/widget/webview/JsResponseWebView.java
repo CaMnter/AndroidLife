@@ -62,22 +62,22 @@ public class JsResponseWebView extends WebView {
         settings.setJavaScriptEnabled(true);
         this.setWebViewClient(new JsResponseViewClient());
         this.javascript = "javascript:(function(){" +
-                "   // 图片   " +
-                "   var images = document.getElementsByTagName('img');" +
-                "   for(var i=0;i<images.length;i++){" +
-                "       images[i].onclick=function(){" +
-                "           window." + INTERFACE_NAME + "." + ON_CLICK_PICTURE +
-                "(images[i].src);" +
-                "       }" +
-                "   }" +
-                "   // 标签   " +
-                "   var tags = document.getElementsByClassName('video');" +
-                "   for(var i=0;i<tags.length;i++){" +
-                "       tags[i].onclick=function(){" +
-                "           window." + INTERFACE_NAME + "." + ON_CLICK_TAG + "(tags[i].id,i);" +
-                "       }" +
-                "   }" +
-                "})()";
+            "   // 图片   " +
+            "   var images = document.getElementsByTagName('img');" +
+            "   for(var i=0;i<images.length;i++){" +
+            "       images[i].onclick=function(){" +
+            "           window." + INTERFACE_NAME + "." + ON_CLICK_PICTURE +
+            "(images[i].src);" +
+            "       }" +
+            "   }" +
+            "   // 标签   " +
+            "   var tags = document.getElementsByClassName('video');" +
+            "   for(var i=0;i<tags.length;i++){" +
+            "       tags[i].onclick=function(){" +
+            "           window." + INTERFACE_NAME + "." + ON_CLICK_TAG + "(tags[i].id,i);" +
+            "       }" +
+            "   }" +
+            "})()";
     }
 
 
@@ -102,13 +102,6 @@ public class JsResponseWebView extends WebView {
     }
 
 
-    private class JsResponseViewClient extends WebViewClient {
-        @Override public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            JsResponseWebView.this.injectJavaScript();
-        }
-    }
-
     /**
      * 继承此类实现自己逻辑
      * 并且调用setJsResponseInterface
@@ -128,5 +121,13 @@ public class JsResponseWebView extends WebView {
          * @param position position
          */
         @JavascriptInterface void onClickPicture(String url, int position);
+    }
+
+
+    private class JsResponseViewClient extends WebViewClient {
+        @Override public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            JsResponseWebView.this.injectJavaScript();
+        }
     }
 }

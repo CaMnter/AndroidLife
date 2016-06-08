@@ -28,22 +28,22 @@ import java.util.Map;
  * Time：2016-03-31 13:37
  */
 public class Constant {
-    public static int[] AVATARS = { R.drawable.ic_harry_chen, R.drawable.ic_randy_lu, R.drawable.ic_xingrz,
-            R.drawable.ic_undownding, R.drawable.ic_fython, R.drawable.ic_kaede_akatsuki,
-            R.drawable.ic_qixingchen, R.drawable.ic_peter_cai, R.drawable.ic_drakeet, };
-    public static int[] STYLE_AVATARS = { R.drawable.ic_harry_chen, R.drawable.ic_randy_lu, R.drawable.ic_xingrz,
-            R.drawable.ic_undownding, R.drawable.ic_fython, R.drawable.ic_kaede_akatsuki,
-            R.drawable.ic_qixingchen, R.drawable.ic_peter_cai, R.drawable.ic_drakeet,
-            R.drawable.ic_camnter };
-
     public static final Map<String, Integer> letter2ResId = new HashMap<>();
     public static final Map<String, String> letter2Name = new HashMap<>();
     public static final Map<String, String> letter2Pinyin = new HashMap<>();
     public static final String[] letterArray = { "C", "D", "F", "H", "K", "P", "Q", "R", "U", "X" };
-
     public static final List<Contacts> circleImageSectionList = new ArrayList<>();
     public static final List<Contacts> roundImageSectionList = new ArrayList<>();
     public static final List<Contacts> letterSectionList = new ArrayList<>();
+    public static int[] AVATARS = { R.drawable.ic_harry_chen, R.drawable.ic_randy_lu,
+        R.drawable.ic_xingrz,
+        R.drawable.ic_undownding, R.drawable.ic_fython, R.drawable.ic_kaede_akatsuki,
+        R.drawable.ic_qixingchen, R.drawable.ic_peter_cai, R.drawable.ic_drakeet, };
+    public static int[] STYLE_AVATARS = { R.drawable.ic_harry_chen, R.drawable.ic_randy_lu,
+        R.drawable.ic_xingrz,
+        R.drawable.ic_undownding, R.drawable.ic_fython, R.drawable.ic_kaede_akatsuki,
+        R.drawable.ic_qixingchen, R.drawable.ic_peter_cai, R.drawable.ic_drakeet,
+        R.drawable.ic_camnter };
 
 
     static {

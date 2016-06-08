@@ -14,12 +14,11 @@ import java.util.Locale;
  * Time：2015-09-24 15:23
  */ public class DateUtils {
 
-    public static String[] WEEK = new String[] { "天", "一", "二", "三", "四", "五", "六" };
-
     private static final long ONE_SECOND = 1000;
     private static final long ONE_MINUTE = ONE_SECOND * 60;
     private static final long ONE_HOUR = ONE_MINUTE * 60;
     private static final long ONE_DAY = ONE_HOUR * 24;
+    public static String[] WEEK = new String[] { "天", "一", "二", "三", "四", "五", "六" };
 
 
     /**

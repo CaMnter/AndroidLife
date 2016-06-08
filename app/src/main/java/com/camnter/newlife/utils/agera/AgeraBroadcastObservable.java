@@ -19,7 +19,7 @@ import static com.google.android.agera.Preconditions.checkNotNull;
  * Time：2016-05-31 17:57
  */
 public class AgeraBroadcastObservable extends BroadcastReceiver
-        implements ActivationHandler, Observable {
+    implements ActivationHandler, Observable {
 
     @NonNull
     private final UpdateDispatcher updateDispatcher;
@@ -32,7 +32,7 @@ public class AgeraBroadcastObservable extends BroadcastReceiver
 
 
     public AgeraBroadcastObservable(
-            @NonNull Context applicationContext, @NonNull final String... actions) {
+        @NonNull Context applicationContext, @NonNull final String... actions) {
         this.context = checkNotNull(applicationContext);
         this.updateDispatcher = Observables.updateDispatcher(this);
         this.intentFilter = new IntentFilter();

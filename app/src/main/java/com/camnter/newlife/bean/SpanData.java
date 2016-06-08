@@ -12,9 +12,28 @@ public class SpanData implements Parcelable {
 
     public static final int TITLE = 1;
     public static final int CONTENT = 0;
+    public static final Creator<SpanData> CREATOR = new Creator<SpanData>() {
+        public SpanData createFromParcel(Parcel source) {
+            return new SpanData(source);
+        }
 
+
+        public SpanData[] newArray(int size) {
+            return new SpanData[size];
+        }
+    };
     private String content;
     private int type;
+
+
+    public SpanData() {
+    }
+
+
+    protected SpanData(Parcel in) {
+        this.content = in.readString();
+        this.type = in.readInt();
+    }
 
 
     public String getContent() {
@@ -46,26 +65,4 @@ public class SpanData implements Parcelable {
         dest.writeString(this.content);
         dest.writeInt(this.type);
     }
-
-
-    public SpanData() {
-    }
-
-
-    protected SpanData(Parcel in) {
-        this.content = in.readString();
-        this.type = in.readInt();
-    }
-
-
-    public static final Creator<SpanData> CREATOR = new Creator<SpanData>() {
-        public SpanData createFromParcel(Parcel source) {
-            return new SpanData(source);
-        }
-
-
-        public SpanData[] newArray(int size) {
-            return new SpanData[size];
-        }
-    };
 }

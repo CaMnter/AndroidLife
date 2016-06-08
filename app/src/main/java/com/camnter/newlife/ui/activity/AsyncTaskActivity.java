@@ -68,7 +68,7 @@ public class AsyncTaskActivity extends BaseAppCompatActivity implements View.OnC
         switch (v.getId()) {
             case R.id.start: {
                 ProgressBarAsyncTask asyncTask = new ProgressBarAsyncTask(this.progressBar,
-                        this.textview);
+                    this.textview);
                 asyncTask.execute("%");
                 break;
             }

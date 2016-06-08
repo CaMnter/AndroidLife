@@ -24,7 +24,7 @@ import com.camnter.newlife.utils.ImageUtil;
  * Time：2015-11-22 22:54
  */
 public class DownloadReceiverActivity extends BaseAppCompatActivity
-        implements View.OnClickListener {
+    implements View.OnClickListener {
 
     private static final String OBJECT_IMAGE_URL = "http://img.blog.csdn.net/20150913233900119";
 
@@ -131,7 +131,7 @@ public class DownloadReceiverActivity extends BaseAppCompatActivity
                      * ImageUtil.decodeScaleImage 解析图片
                      */
                     Bitmap bitmap = ImageUtil.decodeScaleImage(imageFilePath, screenWidth,
-                            screenHeight);
+                        screenHeight);
                     DownloadReceiverActivity.this.downloadIV.setImageBitmap(bitmap);
 
                     /**
@@ -139,11 +139,11 @@ public class DownloadReceiverActivity extends BaseAppCompatActivity
                      */
                     String imageName = System.currentTimeMillis() + ".jpg";
                     MediaStore.Images.Media.insertImage(
-                            DownloadReceiverActivity.this.getApplicationContext()
-                                                         .getContentResolver(), bitmap, imageName,
-                            "camnter");
+                        DownloadReceiverActivity.this.getApplicationContext()
+                            .getContentResolver(), bitmap, imageName,
+                        "camnter");
                     Toast.makeText(DownloadReceiverActivity.this, "已保存：" + imageName,
-                            Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_LONG).show();
                     break;
                 }
                 case TYPE_DOWNLOAD_FAILURE: {

@@ -37,7 +37,7 @@ import java.util.List;
  * Time：2016-04-10 20:41
  */
 public class SectionAdapter extends EasyRecyclerViewAdapter
-        implements EasyRecyclerSectionIndexer<EasySection> {
+    implements EasyRecyclerSectionIndexer<EasySection> {
 
     private SparseIntArray positionOfSection;
     private SparseIntArray sectionOfPosition;
@@ -139,7 +139,7 @@ public class SectionAdapter extends EasyRecyclerViewAdapter
                 if (i != 0) section++;
                 this.positionOfSection.put(section, i);
                 this.easySections.add(
-                        new EasyImageSection(contacts.resId, this.getEasyImageSection(), i));
+                    new EasyImageSection(contacts.resId, this.getEasyImageSection(), i));
             } else {
                 // A B C D E F ...
                 if (section < this.easySections.size()) {

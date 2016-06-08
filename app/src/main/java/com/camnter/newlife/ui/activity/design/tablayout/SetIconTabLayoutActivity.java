@@ -57,13 +57,13 @@ public class SetIconTabLayoutActivity extends BaseAppCompatActivity {
      */
     @Override protected void initData() {
         int[] icons = { R.drawable.ic_msg_unread, R.drawable.ic_remark, R.drawable.ic_time,
-                R.drawable.ic_feedback };
+            R.drawable.ic_feedback };
         String[] tabTitles = { "一次元", "二次元", "三次元", "四次元" };
         Fragment[] fragments = { TabLayoutFirstFragment.getInstance(),
-                TabLayoutSecondFragment.getInstance(), TabLayoutThirdFragment.getInstance(),
-                TabLayoutFourthFragment.getInstance() };
+            TabLayoutSecondFragment.getInstance(), TabLayoutThirdFragment.getInstance(),
+            TabLayoutFourthFragment.getInstance() };
         SetIconTabLayoutFragmentAdapter fragmentAdapter = new SetIconTabLayoutFragmentAdapter(this,
-                this.getSupportFragmentManager(), fragments, tabTitles, icons);
+            this.getSupportFragmentManager(), fragments, tabTitles, icons);
         this.viewPager.setAdapter(fragmentAdapter);
         this.tabLayout.setupWithViewPager(this.viewPager);
         for (int i = 0; i < tabLayout.getTabCount(); i++) {

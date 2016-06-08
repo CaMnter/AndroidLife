@@ -17,7 +17,7 @@ public class NavigationViewActivity extends BaseAppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private NavigationView.OnNavigationItemSelectedListener navigationViewListener
-            = new NavigationView.OnNavigationItemSelectedListener() {
+        = new NavigationView.OnNavigationItemSelectedListener() {
         @Override public boolean onNavigationItemSelected(MenuItem menuItem) {
             /**
              *  NavigationView选项事件处理

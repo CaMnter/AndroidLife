@@ -42,7 +42,7 @@ public class Login extends Command {
                  * 发送一个USER_LOGIN_SUCCESS_FROM_CONTROLLER_TO_VIEW类型的事件到View层
                  */
                 this.dispatch(
-                        new LoginEvent(LoginEvent.USER_LOGIN_SUCCESS_FROM_CONTROLLER_TO_VIEW));
+                    new LoginEvent(LoginEvent.USER_LOGIN_SUCCESS_FROM_CONTROLLER_TO_VIEW));
                 break;
             }
         }

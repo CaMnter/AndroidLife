@@ -53,7 +53,7 @@ public class ResourcesUtilActivity extends BaseAppCompatActivity {
     @Override protected void initData() {
         this.resourcesTV.setText(ResourcesUtils.getStringId(this, "app_label"));
         this.resourcesTV.setTextColor(
-                ResourcesUtils.getColor(this, ResourcesUtils.getColorId(this, "colorAccent")));
+            ResourcesUtils.getColor(this, ResourcesUtils.getColorId(this, "colorAccent")));
 
         this.resourcesIV.setImageResource(ResourcesUtils.getMipmapId(this, "img_mm_1"));
     }

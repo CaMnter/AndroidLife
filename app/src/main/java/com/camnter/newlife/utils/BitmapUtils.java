@@ -15,13 +15,11 @@ import android.widget.ImageView;
  */
 public class BitmapUtils {
 
+    private static final float DENSITY = Resources.getSystem().getDisplayMetrics().density;
+    private static final Canvas sCanvas = new Canvas();
     private BitmapUtils() {
 
     }
-
-
-    private static final float DENSITY = Resources.getSystem().getDisplayMetrics().density;
-    private static final Canvas sCanvas = new Canvas();
 
 
     public static int dp2Px(int dp) {
@@ -44,7 +42,7 @@ public class BitmapUtils {
         }
         view.clearFocus();
         Bitmap bitmap = createBitmapSafely(view.getWidth(), view.getHeight(),
-                Bitmap.Config.ARGB_8888, 1);
+            Bitmap.Config.ARGB_8888, 1);
         if (bitmap != null) {
             synchronized (sCanvas) {
                 Canvas canvas = sCanvas;

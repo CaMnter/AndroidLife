@@ -67,21 +67,21 @@ public class RobotlegsFirstFragmentMediator extends Mediator implements View.OnC
          */
         this.getEventMap()
             .mapListener(this.getEventDispatcher(),
-                    LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW, new Listener() {
-                        /**
-                         * {@inheritDoc}
-                         * <p/>
-                         * {@linkplain IListener #onHandle}
-                         *
-                         * @param event
-                         */
-                        @Override public void onHandle(Event event) {
-                            if (event instanceof LoginEvent) {
-                                RobotlegsFirstFragmentMediator.this.firstIV.setVisibility(
-                                        View.VISIBLE);
-                            }
+                LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW, new Listener() {
+                    /**
+                     * {@inheritDoc}
+                     * <p/>
+                     * {@linkplain IListener #onHandle}
+                     *
+                     * @param event
+                     */
+                    @Override public void onHandle(Event event) {
+                        if (event instanceof LoginEvent) {
+                            RobotlegsFirstFragmentMediator.this.firstIV.setVisibility(
+                                View.VISIBLE);
                         }
-                    }, null, false, 0, true);
+                    }
+                }, null, false, 0, true);
 
         /*
          * listening your custom event（such as listening to an USER_LOGIN_SUCCESS type of LoginEvent）
@@ -91,21 +91,21 @@ public class RobotlegsFirstFragmentMediator extends Mediator implements View.OnC
          */
         this.getEventMap()
             .mapListener(this.getEventDispatcher(),
-                    LoginEvent.USER_LOGIN_SUCCESS_FROM_CONTROLLER_TO_VIEW, new Listener() {
-                        /**
-                         * {@inheritDoc}
-                         * <p/>
-                         * {@linkplain IListener #onHandle}
-                         *
-                         * @param event
-                         */
-                        @Override public void onHandle(Event event) {
-                            if (event instanceof LoginEvent) {
-                                RobotlegsFirstFragmentMediator.this.controllerTV.setVisibility(
-                                        View.VISIBLE);
-                            }
+                LoginEvent.USER_LOGIN_SUCCESS_FROM_CONTROLLER_TO_VIEW, new Listener() {
+                    /**
+                     * {@inheritDoc}
+                     * <p/>
+                     * {@linkplain IListener #onHandle}
+                     *
+                     * @param event
+                     */
+                    @Override public void onHandle(Event event) {
+                        if (event instanceof LoginEvent) {
+                            RobotlegsFirstFragmentMediator.this.controllerTV.setVisibility(
+                                View.VISIBLE);
                         }
-                    }, null, false, 0, true);
+                    }
+                }, null, false, 0, true);
     }
 
 

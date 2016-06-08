@@ -27,18 +27,20 @@ import java.util.Map;
  * Time：2016-04-21 20:48
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1) public class LruCacheActivity
-        extends BaseAppCompatActivity implements View.OnClickListener {
+    extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final String LRU_CACHE_ENTRY_REMOVED_NULL_FORMAT = "entryRemoved:";
     private static final String LRU_CACHE_RECENT_FORMAT = "Recent visit:%s";
     private static final String LRU_CACHE_CACHE_DATA_FORMAT = "Cache data:%s";
     private static final String LRU_CACHE_ENTRY_REMOVED_INFO_FORMAT
-            = "entryRemoved:\nevicted: %1$s\nkey: %2$s\noldValue: %3$s\nnewValue: %4$s";
+        = "entryRemoved:\nevicted: %1$s\nkey: %2$s\noldValue: %3$s\nnewValue: %4$s";
 
     private static final float ONE_MIB = 1024 * 1024;
     // 7MB
     private static final int CACHE_SIZE = (int) (7 * ONE_MIB);
-
+    private final Map<Bitmap, String> bitmap2Key = new HashMap<>();
+    private final List<String> recentList = new LinkedList<>();
+    private final List<String> cacheList = new LinkedList<>();
     @Bind(R.id.camnter_size_text) TextView mCamnterSizeText;
     @Bind(R.id.camnter_count_text) TextView mCamnterCountText;
     @Bind(R.id.drakeet_size_text) TextView mDrakeetSizeText;
@@ -46,35 +48,26 @@ import java.util.Map;
     @Bind(R.id.ka_size_text) TextView mKaSizeText;
     @Bind(R.id.ka_count_text) TextView mKaCountText;
     @Bind(R.id.peter_size_text) TextView mPeterSizeText;
-
     @Bind(R.id.entryRemoved_info_text) TextView mEntryRemovedInfoText;
     @Bind(R.id.get_one) Button mGetOne;
     @Bind(R.id.get_two) Button mGetTwo;
     @Bind(R.id.get_three) Button mGetThree;
     @Bind(R.id.clear_remove_info) Button mClearRemoveInfo;
     @Bind(R.id.put_four) Button mPutFour;
-
     @Bind(R.id.camnter_hashCode_text) TextView mCamnterHashCodeText;
     @Bind(R.id.drakeet_hashCode_text) TextView mDrakeetHashCodeText;
     @Bind(R.id.ka_hashCode_text) TextView mKaHashCodeText;
     @Bind(R.id.peter_hashCode_text) TextView mPeterHashCodeText;
     @Bind(R.id.recent_info_text) TextView mRecentInfoText;
     @Bind(R.id.cache_data_text) TextView mCacheDataText;
-
     private LruCache<String, Bitmap> bitmapCache;
-
     private Bitmap camnterBitmap;
     private Bitmap drakeetBitmap;
     private Bitmap kaBitmap;
     private Bitmap peterBitmap;
-
     private int camnterCount = 0;
     private int drakeetCount = 0;
     private int kaCount = 0;
-
-    private final Map<Bitmap, String> bitmap2Key = new HashMap<>();
-    private final List<String> recentList = new LinkedList<>();
-    private final List<String> cacheList = new LinkedList<>();
 
 
     /**
@@ -99,46 +92,46 @@ import java.util.Map;
 
     private void initBitmapAndText() {
         this.camnterBitmap = BitmapFactory.decodeResource(this.getResources(),
-                R.drawable.ic_camnter);
+            R.drawable.ic_camnter);
         this.drakeetBitmap = BitmapFactory.decodeResource(this.getResources(),
-                R.drawable.ic_drakeet);
+            R.drawable.ic_drakeet);
         this.kaBitmap = BitmapFactory.decodeResource(this.getResources(),
-                R.drawable.ic_kaede_akatsuki);
+            R.drawable.ic_kaede_akatsuki);
         this.peterBitmap = BitmapFactory.decodeResource(this.getResources(),
-                R.drawable.ic_peter_cai);
+            R.drawable.ic_peter_cai);
         this.bitmap2Key.put(this.camnterBitmap, "<1>");
         this.bitmap2Key.put(this.drakeetBitmap, "<2>");
         this.bitmap2Key.put(this.kaBitmap, "<3>");
         this.bitmap2Key.put(this.peterBitmap, "<4>");
         this.mCamnterSizeText.setText(this.getString(R.string.lru_cache_size_format,
-                new BigDecimal(this.camnterBitmap.getByteCount() / ONE_MIB).setScale(2,
-                        BigDecimal.ROUND_HALF_UP).toString()));
+            new BigDecimal(this.camnterBitmap.getByteCount() / ONE_MIB).setScale(2,
+                BigDecimal.ROUND_HALF_UP).toString()));
         this.mDrakeetSizeText.setText(this.getString(R.string.lru_cache_size_format,
-                new BigDecimal(this.drakeetBitmap.getByteCount() / ONE_MIB).setScale(2,
-                        BigDecimal.ROUND_HALF_UP).toString()));
+            new BigDecimal(this.drakeetBitmap.getByteCount() / ONE_MIB).setScale(2,
+                BigDecimal.ROUND_HALF_UP).toString()));
         this.mKaSizeText.setText(this.getString(R.string.lru_cache_size_format,
-                new BigDecimal(this.kaBitmap.getByteCount() / ONE_MIB).setScale(2,
-                        BigDecimal.ROUND_HALF_UP).toString()));
+            new BigDecimal(this.kaBitmap.getByteCount() / ONE_MIB).setScale(2,
+                BigDecimal.ROUND_HALF_UP).toString()));
         this.mPeterSizeText.setText(this.getString(R.string.lru_cache_size_format,
-                new BigDecimal(this.peterBitmap.getByteCount() / ONE_MIB).setScale(2,
-                        BigDecimal.ROUND_HALF_UP).toString()));
+            new BigDecimal(this.peterBitmap.getByteCount() / ONE_MIB).setScale(2,
+                BigDecimal.ROUND_HALF_UP).toString()));
         this.mCamnterCountText.setText(
-                this.getString(R.string.lru_cache_count_format, this.camnterCount));
+            this.getString(R.string.lru_cache_count_format, this.camnterCount));
         this.mDrakeetCountText.setText(
-                this.getString(R.string.lru_cache_count_format, this.drakeetCount));
+            this.getString(R.string.lru_cache_count_format, this.drakeetCount));
         this.mKaCountText.setText(this.getString(R.string.lru_cache_count_format, this.kaCount));
 
         this.mCamnterHashCodeText.setText(
-                this.getString(R.string.lru_cache_hashcode_format, this.camnterBitmap.hashCode()));
+            this.getString(R.string.lru_cache_hashcode_format, this.camnterBitmap.hashCode()));
         this.mDrakeetHashCodeText.setText(
-                this.getString(R.string.lru_cache_hashcode_format, this.drakeetBitmap.hashCode()));
+            this.getString(R.string.lru_cache_hashcode_format, this.drakeetBitmap.hashCode()));
         this.mKaHashCodeText.setText(
-                this.getString(R.string.lru_cache_hashcode_format, this.kaBitmap.hashCode()));
+            this.getString(R.string.lru_cache_hashcode_format, this.kaBitmap.hashCode()));
         this.mPeterHashCodeText.setText(
-                this.getString(R.string.lru_cache_hashcode_format, this.peterBitmap.hashCode()));
+            this.getString(R.string.lru_cache_hashcode_format, this.peterBitmap.hashCode()));
         this.mEntryRemovedInfoText.setText(LRU_CACHE_ENTRY_REMOVED_NULL_FORMAT);
         this.mRecentInfoText.setText(
-                String.format(Locale.getDefault(), LRU_CACHE_RECENT_FORMAT, ""));
+            String.format(Locale.getDefault(), LRU_CACHE_RECENT_FORMAT, ""));
     }
 
 
@@ -159,9 +152,9 @@ import java.util.Map;
             @Override
             protected void entryRemoved(boolean evicted, String key, Bitmap oldValue, Bitmap newValue) {
                 mEntryRemovedInfoText.setText(
-                        String.format(Locale.getDefault(), LRU_CACHE_ENTRY_REMOVED_INFO_FORMAT,
-                                evicted, key, oldValue != null ? oldValue.hashCode() : "null",
-                                newValue != null ? newValue.hashCode() : "null"));
+                    String.format(Locale.getDefault(), LRU_CACHE_ENTRY_REMOVED_INFO_FORMAT,
+                        evicted, key, oldValue != null ? oldValue.hashCode() : "null",
+                        newValue != null ? newValue.hashCode() : "null"));
                 // 见上述 3.
                 if (evicted) {
                     // 进行了trimToSize or remove (一般是溢出了 或 key-value被删除了 )
@@ -225,21 +218,21 @@ import java.util.Map;
                 key = this.bitmap2Key.get(this.camnterBitmap);
                 this.bitmapCache.get(key);
                 this.mCamnterCountText.setText(
-                        this.getString(R.string.lru_cache_count_format, ++this.camnterCount));
+                    this.getString(R.string.lru_cache_count_format, ++this.camnterCount));
                 break;
             case R.id.get_two:
                 isGet = true;
                 key = this.bitmap2Key.get(this.drakeetBitmap);
                 this.bitmapCache.get(key);
                 this.mDrakeetCountText.setText(
-                        this.getString(R.string.lru_cache_count_format, ++this.drakeetCount));
+                    this.getString(R.string.lru_cache_count_format, ++this.drakeetCount));
                 break;
             case R.id.get_three:
                 isGet = true;
                 key = this.bitmap2Key.get(this.kaBitmap);
                 this.bitmapCache.get(key);
                 this.mKaCountText.setText(
-                        this.getString(R.string.lru_cache_count_format, ++this.kaCount));
+                    this.getString(R.string.lru_cache_count_format, ++this.kaCount));
                 break;
             case R.id.put_four:
                 this.bitmapCache.put(this.bitmap2Key.get(this.peterBitmap), this.peterBitmap);

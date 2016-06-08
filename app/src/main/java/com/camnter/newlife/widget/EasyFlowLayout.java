@@ -167,15 +167,15 @@ public class EasyFlowLayout extends ViewGroup {
              * The actual width of the child View
              */
             int childWidth = child.getMeasuredWidth() +
-                    marginLayoutParams.leftMargin +
-                    marginLayoutParams.rightMargin;
+                marginLayoutParams.leftMargin +
+                marginLayoutParams.rightMargin;
             /**
              * 子View的实际高度
              * The actual width of the child View
              */
             int childHeight = child.getMeasuredHeight() +
-                    marginLayoutParams.topMargin +
-                    marginLayoutParams.bottomMargin;
+                marginLayoutParams.topMargin +
+                marginLayoutParams.bottomMargin;
 
             /**
              * 如果在加入childView的时候，超出的最大宽度
@@ -216,7 +216,7 @@ public class EasyFlowLayout extends ViewGroup {
          * Otherwise set layoutWidth and layoutHeight
          */
         this.setMeasuredDimension((modeWidth == MeasureSpec.EXACTLY) ? layoutWidth : wrapWidth,
-                (modeHeight == MeasureSpec.EXACTLY) ? layoutHeight : wrapHeight);
+            (modeHeight == MeasureSpec.EXACTLY) ? layoutHeight : wrapHeight);
     }
 
 
@@ -252,7 +252,7 @@ public class EasyFlowLayout extends ViewGroup {
              * If at the time of joining childView, beyond the maximum width
              */
             if (childWidth + marginLayoutParams.leftMargin + marginLayoutParams.rightMargin +
-                    lineWidth > layoutWidth) {
+                lineWidth > layoutWidth) {
                 this.allViews.add(this.currentLineViews);
                 this.allHeight.add(lineHeight);
 
@@ -265,9 +265,9 @@ public class EasyFlowLayout extends ViewGroup {
              * Does not perform a newline, continue to stack
              */
             lineWidth += childWidth + marginLayoutParams.leftMargin +
-                    marginLayoutParams.rightMargin;
+                marginLayoutParams.rightMargin;
             lineHeight = Math.max(lineHeight,
-                    childHeight + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin);
+                childHeight + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin);
             this.currentLineViews.add(child);
         }
 
@@ -325,7 +325,7 @@ public class EasyFlowLayout extends ViewGroup {
                 if (child.getVisibility() == View.GONE) continue;
 
                 MarginLayoutParams marginLayoutParams
-                        = (MarginLayoutParams) child.getLayoutParams();
+                    = (MarginLayoutParams) child.getLayoutParams();
                 /**
                  * childView的 左上点坐标 和 右下点坐标
                  * The upper left point coordinates and lower point coordinates childView
@@ -337,7 +337,7 @@ public class EasyFlowLayout extends ViewGroup {
 
                 child.layout(childLeft, childTop, childRight, childBottom);
                 left += child.getMeasuredWidth() + marginLayoutParams.leftMargin +
-                        marginLayoutParams.rightMargin;
+                    marginLayoutParams.rightMargin;
             }
             top += lineHeight;
         }

@@ -52,19 +52,19 @@ public class MainContext extends Context {
          */
         this.getMediatorMap()
             .mapView(Robotlegs4AndroidActivity.class, Robotlegs4AndroidActivityMediator.class, null,
-                    true, true);
+                true, true);
         this.getMediatorMap()
             .mapView(RobotlegsFirstFragment.class, RobotlegsFirstFragmentMediator.class, null, true,
-                    true);
+                true);
         this.getMediatorMap()
             .mapView(RobotlegsSecondFragment.class, RobotlegsSecondFragmentMediator.class, null,
-                    true, true);
+                true, true);
         this.getMediatorMap()
             .mapView(RobotlegsThirdFragment.class, RobotlegsThirdFragmentMediator.class, null, true,
-                    true);
+                true);
         this.getMediatorMap()
             .mapView(RobotlegsFourthFragment.class, RobotlegsFourthFragmentMediator.class, null,
-                    true, true);
+                true, true);
 
         /*
          * 注入实现 实例化单例
@@ -79,6 +79,6 @@ public class MainContext extends Context {
         this.getCommandMap().mapEvent(LoginEvent.USER_LOGIN, Login.class, null, false);
         this.getCommandMap()
             .mapEvent(LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_CONTROLLER, Login.class, null,
-                    false);
+                false);
     }
 }

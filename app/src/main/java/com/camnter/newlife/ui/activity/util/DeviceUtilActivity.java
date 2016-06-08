@@ -19,21 +19,17 @@ import com.camnter.newlife.utils.DeviceUtils;
  */
 public class DeviceUtilActivity extends BaseAppCompatActivity {
 
+    public static final int REQUEST_READ_PHONE_STATE = 61;
     private TextView deviceIdTV;
     private TextView versionCodeTV;
     private TextView versionNameTV;
-
     private TextView phoneBrandTV;
     private TextView phoneModelTV;
     private TextView apiLevelTV;
     private TextView apiVersionTV;
-
     private TextView appProcessIdTV;
     private TextView appNameTV;
-
     private TextView metaDataTV;
-
-    public static final int REQUEST_READ_PHONE_STATE = 61;
 
 
     /**
@@ -81,18 +77,18 @@ public class DeviceUtilActivity extends BaseAppCompatActivity {
      */
     @Override protected void initData() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) !=
-                PackageManager.PERMISSION_GRANTED) {
+            PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.READ_PHONE_STATE)) {
+                Manifest.permission.READ_PHONE_STATE)) {
                 // Show an expanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
-                        new String[] { Manifest.permission.READ_PHONE_STATE },
-                        REQUEST_READ_PHONE_STATE);
+                    new String[] { Manifest.permission.READ_PHONE_STATE },
+                    REQUEST_READ_PHONE_STATE);
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
                 // result of the request.
@@ -125,7 +121,7 @@ public class DeviceUtilActivity extends BaseAppCompatActivity {
             case REQUEST_READ_PHONE_STATE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 &&
-                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     this.setData();

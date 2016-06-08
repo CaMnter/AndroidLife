@@ -53,13 +53,13 @@ public class RobotlegsSecondFragmentMediator extends Mediator {
         adapter.setList(resIds);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
-                this.fragment.getActivity());
+            this.fragment.getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         this.secondRV.setLayoutManager(linearLayoutManager);
         this.secondRV.setItemAnimator(new DefaultItemAnimator());
         this.secondRV.addItemDecoration(new DividerItemDecoration(this.fragment.getActivity(),
-                DividerItemDecoration.VERTICAL_LIST));
+            DividerItemDecoration.VERTICAL_LIST));
         this.secondRV.setHasFixedSize(true);
     }
 
@@ -73,21 +73,21 @@ public class RobotlegsSecondFragmentMediator extends Mediator {
          */
         this.getEventMap()
             .mapListener(this.getEventDispatcher(),
-                    LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW, new Listener() {
-                        /**
-                         * {@inheritDoc}
-                         * <p/>
-                         * {@linkplain IListener #onHandle}
-                         *
-                         * @param event
-                         */
-                        @Override public void onHandle(Event event) {
-                            if (event instanceof LoginEvent) {
-                                RobotlegsSecondFragmentMediator.this.secondRV.setVisibility(
-                                        View.VISIBLE);
-                            }
+                LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW, new Listener() {
+                    /**
+                     * {@inheritDoc}
+                     * <p/>
+                     * {@linkplain IListener #onHandle}
+                     *
+                     * @param event
+                     */
+                    @Override public void onHandle(Event event) {
+                        if (event instanceof LoginEvent) {
+                            RobotlegsSecondFragmentMediator.this.secondRV.setVisibility(
+                                View.VISIBLE);
                         }
-                    }, null, false, 0, true);
+                    }
+                }, null, false, 0, true);
     }
 
 

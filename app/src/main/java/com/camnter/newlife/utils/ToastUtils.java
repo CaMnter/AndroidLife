@@ -20,6 +20,12 @@ public class ToastUtils {
     private static android.widget.Toast normalToast;
     private static android.widget.Toast gravityToast;
     private static Handler handler;
+    private static Runnable run = new Runnable() {
+        public void run() {
+            if (normalToast != null) normalToast.cancel();
+            if (gravityToast != null) gravityToast.cancel();
+        }
+    };
 
 
     static {
@@ -28,14 +34,6 @@ public class ToastUtils {
         }
         handler = new Handler();
     }
-
-
-    private static Runnable run = new Runnable() {
-        public void run() {
-            if (normalToast != null) normalToast.cancel();
-            if (gravityToast != null) gravityToast.cancel();
-        }
-    };
 
 
     private static void toast(Context context, CharSequence text, int duration) {

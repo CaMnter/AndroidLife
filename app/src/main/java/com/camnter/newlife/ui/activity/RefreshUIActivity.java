@@ -16,8 +16,88 @@ import java.lang.ref.WeakReference;
  */
 public class RefreshUIActivity extends BaseAppCompatActivity {
 
-    private TextView handlerTV;
     private static final int HANDLER_SUCCESS = 206;
+    private final RefreshHandler refreshHandler = new RefreshHandler(RefreshUIActivity.this);
+    private final Runnable mRunnable = new Runnable() {
+        @Override public void run() {
+            Message message = RefreshUIActivity.this.refreshHandler.obtainMessage();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            message.what = HANDLER_SUCCESS;
+            refreshHandler.sendMessageDelayed(message, 2000);
+        }
+    };
+    private final Thread mThread = new Thread(mRunnable);
+    private final MThread runThread = new MThread();
+    private TextView handlerTV;
+    private TextView asyncTaskTV;
+    private MAsyncTask mAsyncTask;
+    private TextView runOnUiThreadTV;
+    private final Runnable uiRunnable = new Runnable() {
+        @Override public void run() {
+            RefreshUIActivity.this.runOnUiThreadTV.setText("Use: runOnUiThread");
+        }
+    };
+    private TextView postHandlerTV;
+    private final Runnable postRunnable = new Runnable() {
+        @Override public void run() {
+            RefreshUIActivity.this.postHandlerTV.setText("Use: Handler.post(...)");
+        }
+    };
+
+
+    /**
+     * Fill in layout id
+     *
+     * @return layout id
+     */
+    @Override protected int getLayoutId() {
+        return R.layout.activity_refresh_ui;
+    }
+
+
+    /**
+     * Initialize the view in the layout
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+    @Override protected void initViews(Bundle savedInstanceState) {
+        this.handlerTV = (TextView) this.findViewById(R.id.refresh_ui_handler_tv);
+        this.asyncTaskTV = (TextView) this.findViewById(R.id.refresh_ui_asynctask_tv);
+        this.runOnUiThreadTV = (TextView) this.findViewById(R.id.refresh_ui_run_on_ui_thread_tv);
+        this.postHandlerTV = (TextView) this.findViewById(R.id.refresh_ui_post_tv);
+    }
+
+
+    /**
+     * Initialize the View of the listener
+     */
+    @Override protected void initListeners() {
+
+    }
+
+
+    @Override protected void initData() {
+        this.mThread.start();
+
+        this.mAsyncTask = new MAsyncTask(this.asyncTaskTV);
+        this.mAsyncTask.execute("%");
+
+        this.runThread.start();
+
+        Handler postHandler = new Handler();
+        postHandler.post(this.postRunnable);
+    }
+
+
+    @Override protected void onDestroy() {
+        this.mAsyncTask.onCancelled();
+        super.onDestroy();
+    }
+
 
     private static class RefreshHandler extends Handler {
 
@@ -47,23 +127,6 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
         }
     }
 
-    private final RefreshHandler refreshHandler = new RefreshHandler(RefreshUIActivity.this);
-    private final Runnable mRunnable = new Runnable() {
-        @Override public void run() {
-            Message message = RefreshUIActivity.this.refreshHandler.obtainMessage();
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            message.what = HANDLER_SUCCESS;
-            refreshHandler.sendMessageDelayed(message, 2000);
-        }
-    };
-    private final Thread mThread = new Thread(mRunnable);
-
-    private TextView asyncTaskTV;
-    private MAsyncTask mAsyncTask;
 
     public class MAsyncTask extends AsyncTask<String, Integer, String> {
 
@@ -153,12 +216,6 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
         }
     }
 
-    private TextView runOnUiThreadTV;
-    private final Runnable uiRunnable = new Runnable() {
-        @Override public void run() {
-            RefreshUIActivity.this.runOnUiThreadTV.setText("Use: runOnUiThread");
-        }
-    };
 
     private class MThread extends Thread {
 
@@ -176,64 +233,5 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
             }
             RefreshUIActivity.this.runOnUiThread(RefreshUIActivity.this.uiRunnable);
         }
-    }
-
-    private final MThread runThread = new MThread();
-
-    private TextView postHandlerTV;
-    private final Runnable postRunnable = new Runnable() {
-        @Override public void run() {
-            RefreshUIActivity.this.postHandlerTV.setText("Use: Handler.post(...)");
-        }
-    };
-
-
-    /**
-     * Fill in layout id
-     *
-     * @return layout id
-     */
-    @Override protected int getLayoutId() {
-        return R.layout.activity_refresh_ui;
-    }
-
-
-    /**
-     * Initialize the view in the layout
-     *
-     * @param savedInstanceState savedInstanceState
-     */
-    @Override protected void initViews(Bundle savedInstanceState) {
-        this.handlerTV = (TextView) this.findViewById(R.id.refresh_ui_handler_tv);
-        this.asyncTaskTV = (TextView) this.findViewById(R.id.refresh_ui_asynctask_tv);
-        this.runOnUiThreadTV = (TextView) this.findViewById(R.id.refresh_ui_run_on_ui_thread_tv);
-        this.postHandlerTV = (TextView) this.findViewById(R.id.refresh_ui_post_tv);
-    }
-
-
-    /**
-     * Initialize the View of the listener
-     */
-    @Override protected void initListeners() {
-
-    }
-
-
-    @Override protected void initData() {
-        this.mThread.start();
-
-        this.mAsyncTask = new MAsyncTask(this.asyncTaskTV);
-        this.mAsyncTask.execute("%");
-
-        this.runThread.start();
-
-        Handler postHandler = new Handler();
-        postHandler.post(this.postRunnable);
-    }
-
-
-    @Override protected void onDestroy() {
-        this.mAsyncTask.onCancelled();
-        super.onDestroy();
     }
 }

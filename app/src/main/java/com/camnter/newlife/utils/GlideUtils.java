@@ -60,16 +60,16 @@ public class GlideUtils {
 
         try {
             Glide.with(context)
-                 .load(resId)
-                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                 .crossFade()
-                 .centerCrop()
-                 .into(view)
-                 .getSize(new SizeReadyCallback() {
-                     @Override public void onSizeReady(int width, int height) {
-                         view.setVisibility(View.VISIBLE);
-                     }
-                 });
+                .load(resId)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .crossFade()
+                .centerCrop()
+                .into(view)
+                .getSize(new SizeReadyCallback() {
+                    @Override public void onSizeReady(int width, int height) {
+                        view.setVisibility(View.VISIBLE);
+                    }
+                });
         } catch (Exception e) {
             e.printStackTrace();
         }

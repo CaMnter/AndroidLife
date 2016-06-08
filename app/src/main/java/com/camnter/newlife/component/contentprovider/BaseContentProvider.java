@@ -167,7 +167,7 @@ public abstract class BaseContentProvider extends ContentProvider {
      * @throws SQLException
      */
     @Override public abstract int delete(
-            @NonNull Uri uri, String selection, String[] selectionArgs);
+        @NonNull Uri uri, String selection, String[] selectionArgs);
 
     /**
      * Implement this to handle requests to update one or more rows.
@@ -188,5 +188,5 @@ public abstract class BaseContentProvider extends ContentProvider {
      * @return the number of rows affected.
      */
     @Override public abstract int update(
-            @NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs);
+        @NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs);
 }

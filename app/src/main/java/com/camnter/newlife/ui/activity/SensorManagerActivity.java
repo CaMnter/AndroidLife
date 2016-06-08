@@ -93,7 +93,7 @@ public class SensorManagerActivity extends BaseAppCompatActivity {
         for (Sensor sensor : sensors) {
             TextView title = new TextView(this);
             title.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
+                ViewGroup.LayoutParams.WRAP_CONTENT));
             title.setTextSize(15);
             title.setTextColor(this.getResources().getColor(R.color.themeColor));
             switch (sensor.getType()) {
@@ -159,14 +159,14 @@ public class SensorManagerActivity extends BaseAppCompatActivity {
 
     private void addInfoView(Sensor sensor, TextView title) {
         String tempString = "\n" + "设备版本：" + sensor.getVersion() + "\n" + "供应商：" +
-                sensor.getVendor() + "\n" + "最大取值范围：" + sensor.getMaximumRange() + "\n功率：" +
-                sensor.getPower() + "\n精度：" + sensor.getResolution() + "\n传感器类型：" +
-                sensor.getType();
+            sensor.getVendor() + "\n" + "最大取值范围：" + sensor.getMaximumRange() + "\n功率：" +
+            sensor.getPower() + "\n精度：" + sensor.getResolution() + "\n传感器类型：" +
+            sensor.getType();
 
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         int paddingPX = DeviceUtils.dp2px(this, 6);
         linearLayout.setPadding(paddingPX, paddingPX, paddingPX, paddingPX);
         linearLayout.setLayoutParams(params);
@@ -175,7 +175,7 @@ public class SensorManagerActivity extends BaseAppCompatActivity {
 
         TextView content = new TextView(this);
         content.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
+            ViewGroup.LayoutParams.WRAP_CONTENT));
         content.setTextSize(15);
         content.setTextColor(this.getResources().getColor(R.color.colorAccent));
         content.setText(tempString);

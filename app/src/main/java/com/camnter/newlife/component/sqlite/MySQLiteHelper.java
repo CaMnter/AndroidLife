@@ -22,8 +22,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static final String TB_CAMNTER = "tb_camnter";
     public static final String TB_CAMNTER_SQL = "CREATE TABLE IF NOT EXISTS " + TB_CAMNTER +
-            "(_id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-            " content text)";
+        "(_id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+        " content text)";
 
     public static MySQLiteHelper ourInstance;
 

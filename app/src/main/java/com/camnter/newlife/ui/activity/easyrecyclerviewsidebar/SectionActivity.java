@@ -39,13 +39,12 @@ import java.util.List;
  * Time：2016-04-10 20:23
  */
 public class SectionActivity extends AppCompatActivity
-        implements EasyRecyclerViewSidebar.OnTouchSectionListener {
+    implements EasyRecyclerViewSidebar.OnTouchSectionListener {
 
+    public SectionAdapter adapter;
     private EasyRecyclerViewSidebar imageSidebar;
     private TextView imageFloatingTv;
     private EasyFloatingImageView imageFloatingIv;
-
-    public SectionAdapter adapter;
     private EasyRecyclerView imageSectionRv;
 
 
@@ -69,7 +68,7 @@ public class SectionActivity extends AppCompatActivity
         this.imageFloatingTv = (TextView) this.findViewById(R.id.section_floating_tv);
         this.imageFloatingIv = (EasyFloatingImageView) this.findViewById(R.id.section_floating_iv);
         RelativeLayout imageFloatingRl = (RelativeLayout) this.findViewById(
-                R.id.section_floating_rl);
+            R.id.section_floating_rl);
 
         this.initAdapter();
         if (this.imageSectionRv != null) {

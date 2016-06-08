@@ -53,7 +53,7 @@ public class TabLayoutFirstFragment extends BaseFragment {
     @Override protected void initViews(View self, Bundle savedInstanceState) {
         this.firstRV = this.findView(R.id.first_rv);
         this.firstRV.addItemDecoration(new EasyDividerItemDecoration(this.getContext(),
-                EasyDividerItemDecoration.VERTICAL_LIST));
+            EasyDividerItemDecoration.VERTICAL_LIST));
     }
 
 

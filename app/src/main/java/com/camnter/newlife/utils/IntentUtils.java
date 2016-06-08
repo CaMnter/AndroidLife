@@ -53,12 +53,6 @@ public class IntentUtils {
     }
 
 
-    public long getLongExtra(Intent intent, String name, long defaultValue) {
-        if (!hasIntent(intent) || !hasExtra(intent, name)) return defaultValue;
-        return intent.getLongExtra(name, defaultValue);
-    }
-
-
     public static float getFloatExtra(Intent intent, String name, float defaultValue) {
         if (!hasIntent(intent) || !hasExtra(intent, name)) return defaultValue;
         return intent.getFloatExtra(name, defaultValue);
@@ -95,14 +89,6 @@ public class IntentUtils {
     }
 
 
-    public <T extends Parcelable> ArrayList<T> getParcelableArrayListExtra(Intent intent, String name) {
-        if (!hasIntent(intent) || !hasExtra(intent, name)) return null;
-        return intent.getParcelableArrayListExtra(name);
-    }
-
-    // ********** Serializable **********//
-
-
     public static Serializable getSerializableExtra(Intent intent, String name) {
         if (!hasIntent(intent) || !hasExtra(intent, name)) return null;
         return intent.getSerializableExtra(name);
@@ -114,11 +100,7 @@ public class IntentUtils {
         return intent.getIntegerArrayListExtra(name);
     }
 
-
-    public ArrayList<String> getStringArrayListExtra(Intent intent, String name) {
-        if (!hasIntent(intent) || !hasExtra(intent, name)) return null;
-        return intent.getStringArrayListExtra(name);
-    }
+    // ********** Serializable **********//
 
 
     public static ArrayList<CharSequence> getCharSequenceArrayListExtra(Intent intent, String name) {
@@ -131,8 +113,6 @@ public class IntentUtils {
         if (!hasIntent(intent) || !hasExtra(intent, name)) return null;
         return intent.getStringArrayExtra(name);
     }
-
-    // ********** Serializable **********//
 
 
     public static boolean[] getBooleanArrayExtra(Intent intent, String name) {
@@ -151,6 +131,8 @@ public class IntentUtils {
         if (!hasIntent(intent) || !hasExtra(intent, name)) return null;
         return intent.getShortArrayExtra(name);
     }
+
+    // ********** Serializable **********//
 
 
     public static char[] getCharArrayExtra(Intent intent, String name) {
@@ -192,5 +174,23 @@ public class IntentUtils {
     public static Bundle getBundleExtra(Intent intent, String name) {
         if (!hasIntent(intent) || !hasExtra(intent, name)) return null;
         return intent.getBundleExtra(name);
+    }
+
+
+    public long getLongExtra(Intent intent, String name, long defaultValue) {
+        if (!hasIntent(intent) || !hasExtra(intent, name)) return defaultValue;
+        return intent.getLongExtra(name, defaultValue);
+    }
+
+
+    public <T extends Parcelable> ArrayList<T> getParcelableArrayListExtra(Intent intent, String name) {
+        if (!hasIntent(intent) || !hasExtra(intent, name)) return null;
+        return intent.getParcelableArrayListExtra(name);
+    }
+
+
+    public ArrayList<String> getStringArrayListExtra(Intent intent, String name) {
+        if (!hasIntent(intent) || !hasExtra(intent, name)) return null;
+        return intent.getStringArrayListExtra(name);
     }
 }

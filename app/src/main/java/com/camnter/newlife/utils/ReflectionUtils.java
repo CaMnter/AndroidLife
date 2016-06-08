@@ -10,24 +10,6 @@ import java.lang.reflect.Field;
  */
 public class ReflectionUtils {
 
-    public enum ResourcesType {
-        styleable,
-        style,
-        string,
-        mipmap,
-        menu,
-        layout,
-        integer,
-        id,
-        drawable,
-        dimen,
-        color,
-        bool,
-        attr,
-        anim
-    }
-
-
     /**
      * 根据名字，反射取得资源
      *
@@ -59,5 +41,23 @@ public class ReflectionUtils {
             e.printStackTrace();
         }
         return -1;
+    }
+
+
+    public enum ResourcesType {
+        styleable,
+        style,
+        string,
+        mipmap,
+        menu,
+        layout,
+        integer,
+        id,
+        drawable,
+        dimen,
+        color,
+        bool,
+        attr,
+        anim
     }
 }

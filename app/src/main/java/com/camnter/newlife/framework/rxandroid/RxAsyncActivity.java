@@ -42,51 +42,11 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
     private static final String OBJECT_IMAGE_URL = "http://img.blog.csdn.net/20150913233900119";
 
     private static final int HANDLER_LOADING = 262;
-
+    private final LoadingHandler loadingHandler = new LoadingHandler(RxAsyncActivity.this);
     private ImageView asyncRxOneIV;
     private ImageView asyncRxTwoIV;
     private Button asyncRxSaveBT;
-
     private CustomProgressBarDialog dialog;
-
-    /**
-     * 刷新Dialog显示的进度
-     */
-    private static class LoadingHandler extends Handler {
-        private final WeakReference<RxAsyncActivity> mActivity;
-
-
-        public LoadingHandler(RxAsyncActivity activity) {
-            mActivity = new WeakReference<>(activity);
-        }
-
-
-        /**
-         * Subclasses must implement this to receive messages.
-         */
-        @Override public void handleMessage(Message msg) {
-            final RxAsyncActivity activity = this.mActivity.get();
-            if (activity != null) {
-                switch (msg.what) {
-                    case HANDLER_LOADING: {
-                        final int progressValue = (int) msg.obj;
-                        activity.runOnUiThread(new Runnable() {
-                            @Override public void run() {
-                                try {
-                                    activity.dialog.setLoadPrompt(progressValue + "%");
-                                    activity.dialog.show();
-                                } catch (Exception ignored) {
-                                }
-                            }
-                        });
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    private final LoadingHandler loadingHandler = new LoadingHandler(RxAsyncActivity.this);
 
 
     /**
@@ -124,6 +84,124 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
      */
     @Override protected void initData() {
 
+    }
+
+
+    /**
+     * 检查线程
+     */
+    private void checkThread(String info) {
+        Log.i(TAG, ThreadUtils.getThreadMsg(info));
+    }
+
+
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
+    @Override public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rx_async_save_bt:
+                /**
+                 * create添加OnSubscribe对象（观察者）
+                 * 此时要实现OnSubscribe（观察者）的call方法，如果是异步的话，这里的call就应该写后台的I/O操作
+                 * 当你调用了subscribe方法时，就会自动调用OnSubscribe对象（观察者）的call方法去执行
+                 * （可以参考subscribe方法的源码）
+                 * 失败会走到onError方法
+                 * 成功的话，因为call方法有Subscriber对象，这是添加的订阅者，可以调用它的onNext或onCompleted
+                 *
+                 *
+                 * subscribeOn(Schedulers.io()) 表示观察者做子线程I/O操作
+                 * observeOn(AndroidSchedulers.mainThread()) 表示订阅者做主线程操作
+                 */
+                Observable.create(new Observable.OnSubscribe<String>() {
+                    @Override public void call(Subscriber<? super String> subscriber) {
+                        RxAsyncActivity.this.checkThread("create -> OnSubscribe.create()");
+                        new RxAsyncActivity.DownloadImageAsyncTask(RxAsyncActivity.this, subscriber)
+                            .execute(OBJECT_IMAGE_URL);
+                    }
+                })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<String>() {
+                        @Override public void onCompleted() {
+
+                        }
+
+
+                        @Override public void onError(Throwable e) {
+
+                        }
+
+
+                        @Override public void onNext(String s) {
+                            RxAsyncActivity.this.checkThread("create -> Subscriber.onNext()");
+                            /**
+                             * 设置按钮可用，并隐藏Dialog
+                             */
+                            RxAsyncActivity.this.asyncRxSaveBT.setEnabled(true);
+                            RxAsyncActivity.this.dialog.hide();
+
+                            DisplayMetrics metrics = new DisplayMetrics();
+                            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                            int screenWidth = metrics.widthPixels;
+                            int screenHeight = metrics.heightPixels;
+                            /**
+                             * ImageUtil.decodeScaleImage 解析图片
+                             */
+                            Bitmap bitmap = ImageUtil.decodeScaleImage(s, screenWidth,
+                                screenHeight);
+                            RxAsyncActivity.this.asyncRxOneIV.setImageBitmap(bitmap);
+                            RxAsyncActivity.this.asyncRxTwoIV.setImageBitmap(bitmap);
+                        }
+                    });
+                break;
+        }
+    }
+
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        this.dialog.dismiss();
+    }
+
+
+    /**
+     * 刷新Dialog显示的进度
+     */
+    private static class LoadingHandler extends Handler {
+        private final WeakReference<RxAsyncActivity> mActivity;
+
+
+        public LoadingHandler(RxAsyncActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+
+        /**
+         * Subclasses must implement this to receive messages.
+         */
+        @Override public void handleMessage(Message msg) {
+            final RxAsyncActivity activity = this.mActivity.get();
+            if (activity != null) {
+                switch (msg.what) {
+                    case HANDLER_LOADING: {
+                        final int progressValue = (int) msg.obj;
+                        activity.runOnUiThread(new Runnable() {
+                            @Override public void run() {
+                                try {
+                                    activity.dialog.setLoadPrompt(progressValue + "%");
+                                    activity.dialog.show();
+                                } catch (Exception ignored) {
+                                }
+                            }
+                        });
+                        break;
+                    }
+                }
+            }
+        }
     }
 
 
@@ -269,85 +347,5 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
             RxAsyncActivity.this.asyncRxSaveBT.setEnabled(true);
             super.onCancelled();
         }
-    }
-
-
-    /**
-     * 检查线程
-     */
-    private void checkThread(String info) {
-        Log.i(TAG, ThreadUtils.getThreadMsg(info));
-    }
-
-
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
-    @Override public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.rx_async_save_bt:
-                /**
-                 * create添加OnSubscribe对象（观察者）
-                 * 此时要实现OnSubscribe（观察者）的call方法，如果是异步的话，这里的call就应该写后台的I/O操作
-                 * 当你调用了subscribe方法时，就会自动调用OnSubscribe对象（观察者）的call方法去执行
-                 * （可以参考subscribe方法的源码）
-                 * 失败会走到onError方法
-                 * 成功的话，因为call方法有Subscriber对象，这是添加的订阅者，可以调用它的onNext或onCompleted
-                 *
-                 *
-                 * subscribeOn(Schedulers.io()) 表示观察者做子线程I/O操作
-                 * observeOn(AndroidSchedulers.mainThread()) 表示订阅者做主线程操作
-                 */
-                Observable.create(new Observable.OnSubscribe<String>() {
-                    @Override public void call(Subscriber<? super String> subscriber) {
-                        RxAsyncActivity.this.checkThread("create -> OnSubscribe.create()");
-                        new RxAsyncActivity.DownloadImageAsyncTask(RxAsyncActivity.this, subscriber)
-                                .execute(OBJECT_IMAGE_URL);
-                    }
-                })
-                          .subscribeOn(Schedulers.io())
-                          .observeOn(AndroidSchedulers.mainThread())
-                          .subscribe(new Subscriber<String>() {
-                              @Override public void onCompleted() {
-
-                              }
-
-
-                              @Override public void onError(Throwable e) {
-
-                              }
-
-
-                              @Override public void onNext(String s) {
-                                  RxAsyncActivity.this.checkThread("create -> Subscriber.onNext()");
-                                  /**
-                                   * 设置按钮可用，并隐藏Dialog
-                                   */
-                                  RxAsyncActivity.this.asyncRxSaveBT.setEnabled(true);
-                                  RxAsyncActivity.this.dialog.hide();
-
-                                  DisplayMetrics metrics = new DisplayMetrics();
-                                  getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                                  int screenWidth = metrics.widthPixels;
-                                  int screenHeight = metrics.heightPixels;
-                                  /**
-                                   * ImageUtil.decodeScaleImage 解析图片
-                                   */
-                                  Bitmap bitmap = ImageUtil.decodeScaleImage(s, screenWidth,
-                                          screenHeight);
-                                  RxAsyncActivity.this.asyncRxOneIV.setImageBitmap(bitmap);
-                                  RxAsyncActivity.this.asyncRxTwoIV.setImageBitmap(bitmap);
-                              }
-                          });
-                break;
-        }
-    }
-
-
-    @Override protected void onDestroy() {
-        super.onDestroy();
-        this.dialog.dismiss();
     }
 }

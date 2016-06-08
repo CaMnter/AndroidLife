@@ -21,11 +21,10 @@ import java.util.List;
  */
 public class EasySlidingTabsActivity extends BaseAppCompatActivity {
 
+    public static final String[] titles = { "一次元", "二次元", "三次元", "四次元" };
+    List<Fragment> fragments;
     private EasySlidingTabs easySlidingTabs;
     private ViewPager easyVP;
-    List<Fragment> fragments;
-
-    public static final String[] titles = { "一次元", "二次元", "三次元", "四次元" };
 
 
     /**
@@ -69,7 +68,7 @@ public class EasySlidingTabsActivity extends BaseAppCompatActivity {
         this.fragments.add(fourth);
 
         EasySlidingTabsFragmentAdapter adapter = new EasySlidingTabsFragmentAdapter(
-                this.getSupportFragmentManager(), titles, this.fragments);
+            this.getSupportFragmentManager(), titles, this.fragments);
         this.easyVP.setAdapter(adapter);
         this.easySlidingTabs.setViewPager(this.easyVP);
     }

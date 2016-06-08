@@ -31,15 +31,15 @@ public class AutoAdjustSizeTextView extends TextView {
             this.textPaint.set(this.getPaint());
         }
         this.maxTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, this.maxTextSize,
-                displayMetrics);
+            displayMetrics);
         if (DEFAULT_MIN_TEXT_SIZE >= maxTextSize) {
             this.maxTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
-                    this.maxTextSize, displayMetrics);
+                this.maxTextSize, displayMetrics);
         }
         this.maxTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, this.maxTextSize,
-                displayMetrics);
+            displayMetrics);
         this.minTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, this.minTextSize,
-                displayMetrics);
+            displayMetrics);
     }
 
 

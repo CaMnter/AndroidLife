@@ -94,7 +94,7 @@ public class TagTextView extends TextView {
                  * 设置TagClickableSpan
                  */
                 sb.setSpan(span, index - 1, index + mLength + 1,
-                        Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                    Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             }
         }
         return sb;

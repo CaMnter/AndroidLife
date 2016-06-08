@@ -5,7 +5,6 @@ import android.os.Environment;
 import java.io.File;
 
 public class PathUtils {
-    public static String pathPrefix;
     public static final String historyPathName = "/chat/";
     public static final String imagePathName = "/image/";
     public static final String voicePathName = "/voice/";
@@ -13,6 +12,7 @@ public class PathUtils {
     public static final String videoPathName = "/video/";
     public static final String netdiskDownloadPathName = "/netdisk/";
     public static final String meetingPathName = "/meeting/";
+    public static String pathPrefix;
     private static File storageDir = null;
     private static PathUtils instance = null;
     private File voicePath = null;
@@ -32,61 +32,6 @@ public class PathUtils {
         }
 
         return instance;
-    }
-
-
-    public void initDirs(String var1, String var2, Context var3) {
-        String var4 = var3.getPackageName();
-        pathPrefix = "/Android/data/" + var4 + "/";
-        this.voicePath = generateVoicePath(var1, var2, var3);
-        if (!this.voicePath.exists()) {
-            this.voicePath.mkdirs();
-        }
-
-        this.imagePath = generateImagePath(var1, var2, var3);
-        if (!this.imagePath.exists()) {
-            this.imagePath.mkdirs();
-        }
-
-        this.historyPath = generateHistoryPath(var1, var2, var3);
-        if (!this.historyPath.exists()) {
-            this.historyPath.mkdirs();
-        }
-
-        this.videoPath = generateVideoPath(var1, var2, var3);
-        if (!this.videoPath.exists()) {
-            this.videoPath.mkdirs();
-        }
-
-        this.filePath = generateFiePath(var1, var2, var3);
-        if (!this.filePath.exists()) {
-            this.filePath.mkdirs();
-        }
-    }
-
-
-    public File getImagePath() {
-        return this.imagePath;
-    }
-
-
-    public File getVoicePath() {
-        return this.voicePath;
-    }
-
-
-    public File getFilePath() {
-        return this.filePath;
-    }
-
-
-    public File getVideoPath() {
-        return this.videoPath;
-    }
-
-
-    public File getHistoryPath() {
-        return this.historyPath;
     }
 
 
@@ -166,7 +111,7 @@ public class PathUtils {
 
     private static File generateMessagePath(String var0, String var1, Context context) {
         File file = new File(generateHistoryPath(var0, var1, context),
-                var1 + File.separator + "Msg.db");
+            var1 + File.separator + "Msg.db");
         return file;
     }
 
@@ -174,5 +119,60 @@ public class PathUtils {
     public static File getTempPath(File file) {
         File tempFile = new File(file.getAbsoluteFile() + ".tmp");
         return tempFile;
+    }
+
+
+    public void initDirs(String var1, String var2, Context var3) {
+        String var4 = var3.getPackageName();
+        pathPrefix = "/Android/data/" + var4 + "/";
+        this.voicePath = generateVoicePath(var1, var2, var3);
+        if (!this.voicePath.exists()) {
+            this.voicePath.mkdirs();
+        }
+
+        this.imagePath = generateImagePath(var1, var2, var3);
+        if (!this.imagePath.exists()) {
+            this.imagePath.mkdirs();
+        }
+
+        this.historyPath = generateHistoryPath(var1, var2, var3);
+        if (!this.historyPath.exists()) {
+            this.historyPath.mkdirs();
+        }
+
+        this.videoPath = generateVideoPath(var1, var2, var3);
+        if (!this.videoPath.exists()) {
+            this.videoPath.mkdirs();
+        }
+
+        this.filePath = generateFiePath(var1, var2, var3);
+        if (!this.filePath.exists()) {
+            this.filePath.mkdirs();
+        }
+    }
+
+
+    public File getImagePath() {
+        return this.imagePath;
+    }
+
+
+    public File getVoicePath() {
+        return this.voicePath;
+    }
+
+
+    public File getFilePath() {
+        return this.filePath;
+    }
+
+
+    public File getVideoPath() {
+        return this.videoPath;
+    }
+
+
+    public File getHistoryPath() {
+        return this.historyPath;
     }
 }

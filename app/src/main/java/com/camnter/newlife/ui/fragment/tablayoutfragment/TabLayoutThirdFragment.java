@@ -13,9 +13,8 @@ import com.camnter.newlife.core.BaseFragment;
  */
 public class TabLayoutThirdFragment extends BaseFragment {
 
-    private View self;
-
     private static TabLayoutThirdFragment instance;
+    private View self;
 
 
     @SuppressLint("ValidFragment") private TabLayoutThirdFragment() {

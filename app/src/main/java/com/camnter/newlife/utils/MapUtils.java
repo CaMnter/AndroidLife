@@ -63,7 +63,7 @@ public class MapUtils {
             Class<?> clsType = field.getType();
             String name = field.getName();
             String strSet = "set" + name.substring(0, 1).toUpperCase() +
-                    name.substring(1, name.length());
+                name.substring(1, name.length());
             Method methodSet = cls.getDeclaredMethod(strSet, clsType);
             if (map.containsKey(name)) {
                 Object objValue = typeConversion(clsType, map.get(name));
@@ -89,7 +89,7 @@ public class MapUtils {
             Class<?> clsType = field.getType();
             String name = field.getName();
             String strSet = "set" + name.substring(0, 1).toUpperCase() +
-                    name.substring(1, name.length());
+                name.substring(1, name.length());
             Method methodSet = cls.getDeclaredMethod(strSet, clsType);
             if (data.containsKey(name)) {
                 Object objValue = typeConversion(clsType, data.get(name));

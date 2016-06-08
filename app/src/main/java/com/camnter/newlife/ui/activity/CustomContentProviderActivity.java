@@ -66,9 +66,9 @@ public class CustomContentProviderActivity extends BaseAppCompatActivity {
     @Override protected void initData() {
         this.getContentResolver()
             .registerContentObserver(MessageContentProvider.MESSAGE_URI, true,
-                    new MessageProviderObserver(new Handler()));
+                new MessageProviderObserver(new Handler()));
         this.adapter = new ProviderRecyclerViewAdapter(this.getContentResolver(),
-                MessageContentProvider.MESSAGE_URI);
+            MessageContentProvider.MESSAGE_URI);
         this.providerRV.setAdapter(this.adapter);
 
         ArrayList<SQLiteData> allData = new ArrayList<>();
@@ -95,11 +95,12 @@ public class CustomContentProviderActivity extends BaseAppCompatActivity {
         }
     }
 
+
     /**
      * Provider RecyclerView Adapter
      */
     private class ProviderRecyclerViewAdapter extends EasyRecyclerViewAdapter
-            implements View.OnClickListener {
+        implements View.OnClickListener {
 
         private static final int ITEM_PROVIDER_OPERATION = 0;
         private static final int ITEM_PROVIDER_DATA = 1;
@@ -116,7 +117,7 @@ public class CustomContentProviderActivity extends BaseAppCompatActivity {
 
         @Override public int[] getItemLayouts() {
             return new int[] { R.layout.item_content_provider_operation,
-                    R.layout.item_content_provider_data };
+                R.layout.item_content_provider_data };
         }
 
 
@@ -126,19 +127,19 @@ public class CustomContentProviderActivity extends BaseAppCompatActivity {
             switch (itemType) {
                 case ITEM_PROVIDER_OPERATION:
                     easyRecyclerViewHolder.findViewById(R.id.provider_add_bt)
-                                          .setOnClickListener(this);
+                        .setOnClickListener(this);
                     easyRecyclerViewHolder.findViewById(R.id.provider_del_bt)
-                                          .setOnClickListener(this);
+                        .setOnClickListener(this);
                     easyRecyclerViewHolder.findViewById(R.id.provider_mod_bt)
-                                          .setOnClickListener(this);
+                        .setOnClickListener(this);
                     easyRecyclerViewHolder.findViewById(R.id.provider_query_bt)
-                                          .setOnClickListener(this);
+                        .setOnClickListener(this);
                     break;
                 case ITEM_PROVIDER_DATA:
                     ProviderData data = (ProviderData) this.getList().get(position);
                     TextView idTV = easyRecyclerViewHolder.findViewById(R.id.provider_id_tv);
                     TextView contentTV = easyRecyclerViewHolder.findViewById(
-                            R.id.provider_content_tv);
+                        R.id.provider_content_tv);
                     idTV.setText(data.id + "");
                     contentTV.setText(data.content + "");
                     break;
@@ -181,8 +182,8 @@ public class CustomContentProviderActivity extends BaseAppCompatActivity {
                     values.put("content", UUID.randomUUID().toString());
                     String path = this.uri.toString();
                     this.resolver.update(Uri.parse(
-                            path.substring(0, path.lastIndexOf("/")) + "/message/" + firstId),
-                            values, null, null);
+                        path.substring(0, path.lastIndexOf("/")) + "/message/" + firstId),
+                        values, null, null);
                     this.refresh();
                     break;
                 }

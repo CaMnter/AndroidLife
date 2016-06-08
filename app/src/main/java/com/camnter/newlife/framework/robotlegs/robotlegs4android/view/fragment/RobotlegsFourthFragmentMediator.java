@@ -63,7 +63,7 @@ public class RobotlegsFourthFragmentMediator extends Mediator {
         adapter.setList(resIds);
 
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
-                StaggeredGridLayoutManager.VERTICAL);
+            StaggeredGridLayoutManager.VERTICAL);
 
         this.fourthRV.setLayoutManager(staggeredGridLayoutManager);
         this.fourthRV.setItemAnimator(new DefaultItemAnimator());
@@ -80,21 +80,21 @@ public class RobotlegsFourthFragmentMediator extends Mediator {
          */
         this.getEventMap()
             .mapListener(this.getEventDispatcher(),
-                    LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW, new Listener() {
-                        /**
-                         * {@inheritDoc}
-                         * <p/>
-                         * {@linkplain IListener #onHandle}
-                         *
-                         * @param event
-                         */
-                        @Override public void onHandle(Event event) {
-                            if (event instanceof LoginEvent) {
-                                RobotlegsFourthFragmentMediator.this.fourthRV.setVisibility(
-                                        View.VISIBLE);
-                            }
+                LoginEvent.USER_LOGIN_SUCCESS_FROM_MODEL_TO_VIEW, new Listener() {
+                    /**
+                     * {@inheritDoc}
+                     * <p/>
+                     * {@linkplain IListener #onHandle}
+                     *
+                     * @param event
+                     */
+                    @Override public void onHandle(Event event) {
+                        if (event instanceof LoginEvent) {
+                            RobotlegsFourthFragmentMediator.this.fourthRV.setVisibility(
+                                View.VISIBLE);
                         }
-                    }, null, false, 0, true);
+                    }
+                }, null, false, 0, true);
     }
 
 

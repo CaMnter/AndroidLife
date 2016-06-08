@@ -33,7 +33,7 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
 
     private void initPopupWindow() {
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(
-                Context.LAYOUT_INFLATER_SERVICE);
+            Context.LAYOUT_INFLATER_SERVICE);
         this.contentView = inflater.inflate(R.layout.popupwindow_custom, null);
         this.setContentView(contentView);
         // 设置弹出窗体的宽
@@ -83,7 +83,7 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
             //获取在整个屏幕内的绝对坐标
             parent.getLocationOnScreen(location);
             this.showAtLocation(parent, 0, location[0] + parent.getWidth() - this.width,
-                    location[1] + parent.getHeight());
+                location[1] + parent.getHeight());
         }
     }
 
@@ -120,7 +120,7 @@ public class CustomPopupWindow extends android.widget.PopupWindow {
             //获取在整个屏幕内的绝对坐标
             parent.getLocationOnScreen(location);
             this.showAtLocation(parent, 0, location[0] / 2 + parent.getWidth() / 2 - this.width / 6,
-                    location[1] + parent.getHeight());
+                location[1] + parent.getHeight());
         }
     }
 }

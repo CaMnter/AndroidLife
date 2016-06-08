@@ -32,24 +32,14 @@ public class XfermodeRoundImageView extends ImageView {
 
     public static final int ROUND = 2601;
     public static final int CIRCLE = 2602;
-
-    // @formatter:off
-    @IntDef({ ROUND, CIRCLE })
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface ImageType {}
-    // @formatter:on
-
     private static final int DEFAULT_BORDER_RADIUS = 8;
-
+    // @formatter:on
     @ImageType private int imageType;
-
     private int mBorderRadius;
     private Paint mBitmapPaint;
     private Bitmap mMaskBitmap;
     private Xfermode mXfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
-
     private WeakReference<Bitmap> mWeakReference;
-
 
     public XfermodeRoundImageView(Context context) {
         super(context);
@@ -82,14 +72,14 @@ public class XfermodeRoundImageView extends ImageView {
 
         if (attrs == null) return;
         TypedArray typedArray = context.obtainStyledAttributes(attrs,
-                R.styleable.XfermodeRoundImageView);
+            R.styleable.XfermodeRoundImageView);
         this.imageType =
-                typedArray.getInt(R.styleable.XfermodeRoundImageView_xfermodeImageType, CIRCLE) ==
-                        CIRCLE ? CIRCLE : ROUND;
+            typedArray.getInt(R.styleable.XfermodeRoundImageView_xfermodeImageType, CIRCLE) ==
+                CIRCLE ? CIRCLE : ROUND;
         this.mBorderRadius = typedArray.getDimensionPixelSize(
-                R.styleable.XfermodeRoundImageView_xfermodeBorderRadius,
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_BORDER_RADIUS,
-                        this.getResources().getDisplayMetrics()));
+            R.styleable.XfermodeRoundImageView_xfermodeBorderRadius,
+            (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_BORDER_RADIUS,
+                this.getResources().getDisplayMetrics()));
         typedArray.recycle();
     }
 
@@ -114,17 +104,17 @@ public class XfermodeRoundImageView extends ImageView {
             bitmap = this.drawableToBitmap(drawable, this.imageType);
             if (this.mMaskBitmap == null || this.mMaskBitmap.isRecycled()) {
                 this.mMaskBitmap = this.drawBitmapSafely(this.getWidth(), this.getHeight(),
-                        Bitmap.Config.ARGB_8888, 1);
+                    Bitmap.Config.ARGB_8888, 1);
             }
             this.mWeakReference = new WeakReference<>(bitmap);
         }
         if (bitmap != null) {
             int sc = canvas.saveLayer(0, 0, this.getWidth(), this.getHeight(), null,
-                    Canvas.MATRIX_SAVE_FLAG |
-                            Canvas.CLIP_SAVE_FLAG |
-                            Canvas.HAS_ALPHA_LAYER_SAVE_FLAG |
-                            Canvas.FULL_COLOR_LAYER_SAVE_FLAG |
-                            Canvas.CLIP_TO_LAYER_SAVE_FLAG);
+                Canvas.MATRIX_SAVE_FLAG |
+                    Canvas.CLIP_SAVE_FLAG |
+                    Canvas.HAS_ALPHA_LAYER_SAVE_FLAG |
+                    Canvas.FULL_COLOR_LAYER_SAVE_FLAG |
+                    Canvas.CLIP_TO_LAYER_SAVE_FLAG);
             this.mBitmapPaint.reset();
             this.mBitmapPaint.setFilterBitmap(false);
             canvas.drawBitmap(this.mMaskBitmap, 0.0f, 0.0f, this.mBitmapPaint);
@@ -195,11 +185,11 @@ public class XfermodeRoundImageView extends ImageView {
             switch (this.imageType) {
                 case ROUND:
                     canvas.drawRoundRect(new RectF(0, 0, this.getWidth(), getHeight()),
-                            this.mBorderRadius, this.mBorderRadius, paint);
+                        this.mBorderRadius, this.mBorderRadius, paint);
                     break;
                 case CIRCLE:
                     canvas.drawCircle(this.getWidth() / 2, this.getWidth() / 2, this.getWidth() / 2,
-                            paint);
+                        paint);
                     break;
             }
             return bitmap;
@@ -212,4 +202,10 @@ public class XfermodeRoundImageView extends ImageView {
             return null;
         }
     }
+
+
+    // @formatter:off
+    @IntDef({ ROUND, CIRCLE })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface ImageType {}
 }

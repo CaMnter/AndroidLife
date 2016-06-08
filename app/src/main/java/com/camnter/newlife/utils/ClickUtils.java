@@ -7,10 +7,9 @@ package com.camnter.newlife.utils;
  */
 public class ClickUtils {
 
+    public static ClickUtils ourInstance;
     private static long lastClickTime;
     private static long clickInterval = 500;
-
-    public static ClickUtils ourInstance;
 
 
     public static ClickUtils getInstance() {

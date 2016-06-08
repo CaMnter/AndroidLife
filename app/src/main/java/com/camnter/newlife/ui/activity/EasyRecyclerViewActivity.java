@@ -54,8 +54,8 @@ public class EasyRecyclerViewActivity extends BaseAppCompatActivity {
 
         // set divider
         this.easyRV.addItemDecoration(
-                new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST,
-                        R.drawable.bg_recycler_view_divider));
+            new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST,
+                R.drawable.bg_recycler_view_divider));
         ArrayList<RecyclerViewData> allData = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
             RecyclerViewData dataSingle = new RecyclerViewData();

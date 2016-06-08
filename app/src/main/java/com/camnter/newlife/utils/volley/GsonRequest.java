@@ -15,7 +15,7 @@ import java.io.UnsupportedEncodingException;
  * Time：2016-05-25 12:01
  */
 public abstract class GsonRequest<T> extends Request<T>
-        implements Response.Listener<T>, Response.ErrorListener {
+    implements Response.Listener<T>, Response.ErrorListener {
 
     protected static final String PROTOCOL_CHARSET = "utf-8";
 
@@ -40,9 +40,9 @@ public abstract class GsonRequest<T> extends Request<T>
     @Override protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
             String jsonString = new String(response.data,
-                    HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+                HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
             return Response.success(this.mGson.fromJson(jsonString, this.mClass),
-                    HttpHeaderParser.parseCacheHeaders(response));
+                HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         }

@@ -17,7 +17,7 @@ import java.util.List;
  * Time：2015-11-04 11:47
  */
 public class SQLiteRecyclerViewAdapter extends EasyRecyclerViewAdapter
-        implements View.OnClickListener {
+    implements View.OnClickListener {
 
     private static final int ITEM_SQL_LITE_OPERATION = 0;
     private static final int ITEM_SQL_LITE_DATA = 1;
@@ -44,7 +44,7 @@ public class SQLiteRecyclerViewAdapter extends EasyRecyclerViewAdapter
                 easyRecyclerViewHolder.findViewById(R.id.data_base_del_bt).setOnClickListener(this);
                 easyRecyclerViewHolder.findViewById(R.id.data_base_mod_bt).setOnClickListener(this);
                 easyRecyclerViewHolder.findViewById(R.id.data_base_query_bt)
-                                      .setOnClickListener(this);
+                    .setOnClickListener(this);
                 break;
             case ITEM_SQL_LITE_DATA:
                 SQLiteData data = (SQLiteData) this.getList().get(position);

@@ -58,8 +58,8 @@ public class SpanActivity extends BaseAppCompatActivity {
         this.adapter = new SpanRecyclerAdapter(this);
         this.spanRV.setAdapter(adapter);
         this.spanRV.addItemDecoration(
-                new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST,
-                        R.drawable.bg_recycler_view_divider));
+            new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST,
+                R.drawable.bg_recycler_view_divider));
 
         List<SpanData> spans = new ArrayList<>();
         SpanData spanData = new SpanData();

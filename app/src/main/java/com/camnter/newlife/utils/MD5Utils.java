@@ -11,7 +11,7 @@ public class MD5Utils {
 
     public static String getMD5String(String key) {
         char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
-                'E', 'F' };
+            'E', 'F' };
         try {
             byte[] input = key.getBytes();
             // MD5算法的 MessageDigest 对象
