@@ -198,7 +198,7 @@ public final class Conditions {
             return lastNonDefaultCondition;
         }
         /*
-         * 实在判断出去来
+         * 实在判断不出来
          * 实例化一个 CompositeCondition
          * 交给 CompositeCondition 接着判断
          */
@@ -243,6 +243,7 @@ public final class Conditions {
         }
     }
 
+
     /**
      * NegatedCondition 实现了 Condition 接口
      * 并实现了 相反条件
@@ -270,6 +271,7 @@ public final class Conditions {
             return !condition.applies();
         }
     }
+
 
     /**
      * PredicateCondition  供应者断定条件
