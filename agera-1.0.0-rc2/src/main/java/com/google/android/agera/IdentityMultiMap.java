@@ -75,12 +75,11 @@ final class IdentityMultiMap<K, V> {
         }
 
         /*
-         * 如果上面 找到了 可以添加的位置
-         * 会根据这个 位置
+         * 如果上面 没有找到了 可以添加的位置
          * 进行数组 扩容（ 就是 copy 原来 数组的数据，创建一个 新的数组 ）
          *
          * 为什么扩容？
-         * 因为可能这个位置是数组数据的最后一位
+         * 因为可能数组满了
          */
         if (indexToAdd == -1) {
             indexToAdd = keysValues.length;
