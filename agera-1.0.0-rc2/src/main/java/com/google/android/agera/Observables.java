@@ -15,14 +15,13 @@
  */
 package com.google.android.agera;
 
-import static com.google.android.agera.Preconditions.checkNotNull;
-
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.android.agera.Preconditions.checkNotNull;
 
 /**
  * Utility methods for obtaining {@link Observable} instances.
@@ -34,203 +33,349 @@ import java.util.List;
  * {@link ActivationHandler} call {@link ActivationHandler#observableActivated(UpdateDispatcher)}
  * and {@link ActivationHandler#observableDeactivated(UpdateDispatcher)} on the thread the
  * {@link UpdateDispatcher} was created on.
+ *
+ * Observable 的工具类
+ * 可以获取 Observable
  */
 public final class Observables {
 
-  /**
-   * Returns an {@link Observable} that notifies added {@link Updatable}s that any of the
-   * {@code observables} have changed.
-   */
-  @NonNull
-  public static Observable compositeObservable(@NonNull final Observable... observables) {
-    return compositeObservable(0, observables);
-  }
-
-  @NonNull
-  static Observable compositeObservable(final int shortestUpdateWindowMillis,
-      @NonNull final Observable... observables) {
-    if (observables.length == 0) {
-      return new CompositeObservable(0);
+    /**
+     * Returns an {@link Observable} that notifies added {@link Updatable}s that any of the
+     * {@code observables} have changed.
+     *
+     * 默认 最短的更新时间 = 0
+     */
+    @NonNull
+    public static Observable compositeObservable(@NonNull final Observable... observables) {
+        return compositeObservable(0, observables);
     }
 
-    if (observables.length == 1) {
-      final Observable singleObservable = observables[0];
-      if (singleObservable instanceof CompositeObservable) {
+
+    /**
+     * 通过 一组 Observable
+     *
+     * 找到 这组 内 所有的 Observable
+     * 因为这个组 内的 Observable 可能是 复合被观察者 CompositeObservable，所以又存在一个组的 Observable
+     * 由于，要找到所有的 Observable，所以会 判断 是否 是 CompositeObservable，然后抽出 那个组的 Observable
+     *
+     * @param shortestUpdateWindowMillis 最短的更新时间
+     * @param observables 被观察者组
+     * @return 一个封装了 所有 被观察者的 复合被观察者 CompositeObservable
+     */
+    @NonNull
+    static Observable compositeObservable(final int shortestUpdateWindowMillis,
+                                          @NonNull final Observable... observables) {
+
+        /*
+         * 没有 被观察者数据
+         * 实例化一个 没有被观察者数据 的 CompositeObservable
+         */
+        if (observables.length == 0) {
+            return new CompositeObservable(0);
+        }
+
+        /*
+         * 如果只有 一个被观察者
+         */
+        if (observables.length == 1) {
+            final Observable singleObservable = observables[0];
+            /*
+             * 如果 是 复合被观察者 类型
+             * 抽取去 内部的被观察者组
+             * 然后用于实例化 一个 CompositeObservable 后返回
+             */
+            if (singleObservable instanceof CompositeObservable) {
+                return new CompositeObservable(0,
+                    ((CompositeObservable) singleObservable).observables);
+            } else {
+                // 直接实例化 CompositeObservable
+                return new CompositeObservable(0, singleObservable);
+            }
+        }
+
+        final List<Observable> flattenedDedupedObservables = new ArrayList<>();
+        /*
+         * 找出所有的 Observable
+         * 如果是 Observable 类型，直接判断是否存在后，进行添加
+         * 如果是 CompositeObservable 类型，抽出其内 Observable 组。然后逐个判断是否存在后，进行添加
+         */
+        for (final Observable observable : observables) {
+            if (observable instanceof CompositeObservable) {
+                for (Observable subObservable : ((CompositeObservable) observable).observables) {
+                    if (!flattenedDedupedObservables.contains(subObservable)) {
+                        flattenedDedupedObservables.add(subObservable);
+                    }
+                }
+            } else {
+                if (!flattenedDedupedObservables.contains(observable)) {
+                    flattenedDedupedObservables.add(observable);
+                }
+            }
+        }
+        /*
+         * 拿到 找到后的 所有 Observable
+         * 用于实例化一个 CompositeObservable
+         */
         return new CompositeObservable(0,
-            ((CompositeObservable) singleObservable).observables);
-      } else {
-        return new CompositeObservable(0, singleObservable);
-      }
+            flattenedDedupedObservables.toArray(
+                new Observable[flattenedDedupedObservables.size()]));
     }
 
-    final List<Observable> flattenedDedupedObservables = new ArrayList<>();
-    for (final Observable observable : observables) {
-      if (observable instanceof CompositeObservable) {
-        for (Observable subObservable : ((CompositeObservable) observable).observables) {
-          if (!flattenedDedupedObservables.contains(subObservable)) {
-            flattenedDedupedObservables.add(subObservable);
-          }
+
+    /**
+     * Returns an {@link Observable} that notifies added {@link Updatable}s that any of the
+     * {@code observables} have changed only if the {@code condition} applies.
+     *
+     * 构造一个 ConditionalObservable 实例
+     */
+    @NonNull
+    public static Observable conditionalObservable(
+        @NonNull final Condition condition, @NonNull final Observable... observables) {
+        return new ConditionalObservable(compositeObservable(observables), condition);
+    }
+
+
+    /**
+     * Returns an {@link Observable} that notifies added {@link Updatable}s that the
+     * {@code observables} has changed, but never more often than every
+     * {@code shortestUpdateWindowMillis}.
+     *
+     * 直接调用 compositeObservable(...)
+     */
+    @NonNull
+    public static Observable perMillisecondObservable(
+        final int shortestUpdateWindowMillis, @NonNull final Observable... observables) {
+        return compositeObservable(shortestUpdateWindowMillis, observables);
+    }
+
+
+    /**
+     * Returns an {@link Observable} that notifies added {@link Updatable}s that the
+     * {@code observable} has changed, but never more often than once per {@link Looper} cycle.
+     *
+     * 最短的更新时间 = 0
+     * 调用 compositeObservable(...)
+     */
+    @NonNull
+    public static Observable perLoopObservable(@NonNull final Observable... observables) {
+        return compositeObservable(observables);
+    }
+
+
+    /**
+     * Returns an asynchronous {@link UpdateDispatcher}.
+     *
+     * <p>{@link UpdateDispatcher#update()} can be called from any thread
+     * {@link UpdateDispatcher#addUpdatable(Updatable)} and
+     * {@link UpdateDispatcher#removeUpdatable(Updatable)} can only be called from {@link Looper}
+     * threads. Any added {@link Updatable} will be called on the thread they were added from.
+     *
+     * 构造一个 AsyncUpdateDispatcher 实例
+     */
+    @NonNull
+    public static UpdateDispatcher updateDispatcher() {
+        return new AsyncUpdateDispatcher(null);
+    }
+
+
+    /**
+     * Returns an asynchronous {@link UpdateDispatcher}.
+     *
+     * <p>See {@link #updateDispatcher()}
+     *
+     * <p>{@code updatablesChanged} will be called on the same thread as the {@link
+     * UpdateDispatcher}
+     * was created from when the first {@link Updatable} was added / last {@link Updatable} was
+     * removed.
+     *
+     * <p>This {@link UpdateDispatcher} is useful when implementing {@link Observable} services
+     * with
+     * an <i>active</i>/<i>inactive</i> lifecycle.
+     *
+     * 通过 UpdateDispatcher
+     * 构造一个 AsyncUpdateDispatcher 实例
+     */
+    @NonNull
+    public static UpdateDispatcher updateDispatcher(
+        @NonNull final ActivationHandler activationHandler) {
+        return new AsyncUpdateDispatcher(activationHandler);
+    }
+
+
+    /**
+     * 复合被观察者
+     *
+     * 主要工作：
+     * 1. 用于将 BaseObservable 中 回调回来的
+     * observableActivated() 和 observableDeactivated() 逻辑
+     * 转接到 每个 Observable 上
+     *
+     * 2. 用于将 UpdateDispatcher 中回调回来的
+     * update()
+     * 转接到 BaseObservable 上的 dispatchUpdate()
+     */
+    private static final class CompositeObservable extends BaseObservable implements Updatable {
+        // 被观察者们
+        @NonNull
+        private final Observable[] observables;
+
+
+        CompositeObservable(final int shortestUpdateWindowMillis,
+                            @NonNull final Observable... observables) {
+            super(shortestUpdateWindowMillis);
+            this.observables = observables;
         }
-      } else {
-        if (!flattenedDedupedObservables.contains(observable)) {
-          flattenedDedupedObservables.add(observable);
+
+
+        /**
+         * BaseObservable.observableActivated() ->
+         * N 次 Observable.addUpdatable(this)
+         */
+        @Override
+        protected void observableActivated() {
+            for (final Observable observable : observables) {
+                observable.addUpdatable(this);
+            }
         }
-      }
-    }
-    return new CompositeObservable(0,
-        flattenedDedupedObservables.toArray(new Observable[flattenedDedupedObservables.size()]));
-  }
 
-  /**
-   * Returns an {@link Observable} that notifies added {@link Updatable}s that any of the
-   * {@code observables} have changed only if the {@code condition} applies.
-   */
-  @NonNull
-  public static Observable conditionalObservable(
-      @NonNull final Condition condition, @NonNull final Observable... observables) {
-    return new ConditionalObservable(compositeObservable(observables), condition);
-  }
 
-  /**
-   * Returns an {@link Observable} that notifies added {@link Updatable}s that the
-   * {@code observables} has changed, but never more often than every
-   * {@code shortestUpdateWindowMillis}.
-   */
-  @NonNull
-  public static Observable perMillisecondObservable(
-      final int shortestUpdateWindowMillis, @NonNull final Observable... observables) {
-    return compositeObservable(shortestUpdateWindowMillis, observables);
-  }
+        /**
+         * BaseObservable.observableDeactivated() ->
+         * N 次 Observable.removeUpdatable(this)
+         */
+        @Override
+        protected void observableDeactivated() {
+            for (final Observable observable : observables) {
+                observable.removeUpdatable(this);
+            }
+        }
 
-  /**
-   * Returns an {@link Observable} that notifies added {@link Updatable}s that the
-   * {@code observable} has changed, but never more often than once per {@link Looper} cycle.
-   */
-  @NonNull
-  public static Observable perLoopObservable(@NonNull final Observable... observables) {
-    return compositeObservable(observables);
-  }
 
-  /**
-   * Returns an asynchronous {@link UpdateDispatcher}.
-   *
-   * <p>{@link UpdateDispatcher#update()} can be called from any thread
-   * {@link UpdateDispatcher#addUpdatable(Updatable)} and
-   * {@link UpdateDispatcher#removeUpdatable(Updatable)} can only be called from {@link Looper}
-   * threads. Any added {@link Updatable} will be called on the thread they were added from.
-   */
-  @NonNull
-  public static UpdateDispatcher updateDispatcher() {
-    return new AsyncUpdateDispatcher(null);
-  }
-
-  /**
-   * Returns an asynchronous {@link UpdateDispatcher}.
-   *
-   * <p>See {@link #updateDispatcher()}
-   *
-   * <p>{@code updatablesChanged} will be called on the same thread as the {@link UpdateDispatcher}
-   * was created from when the first {@link Updatable} was added / last {@link Updatable} was
-   * removed.
-   *
-   * <p>This {@link UpdateDispatcher} is useful when implementing {@link Observable} services with
-   * an <i>active</i>/<i>inactive</i> lifecycle.
-   */
-  @NonNull
-  public static UpdateDispatcher updateDispatcher(
-      @NonNull final ActivationHandler activationHandler) {
-    return new AsyncUpdateDispatcher(activationHandler);
-  }
-
-  private static final class CompositeObservable extends BaseObservable implements Updatable {
-    @NonNull
-    private final Observable[] observables;
-
-    CompositeObservable(final int shortestUpdateWindowMillis,
-        @NonNull final Observable... observables) {
-      super(shortestUpdateWindowMillis);
-      this.observables = observables;
+        /**
+         * UpdateDispatcher.update() -> BaseObservable.dispatchUpdate()
+         */
+        @Override
+        public void update() {
+            dispatchUpdate();
+        }
     }
 
-    @Override
-    protected void observableActivated() {
-      for (final Observable observable : observables) {
-        observable.addUpdatable(this);
-      }
+
+    /**
+     * 有条件的被观察者
+     *
+     * 主要工作：
+     * 1. 用于将 BaseObservable 中 回调回来的
+     * observableActivated() 和 observableDeactivated() 逻辑
+     * 转接到 Observable 上
+     *
+     * 2. 用于将 UpdateDispatcher 中回调回来的
+     * update()，通过条件判断，决定是否
+     * 转接到 BaseObservable 上的 dispatchUpdate()
+     */
+    private static final class ConditionalObservable extends BaseObservable implements Updatable {
+        @NonNull
+        private final Observable observable;
+        @NonNull
+        private final Condition condition;
+
+
+        ConditionalObservable(@NonNull final Observable observable,
+                              @NonNull final Condition condition) {
+            this.observable = checkNotNull(observable);
+            this.condition = checkNotNull(condition);
+        }
+
+
+        /**
+         * BaseObservable.observableActivated() -> Observable.addUpdatable(this)
+         */
+        @Override
+        protected void observableActivated() {
+            observable.addUpdatable(this);
+        }
+
+
+        /**
+         * BaseObservable.observableDeactivated() -> Observable.removeUpdatable(this)
+         */
+        @Override
+        protected void observableDeactivated() {
+            observable.removeUpdatable(this);
+        }
+
+
+        /**
+         * UpdateDispatcher.update() -> BaseObservable.dispatchUpdate()
+         */
+        @Override
+        public void update() {
+            if (condition.applies()) {
+                dispatchUpdate();
+            }
+        }
     }
 
-    @Override
-    protected void observableDeactivated() {
-      for (final Observable observable : observables) {
-        observable.removeUpdatable(this);
-      }
+
+    /**
+     * 异步观察调度者
+     *
+     * 主要工作：
+     * 1. 用于将 BaseObservable 中 回调回来的
+     * observableActivated() 和 observableDeactivated() 逻辑
+     * 转接到 ActivationHandler 上
+     *
+     * 2. 用于将 UpdateDispatcher 中回调回来的
+     * update()
+     * 转接到 BaseObservable 上的 dispatchUpdate()
+     */
+    private static final class AsyncUpdateDispatcher extends BaseObservable
+        implements UpdateDispatcher {
+
+        // 内置一个 激活处理 接口
+        @Nullable
+        private final ActivationHandler activationHandler;
+
+
+        private AsyncUpdateDispatcher(@Nullable ActivationHandler activationHandler) {
+            this.activationHandler = activationHandler;
+        }
+
+
+        /**
+         * BaseObservable.observableActivated() -> ActivationHandler.observableActivated(this)
+         */
+        @Override
+        protected void observableActivated() {
+            if (activationHandler != null) {
+                activationHandler.observableActivated(this);
+            }
+        }
+
+
+        /**
+         * BaseObservable.observableDeactivated() -> ActivationHandler.observableDeactivated(this)
+         */
+        @Override
+        protected void observableDeactivated() {
+            if (activationHandler != null) {
+                activationHandler.observableDeactivated(this);
+            }
+        }
+
+
+        /**
+         * UpdateDispatcher.update() -> BaseObservable.dispatchUpdate()
+         */
+        @Override
+        public void update() {
+            dispatchUpdate();
+        }
     }
 
-    @Override
-    public void update() {
-      dispatchUpdate();
-    }
-  }
 
-  private static final class ConditionalObservable extends BaseObservable implements Updatable {
-    @NonNull
-    private final Observable observable;
-    @NonNull
-    private final Condition condition;
-
-    ConditionalObservable(@NonNull final Observable observable,
-        @NonNull final Condition condition) {
-      this.observable = checkNotNull(observable);
-      this.condition = checkNotNull(condition);
-    }
-
-    @Override
-    protected void observableActivated() {
-      observable.addUpdatable(this);
-    }
-
-    @Override
-    protected void observableDeactivated() {
-      observable.removeUpdatable(this);
-    }
-
-    @Override
-    public void update() {
-      if (condition.applies()) {
-        dispatchUpdate();
-      }
-    }
-  }
-
-  private static final class AsyncUpdateDispatcher extends BaseObservable
-      implements UpdateDispatcher {
-
-    @Nullable
-    private final ActivationHandler activationHandler;
-
-    private AsyncUpdateDispatcher(@Nullable ActivationHandler activationHandler) {
-      this.activationHandler = activationHandler;
-    }
-
-    @Override
-    protected void observableActivated() {
-      if (activationHandler != null) {
-        activationHandler.observableActivated(this);
-      }
-    }
-
-    @Override
-    protected void observableDeactivated() {
-      if (activationHandler != null) {
-        activationHandler.observableDeactivated(this);
-      }
-    }
-
-    @Override
-    public void update() {
-      dispatchUpdate();
-    }
-  }
-
-  private Observables() {}
+    /**
+     * 屏蔽默认的构造方法
+     */
+    private Observables() {}
 }
