@@ -15,78 +15,168 @@
  */
 package com.google.android.agera;
 
+import android.support.annotation.NonNull;
+
 import static com.google.android.agera.Preconditions.checkNotNull;
 import static com.google.android.agera.Result.failure;
 
-import android.support.annotation.NonNull;
-
 final class Common {
-  static final Function<Throwable, ? extends Result<?>> FAILED_RESULT = new FailedResult<>();
-  static final Function IDENTITY_FUNCTION = new IdentityFunction();
-  static final StaticCondicate TRUE_CONDICATE = new StaticCondicate(true);
-  static final StaticCondicate FALSE_CONDICATE = new StaticCondicate(false);
+    // Throwable -> Result 的 Function
+    static final Function<Throwable, ? extends Result<?>> FAILED_RESULT = new FailedResult<>();
+    // 通用的 Function
+    static final Function IDENTITY_FUNCTION = new IdentityFunction();
+    /*
+     * 正确的 断定 和 条件
+     */
+    static final StaticCondicate TRUE_CONDICATE = new StaticCondicate(true);
+    /*
+     * 错误的 断定 和 条件
+     */
+    static final StaticCondicate FALSE_CONDICATE = new StaticCondicate(false);
 
-  private static final class IdentityFunction implements Function {
-    @NonNull
-    @Override
-    public Object apply(@NonNull final Object from) {
-      return from;
-    }
-  }
 
-  private static final class StaticCondicate implements Condition, Predicate {
-    private final boolean staticValue;
-
-    private StaticCondicate(final boolean staticValue) {
-      this.staticValue = staticValue;
-    }
-
-    @Override
-    public boolean apply(@NonNull final Object value) {
-      return staticValue;
-    }
-
-    @Override
-    public boolean applies() {
-      return staticValue;
-    }
-  }
-
-  static final class StaticProducer<TFirst, TSecond, TTo>
-      implements Supplier<TTo>, Function<TFirst, TTo>, Merger<TFirst, TSecond, TTo> {
-    @NonNull
-    private final TTo staticValue;
-
-    StaticProducer(@NonNull final TTo staticValue) {
-      this.staticValue = checkNotNull(staticValue);
+    /**
+     * 通用的 Function
+     * 主要用于 转为 Function
+     */
+    private static final class IdentityFunction implements Function {
+        /**
+         * 什么也不做，直接返回 from 值
+         *
+         * @param from from
+         * @return from
+         */
+        @NonNull
+        @Override
+        public Object apply(@NonNull final Object from) {
+            return from;
+        }
     }
 
-    @NonNull
-    @Override
-    public TTo apply(@NonNull final TFirst input) {
-      return staticValue;
+
+    /**
+     * 主要用于
+     * 转为 Condition, Predicate
+     */
+    private static final class StaticCondicate implements Condition, Predicate {
+        private final boolean staticValue;
+
+
+        private StaticCondicate(final boolean staticValue) {
+            this.staticValue = staticValue;
+        }
+
+
+        /**
+         * 不做任何 Predicate 的断定逻辑
+         * 直接返回 staticValue 值
+         *
+         * @param value value
+         * @return staticValue
+         */
+        @Override
+        public boolean apply(@NonNull final Object value) {
+            return staticValue;
+        }
+
+
+        /**
+         * 不做任何 Condition 的条件逻辑
+         * 直接返回 staticValue 值
+         *
+         * @return staticValue
+         */
+        @Override
+        public boolean applies() {
+            return staticValue;
+        }
     }
 
-    @NonNull
-    @Override
-    public TTo merge(@NonNull final TFirst o, @NonNull final TSecond o2) {
-      return staticValue;
+
+    /**
+     * 主要用于
+     * 转为 Supplier, Function, Merger
+     *
+     * @param <TFirst> 第一个参数类型
+     * @param <TSecond> 第二个参数类型
+     * @param <TTo> 目标类型
+     */
+    static final class StaticProducer<TFirst, TSecond, TTo>
+        implements Supplier<TTo>, Function<TFirst, TTo>, Merger<TFirst, TSecond, TTo> {
+        @NonNull
+        private final TTo staticValue;
+
+
+        StaticProducer(@NonNull final TTo staticValue) {
+            this.staticValue = checkNotNull(staticValue);
+        }
+
+
+        /**
+         * 不做任何 Function 的转换逻辑
+         * 直接返回 staticValue 值
+         *
+         * @param input 第一个参数值
+         * @return staticValue
+         */
+        @NonNull
+        @Override
+        public TTo apply(@NonNull final TFirst input) {
+            return staticValue;
+        }
+
+
+        /**
+         * 不做任何 Merger 的合并逻辑
+         * 直接返回 staticValue 值
+         *
+         * @param o 第一个参数值
+         * @param o2 第二个参数值
+         * @return staticValue
+         */
+        @NonNull
+        @Override
+        public TTo merge(@NonNull final TFirst o, @NonNull final TSecond o2) {
+            return staticValue;
+        }
+
+
+        /**
+         * 直接返回 staticValue 值
+         *
+         * @return staticValue
+         */
+        @NonNull
+        @Override
+        public TTo get() {
+            return staticValue;
+        }
     }
 
-    @NonNull
-    @Override
-    public TTo get() {
-      return staticValue;
-    }
-  }
 
-  private static final class FailedResult<T> implements Function<Throwable, Result<T>> {
-    @NonNull
-    @Override
-    public Result<T> apply(@NonNull final Throwable input) {
-      return failure(input);
-    }
-  }
+    /**
+     * 主要用于 转为 Function
+     *
+     * @param <T> Result 的类型
+     */
+    private static final class FailedResult<T> implements Function<Throwable, Result<T>> {
 
-  private Common() {}
+        /**
+         * Throwable -> 错误 Result
+         *
+         * @param input Throwable
+         * @return 返回一个 错误 Result
+         */
+        @NonNull
+        @Override
+        public Result<T> apply(@NonNull final Throwable input) {
+            return failure(input);
+        }
+    }
+
+
+    /**
+     * 屏蔽默认的构造方法
+     */
+    private Common() {}
 }
