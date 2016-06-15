@@ -20,10 +20,12 @@ import android.support.annotation.Nullable;
 /**
  * The exception thrown by {@link Result#get()} on a failed result. The cause of the failure can be
  * accessed via {@link #getCause()}.
+ *
+ * 错误结果（ Result ）异常
  */
 public final class FailedResultException extends IllegalStateException {
 
-  FailedResultException(@Nullable final Throwable cause) {
-    super("Cannot get() from a failed result", cause);
-  }
+    FailedResultException(@Nullable final Throwable cause) {
+        super("Cannot get() from a failed result", cause);
+    }
 }
