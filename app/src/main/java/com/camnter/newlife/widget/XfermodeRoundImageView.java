@@ -41,6 +41,7 @@ public class XfermodeRoundImageView extends ImageView {
     private Xfermode mXfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
     private WeakReference<Bitmap> mWeakReference;
 
+
     public XfermodeRoundImageView(Context context) {
         super(context);
         this.init(context, null);

@@ -53,7 +53,7 @@ import java.util.concurrent.locks.ReentrantLock;
 @SuppressWarnings("unused")
 public class WeakHandler {
     private final Handler.Callback mCallback;
-        // hard reference to Callback. We need to keep callback in memory
+    // hard reference to Callback. We need to keep callback in memory
     private final ExecHandler mExec;
     private Lock mLock = new ReentrantLock();
     @SuppressWarnings("ConstantConditions")

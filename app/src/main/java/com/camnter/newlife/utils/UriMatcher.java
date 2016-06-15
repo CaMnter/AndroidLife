@@ -128,6 +128,7 @@ public class UriMatcher {
     private String mText;
     private ArrayList<UriMatcher> mChildren;
 
+
     /**
      * Creates the root node of the URI tree.
      * 创建Uri树的根节点
@@ -140,6 +141,8 @@ public class UriMatcher {
         mChildren = new ArrayList<UriMatcher>();
         mText = null;
     }
+
+
     private UriMatcher() {
         mCode = NO_MATCH;
         mWhich = -1;

@@ -17,6 +17,8 @@ public class BitmapUtils {
 
     private static final float DENSITY = Resources.getSystem().getDisplayMetrics().density;
     private static final Canvas sCanvas = new Canvas();
+
+
     private BitmapUtils() {
 
     }
