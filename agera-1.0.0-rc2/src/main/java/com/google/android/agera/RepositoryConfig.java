@@ -39,6 +39,9 @@ public @interface RepositoryConfig {
      * This is the default behavior and, with a value of 0, cannot be combined with other
      * configurations.
      */
+    /*
+     * 0000 0000 0000 0000
+     */
     int CONTINUE_FLOW = 0;
 
     /**
@@ -55,6 +58,9 @@ public @interface RepositoryConfig {
      * implicit
      * if {@link #RESET_TO_INITIAL_VALUE} or {@link #SEND_INTERRUPT} is specified.
      */
+    /*
+     * 0000 0000 0000 0001
+     */
     int CANCEL_FLOW = 1;
 
     /**
@@ -65,6 +71,12 @@ public @interface RepositoryConfig {
      * <i>not</i> be reset, but due to the included {@link #CANCEL_FLOW} value, the ongoing flow
      * will
      * still be cancelled.
+     */
+    /*
+     * 0000 0000 0000 0010
+     * 0000 0000 0000 0001
+     *
+     * 0000 0000 0000 0011
      */
     int RESET_TO_INITIAL_VALUE = 2 | CANCEL_FLOW;
 
@@ -77,6 +89,12 @@ public @interface RepositoryConfig {
      * in
      * a synchronous stage, to minimize unwanted effects on the worker looper thread and the thread
      * from which the client calls {@link Repository#get()}.
+     */
+    /*
+     * 0000 0000 0000 0100
+     * 0000 0000 0000 0001
+     *
+     * 0000 0000 0000 0101
      */
     int SEND_INTERRUPT = 4 | CANCEL_FLOW;
 }
