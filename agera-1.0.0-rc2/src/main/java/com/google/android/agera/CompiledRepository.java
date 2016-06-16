@@ -193,6 +193,11 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 同时调用
+     * 1. 可能取消流
+     * 2. 可能开始流
+     */
     @Override
     public void update() {
         maybeCancelFlow(concurrentUpdateConfig, true);
@@ -234,6 +239,16 @@ final class CompiledRepository extends BaseObservable
      * processing a getFrom/mergeIn/transform instruction of the flow.
      *
      * @param scheduleRestart Whether to schedule a restart if a current flow is canceled.
+     *
+     * 如果 运行状态为
+     * 1. 运行
+     * 2. 普通暂停
+     * 3. 并且，仓库配置不为 CONTINUE_FLOW
+     *
+     * 那么重置状态为：取消请求
+     *
+     * 4. 如果，仓库配置为 SEND_INTERRUPT，并且当前线程 存在，那么线程停止
+     * 5. 如果，仓库配置为 RESET_TO_INITIAL_VALUE，并且 不重启，那么重置到初始值
      */
     private void maybeCancelFlow(
         @RepositoryConfig final int config, final boolean scheduleRestart) {
@@ -273,6 +288,9 @@ final class CompiledRepository extends BaseObservable
      * request if so. This must be called while locked in a synchronized context.
      *
      * @return Whether the data processing flow is cancelled.
+     *
+     * 如果是 取消请求 状态
+     * 则调用 CompiledRepository.acknowledgeCancel()
      */
     private boolean checkCancellationLocked() {
         if (runState == CANCEL_REQUESTED) {
@@ -285,6 +303,14 @@ final class CompiledRepository extends BaseObservable
 
     /**
      * Called by the worker handler.
+     *
+     * 如果是 取消请求 状态
+     * 然后：
+     * 1. 将运行状态 设置为 闲置状态
+     * 2. 中间值赋上初始值
+     * 3. 标记为需要重启
+     *
+     * 然后开始重启流 maybeStartFlow()
      */
     void acknowledgeCancel() {
         boolean shouldStartFlow = false;
@@ -307,6 +333,9 @@ final class CompiledRepository extends BaseObservable
      * called
      * while locked in a synchronized context and after the previous data processing flow has
      * completed.
+     *
+     * 如果 已经标记了 需要重启
+     * 那么调用 CompiledRepository.maybeStartFlow()
      */
     private void checkRestartLocked() {
         if (restartNeeded) {
