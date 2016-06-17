@@ -117,7 +117,7 @@ final class CompiledRepository extends BaseObservable
      * IDLE：闲置
      * RUNNING：运行
      * CANCEL_REQUESTED：取消请求
-     * PAUSED_AT_GO_TO：普通暂停
+     * PAUSED_AT_GO_TO：子线程暂停
      * PAUSED_AT_GO_LAZY：懒加载暂停
      * RUNNING_LAZILY：懒加载运行
      */
@@ -216,7 +216,7 @@ final class CompiledRepository extends BaseObservable
      *
      * 那么重置状态为：运行
      * 中间值存放当前值
-     * 开始运行 流
+     * 开始运行 流 runFlowFrom(...)
      */
     void maybeStartFlow() {
         synchronized (this) {
@@ -242,7 +242,7 @@ final class CompiledRepository extends BaseObservable
      *
      * 如果 运行状态为
      * 1. 运行
-     * 2. 普通暂停
+     * 2. 子线程暂停
      * 3. 并且，仓库配置不为 CONTINUE_FLOW
      *
      * 那么重置状态为：取消请求
@@ -365,6 +365,21 @@ final class CompiledRepository extends BaseObservable
      * before goLazy. This is to omit unnecessarily locking the synchronized context to check for
      * cancellation, because if the flow is run synchronously, cancellation requests theoretically
      * cannot be delivered here.
+     *
+     * 获得所有 操作符指令 的 数组
+     * 开始遍历数组
+     * 只要满足一个：
+     * 1. 异步
+     * 2. 子线程加载
+     * 3. 懒加载
+     *
+     * 接着：
+     * 1. 检查运行状态是否是 取消请求，是的话 break
+     * 2. 如果是子线程执行的话，setPausedAtGoToLocked(...)
+     * 3. 如果是懒加载的话，setLazyAndEndFlowLocked(...)
+     *
+     * 最后：
+     * 分发指令，运行 不同的 操作符操作
      */
     private void runFlowFrom(final int index, final boolean asynchronously) {
         final Object[] directives = this.directives;
@@ -434,6 +449,14 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 开始 运行 getFrom(...) 操作符
+     *
+     * @param directives 指令集合
+     * @param index 索引
+     * @return 下个指令，由于一个指令，后紧跟着，指令需要的角色（ Supplier，Function，Merger... ）
+     * 所以要 +2
+     */
     private int runGetFrom(@NonNull final Object[] directives, final int index) {
         final Supplier supplier = (Supplier) directives[index + 1];
         intermediateValue = checkNotNull(supplier.get());
@@ -449,6 +472,15 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 开始 运行 mergeIn(...) 操作符
+     *
+     * @param directives 指令集合
+     * @param index 索引
+     * @return 下个指令，由于一个指令，后紧跟着，指令需要的角色（ Supplier，Function，Merger... ）
+     * 需要两个角色
+     * 所以要 +3
+     */
     private int runMergeIn(@NonNull final Object[] directives, final int index) {
         final Supplier supplier = (Supplier) directives[index + 1];
         final Merger merger = (Merger) directives[index + 2];
@@ -464,6 +496,14 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 开始 运行 transform(...) 操作符
+     *
+     * @param directives 指令集合
+     * @param index 索引
+     * @return 下个指令，由于一个指令，后紧跟着，指令需要的角色（ Supplier，Function，Merger... ）
+     * 所以要 +2
+     */
     private int runTransform(@NonNull final Object[] directives, final int index) {
         final Function function = (Function) directives[index + 1];
         intermediateValue = checkNotNull(function.apply(intermediateValue));
@@ -482,6 +522,17 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 开始 运行 check(...) 操作符
+     *
+     * @param directives 指令集合
+     * @param index 索引
+     * @return 下个指令，由于一个指令，后紧跟着，指令需要的角色（ Supplier，Function，Merger... ）
+     * 需要三个角色
+     * 如果断定
+     * 成功了 +4，因为有三个角色
+     * 成功了返回 -1，表示终止，并且运行 runTerminate(...)
+     */
     private int runCheck(@NonNull final Object[] directives, final int index) {
         final Function caseFunction = (Function) directives[index + 1];
         final Predicate casePredicate = (Predicate) directives[index + 2];
@@ -503,6 +554,13 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 开始 运行 goTo(...) 操作符
+     *
+     * @param directives 指令集合
+     * @param index 索引
+     * @return 返回 -1 终止
+     */
     private int runGoTo(@NonNull final Object[] directives, final int index) {
         Executor executor = (Executor) directives[index + 1];
         executor.execute(this);
@@ -534,6 +592,14 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 开始 运行 sendTo(...) 操作符
+     *
+     * @param directives 指令集合
+     * @param index 索引
+     * @return 下个指令，由于一个指令，后紧跟着，指令需要的角色（ Supplier，Function，Merger... ）
+     * 所以要 +2
+     */
     private int runSendTo(@NonNull final Object[] directives, final int index) {
         Receiver receiver = (Receiver) directives[index + 1];
         receiver.accept(intermediateValue);
@@ -549,6 +615,15 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 开始 运行 bindWith(...) 操作符
+     *
+     * @param directives 指令集合
+     * @param index 索引
+     * @return 下个指令，由于一个指令，后紧跟着，指令需要的角色（ Supplier，Function，Merger... ）
+     * 需要两个角色
+     * 所以要 +3
+     */
     private int runBindWith(@NonNull final Object[] directives, final int index) {
         final Supplier supplier = (Supplier) directives[index + 1];
         final Binder binder = (Binder) directives[index + 2];
@@ -564,6 +639,17 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 开始 运行 filterSuccess(...) 操作符
+     *
+     * @param directives 指令集合
+     * @param index 索引
+     * @return 下个指令，由于一个指令，后紧跟着，指令需要的角色（ Supplier，Function，Merger... ）
+     * 需要一个角色
+     * 判断结果是否
+     * 成功，+2，因为有一个角色
+     * 失败，返回 -1，终止
+     */
     private int runFilterSuccess(@NonNull final Object[] directives, final int index) {
         final Function terminatingValueFunction = (Function) directives[index + 1];
         final Result tryValue = (Result) intermediateValue;
@@ -577,6 +663,11 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 终止状态
+     *
+     * @param terminatingValueFunction 结束时的转换方法
+     */
     private void runTerminate(@NonNull final Object caseValue,
                               @Nullable final Function terminatingValueFunction) {
         if (terminatingValueFunction == null) {
@@ -593,6 +684,13 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 开始 运行 end(...) 操作符
+     *
+     * @param directives 指令集合
+     * @param index 索引
+     * @return 返回 -1，终止
+     */
     private int runEnd(@NonNull final Object[] directives, final int index) {
         final boolean skip = (Boolean) directives[index + 1];
         if (skip) {
