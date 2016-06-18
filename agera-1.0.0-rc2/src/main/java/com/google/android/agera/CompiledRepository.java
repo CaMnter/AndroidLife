@@ -442,6 +442,16 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 添加 getFrom 指令
+     * 到 指令集合 里
+     *
+     * getFrom 所在集合的位置，后面紧跟着
+     * getFrom 需要的 Supplier
+     *
+     * @param supplier getFrom 需要的 Supplier
+     * @param directives 指令集合
+     */
     static void addGetFrom(@NonNull final Supplier supplier,
                            @NonNull final List<Object> directives) {
         directives.add(GET_FROM);
@@ -464,6 +474,18 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 添加 mergeIn 指令
+     * 到 指令集合 里
+     *
+     * mergeIn 所在集合的位置，后面紧跟着
+     * 1. mergeIn 需要的 Supplier
+     * 2. mergeIn 需要的 Merger
+     *
+     * @param supplier mergeIn 需要的 Supplier
+     * @param merger mergeIn 需要的 Merger
+     * @param directives 指令集合
+     */
     static void addMergeIn(@NonNull final Supplier supplier, @NonNull final Merger merger,
                            @NonNull final List<Object> directives) {
         directives.add(MERGE_IN);
@@ -489,6 +511,16 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 添加 transform 指令
+     * 到 指令集合 里
+     *
+     * transform 所在集合的位置，后面紧跟着
+     * transform 需要的 Function
+     *
+     * @param function transform 需要的 Function
+     * @param directives 指令集合
+     */
     static void addTransform(@NonNull final Function function,
                              @NonNull final List<Object> directives) {
         directives.add(TRANSFORM);
@@ -511,6 +543,20 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 添加 check 指令
+     * 到 指令集合 里
+     *
+     * check 所在集合的位置，后面紧跟着
+     * 1. check 需要的 caseFunction
+     * 2. check 需要的 casePredicate
+     * 3. check 需要的 terminatingValueFunction
+     *
+     * @param caseFunction check 需要的 caseFunction
+     * @param casePredicate check 需要的 casePredicate
+     * @param terminatingValueFunction check 需要的 terminatingValueFunction
+     * @param directives 指令集合
+     */
     static void addCheck(@NonNull final Function caseFunction,
                          @NonNull final Predicate casePredicate,
                          @Nullable final Function terminatingValueFunction,
@@ -548,6 +594,16 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 添加 goTo 指令
+     * 到 指令集合 里
+     *
+     * goTo 所在集合的位置，后面紧跟着
+     * goTo 需要的 Executor
+     *
+     * @param executor goTo 需要的 Executor
+     * @param directives 指令集合
+     */
     static void addGoTo(@NonNull final Executor executor, @NonNull final List<Object> directives) {
         directives.add(GO_TO);
         directives.add(executor);
@@ -568,23 +624,55 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 继续执行 goTo 后面的 指令
+     * 目前只在本类使用
+     *
+     * @param directives 指令集合
+     * @param index goTo 的 指令 index
+     * @return goTo 的下一个指令 的 index
+     */
     private static int continueFromGoTo(@NonNull final Object[] directives, final int index) {
         checkState(directives[index].equals(GO_TO), "Inconsistent directive state for goTo");
         return index + 2;
     }
 
 
+    /**
+     * 添加 goLazy 指令
+     * 到 指令集合 里
+     *
+     * @param directives 指令集合
+     */
     static void addGoLazy(@NonNull final List<Object> directives) {
         directives.add(GO_LAZY);
     }
 
 
+    /**
+     * 继续执行 goLazy 后面的 指令
+     * 目前只在本类使用
+     *
+     * @param directives 指令集合
+     * @param index goLazy 的 指令 index
+     * @return goLazy 的下一个指令 的 index
+     */
     private static int continueFromGoLazy(@NonNull final Object[] directives, final int index) {
         checkState(directives[index].equals(GO_LAZY), "Inconsistent directive state for goLazy");
         return index + 1;
     }
 
 
+    /**
+     * 添加 sendTo 指令
+     * 到 指令集合 里
+     *
+     * sendTo 所在集合的位置，后面紧跟着
+     * sendTo 需要的 Receiver
+     *
+     * @param receiver goTo 需要的 Receiver
+     * @param directives 指令集合
+     */
     static void addSendTo(
         @NonNull final Receiver receiver, @NonNull final List<Object> directives) {
         directives.add(SEND_TO);
@@ -607,6 +695,18 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 添加 bindWith 指令
+     * 到 指令集合 里
+     *
+     * bindWith 所在集合的位置，后面紧跟着
+     * 1. bindWith 需要的 Supplier
+     * 2. bindWith 需要的 Receiver
+     *
+     * @param supplier bindWith 需要的 Supplier
+     * @param binder bindWith 需要的 Binder
+     * @param directives 指令集合
+     */
     static void addBindWith(@NonNull final Supplier supplier, @NonNull final Binder binder,
                             @NonNull final List<Object> directives) {
         directives.add(BIND);
@@ -632,6 +732,16 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 添加 filterSuccess 指令
+     * 到 指令集合 里
+     *
+     * filterSuccess 所在集合的位置，后面紧跟着
+     * filterSuccess 需要的 terminatingValueFunction
+     *
+     * @param terminatingValueFunction filterSuccess 需要的 terminatingValueFunction
+     * @param directives 指令集合
+     */
     static void addFilterSuccess(
         @Nullable final Function terminatingValueFunction, @NonNull final List<Object> directives) {
         directives.add(FILTER_SUCCESS);
@@ -678,6 +788,16 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 添加 end 指令
+     * 到 指令集合 里
+     *
+     * end 所在集合的位置，后面紧跟着
+     * end 需要的 ship 标识
+     *
+     * @param skip end 需要的 ship 标识
+     * @param directives 指令集合
+     */
     static void addEnd(final boolean skip, @NonNull final List<Object> directives) {
         directives.add(END);
         directives.add(skip);
