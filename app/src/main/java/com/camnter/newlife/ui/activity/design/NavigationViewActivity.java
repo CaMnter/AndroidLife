@@ -2,6 +2,7 @@ package com.camnter.newlife.ui.activity.design;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;

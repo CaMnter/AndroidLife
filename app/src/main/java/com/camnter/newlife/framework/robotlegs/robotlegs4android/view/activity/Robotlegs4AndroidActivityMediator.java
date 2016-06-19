@@ -1,6 +1,7 @@
 package com.camnter.newlife.framework.robotlegs.robotlegs4android.view.activity;
 
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 import com.camnter.newlife.R;

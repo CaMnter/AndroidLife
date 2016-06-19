@@ -1,5 +1,6 @@
 package com.camnter.newlife.adapter.easyslidingtabs;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.text.SpannableString;

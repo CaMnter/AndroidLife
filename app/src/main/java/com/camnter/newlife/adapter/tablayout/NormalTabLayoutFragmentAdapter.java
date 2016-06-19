@@ -1,5 +1,6 @@
 package com.camnter.newlife.adapter.tablayout;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
