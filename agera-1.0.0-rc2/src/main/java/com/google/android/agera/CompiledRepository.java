@@ -368,9 +368,8 @@ final class CompiledRepository extends BaseObservable
      *
      * 获得所有 操作符指令 的 数组
      * 开始遍历数组
-     * 只要满足一个：
-     * 1. 异步
-     * 2. 子线程加载
+     * 1. 检查是否取消请求，是的话，直接退出循环
+     * 2. 子线程加载，调用 setPausedAtGoToLocked(...) ，从 子线程暂停 到 恢复 流执行
      * 3. 懒加载
      *
      * 接着：
@@ -826,6 +825,16 @@ final class CompiledRepository extends BaseObservable
     //region Completing, pausing and resuming flow
 
 
+    /**
+     * 快进 并 结束 流
+     *
+     * 设置 运行状态 为 闲置
+     * 中间值 设置为 初始值
+     *
+     * 调用 checkRestartLocked()
+     * 如果 已经标记了 需要重启
+     * 那么调用 CompiledRepository.maybeStartFlow()
+     */
     private synchronized void skipAndEndFlow() {
         runState = IDLE;
         intermediateValue
@@ -834,6 +843,20 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 设置 新值 并 结束 流
+     *
+     * 1. 检查 运行状态 是否是 懒加载运行，记录为 wasRunningLazily
+     * 2. 设置 运行状态 为 闲置
+     * 3. 中间值 设置为 初始值
+     * 4. 如果 wasRunningLazily 记录 为 true，当前值 设置为 新值
+     * 5. 如果 wasRunningLazily 记录 为 false，调用 setNewValueLocked(newValue)
+     * 6. 调用 checkRestartLocked()
+     * 如果 已经标记了 需要重启
+     * 那么调用 CompiledRepository.maybeStartFlow()
+     *
+     * @param newValue 新值
+     */
     private synchronized void setNewValueAndEndFlow(@NonNull final Object newValue) {
         final boolean wasRunningLazily = runState == RUNNING_LAZILY;
         runState = IDLE;
@@ -848,6 +871,16 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * notifyChecker 实际上是一个 ObjectsUnequalMerger 对象
+     * 对象不相等 合并者，用于比较
+     *
+     * 1. 判断 新值 与 当前值 是否 相等，记录为 shouldNotify
+     * 2. 设置 当前值 等于 新值
+     * 3. 如果 shouldNotify 记录 为 true，dispatchUpdate() 通知所有观察者
+     *
+     * @param newValue 新值
+     */
     private void setNewValueLocked(@NonNull final Object newValue) {
         final boolean shouldNotify = notifyChecker.merge(currentValue, newValue);
         currentValue = newValue;
@@ -857,13 +890,38 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * goTo 指令，设置 暂停
+     *
+     * 1. lastDirectiveIndex 设置为 goTo 指令的 index
+     * 2. 设置 运行状态 为 子线程暂停
+     *
+     * @param resumeIndex goTo 指令的 index
+     */
     private void setPausedAtGoToLocked(final int resumeIndex) {
         lastDirectiveIndex = resumeIndex;
         runState = PAUSED_AT_GO_TO;
     }
 
-
     /** Called from the executor of a goTo instruction to continue processing. */
+    /**
+     * CompiledRepository 也作为 Runnable 这个角色
+     *
+     * 1. 保存 最后指令 lastDirectiveIndex 到 index
+     * 2. 检查 当前 运行状态：必须是 子线程暂停 或者 取消请求，不然报错
+     * 3. 设置 lastDirectiveIndex = -1
+     * 4. checkCancellationLocked()，
+     * 如果是 取消请求 状态
+     * 则调用 CompiledRepository.acknowledgeCancel()
+     *
+     * 然后返回
+     *
+     * 5. 设置 运行状态 为 运行
+     * 6. 记录 当前线程
+     * 7. runFlowFrom(continueFromGoTo(directives, index), true); 从 暂停 -> 恢复 流
+     * 8. Thread.interrupted(); 线程中断
+     * 9. 如果 执行 6 了，那么最后要，清空 当前线程的引用
+     */
     @Override
     public void run() {
         final Thread myThread = currentThread();
@@ -898,6 +956,18 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 设置 lazy 状态 并 结束 流
+     *
+     * 1. lastDirectiveIndex 设置为 goLazy 指令的 index
+     * 2. 设置 运行状态 为 懒加载暂停
+     * 3. 通知所有观察者 dispatchUpdate()
+     * 4. checkRestartLocked()
+     * 如果 已经标记了 需要重启
+     * 那么调用 CompiledRepository.maybeStartFlow()
+     *
+     * @param resumeIndex goLazy 指令的 index
+     */
     private void setLazyAndEndFlowLocked(final int resumeIndex) {
         lastDirectiveIndex = resumeIndex;
         runState = PAUSED_AT_GO_LAZY;
@@ -906,6 +976,19 @@ final class CompiledRepository extends BaseObservable
     }
 
 
+    /**
+     * 获取 CompiledRepository 作为 仓库 角色 时
+     * 保存的 仓库数据
+     *
+     * 1. 如果 当前 运行状态 是 懒加载暂停
+     * 2. index = lastDirectiveIndex，拿到最后执行指令的 index
+     * 3. 运行状态 设置为 懒加载运行
+     * 4. runFlowFrom(...) 恢复流，继续执行，内部会对 currentValue 进行赋值
+     *
+     * 5. 返回 当前值/数据 ( currentValue )
+     *
+     * @return 仓库数据
+     */
     @NonNull
     @Override
     public synchronized Object get() {
