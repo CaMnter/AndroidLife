@@ -3,7 +3,7 @@ package com.google.android.agera;
 import android.support.annotation.NonNull;
 import java.util.Arrays;
 
-final class IdentityMultiMap<K, V> {
+final class IdentityMultimap<K, V> {
 
     @NonNull
     private static final Object[] NO_KEY_VALUES = new Object[0];
@@ -15,17 +15,7 @@ final class IdentityMultiMap<K, V> {
      * value -> key0    value0  key1    value1  key2    value2  key3    value4
      */
     @NonNull
-    private Object[] keysValues;
-
-
-    IdentityMultiMap() {
-        this.keysValues = NO_KEY_VALUES;
-    }
-
-
-    @NonNull Object[] getKeysValues() {
-        return keysValues;
-    }
+    private Object[] keysValues = NO_KEY_VALUES;
 
 
     /**

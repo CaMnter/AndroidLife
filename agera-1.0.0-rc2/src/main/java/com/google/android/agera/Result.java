@@ -39,19 +39,27 @@ import static com.google.android.agera.Preconditions.checkState;
  * Agera 内 抽象出来的 结果
  */
 public final class Result<T> {
+    // 缺少参数的 错误 Result
+    @NonNull
+    private static final Result<Object> ABSENT ;
+
     // 通用的 错误 Result
     @NonNull
-    private static final Result<Object> FAILURE =
-        new Result<>(null, new Throwable("Attempt failed"));
+    private static final Result<Object> FAILURE ;
 
     // 缺少参数错误
     @SuppressWarnings("ThrowableInstanceNeverThrown")
     @NonNull
-    private static final Throwable ABSENT_THROWABLE = new NullPointerException("Value is absent");
+    private static final Throwable ABSENT_THROWABLE ;
 
-    // 缺少参数的 错误 Result
-    @NonNull
-    private static final Result<Object> ABSENT = new Result<>(null, ABSENT_THROWABLE);
+    static {
+        final Throwable failureThrowable = new Throwable("Attempt failed");
+        failureThrowable.setStackTrace(new StackTraceElement[0]);
+        FAILURE = new Result<>(null, failureThrowable);
+        ABSENT_THROWABLE = new NullPointerException("Value is absent");
+        ABSENT_THROWABLE.setStackTrace(new StackTraceElement[0]);
+        ABSENT = new Result<>(null, ABSENT_THROWABLE);
+    }
 
     // 存储结果
     @Nullable
@@ -698,18 +706,12 @@ public final class Result<T> {
      */
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
 
         final Result<?> result = (Result<?>) o;
 
-        if (value != null ? !value.equals(result.value) : result.value != null) {
-            return false;
-        }
+        if (value != null ? !value.equals(result.value) : result.value != null) { return false; }
         if (failure != null ? !failure.equals(result.failure) : result.failure != null) {
             return false;
         }

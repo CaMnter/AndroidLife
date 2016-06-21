@@ -210,11 +210,22 @@ final class CompiledRepository extends BaseObservable
      * This
      * also cancels the lazily-executed part of the flow if the run state is "paused at lazy".
      *
-     * 如果 运行状态为
+     * 如果 运行状态为下面一个状态
      * 1. 闲置
      * 2. 懒加载暂停
      *
      * 那么重置状态为：运行
+     * 标记不需要 重启
+     *
+     * --------------------
+     *
+     * 3.否则 判断 当前运行状态 是否为 取消请求
+     * 是的话,标记需要 重启
+     *
+     * --------------------
+     *
+     * 最后都
+     *
      * 中间值存放当前值
      * 开始运行 流 runFlowFrom(...)
      */
@@ -225,6 +236,11 @@ final class CompiledRepository extends BaseObservable
                 lastDirectiveIndex = -1; // this could be pointing at the goLazy directive
                 restartNeeded = false;
             } else {
+                if (runState == CANCEL_REQUESTED) {
+                    // flow may still be processing the previous deactivation;
+                    // make sure to restart
+                    restartNeeded = true;
+                }
                 return; // flow already running, do not continue.
             }
         }

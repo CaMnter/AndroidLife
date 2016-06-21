@@ -84,12 +84,13 @@ public final class Observables {
              * 抽取去 内部的被观察者组
              * 然后用于实例化 一个 CompositeObservable 后返回
              */
-            if (singleObservable instanceof CompositeObservable) {
-                return new CompositeObservable(0,
+            if (singleObservable instanceof CompositeObservable
+                && ((CompositeObservable) singleObservable).shortestUpdateWindowMillis == 0) {
+                return new CompositeObservable(shortestUpdateWindowMillis,
                     ((CompositeObservable) singleObservable).observables);
             } else {
                 // 直接实例化 CompositeObservable
-                return new CompositeObservable(0, singleObservable);
+                return new CompositeObservable(shortestUpdateWindowMillis, singleObservable);
             }
         }
 
@@ -100,7 +101,8 @@ public final class Observables {
          * 如果是 CompositeObservable 类型，抽出其内 Observable 组。然后逐个判断是否存在后，进行添加
          */
         for (final Observable observable : observables) {
-            if (observable instanceof CompositeObservable) {
+            if (observable instanceof CompositeObservable
+                && ((CompositeObservable) observable).shortestUpdateWindowMillis == 0) {
                 for (Observable subObservable : ((CompositeObservable) observable).observables) {
                     if (!flattenedDedupedObservables.contains(subObservable)) {
                         flattenedDedupedObservables.add(subObservable);
@@ -116,7 +118,7 @@ public final class Observables {
          * 拿到 找到后的 所有 Observable
          * 用于实例化一个 CompositeObservable
          */
-        return new CompositeObservable(0,
+        return new CompositeObservable(shortestUpdateWindowMillis,
             flattenedDedupedObservables.toArray(
                 new Observable[flattenedDedupedObservables.size()]));
     }

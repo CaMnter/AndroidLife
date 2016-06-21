@@ -60,7 +60,7 @@ public abstract class BaseObservable implements Observable {
     /*
      * 最小的更新时间间隔
      */
-    private final int shortestUpdateWindowMillis;
+    final int shortestUpdateWindowMillis;
     /*
      * 用于存放 观察者 和 观察者对应的 Handler
      */

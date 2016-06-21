@@ -47,7 +47,7 @@ final class WorkerHandler extends Handler {
      * 用于存放 观察者，和该观察者 对应的  被观察者的 token
      */
     @NonNull
-    private final IdentityMultiMap<Updatable, Object> updatableObservable;
+    private final IdentityMultimap<Updatable, Object> scheduledUpdatables;
 
 
     /**
@@ -69,7 +69,7 @@ final class WorkerHandler extends Handler {
 
 
     private WorkerHandler() {
-        this.updatableObservable = new IdentityMultiMap<>();
+        this.scheduledUpdatables = new IdentityMultimap<>();
     }
 
 
@@ -81,7 +81,7 @@ final class WorkerHandler extends Handler {
      */
     synchronized void removeUpdatable(@NonNull final Updatable updatable,
                                       @NonNull final Object token) {
-        updatableObservable.removeKeyValuePair(updatable, token);
+        scheduledUpdatables.removeKeyValuePair(updatable, token);
     }
 
 
@@ -93,7 +93,7 @@ final class WorkerHandler extends Handler {
      * @param token 观察者 对应的 被观察者 的 token
      */
     synchronized void update(@NonNull final Updatable updatable, @NonNull final Object token) {
-        if (updatableObservable.addKeyValuePair(updatable, token)) {
+        if (scheduledUpdatables.addKeyValuePair(updatable, token)) {
             obtainMessage(WorkerHandler.MSG_CALL_UPDATABLE, updatable).sendToTarget();
         }
     }
@@ -118,7 +118,7 @@ final class WorkerHandler extends Handler {
                 break;
             case MSG_CALL_UPDATABLE:
                 final Updatable updatable = (Updatable) message.obj;
-                updatableObservable.removeKey(updatable);
+                scheduledUpdatables.removeKey(updatable);
                 updatable.update();
                 break;
             case MSG_CALL_MAYBE_START_FLOW:
