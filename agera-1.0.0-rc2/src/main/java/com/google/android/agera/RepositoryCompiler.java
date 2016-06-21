@@ -106,12 +106,12 @@ final class RepositoryCompiler implements
     /**
      * 编译器的详细 编译状态
      * 1. NOTHING：无状态
-     * 1. FIRST_EVENT_SOURCE：第一事件源状态
-     * 1. FREQUENCY_OR_MORE_EVENT_SOURCE：频率状态 或者 更多事件源状态
-     * 1. FLOW：流状态
-     * 1. TERMINATE_THEN_FLOW：RFlow -> RTermination 的终止状态
-     * 1. TERMINATE_THEN_END：RSyncFlow -> RTermination 的终止状态
-     * 1. CONFIG：配置状态
+     * 2. FIRST_EVENT_SOURCE：第一事件源状态
+     * 3. FREQUENCY_OR_MORE_EVENT_SOURCE：频率状态 或者 更多事件源状态
+     * 4. FLOW：流状态
+     * 5. TERMINATE_THEN_FLOW：RFlow -> RTermination 的终止状态
+     * 6. TERMINATE_THEN_END：RSyncFlow -> RTermination 的终止状态
+     * 7. CONFIG：配置状态
      */
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({ NOTHING, FIRST_EVENT_SOURCE, FREQUENCY_OR_MORE_EVENT_SOURCE, FLOW,
@@ -214,7 +214,7 @@ final class RepositoryCompiler implements
 
 
     /**
-     * 是否 设置了 懒加载
+     * 检查 是否 设置了 懒加载
      */
     private void checkGoLazyUnused() {
         checkState(!goLazyUsed, "Unexpected occurrence of async directive after goLazy()");
@@ -457,37 +457,85 @@ final class RepositoryCompiler implements
     }
 
 
+    /**
+     * RSyncFlow 快进操作
+     * 什么也不做，直接快进到 RConfig 配置状态
+     *
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler thenSkip() {
+        /*
+         * 调用 endFlow(...)
+         * 快进标识 ship 设置为 true
+         */
         endFlow(true);
         return this;
     }
 
 
+    /**
+     * RSyncFlow 快进获取数据操作
+     * 可类型转换（ 供应者 ）
+     *
+     * @param supplier 供应者
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler thenGetFrom(@NonNull final Supplier supplier) {
+        // 调用 getFrom(...)
         getFrom(supplier);
+        /*
+         * 调用 endFlow(...)
+         * 快进标识 ship 设置为 false
+         */
         endFlow(false);
         return this;
     }
 
 
+    /**
+     * RSyncFlow 快进合并操作
+     * 可类型转换（ 供应者 ）
+     * 可以合并供应者转换后的数据 和 之前的流处理结果数据（ 合并者 ）
+     *
+     * @param supplier 供应者
+     * @param merger 合并者
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler thenMergeIn(
         @NonNull final Supplier supplier, @NonNull final Merger merger) {
+        // 调用 mergeIn(...)
         mergeIn(supplier, merger);
+        /*
+         * 调用 endFlow(...)
+         * 快进标识 ship 设置为 false
+         */
         endFlow(false);
         return this;
     }
 
 
+    /**
+     * RSyncFlow 快进转换操作
+     * 用于类型转换
+     *
+     * @param function 转换方法
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler thenTransform(@NonNull final Function function) {
+        // 调用 transform(...)
         transform(function);
+        /*
+         * 调用 endFlow(...)
+         * 快进标识 ship 设置为 false
+         */
         endFlow(false);
         return this;
     }
@@ -495,66 +543,136 @@ final class RepositoryCompiler implements
 
     /**
      * 结束流
+     * 主要用于 thenXxx(...) 方法
      *
      * @param skip 是否快进
      */
     private void endFlow(final boolean skip) {
+        /*
+         * 调用 CompiledRepository.addEnd(...)
+         * 添加 对应的
+         * 1. end 指令
+         * 2. skip 快进标识
+         */
         addEnd(skip, directives);
+        // 设置 当前编译状态 为 CONFIG：配置状态
         expect = CONFIG;
     }
 
 
+    /**
+     * RFlow 尝试获取数据操作
+     * 可以截获异常，进行处理（ 供应者+Result ）
+     *
+     * @param attemptSupplier Result 供应者
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler attemptGetFrom(@NonNull final Supplier attemptSupplier) {
+        // 调用 getFrom(...)
         getFrom(attemptSupplier);
+        // 设置 当前编译状态 为 RFlow -> RTermination 的终止状态
         expect = TERMINATE_THEN_FLOW;
         return this;
     }
 
 
+    /**
+     * RFlow 尝试合并操作
+     * 可类型转换（ 供应者 ）
+     * 可以合并供应者转换后的数据 和 之前的流处理结果数据（ 合并者 ）
+     * 可以截获异常，进行处理（ 合并者+Result ）
+     *
+     * @param supplier 供应者
+     * @param attemptMerger 合并者
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler attemptMergeIn(
         @NonNull final Supplier supplier, @NonNull final Merger attemptMerger) {
+        // 调用 mergeIn(...)
         mergeIn(supplier, attemptMerger);
+        // 设置 当前编译状态 为 RFlow -> RTermination 的终止状态
         expect = TERMINATE_THEN_FLOW;
         return this;
     }
 
 
+    /**
+     * RFlow 尝试转换操作
+     * 用于类型转换
+     * 可以截获异常，进行处理（ 转换方法+Result
+     *
+     * @param attemptFunction 转换方法
+     * @return attemptFunction
+     */
     @NonNull
     @Override
     public RepositoryCompiler attemptTransform(@NonNull final Function attemptFunction) {
+        // 调用 transform(...)
         transform(attemptFunction);
+        // 设置 当前编译状态 为 RFlow -> RTermination 的终止状态
         expect = TERMINATE_THEN_FLOW;
         return this;
     }
 
 
+    /**
+     * RSyncFlow 快进尝试获取数据操作
+     * 可以截获异常，进行处理（ 供应者+Result ）
+     *
+     * @param attemptSupplier Result 供应者
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler thenAttemptGetFrom(@NonNull final Supplier attemptSupplier) {
+        // 调用 transform(...)
         getFrom(attemptSupplier);
+        // 设置 当前编译状态 为 RSyncFlow -> RTermination 的终止状态
         expect = TERMINATE_THEN_END;
         return this;
     }
 
 
+    /**
+     * RSyncFlow 快进尝试合并操作
+     * 可类型转换（ 供应者 ）
+     * 可以合并供应者转换后的数据 和 之前的流处理结果数据（ 合并者 ）
+     * 可以截获异常，进行处理（ 合并者+Result ）
+     *
+     * @param supplier 供应者
+     * @param attemptMerger 合并者
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler thenAttemptMergeIn(
         @NonNull final Supplier supplier, @NonNull final Merger attemptMerger) {
+        // 调用 mergeIn(...)
         mergeIn(supplier, attemptMerger);
+        // 设置 当前编译状态 为 RSyncFlow -> RTermination 的终止状态
         expect = TERMINATE_THEN_END;
         return this;
     }
 
 
+    /**
+     * RSyncFlow 快进尝试转换操作
+     * 用于类型转换
+     * 可以截获异常，进行处理（ 转换方法+Result ）
+     *
+     * @param attemptFunction 转换方法
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler thenAttemptTransform(@NonNull final Function attemptFunction) {
+        // 调用 transform(...)
         transform(attemptFunction);
+        // 设置 当前编译状态 为 RSyncFlow -> RTermination 的终止状态
         expect = TERMINATE_THEN_END;
         return this;
     }
@@ -564,22 +682,40 @@ final class RepositoryCompiler implements
     //region RFlow
 
 
+    /**
+     * RFlow 线程池操作
+     *
+     * @param executor 线程池
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler goTo(@NonNull final Executor executor) {
+        // 检查 当前编译状态 是否是 FLOW：流状态
         checkExpect(FLOW);
+        // 检查 是否 设置了 懒加载
         checkGoLazyUnused();
+        // 调用 addGoTo(...)
         addGoTo(executor, directives);
         return this;
     }
 
 
+    /**
+     * RFlow 懒加载操作
+     *
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler goLazy() {
+        // 检查 当前编译状态 是否是 FLOW：流状态
         checkExpect(FLOW);
+        // 检查 是否 设置了 懒加载
         checkGoLazyUnused();
+        // 调用 addGoLazy(...)
         addGoLazy(directives);
+        // 记录 懒加载
         goLazyUsed = true;
         return this;
     }
@@ -589,34 +725,89 @@ final class RepositoryCompiler implements
     //region RTermination
 
 
+    /**
+     * RTermination 快进操作
+     *
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler orSkip() {
+        /*
+         * 调用 terminate(...)
+         * 不传入 Function
+         */
         terminate(null);
         return this;
     }
 
 
+    /**
+     * RTermination 结束状态
+     * 其实又一次进行转换
+     *
+     * @param valueFunction 转换方法
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler orEnd(@NonNull final Function valueFunction) {
+        /*
+         * 调用 terminate(...)
+         * 传入 Function
+         */
         terminate(valueFunction);
         return this;
     }
 
 
+    /**
+     * @param valueFunction 转换方法
+     */
     private void terminate(@Nullable final Function valueFunction) {
+        /*
+         * 检查 当前编译状态 是否是 TERMINATE_THEN_FLOW：RFlow -> RTermination 的终止状态
+         * 或者
+         * 是否是 TERMINATE_THEN_END：RSyncFlow -> RTermination 的终止状态
+         */
         checkExpect(TERMINATE_THEN_FLOW, TERMINATE_THEN_END);
+        /**
+         * 检查 check(...) 操作符 用的
+         * Function
+         * 是否 为 null
+         */
         if (caseExtractor != null) {
+            /*
+             * 调用 CompiledRepository.addEnd(...)
+             * 添加 对应的
+             * 1. check 指令
+             * 2. check(...) 操作符 用的 Function
+             * 3. check(...) 操作符 用的 Predicate
+             * 4. valueFunction 转换方法
+             */
             addCheck(caseExtractor, checkNotNull(casePredicate), valueFunction, directives);
         } else {
+            /*
+             * 调用 CompiledRepository.addFilterSuccess(...)
+             * 添加 对应的
+             * 1. filter_success 指令
+             * 2. valueFunction 转换方法
+             */
             addFilterSuccess(valueFunction, directives);
         }
+        // 回收资源
         caseExtractor = null;
         casePredicate = null;
+
+        // 检查 当前编译状态 是否是 RSyncFlow -> RTermination 的终止状态
         if (expect == TERMINATE_THEN_END) {
+            /*
+             * 调用 endFlow(...)
+             * 快进标识 ship 设置为 false
+             */
             endFlow(false);
         } else {
+            // 设置 当前编译状态 为 FLOW：流状态
             expect = FLOW;
         }
     }
@@ -626,59 +817,114 @@ final class RepositoryCompiler implements
     //region RConfig
 
 
+    /**
+     * RConfig 通知操作
+     * 会传入一个 合并者，合并出一个 Boolean 类型
+     *
+     * @param notifyChecker 合并者
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler notifyIf(@NonNull final Merger notifyChecker) {
+        // 检查 当前编译状态 是否是 CONFIG：配置状态
         checkExpect(CONFIG);
         this.notifyChecker = checkNotNull(notifyChecker);
         return this;
     }
 
 
+    /**
+     * RConfig 失效时的操作（ 一些特殊的行为：导致仓库失效，从观察状态变为不观察状态 ）
+     *
+     * @param deactivationConfig RepositoryConfig 类型
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler onDeactivation(@RepositoryConfig final int deactivationConfig) {
+        // 检查 当前编译状态 是否是 CONFIG：配置状态
         checkExpect(CONFIG);
         this.deactivationConfig = deactivationConfig;
         return this;
     }
 
 
+    /**
+     * RConfig 并发更新时（ 一些特殊的行为：一个观察者从事件源中被观察了，然后一个数据处理流还在运行 ）
+     *
+     * @param concurrentUpdateConfig RepositoryConfig 类型
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler onConcurrentUpdate(
         @RepositoryConfig final int concurrentUpdateConfig) {
+        // 检查 当前编译状态 是否是 CONFIG：配置状态
         checkExpect(CONFIG);
         this.concurrentUpdateConfig = concurrentUpdateConfig;
         return this;
     }
 
 
+    /**
+     * 完成 仓库 编译
+     *
+     * @return Repository
+     */
     @NonNull
     @Override
     public Repository compile() {
+        // 调用 compileRepositoryAndReset() 去 完成 仓库 编译
         Repository repository = compileRepositoryAndReset();
+        // 回收 仓库编译器
         recycle(this);
         return repository;
     }
 
 
+    /**
+     * RConfig -> REventSource 变换
+     * 就是一个 仓库 处理完后的流
+     * 拿着这个流的数据 接着 进入到 新仓库的 编译过程中 的 REventSource 状态
+     *
+     * @param value 新仓库的目标数据类型初始值
+     * @return RepositoryCompiler
+     */
     @NonNull
     @Override
     public RepositoryCompiler compileIntoRepositoryWithInitialValue(@NonNull final Object value) {
+        // 调用 compileRepositoryAndReset() 去 完成 仓库 编译
         Repository repository = compileRepositoryAndReset();
         // Don't recycle, instead sneak in the first directive and start the second repository
+        // 调用 addGetFrom(...)
         addGetFrom(repository, directives);
+        // 重新进入到 REventSource 状态
         return start(value).observe(repository);
     }
 
 
+    /**
+     * 完成 仓库 编译
+     * 并且 重置 仓库编译器 的 状态
+     *
+     * @return Repository
+     */
     @NonNull
     private Repository compileRepositoryAndReset() {
+        // 检查 当前编译状态 是否是 CONFIG：配置状态
         checkExpect(CONFIG);
+        /*
+         * 调用 CompiledRepository.compiledRepository(...)
+         * 去创建一个仓库，该仓库的类型为 CompiledRepository
+         */
         Repository repository = compiledRepository(initialValue, eventSources, frequency,
             directives,
             notifyChecker, concurrentUpdateConfig, deactivationConfig);
+
+        /*
+         * 恢复 如下 编译参数 到默认设置
+         */
         expect = NOTHING;
         initialValue = null;
         eventSources.clear();
