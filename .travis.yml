@@ -1,31 +1,43 @@
 language: android
-
-#jdk: oraclejdk7
-
 notifications:
   email: false
+android:
+  components:
+    - platform-tools
+    - tools
+    - build-tools-23.0.1
+    - android-23
+    - extra-android-m2repository
+jdk:
+  - oraclejdk8
+script:
+  - ./gradlew
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+
+
+
 
 env:
   matrix:
-    - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
-
-android:
-  components:
-    - build-tools-23.0.1
-    - android-23
-    - extra-android-support
-    - extra-android-m2repository
-
+#    - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
 before_script:
   # Create and start emulator
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - adb wait-for-device
-  - adb shell input keyevent 82 &
-
+#  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+#  - emulator -avd test -no-skin -no-audio -no-window &
+#  - adb wait-for-device
+#  - adb shell input keyevent 82 &
 after_script:
-  - ./gradlew clean
-  - ./gradlew build
-  - ./gradlew connectedCheck
-  - ./gradlew connectedAndroidTest
-# - ./gradlew assembleRelease
+#  - ./gradlew clean
+#  - ./gradlew build
+#  - ./gradlew connectedCheck
+#  - ./gradlew connectedAndroidTest
+#  - ./gradlew assembleRelease
