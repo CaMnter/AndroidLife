@@ -342,7 +342,8 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
         this.repositoryTestSix.addUpdatable(this.updatableSix);
         // Reservoir
         this.repositoryTestSeven.addUpdatable(this.updatableSeven);
-        this.repositoryTestEight.addUpdatable(this.updatableEight);
+        this.reservoir.accept("CaMnter");
+        //this.repositoryTestEight.addUpdatable(this.updatableEight);
     }
 
 
