@@ -29,7 +29,7 @@ import static java.util.Collections.emptyList;
 /**
  * Function 编译器
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked, rawtypes" })
 final class FunctionCompiler implements FunctionCompilerStates.FList, FunctionCompilerStates.FItem {
 
     // 方法集合

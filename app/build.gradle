@@ -82,6 +82,6 @@ dependencies {
 
     compile project(':otto')
     compile project(':volley')
-    compile project(':agera-1.0.0-rc2')
+    compile project(':agera-1.0.0')
 
 }
