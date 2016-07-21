@@ -15,11 +15,17 @@ public class Singleton {
 
 
     public static Singleton getInstance() {
-        if (instance == null) {
+        Singleton inst = instance;  // <<< 在这里创建临时变量
+        if (inst == null) {
             synchronized (Singleton.class) {
-                if (instance == null) instance = new Singleton();
+                inst = instance;
+                if (inst == null) {
+                    inst = new Singleton();
+                    instance = inst;
+                }
             }
         }
-        return instance;
+        return inst;  // <<< 注意这里返回的是临时变量
     }
+
 }
