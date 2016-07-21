@@ -14,6 +14,10 @@ public class Singleton {
     }
 
 
+    /***********
+     * 方案 一 *
+     ***********/
+
     public static Singleton getInstance() {
         Singleton inst = instance;  // <<< 在这里创建临时变量
         if (inst == null) {
@@ -26,6 +30,29 @@ public class Singleton {
             }
         }
         return inst;  // <<< 注意这里返回的是临时变量
+    }
+
+
+    /***********
+     * 方案 二 *
+     ***********/
+
+    private static class SingletonHolder {
+        static final Singleton singleton = new Singleton();
+    }
+
+
+    public static Singleton getSingleton() {
+        return SingletonHolder.singleton;
+    }
+
+
+    /***********
+     * 方案 三 *
+     ***********/
+
+    public enum SingletonEnum {
+        INSTANCE
     }
 
 }
