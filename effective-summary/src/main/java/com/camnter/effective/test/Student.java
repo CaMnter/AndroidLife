@@ -17,8 +17,14 @@ public class Student {
         }
     }
 
+    public void setNumber2(int n) {
+        synchronized (name) {
+            this.number = n;
+        }
+    }
 
-    public void setName(String s) {
+
+    public synchronized void setName(String s) {
         synchronized (name) {
             this.name = s;
         }

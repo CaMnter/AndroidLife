@@ -1,7 +1,7 @@
 package com.camnter.effective.test;
 
 /**
- * Description：SynchonizedTest
+ * Description：SyncTest
  * Created by：CaMnter
  */
 
@@ -11,21 +11,28 @@ class SyncTest {
         Student test = new Student();
         Thread t1 = new Thread(new Runnable() {
             @Override public void run() {
-                System.out.println("t1:  test.setNumber(6)");
                 test.setNumber(6);
+                System.out.println("t1:  test.number = "+test.number);
                 try {
-                    System.out.println("t1:  Thread.sleep(5000)  start");
-                    Thread.sleep(5000);
+                    System.out.println("t1:  Thread.sleep(4000)  start");
+                    Thread.sleep(4000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println("t1:  Thread.sleep(5000)  end");
+                System.out.println("t1:  Thread.sleep(4000)  end");
             }
         });
         Thread t2 = new Thread(new Runnable() {
             @Override public void run() {
-                System.out.println("t2:  test.setName(\"2333\")");
-                test.setName("2333");
+                test.setNumber2(2);
+                System.out.println("t2:  test.number = "+test.number);
+                try {
+                    System.out.println("t2:  Thread.sleep(3000)  start");
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("t2:  Thread.sleep(3000)  end");
             }
         });
         t1.start();

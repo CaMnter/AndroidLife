@@ -155,6 +155,7 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(LruCacheActivity.class);
         this.classes.add(VolleyActivity.class);
         this.classes.add(AgeraActivity.class);
+        this.classes.add(SyncTestActivity.class);
     }
 
 
