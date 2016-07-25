@@ -6,6 +6,7 @@ package com.camnter.effective.test;
  */
 
 public class Student {
+
     int number = 0;
     String name = "";
 

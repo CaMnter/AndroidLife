@@ -14,11 +14,12 @@ class SyncTest {
                 System.out.println("t1:  test.setNumber(6)");
                 test.setNumber(6);
                 try {
-                    System.out.println("t1:  Thread.sleep(3000)");
-                    Thread.sleep(3000);
+                    System.out.println("t1:  Thread.sleep(5000)  start");
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                System.out.println("t1:  Thread.sleep(5000)  end");
             }
         });
         Thread t2 = new Thread(new Runnable() {
