@@ -16,7 +16,7 @@ class SyncTest {
         });
         Thread t2 = new Thread(new Runnable() {
             @Override public void run() {
-                test.setNumber2(2);
+                test.setName("2333");
             }
         });
         t1.start();
