@@ -1,4 +1,4 @@
-package com.camnter.effective.test.sync;
+package com.camnter.test.sync;
 
 /**
  * Description：Student

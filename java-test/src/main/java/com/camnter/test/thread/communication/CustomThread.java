@@ -1,4 +1,4 @@
-package com.camnter.effective.test.thread.communication;
+package com.camnter.test.thread.communication;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
