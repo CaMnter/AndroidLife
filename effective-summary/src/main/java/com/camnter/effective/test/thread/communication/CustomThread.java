@@ -49,9 +49,9 @@ public class CustomThread extends Thread {
             messages.set(new CopyOnWriteArrayList<>());
         }
         while (true) {
-            // if (!this.start.get()) {
-            //     return;
-            // }
+            if (!this.start.get()) {
+                return;
+            }
             this.dispatch();
         }
     }

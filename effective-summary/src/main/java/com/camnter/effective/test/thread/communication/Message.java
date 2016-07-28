@@ -10,12 +10,7 @@ public class Message {
     CustomHandler h;
 
 
-    public Message(String msg) {
+    Message(String msg) {
         this.msg = msg;
-    }
-
-
-    public void setHandler(CustomHandler h) {
-        this.h = h;
     }
 }
