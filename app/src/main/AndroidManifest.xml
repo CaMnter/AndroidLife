@@ -177,8 +177,9 @@
             android:label="VolleyActivity"/>
 
         <activity
-            android:name=".ui.activity.SyncTestActivity"
-            android:label="SyncTestActivity"/>
+            android:name=".ui.activity.ClassLoaderActivity"
+            android:label="ClassLoaderActivity"/>
+
         <activity
             android:name=".ui.activity.xfermode.XfermodesActivity"
             android:label="XfermodesActivity"/>
