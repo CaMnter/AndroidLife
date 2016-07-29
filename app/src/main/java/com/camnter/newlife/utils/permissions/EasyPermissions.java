@@ -104,7 +104,7 @@ public class EasyPermissions {
      */
     public static void requestPermissions(final Object object, String rationale,
                                           @StringRes int positiveButton, @StringRes
-                                          int negativeButton, final int requestCode, final String... perms) {
+                                              int negativeButton, final int requestCode, final String... perms) {
 
         checkCallingObjectSuitability(object);
         final PermissionCallbacks callbacks = (PermissionCallbacks) object;

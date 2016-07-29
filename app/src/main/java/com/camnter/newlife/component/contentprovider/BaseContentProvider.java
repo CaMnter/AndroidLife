@@ -107,7 +107,7 @@ public abstract class BaseContentProvider extends ContentProvider {
      * @return a Cursor or {@code null}.
      */
     @Override public abstract Cursor query(@NonNull
-                                           Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder);
+                                               Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder);
 
     /**
      * Implement this to handle requests for the MIME type of the data at the

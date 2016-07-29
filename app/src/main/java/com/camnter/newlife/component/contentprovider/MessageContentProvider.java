@@ -134,7 +134,7 @@ public class MessageContentProvider extends BaseContentProvider {
 
     @Override
     public Cursor query(@NonNull
-                        Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+                            Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = this.messageSQLiteHelper.getReadableDatabase();
         Cursor cursor;
         switch (messageUriMatcher.match(uri)) {

@@ -21,8 +21,8 @@ public class RxBusConsumerActivity extends AppCompatActivity {
 
                 if (event instanceof RxBusActivity.TapEvent) {
                     Toast.makeText(RxBusConsumerActivity.this,
-                            ((RxBusActivity.TapEvent) event).tag + " received", Toast.LENGTH_SHORT)
-                         .show();
+                        ((RxBusActivity.TapEvent) event).tag + " received", Toast.LENGTH_SHORT)
+                        .show();
                 }
             }
         });
