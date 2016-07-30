@@ -17,6 +17,7 @@ import com.camnter.newlife.framework.rxandroid.RxMapActivity;
 import com.camnter.newlife.framework.rxandroid.RxSyncActivity;
 import com.camnter.newlife.mvp.MvpActivity;
 import com.camnter.newlife.ui.activity.agera.AgeraActivity;
+import com.camnter.newlife.ui.activity.classloader.ClassLoaderActivity;
 import com.camnter.newlife.ui.activity.design.CoordinatorLayoutActivity;
 import com.camnter.newlife.ui.activity.design.FloatingActionButtonActivity;
 import com.camnter.newlife.ui.activity.design.NavigationViewActivity;

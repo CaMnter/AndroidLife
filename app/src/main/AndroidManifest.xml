@@ -177,7 +177,7 @@
             android:label="VolleyActivity"/>
 
         <activity
-            android:name=".ui.activity.ClassLoaderActivity"
+            android:name=".ui.activity.classloader.ClassLoaderActivity"
             android:label="ClassLoaderActivity"/>
 
         <activity

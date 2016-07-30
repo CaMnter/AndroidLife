@@ -1,4 +1,4 @@
-package com.camnter.newlife.ui.activity;
+package com.camnter.newlife.ui.activity.classloader;
 
 import android.os.Bundle;
 import android.widget.LinearLayout;
