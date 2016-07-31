@@ -41,7 +41,12 @@ android {
         abortOnError false
     }
 
-    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
+    sourceSets {
+        main {
+            assets.srcDirs = ['src/main/assets', 'src/main/assets/']
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
@@ -84,4 +89,17 @@ dependencies {
     compile project(':volley')
     compile project(':agera-1.0.0')
 
+}
+
+task nativeLibsToJar(type: Zip, description: 'create a jar archive of the native libs') {
+    destinationDir file("$buildDir/native-libs")
+    baseName 'native-libs'
+    extension 'jar'
+    from fileTree(dir: 'libs', include: '**/*.so')
+    from fileTree(dir: 'renderscript', include: '**/*.so')
+    into 'lib/'
+}
+
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn(nativeLibsToJar)
 }
