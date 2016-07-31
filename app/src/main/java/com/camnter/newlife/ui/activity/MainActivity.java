@@ -19,6 +19,7 @@ import com.camnter.newlife.mvp.MvpActivity;
 import com.camnter.newlife.ui.activity.agera.AgeraActivity;
 import com.camnter.newlife.ui.activity.classloader.ClassLoaderActivity;
 import com.camnter.newlife.ui.activity.classloader.ExternalLoadSoActivity;
+import com.camnter.newlife.ui.activity.classloader.InternalLoadSoActivity;
 import com.camnter.newlife.ui.activity.design.CoordinatorLayoutActivity;
 import com.camnter.newlife.ui.activity.design.FloatingActionButtonActivity;
 import com.camnter.newlife.ui.activity.design.NavigationViewActivity;
@@ -159,6 +160,7 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(AgeraActivity.class);
         this.classes.add(ClassLoaderActivity.class);
         this.classes.add(ExternalLoadSoActivity.class);
+        this.classes.add(InternalLoadSoActivity.class);
     }
 
 

@@ -184,6 +184,9 @@
             android:name=".ui.activity.classloader.ExternalLoadSoActivity"
             android:label="ExternalLoadSoActivity"/>
 
+        <activity android:name=".ui.activity.classloader.InternalLoadSoActivity"
+            android:label="InternalLoadSoActivity"/>
+
         <activity
             android:name=".ui.activity.xfermode.XfermodesActivity"
             android:label="XfermodesActivity"/>

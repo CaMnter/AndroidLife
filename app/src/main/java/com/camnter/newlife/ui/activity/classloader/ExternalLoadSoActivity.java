@@ -24,7 +24,7 @@ import java.io.InputStream;
  * Created by：CaMnter
  */
 
-public class ExternalLoadSoActivity extends BaseAppCompatActivity {
+public class ExternalLoadSoActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     @Bind(R.id.external_load_so_image) ImageView externalLoadSoImage;
     @Bind(R.id.external_load_so_button) Button externalLoadSoButton;
@@ -51,7 +51,8 @@ public class ExternalLoadSoActivity extends BaseAppCompatActivity {
         ButterKnife.bind(this);
         File dir = this.getDir("jniLibs", Activity.MODE_PRIVATE);
         File distFile = new File(dir.getAbsolutePath() + File.separator + "libstackblur.so");
-        if (copyFileFromAssets(getApplicationContext(), "libstackblur.so", distFile.getAbsolutePath())) {
+        if (copyFileFromAssets(getApplicationContext(), "libstackblur.so",
+            distFile.getAbsolutePath())) {
             //使用load方法加载内部储存的SO库
             System.load(distFile.getAbsolutePath());
             NativeBlurProcess.isLoadLibraryOk.set(true);
@@ -59,7 +60,7 @@ public class ExternalLoadSoActivity extends BaseAppCompatActivity {
     }
 
 
-    public void onDoBlur(View view) {
+    public void onDoBlur() {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
             R.drawable.img_mm_1);
         Bitmap blur = NativeBlurProcess.blur(bitmap, 20, false);
@@ -84,7 +85,7 @@ public class ExternalLoadSoActivity extends BaseAppCompatActivity {
             copyIsFinish = true;
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e("MainActivity", "[copyFileFromAssets] IOException "+e.toString());
+            Log.e("ExternalLoadSoActivity", "[copyFileFromAssets] IOException " + e.toString());
         }
         return copyIsFinish;
     }
@@ -94,7 +95,7 @@ public class ExternalLoadSoActivity extends BaseAppCompatActivity {
      * Initialize the View of the listener
      */
     @Override protected void initListeners() {
-
+        this.externalLoadSoButton.setOnClickListener(this);
     }
 
 
@@ -103,5 +104,19 @@ public class ExternalLoadSoActivity extends BaseAppCompatActivity {
      */
     @Override protected void initData() {
 
+    }
+
+
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
+    @Override public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.external_load_so_button:
+                this.onDoBlur();
+                break;
+        }
     }
 }
