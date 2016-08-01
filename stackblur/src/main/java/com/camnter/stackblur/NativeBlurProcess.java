@@ -1,4 +1,4 @@
-package com.camnter.newlife.ui.activity.classloader;
+package com.camnter.stackblur;
 
 import android.graphics.Bitmap;
 import android.util.Log;

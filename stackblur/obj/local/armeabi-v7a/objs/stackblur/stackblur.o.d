@@ -1,5 +1,5 @@
-/Users/CaMnter/GitHub/AndroidLife/app/obj/local/armeabi-v7a/objs/stackblur/stackblur.o: \
- /Users/CaMnter/GitHub/AndroidLife/app/jni//stackblur/stackblur.c \
+/Users/CaMnter/GitHub/AndroidLife/stackblur/obj/local/armeabi-v7a/objs/stackblur/stackblur.o: \
+ /Users/CaMnter/GitHub/AndroidLife/stackblur/jni//stackblur/stackblur.c \
  /Users/CaMnter/Foresee/android-ndk-r9c/platforms/android-9/arch-arm/usr/include/jni.h \
  /Users/CaMnter/Foresee/android-ndk-r9c/platforms/android-9/arch-arm/usr/include/sys/cdefs.h \
  /Users/CaMnter/Foresee/android-ndk-r9c/platforms/android-9/arch-arm/usr/include/sys/cdefs_elf.h \

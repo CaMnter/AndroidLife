@@ -88,6 +88,7 @@ dependencies {
     compile project(':otto')
     compile project(':volley')
     compile project(':agera-1.0.0')
+    compile project(':stackblur')
 
 }
 

@@ -14,6 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.stackblur.NativeBlurProcess;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

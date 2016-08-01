@@ -11,6 +11,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.stackblur.NativeBlurProcess;
 
 /**
  * Description：InternalLoadSoActivity
