@@ -27,6 +27,7 @@ import java.util.concurrent.Executor;
 import static com.google.android.agera.CompiledRepository.addBindWith;
 import static com.google.android.agera.CompiledRepository.addCheck;
 import static com.google.android.agera.CompiledRepository.addEnd;
+import static com.google.android.agera.CompiledRepository.addFilterFailure;
 import static com.google.android.agera.CompiledRepository.addFilterSuccess;
 import static com.google.android.agera.CompiledRepository.addGetFrom;
 import static com.google.android.agera.CompiledRepository.addGoLazy;
@@ -48,6 +49,7 @@ final class RepositoryCompiler implements
     RepositoryCompilerStates.RFrequency,
     RepositoryCompilerStates.RFlow,
     RepositoryCompilerStates.RTermination,
+    RepositoryCompilerStates.RTerminationOrContinue,
     RepositoryCompilerStates.RConfig {
 
     /**
@@ -810,6 +812,16 @@ final class RepositoryCompiler implements
             // 设置 当前编译状态 为 FLOW：流状态
             expect = FLOW;
         }
+    }
+
+
+    @NonNull
+    @Override
+    public RepositoryCompiler orContinue() {
+        checkExpect(TERMINATE_THEN_END);
+        addFilterFailure(directives);
+        expect = FLOW;
+        return this;
     }
 
     //endregion RTermination

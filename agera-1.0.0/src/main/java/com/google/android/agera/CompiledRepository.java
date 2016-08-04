@@ -23,6 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import static com.google.android.agera.Functions.identityFunction;
 import static com.google.android.agera.Observables.compositeObservable;
 import static com.google.android.agera.Preconditions.checkNotNull;
 import static com.google.android.agera.Preconditions.checkState;
@@ -374,6 +375,7 @@ final class CompiledRepository extends BaseObservable
     private static final int SEND_TO = 7;
     private static final int BIND = 8;
     private static final int FILTER_SUCCESS = 9;
+    private static final int FILTER_FAILURE = 10;
 
 
     /**
@@ -447,6 +449,9 @@ final class CompiledRepository extends BaseObservable
                     break;
                 case FILTER_SUCCESS:
                     i = runFilterSuccess(directives, i);
+                    break;
+                case FILTER_FAILURE:
+                    i = runFilterFailure(directives, i);
                     break;
                 case END:
                     i = runEnd(directives, i);
@@ -784,6 +789,23 @@ final class CompiledRepository extends BaseObservable
         } else {
             runTerminate(tryValue.getFailure(), terminatingValueFunction);
             return -1;
+        }
+    }
+
+
+    static void addFilterFailure(@NonNull final List<Object> directives) {
+        directives.add(FILTER_FAILURE);
+    }
+
+
+    private int runFilterFailure(@NonNull final Object[] directives, final int index) {
+        final Result tryValue = (Result) intermediateValue;
+        if (tryValue.succeeded()) {
+            runTerminate(tryValue.get(), identityFunction());
+            return -1;
+        } else {
+            intermediateValue = tryValue.getFailure();
+            return index + 1;
         }
     }
 
