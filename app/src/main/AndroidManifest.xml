@@ -184,8 +184,13 @@
             android:name=".ui.activity.classloader.ExternalLoadSoActivity"
             android:label="ExternalLoadSoActivity"/>
 
-        <activity android:name=".ui.activity.classloader.InternalLoadSoActivity"
+        <activity
+            android:name=".ui.activity.classloader.InternalLoadSoActivity"
             android:label="InternalLoadSoActivity"/>
+
+        <activity
+            android:name=".ui.activity.hotfix.HotFixActivity"
+            android:label="HotFixActivity"/>
 
         <activity
             android:name=".ui.activity.xfermode.XfermodesActivity"

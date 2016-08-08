@@ -35,6 +35,7 @@ import com.camnter.newlife.ui.activity.easylikearea.EasyLikeAreaTopicActivity;
 import com.camnter.newlife.ui.activity.easyrecyclerviewsidebar.CircleImageSectionActivity;
 import com.camnter.newlife.ui.activity.easyrecyclerviewsidebar.LetterSectionActivity;
 import com.camnter.newlife.ui.activity.easyrecyclerviewsidebar.RoundImageSectionActivity;
+import com.camnter.newlife.ui.activity.hotfix.HotFixActivity;
 import com.camnter.newlife.ui.activity.lrucache.LruCacheActivity;
 import com.camnter.newlife.ui.activity.singletask.LaunchModeActivity;
 import com.camnter.newlife.ui.activity.util.DateUtilActivity;
@@ -161,6 +162,7 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(ClassLoaderActivity.class);
         this.classes.add(ExternalLoadSoActivity.class);
         this.classes.add(InternalLoadSoActivity.class);
+        this.classes.add(HotFixActivity.class);
     }
 
 
