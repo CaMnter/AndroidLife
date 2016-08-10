@@ -1,8 +1,15 @@
 package com.camnter.newlife.utils.hotfix;
 
 import android.app.Application;
+import android.os.Environment;
 import android.util.Log;
+import dalvik.system.DexClassLoader;
 import java.io.File;
+import java.lang.reflect.Array;
+
+import static com.camnter.newlife.utils.ReflectionUtils.combineArray;
+import static com.camnter.newlife.utils.ReflectionUtils.getField;
+import static com.camnter.newlife.utils.ReflectionUtils.setField;
 
 /**
  * Description：HotPatchApplication
@@ -19,13 +26,13 @@ import java.io.File;
 
 public class HotPatchApplication extends Application {
 
-    public static final String PATCH_PATH = "file:///android_asset/patch_dex.jar";
-
-
     @Override public void onCreate() {
-        File file = new File(PATCH_PATH);
+        String dexPath = Environment.getExternalStorageDirectory()
+            .getAbsolutePath()
+            .concat("/patch_dex.jar");
+        File file = new File(dexPath);
         if (file.exists()) {
-            this.inject(PATCH_PATH);
+            this.inject(dexPath);
         } else {
             Log.e("", "Dex patch 不存在");
         }
@@ -34,6 +41,37 @@ public class HotPatchApplication extends Application {
 
     private void inject(String path) {
 
+        try {
+            // 获取 classes 的 dexElements
+            Class<?> clazz = Class.forName("dalvik.system.BaseDexClassLoader");
+            Object pathList = getField(clazz, "pathList", getClassLoader());
+            Object baseElements = getField(pathList.getClass(), "dexElements", pathList);
+
+            // 获取 patch_dex 的 dexElements（ 需要先加载 dex ）
+            String dexopt = getDir("dexopt", 0).getAbsolutePath();
+            DexClassLoader dexClassLoader = new DexClassLoader(path, dexopt, dexopt,
+                getClassLoader());
+            Object obj = getField(clazz, "pathList", dexClassLoader);
+            Object dexElements = getField(obj.getClass(), "dexElements", obj);
+
+            // 合并两个 Elements
+            Object combineElements = combineArray(dexElements, baseElements);
+
+            // 将合并后的 Element 数组重新赋值给 app 的 classLoader
+            setField(pathList.getClass(), "dexElements", pathList, combineElements);
+
+            // 测试注入
+            Object object = getField(pathList.getClass(), "dexElements", pathList);
+            int length = Array.getLength(object);
+            Log.e("HotPatchApplication", "length = " + length);
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
     }
 
 }

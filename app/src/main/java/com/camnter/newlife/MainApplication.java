@@ -1,26 +1,24 @@
 package com.camnter.newlife;
 
-import com.camnter.newlife.framework.robotlegs.robotlegscontext.MainContext;
-import com.camnter.robotlegs4android.mvcs.Context;
-import com.camnter.robotlegs4android.views.RobotlegsApplication;
+import com.camnter.newlife.utils.hotfix.HotPatchApplication;
 
 /**
  * Description：MainApplication
  * Created by：CaMnter
  * Time：2015-10-19 13:49
  */
-public class MainApplication extends RobotlegsApplication {
+public class MainApplication extends HotPatchApplication {
 
     public static MainApplication instance;
 
 
     public static MainApplication getInstance() {
-        if (instance == null) instance = new MainApplication();
         return instance;
     }
 
 
-    @Override protected Context getMvcContextInstance() {
-        return new MainContext(this, true);
+    @Override public void onCreate() {
+        instance = this;
+        super.onCreate();
     }
 }

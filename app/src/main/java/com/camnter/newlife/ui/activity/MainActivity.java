@@ -11,7 +11,6 @@ import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
 import com.camnter.easyrecyclerview.widget.decorator.EasyDividerItemDecoration;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
-import com.camnter.newlife.framework.robotlegs.robotlegs4android.view.activity.Robotlegs4AndroidActivity;
 import com.camnter.newlife.framework.rxandroid.RxAsyncActivity;
 import com.camnter.newlife.framework.rxandroid.RxMapActivity;
 import com.camnter.newlife.framework.rxandroid.RxSyncActivity;
@@ -125,7 +124,6 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(SensorManagerActivity.class);
         this.classes.add(MvpActivity.class);
         this.classes.add(SQLiteActivity.class);
-        this.classes.add(Robotlegs4AndroidActivity.class);
         this.classes.add(CustomContentProviderActivity.class);
         this.classes.add(DownloadServiceActivity.class);
         this.classes.add(AIDLActivity.class);
