@@ -33,7 +33,7 @@ android {
     }
     //渠道Flavors
     productFlavors {
-        AppTest {
+        Test {
             applicationId "com.camnter.newlife"
             manifestPlaceholders = [DEBUG: "debug"]
         }
@@ -47,6 +47,34 @@ android {
         main {
             assets.srcDirs = ['src/main/assets', 'src/main/assets/']
             jniLibs.srcDirs = ['libs']
+        }
+    }
+
+
+    applicationVariants.all { variant->
+
+        def dexTask = project.tasks.findByName("transformClassesWithDexForTestDebug")
+        def preDexTask = project.tasks.findByName("transformClassesWithPreDexForTestDebug")
+        project.logger.error "======applicationVariants======" + preDexTask
+        if(preDexTask) {
+            project.logger.error "======preDexTask======"
+            preDexTask.inputs.files.files.each {file ->
+                project.logger.error "inputs =$file.absolutePath"
+            }
+
+            preDexTask.outputs.files.files.each {file ->
+                project.logger.error "outputs =$file.absolutePath"
+            }
+        }
+        if(dexTask) {
+            project.logger.error "======dexTask======"
+            dexTask.inputs.files.files.each {file ->
+                project.logger.error "inputs =$file.absolutePath"
+            }
+
+            dexTask.outputs.files.files.each {file ->
+                project.logger.error "outputs =$file.absolutePath"
+            }
         }
     }
 }
@@ -96,3 +124,5 @@ task nativeLibsToJar(type: Zip, description: 'create a jar archive of the native
 tasks.withType(JavaCompile) {
     compileTask -> compileTask.dependsOn(nativeLibsToJar)
 }
+
+
