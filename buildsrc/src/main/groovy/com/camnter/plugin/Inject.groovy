@@ -1,8 +1,6 @@
 import javassist.ClassPool
 import javassist.CtClass
-import javassist.CtConstructor
 import org.apache.commons.io.FileUtils
-
 /**
  * 注入代码分为两种情况，一种是目录，需要遍历里面的class进行注入
  * 另外一种是jar包，需要先解压jar包，注入代码之后重新打包成jar
@@ -30,24 +28,21 @@ public class Inject {
     public static void injectDir(String path) {
         pool.appendClassPath(path)
         File dir = new File(path)
-        if (dir.isDirectory()) {
+        if(dir.isDirectory()) {
             dir.eachFileRecurse { File file ->
 
                 String filePath = file.absolutePath
-                if (filePath.endsWith(".class") && !filePath.contains('R$') &&
-                        !filePath.contains('R.class') &&
-                        !filePath.contains("BuildConfig.class")
-                        // 这里是application的名字，可以通过解析清单文件获得，先写死了
-                        &&
-                        !filePath.contains("HotPatchApplication.class")) {
+                if (filePath.endsWith(".class")
+                        && !filePath.contains('R$')
+                        && !filePath.contains('R.class')
+                        && !filePath.contains("BuildConfig.class")
+                        // 这里是 application 的名字，可以通过解析清单文件获得，先写死了
+                        && !filePath.contains("MainApplication.class")) {
                     // 这里是应用包名，也能从清单文件中获取，先写死
                     int index = filePath.indexOf("com\\camnter\\newlife")
                     if (index != -1) {
-                        int end = filePath.length() - 6
-                        // .class = 6
-                        String className = filePath.substring(index, end).
-                                replace('\\', '.').
-                                replace('/', '.')
+                        int end = filePath.length() - 6 // .class = 6
+                        String className = filePath.substring(index, end).replace('\\', '.').replace('/','.')
                         injectClass(className, path)
                     }
                 }
@@ -63,8 +58,9 @@ public class Inject {
         if (path.endsWith(".jar")) {
             File jarFile = new File(path)
 
+
             // jar包解压后的保存路径
-            String jarZipDir = jarFile.getParent() + "/" + jarFile.getName().replace('.jar', '')
+            String jarZipDir = jarFile.getParent() +"/"+jarFile.getName().replace('.jar','')
 
             // 解压jar包, 返回jar包中所有class的完整类名的集合（带.class后缀）
             List classNameList = JarZipUtil.unzipJar(path, jarZipDir)
@@ -74,11 +70,12 @@ public class Inject {
 
             // 注入代码
             pool.appendClassPath(jarZipDir)
-            for (String className : classNameList) {
-                if (className.endsWith(".class") && !className.contains('R$') &&
-                        !className.contains('R.class') &&
-                        !className.contains("BuildConfig.class")) {
-                    className = className.substring(0, className.length() - 6)
+            for(String className : classNameList) {
+                if (className.endsWith(".class")
+                        && !className.contains('R$')
+                        && !className.contains('R.class')
+                        && !className.contains("BuildConfig.class")) {
+                    className = className.substring(0, className.length()-6)
                     injectClass(className, jarZipDir)
                 }
             }
@@ -96,21 +93,9 @@ public class Inject {
         if (c.isFrozen()) {
             c.defrost()
         }
-
-        CtConstructor[] cts = c.getDeclaredConstructors()
-
-        if (cts == null || cts.length == 0) {
-            insertNewConstructor(c)
-        } else {
-            cts[0].insertBeforeBody("System.out.println(com.camnter.hack.AntilazyLoad.class);")
-        }
+        def constructor = c.getConstructors()[0];
+        constructor.insertAfter("System.out.println(com.camnter.hack.AntilazyLoad.class);")
         c.writeFile(path)
-        c.detach()
     }
 
-    private static void insertNewConstructor(CtClass c) {
-        CtConstructor constructor = new CtConstructor(new CtClass[0], c)
-        constructor.insertBeforeBody("System.out.println(com.camnter.hack.AntilazyLoad.class);")
-        c.addConstructor(constructor)
-    }
 }

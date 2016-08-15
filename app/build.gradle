@@ -110,6 +110,7 @@ dependencies {
     compile project(':volley')
     compile project(':agera-1.0.0')
     compile project(':stackblur')
+    compile project(':hotpatch')
 }
 
 task nativeLibsToJar(type: Zip, description: 'create a jar archive of the native libs') {
