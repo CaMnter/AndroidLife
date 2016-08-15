@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
-apply plugin: Register
+apply plugin: FixPlugin
 
 
 def releaseTime() {
