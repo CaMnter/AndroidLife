@@ -3,8 +3,8 @@ package com.camnter.newlife.utils.hotfix;
 import android.app.Application;
 import android.os.Environment;
 import android.util.Log;
-import com.camnter.hotpatch.HotPatch;
 import dalvik.system.DexClassLoader;
+import java.io.File;
 import java.lang.reflect.Array;
 
 import static com.camnter.newlife.utils.ReflectionUtils.combineArray;
@@ -27,20 +27,15 @@ import static com.camnter.newlife.utils.ReflectionUtils.setField;
 public class HotPatchApplication extends Application {
 
     @Override public void onCreate() {
-        super.onCreate();
-        HotPatch.init(this);
-        // 获取补丁，如果存在就执行注入操作
-        String dexPath = Environment.getExternalStorageDirectory().getAbsolutePath().concat("/patch_dex.jar");
-        HotPatch.inject(dexPath);
-        // String dexPath = Environment.getExternalStorageDirectory()
-        //     .getAbsolutePath()
-        //     .concat("/patch_dex.jar");
-        // File file = new File(dexPath);
-        // if (file.exists()) {
-        //     this.inject(dexPath);
-        // } else {
-        //     Log.e("", "Dex patch 不存在");
-        // }
+        String dexPath = Environment.getExternalStorageDirectory()
+            .getAbsolutePath()
+            .concat("/patch_dex.jar");
+        File file = new File(dexPath);
+        if (file.exists()) {
+            this.inject(dexPath);
+        } else {
+            Log.e("", "Dex patch 不存在");
+        }
     }
 
 

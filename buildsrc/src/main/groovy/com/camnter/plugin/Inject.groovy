@@ -1,3 +1,5 @@
+package com.camnter.plugin
+
 import javassist.ClassPool
 import javassist.CtClass
 import org.apache.commons.io.FileUtils

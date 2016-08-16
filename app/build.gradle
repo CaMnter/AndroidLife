@@ -1,3 +1,5 @@
+import com.camnter.plugin.FixPlugin
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: FixPlugin

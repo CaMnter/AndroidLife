@@ -1,3 +1,5 @@
+package com.camnter.plugin
+
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
@@ -9,7 +11,7 @@ public class JarZipUtil {
      * 将该jar包解压到指定目录
      * @param jarPath jar包的绝对路径
      * @param destDirPath jar包解压后的保存路径
-     * @return 返回该jar包中包含的所有class的完整类名类名集合，其中一条数据如：com.aitski.hotpatch.Xxxx.class
+     * @return 返回该jar包中包含的所有class的完整类名类名集合，其中一条数据如：com.camnter.hotpatch.Xxxx.class
      */
     public static List unzipJar(String jarPath, String destDirPath) {
 
