@@ -6,6 +6,6 @@ repositories {
 
 dependencies {
     compile gradleApi()
-    compile 'com.android.tools.build:gradle:2.1.3'
+    compile 'com.android.tools.build:gradle:1.5.0'
     compile 'org.javassist:javassist:3.20.0-GA'
 }
