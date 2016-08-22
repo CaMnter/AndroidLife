@@ -12,7 +12,7 @@ import com.camnter.newlife.core.BaseAppCompatActivity;
 
 public final class HotFixActivity extends BaseAppCompatActivity {
 
-    private FixCall fixCall;
+    private LoadFixCall loadFixCall;
 
 
     /**
@@ -47,11 +47,11 @@ public final class HotFixActivity extends BaseAppCompatActivity {
      * Initialize the Activity data
      */
     @Override protected void initData() {
-        this.fixCall = new FixCall();
+        this.loadFixCall = new LoadFixCall();
     }
 
 
     public void onClick(View v) {
-        this.showToast(this.fixCall.call());
+        this.showToast(this.loadFixCall.getCall());
     }
 }

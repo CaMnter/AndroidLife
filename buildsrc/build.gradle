@@ -1,11 +1,11 @@
 apply plugin: 'groovy'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     compile gradleApi()
-    compile 'com.android.tools.build:gradle:1.5.0'
-    compile 'org.javassist:javassist:3.20.0-GA'
+    compile localGroovy()
+    compile 'org.javassist:javassist:3.18.+'
 }
