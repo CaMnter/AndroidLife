@@ -55,11 +55,11 @@ android {
 
     applicationVariants.all { variant->
 
-        def dexTask = project.tasks.findByName("transformClassesWithDexForTestDebug")
-        def preDexTask = project.tasks.findByName("transformClassesWithPreDexForTestDebug")
+//        def dexTask = project.tasks.findByName("transformClassesWithDexForTestDebug")
+//        def preDexTask = project.tasks.findByName("transformClassesWithPreDexForTestDebug")
 
-//        def dexTask = project.tasks.findByName("transformClassesWithDexForTestRelease")
-//        def preDexTask = project.tasks.findByName("transformClassesWithPreDexForTestRelease")
+        def dexTask = project.tasks.findByName("transformClassesWithDexForTestRelease")
+        def preDexTask = project.tasks.findByName("transformClassesWithPreDexForTestRelease")
         project.logger.error "======applicationVariants======" + preDexTask
         if(preDexTask) {
             project.logger.error "======preDexTask======"
@@ -115,7 +115,6 @@ dependencies {
     compile project(':volley')
     compile project(':agera-1.0.0')
     compile project(':stackblur')
-    compile project(':hotpatch')
 }
 
 task nativeLibsToJar(type: Zip, description: 'create a jar archive of the native libs') {

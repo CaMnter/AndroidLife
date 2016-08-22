@@ -1,4 +1,9 @@
-include ':app', ':effective-summary', ':java-test', ':stackblur', ':buildsrc', ':hack', ':hotpatch',
+include ':app',
+        ':effective-summary',
+        ':java-test',
+        ':stackblur',
+        ':buildsrc',
+        ':hack',
         ':otto',
         ':volley',
         ':agera-1.0.0'
