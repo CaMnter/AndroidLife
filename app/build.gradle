@@ -1,8 +1,5 @@
-import com.camnter.plugin.FixPlugin
-
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
-apply plugin: FixPlugin
 
 
 def releaseTime() {
@@ -53,35 +50,6 @@ android {
     }
 
 
-    applicationVariants.all { variant->
-
-//        def dexTask = project.tasks.findByName("transformClassesWithDexForTestDebug")
-//        def preDexTask = project.tasks.findByName("transformClassesWithPreDexForTestDebug")
-
-        def dexTask = project.tasks.findByName("transformClassesWithDexForTestRelease")
-        def preDexTask = project.tasks.findByName("transformClassesWithPreDexForTestRelease")
-        project.logger.error "======applicationVariants======" + preDexTask
-        if(preDexTask) {
-            project.logger.error "======preDexTask======"
-            preDexTask.inputs.files.files.each {file ->
-                project.logger.error "inputs =$file.absolutePath"
-            }
-
-            preDexTask.outputs.files.files.each {file ->
-                project.logger.error "outputs =$file.absolutePath"
-            }
-        }
-        if(dexTask) {
-            project.logger.error "======dexTask======"
-            dexTask.inputs.files.files.each {file ->
-                project.logger.error "inputs =$file.absolutePath"
-            }
-
-            dexTask.outputs.files.files.each {file ->
-                project.logger.error "outputs =$file.absolutePath"
-            }
-        }
-    }
 }
 
 dependencies {
