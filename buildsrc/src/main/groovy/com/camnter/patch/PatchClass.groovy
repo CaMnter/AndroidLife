@@ -22,6 +22,7 @@ public class PatchClass {
 
         // 下面的操作比较容易理解,在将需要关联的类的构造方法中插入引用代码
 
+        println("[ PatchClass ]  #  [ process ]  #  FixCall 添加构造方法" + classes)
         CtClass c = classes.getCtClass("com.camnter.newlife.ui.activity.hotfix.FixCall")
         if (c.isFrozen()) {
             c.defrost()

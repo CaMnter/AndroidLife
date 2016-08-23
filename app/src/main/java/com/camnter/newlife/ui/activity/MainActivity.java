@@ -14,7 +14,6 @@ import com.camnter.newlife.core.BaseAppCompatActivity;
 import com.camnter.newlife.framework.rxandroid.RxAsyncActivity;
 import com.camnter.newlife.framework.rxandroid.RxMapActivity;
 import com.camnter.newlife.framework.rxandroid.RxSyncActivity;
-import com.camnter.newlife.mvp.MvpActivity;
 import com.camnter.newlife.ui.activity.agera.AgeraActivity;
 import com.camnter.newlife.ui.activity.classloader.ClassLoaderActivity;
 import com.camnter.newlife.ui.activity.classloader.ExternalLoadSoActivity;
@@ -122,7 +121,6 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(CustomViewTabLayoutActivity.class);
         this.classes.add(CoordinatorLayoutActivity.class);
         this.classes.add(SensorManagerActivity.class);
-        this.classes.add(MvpActivity.class);
         this.classes.add(SQLiteActivity.class);
         this.classes.add(CustomContentProviderActivity.class);
         this.classes.add(DownloadServiceActivity.class);

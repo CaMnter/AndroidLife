@@ -20,5 +20,19 @@ android {
     }
 }
 
+task makeJar(type: Copy) {
+    copy{
+        delete 'build/libs/hackdex.jar'
+        from('build/intermediates/bundles/debug/')
+        into('build/libs/')
+        include('classes.jar')
+        rename('classes.jar', 'hackdex.jar')
+    }
+}
+makeJar.dependsOn(build)
+build.doLast{
+    makeJar
+}
 dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 }
