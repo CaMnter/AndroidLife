@@ -1,4 +1,4 @@
-package com.camnter.newlife.framework.rxandroid;
+package com.camnter.newlife.ui.activity.rx;
 
 import android.os.Bundle;
 import android.widget.TextView;
