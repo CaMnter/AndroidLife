@@ -20,6 +20,9 @@ import java.lang.reflect.InvocationTargetException;
  */
 public final class HotFix {
 
+    private HotFix() {}
+
+
     public static void patch(Context context, String patchDexFile, String patchClassName) {
         if (patchDexFile != null && new File(patchDexFile).exists()) {
             try {
