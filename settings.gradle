@@ -1,4 +1,7 @@
-include ':app', ':hotfix', ':buildsrc',
+include ':app',
+        ':hotfix',
+        ':buildsrc',
+        ':rocoofix',
         ':effective-summary',
         ':java-test',
         ':stackblur',
