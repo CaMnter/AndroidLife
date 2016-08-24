@@ -28,9 +28,7 @@ public final class HotFix {
                 } else if (hasDexClassLoader()) {
                     injectAboveEqualApiLevel14(context, patchDexFile, patchClassName);
                 } else {
-
                     injectBelowApiLevel14(context, patchDexFile, patchClassName);
-
                 }
             } catch (Throwable th) {
             }
@@ -38,6 +36,9 @@ public final class HotFix {
     }
 
 
+    /**
+     * 判断是否是 阿里云 OS 机型
+     */
     private static boolean hasLexClassLoader() {
         try {
             Class.forName("dalvik.system.LexClassLoader");
@@ -48,6 +49,9 @@ public final class HotFix {
     }
 
 
+    /**
+     * 判断是否是 API 14 以上
+     */
     private static boolean hasDexClassLoader() {
         try {
             Class.forName("dalvik.system.BaseDexClassLoader");
@@ -58,6 +62,19 @@ public final class HotFix {
     }
 
 
+    /**
+     * 阿里云 OS 上的 插桩策略
+     *
+     * @param context context
+     * @param patchDexFile 插件 dex 的地址
+     * @param patchClassName 插件 dex 中要修复的类 name
+     * @throws ClassNotFoundException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws InstantiationException
+     * @throws NoSuchFieldException
+     */
     private static void injectInAliyunOs(Context context, String patchDexFile, String patchClassName)
         throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
                InvocationTargetException,
@@ -89,6 +106,16 @@ public final class HotFix {
     }
 
 
+    /**
+     * 小于 API 14 的插桩策略
+     *
+     * @param context context
+     * @param str 插件 dex 的路径
+     * @param str2 插件 dex 中要修复的类 name
+     * @throws ClassNotFoundException
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
     @TargetApi(14)
     private static void injectBelowApiLevel14(Context context, String str, String str2)
         throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
@@ -119,6 +146,16 @@ public final class HotFix {
     }
 
 
+    /**
+     * 大于 API 14 的插桩策略
+     *
+     * @param context context
+     * @param str dex 的路径
+     * @param str2 插件 dex 中要修复的类 name
+     * @throws ClassNotFoundException
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
     private static void injectAboveEqualApiLevel14(Context context, String str, String str2)
         throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         PathClassLoader pathClassLoader = (PathClassLoader) context.getClassLoader();
@@ -132,6 +169,15 @@ public final class HotFix {
     }
 
 
+    /**
+     * 获取 pathList
+     *
+     * @param obj 对应的类
+     * @return pathList
+     * @throws ClassNotFoundException
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
     private static Object getPathList(Object obj)
         throws ClassNotFoundException, NoSuchFieldException,
                IllegalAccessException {
@@ -139,6 +185,14 @@ public final class HotFix {
     }
 
 
+    /**
+     * 获取 dexElements[]
+     *
+     * @param obj 对应 类
+     * @return dexElements[]
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
     private static Object getDexElements(Object obj)
         throws NoSuchFieldException, IllegalAccessException {
         return getField(obj, obj.getClass(), "dexElements");
@@ -161,6 +215,13 @@ public final class HotFix {
     }
 
 
+    /**
+     * 合并两个数组
+     *
+     * @param obj 数组
+     * @param obj2 数组
+     * @return 合并后数组
+     */
     private static Object combineArray(Object obj, Object obj2) {
         Class componentType = obj2.getClass().getComponentType();
         int length = Array.getLength(obj2);
@@ -177,6 +238,13 @@ public final class HotFix {
     }
 
 
+    /**
+     * 添加子元素到数组
+     *
+     * @param obj 数组
+     * @param obj2 子元素
+     * @return 添加后的数组
+     */
     private static Object appendArray(Object obj, Object obj2) {
         Class componentType = obj.getClass().getComponentType();
         int length = Array.getLength(obj);
