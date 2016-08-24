@@ -2,8 +2,8 @@ package com.camnter.newlife;
 
 import android.app.Application;
 import android.content.Context;
-import com.camnter.hotfix.HotFix;
 import com.camnter.newlife.utils.AssetsUtils;
+import dodola.hotfix.HotFix;
 import java.io.File;
 
 /**
