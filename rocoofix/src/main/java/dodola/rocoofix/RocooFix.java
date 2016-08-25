@@ -476,9 +476,17 @@ public final class RocooFix {
              * dalvik.system.DexPathList pathList field to append additional DEX
              * file entries.
              */
+            // 获取 BaseDexClassLoader 中的 DexPathList pathList 属性
             Field pathListField = findField(loader, "pathList");
             Object dexPathList = pathListField.get(loader);
             ArrayList<IOException> suppressedExceptions = new ArrayList<IOException>();
+            /**
+             * 调用 DexPathList#makeDexElements 方法 补丁 >> Element[]
+             * makeDexElements 方法 产生的异常会收集到 suppressedExceptions 内
+             *
+             * 然后 合并 DexPathList#dexElements 和 上面得到的 Element[]
+             * Element[] 会在头部 >> 插桩
+             */
             expandFieldArray(dexPathList, "dexElements", makeDexElements(dexPathList,
                 new ArrayList<File>(additionalClassPathEntries), optimizedDirectory,
                 suppressedExceptions));
@@ -486,11 +494,22 @@ public final class RocooFix {
                 for (IOException e : suppressedExceptions) {
                     Log.w(TAG, "Exception in makeDexElement", e);
                 }
+                // 获取 IOException[] dexElementsSuppressedExceptions
                 Field suppressedExceptionsField =
                     findField(loader, "dexElementsSuppressedExceptions");
                 IOException[] dexElementsSuppressedExceptions =
                     (IOException[]) suppressedExceptionsField.get(loader);
 
+                /**
+                 *  如果 dexElementsSuppressedExceptions == null
+                 *  创建一个 makeDexElements 方法 产生的异常集合 suppressedExceptions
+                 *  相同长度的 IOException[]
+                 *
+                 *
+                 *  如果 dexElementsSuppressedExceptions != null
+                 *  与 suppressedExceptions 进行集合合并
+                 *  成一个 数组
+                 */
                 if (dexElementsSuppressedExceptions == null) {
                     dexElementsSuppressedExceptions =
                         suppressedExceptions.toArray(
@@ -505,12 +524,14 @@ public final class RocooFix {
                     dexElementsSuppressedExceptions = combined;
                 }
 
+                // 重新设置 IOException[] dexElementsSuppressedExceptions 属性的值
                 suppressedExceptionsField.set(loader, dexElementsSuppressedExceptions);
             }
         }
 
 
         /**
+         * 反射获取 并 调用 dalvik.system.DexPathList#makeDexElements 方法
          * A wrapper around
          * {@code private static final dalvik.system.DexPathList#makeDexElements}.
          */
@@ -543,14 +564,23 @@ public final class RocooFix {
              * dalvik.system.DexPathList pathList field to append additional DEX
              * file entries.
              */
+            // 获取 BaseDexClassLoader 中的 DexPathList pathList 属性
             Field pathListField = findField(loader, "pathList");
             Object dexPathList = pathListField.get(loader);
+            /**
+             * 调用 DexPathList#makeDexElements 方法 补丁 >> Element[]
+             * makeDexElements 方法 产生的异常会收集到 suppressedExceptions 内
+             *
+             * 然后 合并 DexPathList#dexElements 和 上面得到的 Element[]
+             * Element[] 会在头部 >> 插桩
+             */
             expandFieldArray(dexPathList, "dexElements", makeDexElements(dexPathList,
                 new ArrayList<File>(additionalClassPathEntries), optimizedDirectory));
         }
 
 
         /**
+         * 反射获取 并 调用 dalvik.system.DexPathList#makeDexElements 方法
          * A wrapper around
          * {@code private static final dalvik.system.DexPathList#makeDexElements}.
          */
@@ -578,10 +608,13 @@ public final class RocooFix {
              * fields mPaths, mFiles, mZips and mDexs to append additional DEX
              * file entries.
              */
-            int extraSize = additionalClassPathEntries.size();
 
+            // 拿到 补丁 List 的长度 (一般只有一个)
+            int extraSize = additionalClassPathEntries.size();
+            // 获取 PathClassLoader 中的 String path
             Field pathField = findField(loader, "path");
 
+            // 创建一个 path 的 StringBuilder
             StringBuilder path = new StringBuilder((String) pathField.get(loader));
             String[] extraPaths = new String[extraSize];
             File[] extraFiles = new File[extraSize];
@@ -589,20 +622,34 @@ public final class RocooFix {
             DexFile[] extraDexs = new DexFile[extraSize];
             for (ListIterator<File> iterator = additionalClassPathEntries.listIterator();
                  iterator.hasNext(); ) {
+                // 拿到每个补丁 File
                 File additionalEntry = iterator.next();
+                // 拿到补丁 File 的虚拟路径
                 String entryPath = additionalEntry.getAbsolutePath();
+                // 将补丁 File 的虚拟路径 附加在 path 上
                 path.append(':').append(entryPath);
                 int index = iterator.previousIndex();
+                /**
+                 * 补丁 path 数据
+                 * 补丁 file 数据
+                 * 补丁 zip 数据
+                 * 补丁 dex 数据
+                 */
                 extraPaths[index] = entryPath;
                 extraFiles[index] = additionalEntry;
                 extraZips[index] = new ZipFile(additionalEntry);
                 extraDexs[index] = DexFile.loadDex(entryPath, entryPath + ".dex", 0);
             }
 
+            // 重新 将 Builder 内的 String 赋值给 path
             pathField.set(loader, path.toString());
+            // 合并 mPaths 和 补丁 path 数据
             expandFieldArray(loader, "mPaths", extraPaths);
+            // 合并 mFiles 和 补丁 file 数据
             expandFieldArray(loader, "mFiles", extraFiles);
+            // 合并 mZips 和 补丁 zip 数据
             expandFieldArray(loader, "mZips", extraZips);
+            // 合并 mDexs 和 补丁 dex 数据
             expandFieldArray(loader, "mDexs", extraDexs);
         }
     }
