@@ -23,6 +23,8 @@ import java.util.List;
 public class RocooUtils {
 
     /**
+     * 反射获取 目标类的 目标属性
+     *
      * Locates a given field anywhere in the class inheritance hierarchy.
      *
      * @param instance an object to search the field into.
@@ -50,6 +52,8 @@ public class RocooUtils {
 
 
     /**
+     * 反射获取 目标类的 目标方法
+     *
      * Locates a given method anywhere in the class inheritance hierarchy.
      *
      * @param instance an object to search the method into.
@@ -81,6 +85,9 @@ public class RocooUtils {
 
 
     /**
+     * 反射合并 两个数组
+     * 要合并的数据(补丁)  插到 合并后数组的 头部
+     *
      * Replace the value of a field containing a non null array, by a new array containing the
      * elements of the original
      * array plus the elements of extraElements.
@@ -91,13 +98,18 @@ public class RocooUtils {
      */
     static void expandFieldArray(Object instance, String fieldName, Object[] extraElements)
         throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        // 反射获取 旧数组 数据
         Field jlrField = findField(instance, fieldName);
+        // 转换为 旧 Object[]
         Object[] original = (Object[]) jlrField.get(instance);
-        Object[] combined =
-            (Object[]) Array.newInstance(original.getClass().getComponentType(), original.length
-                + extraElements.length);
+        // 实例化一个 新 Object[],容纳 旧 Object[] 和 此次要合并的数组数据
+        Object[] combined = (Object[]) Array.newInstance(
+            original.getClass().getComponentType(), original.length + extraElements.length);
+        // 先放入 此次要合并的数组数据
         System.arraycopy(extraElements, 0, combined, 0, extraElements.length);
+        // 再 放入 就 Object[] 数据
         System.arraycopy(original, 0, combined, extraElements.length, original.length);
+        // 修改 旧数组地址 内容
         jlrField.set(instance, combined);
     }
 
