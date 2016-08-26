@@ -1,13 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
 
-task('processWithJavassist') << {
-    String classPath = file('build/intermediates/classes/Test/debug')// 项目编译 class 所在目录
-    PatchClass.process(classPath, project(':hack').buildDir
-            .absolutePath + '/intermediates/classes/debug')// 第二个参数是 hack 的 class 所在目录
-}
-
-
 def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
