@@ -1,5 +1,3 @@
-import com.camnter.patch.PatchClass
-
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
 
@@ -55,10 +53,6 @@ android {
             assets.srcDirs = ['src/main/assets', 'src/main/assets/']
             jniLibs.srcDirs = ['libs']
         }
-    }
-
-    applicationVariants.all { variant ->
-        variant.dex.dependsOn << processWithJavassist // 在执行dx命令之前将代码打入到class中
     }
 
 }
