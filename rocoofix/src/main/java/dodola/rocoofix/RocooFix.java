@@ -55,7 +55,7 @@ public final class RocooFix {
 
 
     public static void init(Context context) {
-        initPathFromAssets(context, "rocoo.dex");
+        initPathFromAssets(context, "hack.jar");
     }
 
 
