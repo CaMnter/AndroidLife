@@ -191,7 +191,8 @@ class NuwaProcessor {
         v.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Boolean", "booleanValue", "()Z", false);
         v.visitJumpInsn(Opcodes.IFEQ, l1);
         v.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-        v.visitLdcInsn(Type.getType("Lcom/dodola/rocoo/Hack;"));
+        // TODO Need modified
+        v.visitLdcInsn(Type.getType("Lcom/camnter/hack/Antilazy;"));
         v.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/Object;)V", false);
         v.visitLabel(l1);
     }
@@ -203,9 +204,11 @@ class NuwaProcessor {
                 !path.contains("/android/m2repository");
     }
 
+
     private
     static boolean shouldProcessClassInJar(String entryName, HashSet<String> includePackage, HashSet<String> excludeClass) {
         return entryName.endsWith(".class") &&
+                // TODO Need modified
                 !entryName.startsWith("com/dodola/rocoofix/") &&
                 !entryName.startsWith("com/lody/legend/") &&
                 NuwaSetUtils.isIncluded(entryName, includePackage) &&

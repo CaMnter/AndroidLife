@@ -66,7 +66,9 @@ public class ClassReferenceListBuilder {
         this.jarOfRoots = new JarFile(path);
     }
 
+
     public boolean shouldScan(String entryName) {
+        // TODO Need modified
         return !entryName.startsWith("com/dodola/rocoofix/") &&
                 !entryName.startsWith("com/lody/legend/") &&
                 !entryName.contains("android/support/");
