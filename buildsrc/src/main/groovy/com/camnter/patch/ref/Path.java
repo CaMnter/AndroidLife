@@ -13,28 +13,27 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
+/**
+ * https://github.com/dodola/RocooFix/blob/master/buildsrc/src/main/groovy/com/dodola/rocoofix/ref/Path.java
+ */
 class Path {
     static ClassPathElement getClassPathElement(File file)
-        throws ZipException, IOException {
+            throws ZipException, IOException {
         if (file.isDirectory()) {
             return new FolderPathElement(file);
         } else if (file.isFile()) {
             return new ArchivePathElement(new ZipFile(file));
         } else if (file.exists()) {
             throw new IOException("\"" + file.getPath() +
-                "\" is not a directory neither a zip file");
+                    "\" is not a directory neither a zip file");
         } else {
             throw new FileNotFoundException("File \"" + file.getPath() + "\" not found");
         }
     }
-
-
     List<ClassPathElement> elements = new ArrayList<ClassPathElement>();
     private final String definition;
     private final ByteArrayOutputStream baos = new ByteArrayOutputStream(40 * 1024);
     private final byte[] readBuffer = new byte[20 * 1024];
-
-
     public Path(String definition) {
         this.definition = definition;
         for (String filePath : definition.split(Pattern.quote(File.pathSeparator))) {
@@ -46,12 +45,10 @@ class Path {
             }
         }
     }
-
-
     private static byte[] readStream(InputStream in, ByteArrayOutputStream baos, byte[] readBuffer)
-        throws IOException {
+            throws IOException {
         try {
-            for (; ; ) {
+            for (;;) {
                 int amt = in.read(readBuffer);
                 if (amt < 0) {
                     break;
@@ -63,25 +60,17 @@ class Path {
         }
         return baos.toByteArray();
     }
-
-
     @Override
     public String toString() {
         return definition;
     }
-
-
     Iterable<ClassPathElement> getElements() {
-        return elements;
+      return elements;
     }
-
-
     private void addElement(ClassPathElement element) {
         assert element != null;
         elements.add(element);
     }
-
-
     synchronized DirectClassFile getClass(String path) throws FileNotFoundException {
         DirectClassFile classFile = null;
         for (ClassPathElement element : elements) {

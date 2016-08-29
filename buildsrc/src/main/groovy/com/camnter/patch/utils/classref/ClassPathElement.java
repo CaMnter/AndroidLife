@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.camnter.patch.classref;
+package com.camnter.patch.utils.classref;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 /**
  * An element of the class path in which class files can be found.
+ *
+ * https://github.com/dodola/RocooFix/blob/master/buildsrc/src/main/groovy/com/dodola/rocoofix/utils/classref/ClassPathElement.java
  */
 interface ClassPathElement {
 

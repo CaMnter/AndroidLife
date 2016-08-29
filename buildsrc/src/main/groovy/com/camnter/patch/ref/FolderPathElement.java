@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2013 The Android Open Source Project
  *
@@ -14,7 +15,6 @@
  * limitations under the License.
  */
 package com.camnter.patch.ref;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,36 +23,28 @@ import java.util.ArrayList;
 
 /**
  * A folder element.
+ *
+ * https://github.com/dodola/RocooFix/blob/master/buildsrc/src/main/groovy/com/dodola/rocoofix/ref/FolderPathElement.java
  */
 class FolderPathElement implements ClassPathElement {
     private File baseFolder;
-
-
     public FolderPathElement(File baseFolder) {
         this.baseFolder = baseFolder;
     }
-
-
     @Override
     public InputStream open(String path) throws FileNotFoundException {
         return new FileInputStream(new File(baseFolder,
-            path.replace(SEPARATOR_CHAR, File.separatorChar)));
+                path.replace(SEPARATOR_CHAR, File.separatorChar)));
     }
-
-
     @Override
     public void close() {
     }
-
-
     @Override
     public Iterable<String> list() {
         ArrayList<String> result = new ArrayList<String>();
         collect(baseFolder, "", result);
         return result;
     }
-
-
     private void collect(File folder, String prefix, ArrayList<String> result) {
         for (File file : folder.listFiles()) {
             if (file.isDirectory()) {

@@ -2,7 +2,7 @@
  * Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
  */
 
-package com.camnter.patch.classref;
+package com.camnter.patch.utils.classref;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,28 +12,26 @@ import java.util.ArrayList;
 
 /**
  * A folder element.
+ *
+ * https://github.com/dodola/RocooFix/blob/master/buildsrc/src/main/groovy/com/dodola/rocoofix/utils/classref/FolderPathElement.java
  */
 class FolderPathElement implements ClassPathElement {
 
     private File baseFolder;
 
-
     public FolderPathElement(File baseFolder) {
         this.baseFolder = baseFolder;
     }
 
-
     @Override
     public InputStream open(String path) throws FileNotFoundException {
         return new FileInputStream(new File(baseFolder,
-            path.replace(SEPARATOR_CHAR, File.separatorChar)));
+                path.replace(SEPARATOR_CHAR, File.separatorChar)));
     }
-
 
     @Override
     public void close() {
     }
-
 
     @Override
     public Iterable<String> list() {
@@ -41,7 +39,6 @@ class FolderPathElement implements ClassPathElement {
         collect(baseFolder, "", result);
         return result;
     }
-
 
     private void collect(File folder, String prefix, ArrayList<String> result) {
         for (File file : folder.listFiles()) {

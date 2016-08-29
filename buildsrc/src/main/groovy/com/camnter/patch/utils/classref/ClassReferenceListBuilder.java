@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.camnter.patch.classref;
+package com.camnter.patch.utils.classref;
 
 import com.android.dx.cf.direct.DirectClassFile;
 import com.android.dx.rop.cst.Constant;
@@ -26,7 +26,7 @@ import com.android.dx.rop.type.Prototype;
 import com.android.dx.rop.type.StdTypeList;
 import com.android.dx.rop.type.Type;
 import com.android.dx.rop.type.TypeList;
-import com.camnter.patch.NuwaProcessor;
+import com.camnter.patch.utils.NuwaProcessor;
 import com.google.common.collect.Sets;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,6 +40,8 @@ import org.apache.commons.io.FileUtils;
 
 /**
  * Tool to find direct class references to other classes.
+ *
+ * https://github.com/dodola/RocooFix/blob/master/buildsrc/src/main/groovy/com/dodola/rocoofix/utils/classref/ClassReferenceListBuilder.java
  */
 public class ClassReferenceListBuilder {
     private static final String CLASS_EXTENSION = ".class";
@@ -54,7 +56,6 @@ public class ClassReferenceListBuilder {
 
     private String patchDir;
 
-
     public ClassReferenceListBuilder(String patchDir) {
         this.patchDir = patchDir;
     }
@@ -65,18 +66,15 @@ public class ClassReferenceListBuilder {
         this.jarOfRoots = new JarFile(path);
     }
 
-
     public boolean shouldScan(String entryName) {
         return !entryName.startsWith("com/dodola/rocoofix/") &&
-            !entryName.startsWith("com/lody/legend/") &&
-            !entryName.contains("android/support/");
+                !entryName.startsWith("com/lody/legend/") &&
+                !entryName.contains("android/support/");
     }
-
 
     public void clearCache() {
         classNames.clear();
     }
-
 
     public void run(String refClassName) throws IOException {
 
@@ -89,7 +87,7 @@ public class ClassReferenceListBuilder {
             for (String tempName : temp) {
                 alreadyAnalyzedClasses.add(tempName);
                 refcname = tempName;
-                //                System.out.println("scan:---------->" + refcname);
+//                System.out.println("scan:---------->" + refcname);
                 for (Enumeration<? extends ZipEntry> entries = jarOfRoots.entries();
                      entries.hasMoreElements(); ) {
                     ZipEntry entry = entries.nextElement();
@@ -101,9 +99,9 @@ public class ClassReferenceListBuilder {
                             classFile = path.getClass(name);
                         } catch (FileNotFoundException e) {
                             throw new IOException("Class " + name +
-                                " is missing form original class path " + path, e);
+                                    " is missing form original class path " + path, e);
                         }
-                        //                        System.out.println("=====classname:" + name);
+//                        System.out.println("=====classname:" + name);
                         addDependencies(classFile.getConstantPool());
                     }
                 }
@@ -111,14 +109,14 @@ public class ClassReferenceListBuilder {
         }
     }
 
-
     public HashSet<String> getUnAnalyzeClasses() {
         HashSet<String> temp = Sets.newHashSet();
-        //        for (String alreadyAnalyzedClass : alreadyAnalyzedClasses) {
-        //            System.out.println("alreadyAnalyzedClass:---------====--->" + alreadyAnalyzedClass);
-        //        }
+//        for (String alreadyAnalyzedClass : alreadyAnalyzedClasses) {
+//            System.out.println("alreadyAnalyzedClass:---------====--->" + alreadyAnalyzedClass);
+//        }
         for (String className : classNames) {
-            //            System.out.println("classNames:---------====--->" + className);
+//            System.out.println("classNames:---------====--->" + className);
+
 
             if (!alreadyAnalyzedClasses.contains(className)) {
                 temp.add(className);
@@ -131,7 +129,6 @@ public class ClassReferenceListBuilder {
     public Set<String> getClassNames() {
         return classNames;
     }
-
 
     private void addDependencies(ConstantPool pool) {
 
@@ -151,29 +148,26 @@ public class ClassReferenceListBuilder {
         }
     }
 
-
     private void checkDescriptor(Type type) {
 
         String descriptor = type.getDescriptor();
         if (descriptor.endsWith(";")) {
-            //            System.out.println("=====descriptor:" + descriptor);
+//            System.out.println("=====descriptor:" + descriptor);
 
             int lastBrace = descriptor.lastIndexOf('[');
             if (lastBrace < 0) {
                 addClassWithHierachy(descriptor.substring(1, descriptor.length() - 1));
             } else {
                 assert descriptor.length() > lastBrace + 3
-                    && descriptor.charAt(lastBrace + 1) == 'L';
+                        && descriptor.charAt(lastBrace + 1) == 'L';
                 addClassWithHierachy(descriptor.substring(lastBrace + 2,
-                    descriptor.length() - 1));
+                        descriptor.length() - 1));
             }
         }
     }
 
-
     private void addClassWithHierachy(String classBinaryName) {
-        if (classNames.contains(classBinaryName) ||
-            !refcname.equals(classBinaryName + CLASS_EXTENSION)) {
+        if (classNames.contains(classBinaryName) || !refcname.equals(classBinaryName + CLASS_EXTENSION)) {
             return;
         }
 
@@ -183,18 +177,19 @@ public class ClassReferenceListBuilder {
             File entryFile = new File(patchDir + "/" + currentName);
             entryFile.getParentFile().mkdirs();
 
+
             if (!entryFile.exists()) {
                 entryFile.createNewFile();
-                //                Iterable<ClassPathElement> elements = path.getElements();
-                //                for (ClassPathElement element : elements) {
-                //                    InputStream in = element.open(currentName);
-                byte[] bytes = NuwaProcessor.referHackWhenInit(
-                    classFile.getBytes().makeDataInputStream());
-                //                    System.out.println(classFile.getFilePath() + ",size:" + bytes.length);
+//                Iterable<ClassPathElement> elements = path.getElements();
+//                for (ClassPathElement element : elements) {
+//                    InputStream in = element.open(currentName);
+                byte[] bytes = NuwaProcessor.referHackWhenInit(classFile.getBytes().makeDataInputStream());
+//                    System.out.println(classFile.getFilePath() + ",size:" + bytes.length);
                 FileUtils.writeByteArrayToFile(entryFile, bytes);
-                //                }
+//                }
             }
-            //            NuwaProcessor.referHackWhenInit();
+//            NuwaProcessor.referHackWhenInit();
+
 
             CstType superClass = classFile.getSuperclass();
             if (superClass != null) {

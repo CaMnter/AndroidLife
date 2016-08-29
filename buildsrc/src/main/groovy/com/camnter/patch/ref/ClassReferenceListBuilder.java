@@ -20,35 +20,30 @@ import java.util.zip.ZipFile;
 
 /**
  * Tool to find direct class references to other classes.
+ *
+ * https://github.com/dodola/RocooFix/blob/master/buildsrc/src/main/groovy/com/dodola/rocoofix/ref/ClassReferenceListBuilder.java
  */
 public class ClassReferenceListBuilder {
     private static final String CLASS_EXTENSION = ".class";
     private final Path path;
     private final Set<String> classNames = new HashSet<String>();
 
-
-    public void clearAllForReuse() {
+    public  void clearAllForReuse(){
         classNames.clear();
     }
-
 
     public ClassReferenceListBuilder(Path path) {
         this.path = path;
     }
-
-
     /**
      * Kept for compatibility with the gradle integration, this method just forwards to
      * {@link MainDexListBuilder#main(String[])}.
-     *
      * @deprecated use {@link MainDexListBuilder#main(String[])} instead.
      */
     @Deprecated
     public static void main(String[] args) {
         MainDexListBuilder.main(args);
     }
-
-
     /**
      * @param jarOfRoots Archive containing the class files resulting of the tracing, typically
      * this is the result of running ProGuard.
@@ -56,7 +51,7 @@ public class ClassReferenceListBuilder {
     public void addRoots(ZipFile jarOfRoots) throws IOException {
         // keep roots
         for (Enumeration<? extends ZipEntry> entries = jarOfRoots.entries();
-             entries.hasMoreElements(); ) {
+                entries.hasMoreElements();) {
             ZipEntry entry = entries.nextElement();
             String name = entry.getName();
             if (name.endsWith(CLASS_EXTENSION)) {
@@ -65,7 +60,7 @@ public class ClassReferenceListBuilder {
         }
         // keep direct references of roots (+ direct references hierarchy)
         for (Enumeration<? extends ZipEntry> entries = jarOfRoots.entries();
-             entries.hasMoreElements(); ) {
+                entries.hasMoreElements();) {
             ZipEntry entry = entries.nextElement();
             String name = entry.getName();
             if (name.endsWith(CLASS_EXTENSION)) {
@@ -81,8 +76,7 @@ public class ClassReferenceListBuilder {
         }
     }
 
-
-    public void addSupperClass(String name) {
+    public void addSupperClass(String name){
         if (name.endsWith(CLASS_EXTENSION)) {
             classNames.add(name.substring(0, name.length() - CLASS_EXTENSION.length()));
         }
@@ -92,19 +86,17 @@ public class ClassReferenceListBuilder {
                 classFile = path.getClass(name);
                 CstType superClass = classFile.getSuperclass();
                 if (superClass != null) {
-                    String superClassName = superClass.getClassType().getClassName();
+                    String superClassName=superClass.getClassType().getClassName();
                     classNames.add(superClassName);
                 }
             } catch (FileNotFoundException e) {
-                //                throw new IOException("Class " + name +
-                //                        " is missing form original class path " + path, e);
+//                throw new IOException("Class " + name +
+//                        " is missing form original class path " + path, e);
             }
 
         }
     }
-
-
-    public void addRootsV2(String name) {
+    public void addRootsV2(String name){
         if (name.endsWith(CLASS_EXTENSION)) {
             classNames.add(name.substring(0, name.length() - CLASS_EXTENSION.length()));
         }
@@ -114,19 +106,15 @@ public class ClassReferenceListBuilder {
                 classFile = path.getClass(name);
                 addDependencies(classFile);
             } catch (FileNotFoundException e) {
-                //                throw new IOException("Class " + name +
-                //                        " is missing form original class path " + path, e);
+//                throw new IOException("Class " + name +
+//                        " is missing form original class path " + path, e);
             }
 
         }
     }
-
-
-    public Set<String> getClassNames() {
+   public Set<String> getClassNames() {
         return classNames;
     }
-
-
     private void addDependencies(DirectClassFile classFile) {
         for (Constant constant : classFile.getConstantPool().getEntries()) {
             if (constant instanceof CstType) {
@@ -140,40 +128,34 @@ public class ClassReferenceListBuilder {
         FieldList fields = classFile.getFields();
         int nbField = fields.size();
         for (int i = 0; i < nbField; i++) {
-            checkDescriptor(fields.get(i).getDescriptor().getString());
+          checkDescriptor(fields.get(i).getDescriptor().getString());
         }
         MethodList methods = classFile.getMethods();
         int nbMethods = methods.size();
         for (int i = 0; i < nbMethods; i++) {
-            checkPrototype(Prototype.intern(methods.get(i).getDescriptor().getString()));
+          checkPrototype(Prototype.intern(methods.get(i).getDescriptor().getString()));
         }
     }
-
-
     private void checkPrototype(Prototype proto) {
-        checkDescriptor(proto.getReturnType().getDescriptor());
-        StdTypeList args = proto.getParameterTypes();
-        for (int i = 0; i < args.size(); i++) {
-            checkDescriptor(args.get(i).getDescriptor());
-        }
+      checkDescriptor(proto.getReturnType().getDescriptor());
+      StdTypeList args = proto.getParameterTypes();
+      for (int i = 0; i < args.size(); i++) {
+          checkDescriptor(args.get(i).getDescriptor());
+      }
     }
-
-
     private void checkDescriptor(String typeDescriptor) {
         if (typeDescriptor.endsWith(";")) {
             int lastBrace = typeDescriptor.lastIndexOf('[');
             if (lastBrace < 0) {
-                addClassWithHierachy(typeDescriptor.substring(1, typeDescriptor.length() - 1));
+                addClassWithHierachy(typeDescriptor.substring(1, typeDescriptor.length()-1));
             } else {
                 assert typeDescriptor.length() > lastBrace + 3
-                    && typeDescriptor.charAt(lastBrace + 1) == 'L';
+                && typeDescriptor.charAt(lastBrace + 1) == 'L';
                 addClassWithHierachy(typeDescriptor.substring(lastBrace + 2,
-                    typeDescriptor.length() - 1));
+                        typeDescriptor.length() - 1));
             }
         }
     }
-
-
     private void addClassWithHierachy(String classBinaryName) {
         if (classNames.contains(classBinaryName)) {
             return;

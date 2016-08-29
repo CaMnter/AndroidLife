@@ -1,10 +1,13 @@
 /*
  * Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
  */
-package com.camnter.patch
+package com.camnter.patch.utils
 
 /**
- * Created by jixin.jia on 15/11/10.*/
+ * Created by jixin.jia on 15/11/10.
+ *
+ * https://github.com/dodola/RocooFix/blob/master/buildsrc/src/main/groovy/com/dodola/rocoofix/utils/NuwaSetUtils.groovy
+ */
 class NuwaSetUtils {
     public static boolean isExcluded(String path, Set<String> excludeClass) {
         def isExcluded = false;

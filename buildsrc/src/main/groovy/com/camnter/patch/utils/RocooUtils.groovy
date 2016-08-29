@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
  */
-package com.camnter.patch
+package com.camnter.patch.utils
 
 import com.android.SdkConstants
 import com.android.build.gradle.api.BaseVariant
@@ -14,6 +14,9 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.api.Project
 import org.gradle.api.Task
 
+/**
+ * https://github.com/dodola/RocooFix/blob/master/buildsrc/src/main/groovy/com/dodola/rocoofix/utils/RocooUtils.groovy
+ */
 public class RocooUtils {
     private static final String MAP_SEPARATOR = ":"
     private static final String PATCH_NAME = "patch.jar"
@@ -51,6 +54,7 @@ public class RocooUtils {
     public static format(String path, String hash) {
         return path + MAP_SEPARATOR + hash + "\n"
     }
+
 
     public static String getApplication(File manifestFile) {
         def manifest = new XmlParser().parse(manifestFile)
@@ -152,6 +156,7 @@ public class RocooUtils {
         }
     }
 
+
     static Set<File> getDexTaskInputFiles(Project project, BaseVariant variant, Task dexTask) {
         if (dexTask == null) {
             dexTask = project.tasks.findByName(getDexTaskName(project, variant));
@@ -168,10 +173,7 @@ public class RocooUtils {
                         Collection<File> jars = FileUtils.listFiles(it, extensions, true);
                         files.addAll(jars)
 
-                        if (it.absolutePath.toLowerCase().
-                                endsWith(
-                                        "intermediates${File.separator}classes${File.separator}${variant.dirName}".
-                                                toLowerCase())) {
+                        if (it.absolutePath.toLowerCase().endsWith("intermediates${File.separator}classes${File.separator}${variant.dirName}".toLowerCase())) {
                             files.add(it)
                         }
                     } else if (it.name.endsWith(SdkConstants.DOT_JAR)) {
@@ -185,21 +187,28 @@ public class RocooUtils {
         }
     }
 
+
     public static boolean isUseTransformAPI(Project project) {
-        //        println("==========gradleVersion:" + compareVersionName("1.9.0", "1.4.0"))
+//        println("==========gradleVersion:" + compareVersionName("1.9.0", "1.4.0"))
         return compareVersionName(project.gradle.gradleVersion, "1.4.0") >= 0;
     }
+
 
     private static int compareVersionName(String str1, String str2) {
         String[] thisParts = str1.split("-")[0].split("\\.");
         String[] thatParts = str2.split("-")[0].split("\\.");
         int length = Math.max(thisParts.length, thatParts.length);
         for (int i = 0; i < length; i++) {
-            int thisPart = i < thisParts.length ? Integer.parseInt(thisParts[i]) : 0;
-            int thatPart = i < thatParts.length ? Integer.parseInt(thatParts[i]) : 0;
-            if (thisPart < thatPart) return -1;
-            if (thisPart > thatPart) return 1;
+            int thisPart = i < thisParts.length ?
+                    Integer.parseInt(thisParts[i]) : 0;
+            int thatPart = i < thatParts.length ?
+                    Integer.parseInt(thatParts[i]) : 0;
+            if (thisPart < thatPart)
+                return -1;
+            if (thisPart > thatPart)
+                return 1;
         }
         return 0;
     }
+
 }

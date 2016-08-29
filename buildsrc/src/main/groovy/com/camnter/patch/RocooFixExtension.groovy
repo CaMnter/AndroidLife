@@ -7,6 +7,9 @@ import groovy.transform.CompileStatic
 import org.gradle.api.Project
 import org.gradle.api.tasks.Input
 
+/**
+ * https://github.com/dodola/RocooFix/blob/master/buildsrc/src/main/groovy/com/dodola/rocoofix/RocooFixExtension.groovy
+ */
 @CompileStatic
 class RocooFixExtension {
     @Input
@@ -38,4 +41,5 @@ class RocooFixExtension {
         }
         return config;
     }
+
 }
