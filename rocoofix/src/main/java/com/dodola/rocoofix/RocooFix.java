@@ -2,7 +2,7 @@
  * Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
  */
 
-package dodola.rocoofix;
+package com.dodola.rocoofix;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -28,9 +28,9 @@ import java.util.ListIterator;
 import java.util.Set;
 import java.util.zip.ZipFile;
 
-import static dodola.rocoofix.RocooUtils.expandFieldArray;
-import static dodola.rocoofix.RocooUtils.findField;
-import static dodola.rocoofix.RocooUtils.findMethod;
+import static com.dodola.rocoofix.RocooUtils.expandFieldArray;
+import static com.dodola.rocoofix.RocooUtils.findField;
+import static com.dodola.rocoofix.RocooUtils.findMethod;
 
 /**
  * modify from MultiDex source code
