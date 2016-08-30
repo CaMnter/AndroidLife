@@ -192,7 +192,7 @@ class NuwaProcessor {
         v.visitJumpInsn(Opcodes.IFEQ, l1);
         v.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
         // TODO Need modified
-        v.visitLdcInsn(Type.getType("Lcom/camnter/hack/Antilazy;"));
+        v.visitLdcInsn(Type.getType("Lcom/camnter/hack/AntilazyLoad;"));
         v.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/Object;)V", false);
         v.visitLabel(l1);
     }
