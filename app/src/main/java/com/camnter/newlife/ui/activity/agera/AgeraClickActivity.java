@@ -1,5 +1,6 @@
 package com.camnter.newlife.ui.activity.agera;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -65,7 +66,7 @@ public class AgeraClickActivity extends BaseAppCompatActivity {
         /**
          * Called when an event has occurred.
          */
-        @Override public void update() {
+        @SuppressLint("SetTextI18n") @Override public void update() {
             clickText.setText("ClickObservable: " + UUID.randomUUID().toString());
         }
     }

@@ -1,5 +1,6 @@
 package com.camnter.newlife.ui.activity.agera;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -70,7 +71,7 @@ public class AgeraBroadcastActivity extends BaseAppCompatActivity
     /**
      * Called when an event has occurred.
      */
-    @Override public void update() {
+    @SuppressLint("SetTextI18n") @Override public void update() {
         sendText.setText("AgeraBroadcastObservable: update() -> " + UUID.randomUUID().toString());
     }
 

@@ -1,5 +1,6 @@
 package com.camnter.newlife.ui.activity.agera;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -62,7 +63,7 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
         }
     };
     private Updatable updatableOne = new Updatable() {
-        @Override public void update() {
+        @SuppressLint("SetTextI18n") @Override public void update() {
             observableOneText.setText("Jud: " + UUID.randomUUID().toString());
         }
     };
@@ -82,7 +83,7 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
         .thenGetFrom(this.supplierTestTwo)
         .compile();
     private Updatable updatableTwo = new Updatable() {
-        @Override public void update() {
+        @SuppressLint("SetTextI18n") @Override public void update() {
             observableTwoText.setText("Jud: " + UUID.randomUUID().toString());
         }
     };
@@ -213,12 +214,12 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
             repositoryTestSix
                 .get()
                 .ifFailedSendTo(new Receiver<Throwable>() {
-                    @Override public void accept(@NonNull Throwable value) {
+                    @SuppressLint("SetTextI18n") @Override public void accept(@NonNull Throwable value) {
                         observableSixText.setText("ifFailedSendTo -> " + value);
                     }
                 })
                 .ifSucceededSendTo(new Receiver<String>() {
-                    @Override public void accept(@NonNull String value) {
+                    @SuppressLint("SetTextI18n") @Override public void accept(@NonNull String value) {
                         observableSixText.setText("ifSucceededSendTo -> " + value);
                     }
                 });
