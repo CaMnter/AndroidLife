@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
@@ -27,8 +27,8 @@ import java.io.InputStream;
 
 public class ExternalLoadSoActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
-    @Bind(R.id.external_load_so_image) ImageView externalLoadSoImage;
-    @Bind(R.id.external_load_so_button) Button externalLoadSoButton;
+    @BindView(R.id.external_load_so_image) ImageView externalLoadSoImage;
+    @BindView(R.id.external_load_so_button) Button externalLoadSoButton;
 
 
     /**

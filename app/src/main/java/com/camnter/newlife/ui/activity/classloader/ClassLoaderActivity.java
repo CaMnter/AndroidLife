@@ -3,7 +3,7 @@ package com.camnter.newlife.ui.activity.classloader;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
@@ -16,7 +16,7 @@ import com.camnter.newlife.utils.DeviceUtils;
 
 public class ClassLoaderActivity extends BaseAppCompatActivity {
 
-    @Bind(R.id.class_loader_root_layout) LinearLayout classLoaderRootLayout;
+    @BindView(R.id.class_loader_root_layout) LinearLayout classLoaderRootLayout;
 
     private int i = 0;
 

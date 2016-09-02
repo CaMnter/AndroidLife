@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
@@ -39,14 +39,14 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
      ***********************/
 
     private static final String filterString = "???";
-    @Bind(R.id.agera_observable_text_one) TextView observableOneText;
-    @Bind(R.id.agera_observable_text_two) TextView observableTwoText;
-    @Bind(R.id.agera_observable_text_three) TextView observableThreeText;
-    @Bind(R.id.agera_observable_text_four) TextView observableFourText;
-    @Bind(R.id.agera_observable_text_five) TextView observableFiveText;
-    @Bind(R.id.agera_observable_text_six) TextView observableSixText;
-    @Bind(R.id.agera_observable_text_seven) TextView observableSevenText;
-    @Bind(R.id.agera_observable_text_eight) TextView observableEightText;
+    @BindView(R.id.agera_observable_text_one) TextView observableOneText;
+    @BindView(R.id.agera_observable_text_two) TextView observableTwoText;
+    @BindView(R.id.agera_observable_text_three) TextView observableThreeText;
+    @BindView(R.id.agera_observable_text_four) TextView observableFourText;
+    @BindView(R.id.agera_observable_text_five) TextView observableFiveText;
+    @BindView(R.id.agera_observable_text_six) TextView observableSixText;
+    @BindView(R.id.agera_observable_text_seven) TextView observableSevenText;
+    @BindView(R.id.agera_observable_text_eight) TextView observableEightText;
     /*************************
      * Test - 1 - Observable *
      *************************/

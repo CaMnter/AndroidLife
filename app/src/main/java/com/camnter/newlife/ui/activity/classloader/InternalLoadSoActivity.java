@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
@@ -20,8 +20,8 @@ import com.camnter.stackblur.NativeBlurProcess;
 
 public class InternalLoadSoActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
-    @Bind(R.id.internal_load_so_image) ImageView internalLoadSoImage;
-    @Bind(R.id.internal_load_so_button) Button internalLoadSoButton;
+    @BindView(R.id.internal_load_so_image) ImageView internalLoadSoImage;
+    @BindView(R.id.internal_load_so_button) Button internalLoadSoButton;
 
 
     /**

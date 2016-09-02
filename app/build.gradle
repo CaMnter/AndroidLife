@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'com.neenbedankt.android-apt'
 //apply plugin: RocooFixPlugin
 
 def releaseTime() {
@@ -86,7 +87,8 @@ dependencies {
     // Glide
     compile 'com.github.bumptech.glide:glide:3.6.1'
     // butterknife
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile project(':otto')
     compile project(':volley')
     compile project(':agera-1.0.0')

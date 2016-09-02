@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
@@ -19,8 +19,8 @@ import java.util.UUID;
  */
 public class AgeraClickActivity extends BaseAppCompatActivity {
 
-    @Bind(R.id.agera_click_button) Button clickButton;
-    @Bind(R.id.agera_click_text) TextView clickText;
+    @BindView(R.id.agera_click_button) Button clickButton;
+    @BindView(R.id.agera_click_text) TextView clickText;
 
 
     /**

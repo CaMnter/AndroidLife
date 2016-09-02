@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseAppCompatActivity;
@@ -23,8 +23,8 @@ public class AgeraBroadcastActivity extends BaseAppCompatActivity
 
     private static final String AGERA_BROADCAST_ACTION = "agera";
 
-    @Bind(R.id.send_text) TextView sendText;
-    @Bind(R.id.send_button) Button sendButton;
+    @BindView(R.id.send_text) TextView sendText;
+    @BindView(R.id.send_button) Button sendButton;
 
     private AgeraBroadcastObservable observable;
 

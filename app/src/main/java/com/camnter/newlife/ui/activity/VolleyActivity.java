@@ -3,7 +3,7 @@ package com.camnter.newlife.ui.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 public class VolleyActivity extends BaseAppCompatActivity {
 
-    @Bind(R.id.volley_get_content_text) TextView mGetContentText;
+    @BindView(R.id.volley_get_content_text) TextView mGetContentText;
 
 
     /**
