@@ -159,6 +159,7 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(ExternalLoadSoActivity.class);
         this.classes.add(InternalLoadSoActivity.class);
         this.classes.add(HotFixActivity.class);
+        this.classes.add(RemoteViewsActivity.class);
     }
 
 

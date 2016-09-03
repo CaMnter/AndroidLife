@@ -105,14 +105,8 @@
             android:launchMode="singleTask"
             android:taskAffinity=""/>
         <activity
-            android:name=".mvp.MvpActivity"
-            android:label="MvpActivity"/>
-        <activity
             android:name=".ui.activity.SQLiteActivity"
             android:label="SQLiteActivity"/>
-        <activity
-            android:name=".framework.robotlegs.robotlegs4android.view.activity.Robotlegs4AndroidActivity"
-            android:label="Robotlegs4AndroidActivity"/>
         <activity
             android:name=".ui.activity.CustomContentProviderActivity"
             android:label="CustomContentProviderActivity"/>
@@ -175,6 +169,8 @@
         <activity
             android:name=".ui.activity.VolleyActivity"
             android:label="VolleyActivity"/>
+        <activity android:name=".ui.activity.RemoteViewsActivity"
+            android:label="RemoteViewsActivity"/>
 
         <activity
             android:name=".ui.activity.classloader.ClassLoaderActivity"
