@@ -78,4 +78,20 @@ public class BitmapUtils {
             return null;
         }
     }
+
+
+    /**
+     * Drawable to Bitmap
+     */
+    private Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) ((BitmapDrawable) drawable).getBitmap();
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+        Bitmap bitmap = createBitmapSafely(width, height, Bitmap.Config.ARGB_8888, 1);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, width, height);
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
 }
