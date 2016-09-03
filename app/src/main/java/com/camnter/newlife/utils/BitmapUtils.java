@@ -83,7 +83,7 @@ public class BitmapUtils {
     /**
      * Drawable to Bitmap
      */
-    private Bitmap drawableToBitmap(Drawable drawable) {
+    public static Bitmap drawableToBitmap(Drawable drawable) {
         if (drawable instanceof BitmapDrawable) ((BitmapDrawable) drawable).getBitmap();
         int width = drawable.getIntrinsicWidth();
         int height = drawable.getIntrinsicHeight();
