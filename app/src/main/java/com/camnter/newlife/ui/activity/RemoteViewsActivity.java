@@ -61,6 +61,7 @@ public class RemoteViewsActivity extends BaseAppCompatActivity {
             .setLargeIcon(BitmapUtils.drawableToBitmap(
                 ResourcesCompat.getDrawable(this.getResources(), R.drawable.ic_camnter,
                     this.getTheme())))
+            .setSmallIcon(R.drawable.ic_send_light_small)
             .setTicker("Save you from anything")
             .setWhen(System.currentTimeMillis()).build();
         notification.flags = Notification.FLAG_AUTO_CANCEL;
