@@ -214,12 +214,14 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
             repositoryTestSix
                 .get()
                 .ifFailedSendTo(new Receiver<Throwable>() {
-                    @SuppressLint("SetTextI18n") @Override public void accept(@NonNull Throwable value) {
+                    @SuppressLint("SetTextI18n") @Override
+                    public void accept(@NonNull Throwable value) {
                         observableSixText.setText("ifFailedSendTo -> " + value);
                     }
                 })
                 .ifSucceededSendTo(new Receiver<String>() {
-                    @SuppressLint("SetTextI18n") @Override public void accept(@NonNull String value) {
+                    @SuppressLint("SetTextI18n") @Override
+                    public void accept(@NonNull String value) {
                         observableSixText.setText("ifSucceededSendTo -> " + value);
                     }
                 });

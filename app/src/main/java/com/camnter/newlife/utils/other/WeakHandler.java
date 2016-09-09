@@ -58,7 +58,7 @@ public class WeakHandler {
     private Lock mLock = new ReentrantLock();
     @SuppressWarnings("ConstantConditions")
     @VisibleForTesting
-    final ChainedRef mRunnables = new ChainedRef(mLock, null);
+    private final ChainedRef mRunnables = new ChainedRef(mLock, null);
 
 
     /**
