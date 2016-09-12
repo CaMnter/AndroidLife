@@ -57,6 +57,7 @@ public class RemoteViewsActivity extends BaseAppCompatActivity {
 
 
     @OnClick(R.id.remote_views_normal) public void onClick() {
+        // 普通 Notification 的创建
         Notification notification = new NotificationCompat.Builder(this)
             .setLargeIcon(BitmapUtils.drawableToBitmap(
                 ResourcesCompat.getDrawable(this.getResources(), R.drawable.ic_camnter,
@@ -68,10 +69,13 @@ public class RemoteViewsActivity extends BaseAppCompatActivity {
         Intent intent = new Intent(this, RemoteViewsActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivities(this, 0, new Intent[] { intent },
             PendingIntent.FLAG_UPDATE_CURRENT);
+        // 自定义 Notification 的布局
         RemoteViews remoteViews = new RemoteViews(this.getPackageName(),
             R.layout.notification_remote_normal);
+        // 特定的 set 方法去修改规定的 View
         remoteViews.setImageViewResource(R.id.remote_icon, R.drawable.ic_camnter);
         remoteViews.setTextViewText(R.id.remote_text, "Save you from anything");
+        // Notification 设置上 RemoteViews 和 PendingIntent
         notification.contentView = remoteViews;
         notification.contentIntent = pendingIntent;
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
