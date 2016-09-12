@@ -66,6 +66,7 @@ public class RemoteViewsActivity extends BaseAppCompatActivity {
             .setTicker("Save you from anything")
             .setWhen(System.currentTimeMillis()).build();
         notification.flags = Notification.FLAG_AUTO_CANCEL;
+        // 跳转到 RemoteViewsActivity
         Intent intent = new Intent(this, RemoteViewsActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivities(this, 0, new Intent[] { intent },
             PendingIntent.FLAG_UPDATE_CURRENT);
