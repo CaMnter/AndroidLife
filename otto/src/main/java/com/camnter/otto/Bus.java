@@ -51,7 +51,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * <p>Handlers should not, in general, throw.  If they do, the Bus will wrap the exception and
  * re-throw it. <p/> <p>The Bus by default enforces that all interactions occur on the main thread.
  * You can provide an alternate enforcement by passing a {@link ThreadEnforcer} to the constructor.
- * <p/> <h2>Producer Methods</h2> Producer methods should accept no arguments and return their event
+ * <p/> <h2>Producer Methods</h2> Producer methods should accept no arguments and return their
+ * event
  * type. When a subscriber is registered for a type that a producer is also already registered for,
  * the subscriber will be called with the return value from the producer. <p/> <h2>Dead Events</h2>
  * If an event is posted, but no registered handlers can accept it, it is considered "dead."  To
@@ -70,7 +71,7 @@ public class Bus {
      * 可以看出一个 listener 可以对应多个 EventHandler
      */
     private final ConcurrentMap<Class<?>, Set<EventHandler>> handlersByType =
-            new ConcurrentHashMap<Class<?>, Set<EventHandler>>();
+        new ConcurrentHashMap<Class<?>, Set<EventHandler>>();
 
     /**
      * All registered event producers, index by event type.
@@ -78,7 +79,7 @@ public class Bus {
      * 可以看出一个 listener 对应一个 EventProducer
      */
     private final ConcurrentMap<Class<?>, EventProducer> producersByType =
-            new ConcurrentHashMap<Class<?>, EventProducer>();
+        new ConcurrentHashMap<Class<?>, EventProducer>();
 
     /**
      * Identifier used to differentiate the event bus instance.
@@ -104,12 +105,12 @@ public class Bus {
      * ThreadLocal存放一个ConcurrentLinkedQueue<EventWithHandler>队列
      */
     private final ThreadLocal<ConcurrentLinkedQueue<EventWithHandler>> eventsToDispatch =
-            new ThreadLocal<ConcurrentLinkedQueue<EventWithHandler>>() {
-                @Override
-                protected ConcurrentLinkedQueue<EventWithHandler> initialValue() {
-                    return new ConcurrentLinkedQueue<EventWithHandler>();
-                }
-            };
+        new ThreadLocal<ConcurrentLinkedQueue<EventWithHandler>>() {
+            @Override
+            protected ConcurrentLinkedQueue<EventWithHandler> initialValue() {
+                return new ConcurrentLinkedQueue<EventWithHandler>();
+            }
+        };
 
     /**
      * True if the current thread is currently dispatching an event.
@@ -122,6 +123,7 @@ public class Bus {
         }
     };
 
+
     /**
      * Creates a new Bus named "default" that enforces actions on the main thread.
      * 默认构造Bus
@@ -131,18 +133,21 @@ public class Bus {
         this(DEFAULT_IDENTIFIER);
     }
 
+
     /**
-     * Creates a new Bus with the given {@code identifier} that enforces actions on the main thread.
+     * Creates a new Bus with the given {@code identifier} that enforces actions on the main
+     * thread.
      * 默认构造Bus
      * 唯一标识为 自定义
      * ThreadEnforcer为 主线程
      *
      * @param identifier a brief name for this bus, for debugging purposes.  Should be a valid Java
-     *                   identifier.
+     * identifier.
      */
     public Bus(String identifier) {
         this(ThreadEnforcer.MAIN, identifier);
     }
+
 
     /**
      * Creates a new Bus named "default" with the given {@code enforcer} for actions.
@@ -156,6 +161,7 @@ public class Bus {
         this(enforcer, DEFAULT_IDENTIFIER);
     }
 
+
     /**
      * Creates a new Bus with the given {@code enforcer} for actions and the given {@code
      * identifier}.
@@ -164,13 +170,14 @@ public class Bus {
      * ThreadEnforcer为 自定义
      * HandlerFinder为 HandlerFinder.ANNOTATED
      *
-     * @param enforcer   Thread enforcer for register, unregister, and post actions.
+     * @param enforcer Thread enforcer for register, unregister, and post actions.
      * @param identifier A brief name for this bus, for debugging purposes.  Should be a valid Java
-     *                   identifier.
+     * identifier.
      */
     public Bus(ThreadEnforcer enforcer, String identifier) {
         this(enforcer, identifier, HandlerFinder.ANNOTATED);
     }
+
 
     /**
      * Test constructor which allows replacing the default {@code HandlerFinder}.
@@ -179,11 +186,11 @@ public class Bus {
      * ThreadEnforcer为 自定义
      * HandlerFinder为 自定义
      *
-     * @param enforcer      Thread enforcer for register, unregister, and post actions.
-     * @param identifier    A brief name for this bus, for debugging purposes.  Should be a valid Java
-     *                      identifier.
+     * @param enforcer Thread enforcer for register, unregister, and post actions.
+     * @param identifier A brief name for this bus, for debugging purposes.  Should be a valid Java
+     * identifier.
      * @param handlerFinder Used to discover event handlers and producers when
-     *                      registering/unregistering an object.
+     * registering/unregistering an object.
      */
     Bus(ThreadEnforcer enforcer, String identifier, HandlerFinder handlerFinder) {
         this.enforcer = enforcer;
@@ -191,16 +198,21 @@ public class Bus {
         this.handlerFinder = handlerFinder;
     }
 
+
     @Override
     public String toString() {
         return "[Bus \"" + identifier + "\"]";
     }
 
+
     /**
      * Registers all handler methods on {@code object} to receive events and producer methods to
-     * provide events. <p/> If any subscribers are registering for types which already have a producer
-     * they will be called immediately with the result of calling that producer. <p/> If any producers
-     * are registering for types which already have subscribers, each subscriber will be called with
+     * provide events. <p/> If any subscribers are registering for types which already have a
+     * producer
+     * they will be called immediately with the result of calling that producer. <p/> If any
+     * producers
+     * are registering for types which already have subscribers, each subscriber will be called
+     * with
      * the value from the result of calling the producer.
      *
      * @param object object whose handler methods should be registered.
@@ -247,8 +259,9 @@ public class Bus {
              */
             if (previousProducer != null) {
                 throw new IllegalArgumentException("Producer method for type " + type
-                        + " found on type " + producer.target.getClass()
-                        + ", but already registered by type " + previousProducer.target.getClass() + ".");
+                    + " found on type " + producer.target.getClass()
+                    + ", but already registered by type " + previousProducer.target.getClass() +
+                    ".");
             }
 
             /**
@@ -269,7 +282,6 @@ public class Bus {
          * 处理 @Produce 逻辑 *
          *********************/
 
-
         /***********************
          * 处理 @SubScribe 逻辑 *
          ***********************/
@@ -280,7 +292,8 @@ public class Bus {
          * 找回来的封装成EventHandler
          * Map<Class<?>, Set<EventHandler>>
          */
-        Map<Class<?>, Set<EventHandler>> foundHandlersMap = handlerFinder.findAllSubscribers(object);
+        Map<Class<?>, Set<EventHandler>> foundHandlersMap = handlerFinder.findAllSubscribers(
+            object);
 
         /**
          * 逐个拿到EventHandler
@@ -339,10 +352,11 @@ public class Bus {
          ***********************/
     }
 
+
     /**
      * 完成了所谓的 提供 @Produce 被自身 @Subscribe 消费的流程
      *
-     * @param handler  handler
+     * @param handler handler
      * @param producer producer
      */
     private void dispatchProducerResultToHandler(EventHandler handler, EventProducer producer) {
@@ -374,12 +388,13 @@ public class Bus {
         dispatch(event, handler);
     }
 
+
     /**
      * Unregisters all producer and handler methods on a registered {@code object}.
      *
      * @param object object whose producer and handler methods should be unregistered.
      * @throws IllegalArgumentException if the object was not previously registered.
-     * @throws NullPointerException     if the object is null.
+     * @throws NullPointerException if the object is null.
      */
     public void unregister(Object object) {
         if (object == null) {
@@ -414,8 +429,8 @@ public class Bus {
 
             if (value == null || !value.equals(producer)) {
                 throw new IllegalArgumentException(
-                        "Missing event producer for an annotated method. Is " + object.getClass()
-                                + " registered?");
+                    "Missing event producer for an annotated method. Is " + object.getClass()
+                        + " registered?");
             }
             /**
              * 从 EventProducer 缓存Map里移除
@@ -425,7 +440,8 @@ public class Bus {
             producersByType.remove(key).invalidate();
         }
 
-        Map<Class<?>, Set<EventHandler>> handlersInListener = handlerFinder.findAllSubscribers(object);
+        Map<Class<?>, Set<EventHandler>> handlersInListener = handlerFinder.findAllSubscribers(
+            object);
         for (Map.Entry<Class<?>, Set<EventHandler>> entry : handlersInListener.entrySet()) {
 
             /**
@@ -440,8 +456,8 @@ public class Bus {
 
             if (currentHandlers == null || !currentHandlers.containsAll(eventMethodsInListener)) {
                 throw new IllegalArgumentException(
-                        "Missing event handler for an annotated method. Is " + object.getClass()
-                                + " registered?");
+                    "Missing event handler for an annotated method. Is " + object.getClass()
+                        + " registered?");
             }
 
             /**
@@ -463,10 +479,12 @@ public class Bus {
         }
     }
 
+
     /**
      * Posts an event to all registered handlers.  This method will return successfully after the
      * event has been posted to all handlers, and regardless of any exceptions thrown by handlers.
-     * <p/> <p>If no handlers have been subscribed for {@code event}'s class, and {@code event} is not
+     * <p/> <p>If no handlers have been subscribed for {@code event}'s class, and {@code event} is
+     * not
      * already a {@link DeadEvent}, it will be wrapped in a DeadEvent and reposted.
      *
      * @param event event to post.
@@ -529,8 +547,10 @@ public class Bus {
         dispatchQueuedEvents();
     }
 
+
     /**
-     * Queue the {@code event} for dispatch during {@link #dispatchQueuedEvents()}. Events are queued
+     * Queue the {@code event} for dispatch during {@link #dispatchQueuedEvents()}. Events are
+     * queued
      * in-order of occurrence so they can be dispatched in the same order.
      * 封装成 EventWithHandler
      * 入队
@@ -538,6 +558,7 @@ public class Bus {
     protected void enqueueEvent(Object event, EventHandler handler) {
         eventsToDispatch.get().offer(new EventWithHandler(event, handler));
     }
+
 
     /**
      * Drain the queue of events to be dispatched. As the queue is being drained, new events may be
@@ -574,6 +595,7 @@ public class Bus {
         }
     }
 
+
     /**
      * Dispatches {@code event} to the handler in {@code wrapper}.  This method is an appropriate
      * override point for subclasses that wish to make event delivery asynchronous.
@@ -581,7 +603,7 @@ public class Bus {
      * 调用 EventHandler.handleEvent方法
      * 将事件传入，进而调用 @Subscribe 方法
      *
-     * @param event   event to dispatch.
+     * @param event event to dispatch.
      * @param wrapper wrapper that will call the handler.
      */
     protected void dispatch(Object event, EventHandler wrapper) {
@@ -593,9 +615,10 @@ public class Bus {
             wrapper.handleEvent(event);
         } catch (InvocationTargetException e) {
             throwRuntimeException(
-                    "Could not dispatch event: " + event.getClass() + " to handler " + wrapper, e);
+                "Could not dispatch event: " + event.getClass() + " to handler " + wrapper, e);
         }
     }
+
 
     /**
      * Retrieves the currently registered producer for {@code type}.  If no producer is currently
@@ -609,8 +632,10 @@ public class Bus {
         return producersByType.get(type);
     }
 
+
     /**
-     * Retrieves a mutable set of the currently registered handlers for {@code type}.  If no handlers
+     * Retrieves a mutable set of the currently registered handlers for {@code type}.  If no
+     * handlers
      * are currently registered for {@code type}, this method may either return {@code null} or an
      * empty set.
      * 根据object的class类型 拿到object缓存的 一个 EventHandler 集合
@@ -621,6 +646,7 @@ public class Bus {
     Set<EventHandler> getHandlersForEventType(Class<?> type) {
         return handlersByType.get(type);
     }
+
 
     /**
      * Flattens a class's type hierarchy into a set of Class objects.  The set will include all
@@ -650,6 +676,7 @@ public class Bus {
         return classes;
     }
 
+
     /**
      * 寻找一个类所有父类 包括自己 存为一个 Set 集合
      *
@@ -674,9 +701,11 @@ public class Bus {
         return classes;
     }
 
+
     /**
      * Throw a {@link RuntimeException} with given message and cause lifted from an {@link
-     * InvocationTargetException}. If the specified {@link InvocationTargetException} does not have a
+     * InvocationTargetException}. If the specified {@link InvocationTargetException} does not have
+     * a
      * cause, neither will the {@link RuntimeException}.
      */
     private static void throwRuntimeException(String msg, InvocationTargetException e) {
@@ -688,8 +717,10 @@ public class Bus {
         }
     }
 
+
     private final ConcurrentMap<Class<?>, Set<Class<?>>> flattenHierarchyCache =
-            new ConcurrentHashMap<Class<?>, Set<Class<?>>>();
+        new ConcurrentHashMap<Class<?>, Set<Class<?>>>();
+
 
     /**
      * Simple struct representing an event and its handler.
@@ -697,6 +728,7 @@ public class Bus {
     static class EventWithHandler {
         final Object event;
         final EventHandler handler;
+
 
         public EventWithHandler(Object event, EventHandler handler) {
             this.event = event;

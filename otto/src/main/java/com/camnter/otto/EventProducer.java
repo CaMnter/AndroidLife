@@ -48,6 +48,7 @@ class EventProducer {
      */
     private boolean valid = true;
 
+
     EventProducer(Object target, Method method) {
         if (target == null) {
             throw new NullPointerException("EventProducer target cannot be null.");
@@ -73,9 +74,11 @@ class EventProducer {
         hashCode = (prime + method.hashCode()) * prime + target.hashCode();
     }
 
+
     public boolean isValid() {
         return valid;
     }
+
 
     /**
      * If invalidated, will subsequently refuse to produce events.
@@ -86,13 +89,14 @@ class EventProducer {
         valid = false;
     }
 
+
     /**
      * Invokes the wrapped producer method.
      *
-     * @throws java.lang.IllegalStateException             if previously invalidated.
+     * @throws java.lang.IllegalStateException if previously invalidated.
      * @throws java.lang.reflect.InvocationTargetException if the wrapped method throws any {@link
-     *                                                     Throwable} that is not
-     *                                                     an {@link Error} ({@code Error}s are propagated as-is).
+     * Throwable} that is not
+     * an {@link Error} ({@code Error}s are propagated as-is).
      */
     public Object produceEvent() throws InvocationTargetException {
         /**
@@ -100,7 +104,7 @@ class EventProducer {
          */
         if (!valid) {
             throw new IllegalStateException(
-                    toString() + " has been invalidated and can no longer produce events.");
+                toString() + " has been invalidated and can no longer produce events.");
         }
 
         /**
@@ -124,15 +128,18 @@ class EventProducer {
         }
     }
 
+
     @Override
     public String toString() {
         return "[EventProducer " + method + "]";
     }
 
+
     @Override
     public int hashCode() {
         return hashCode;
     }
+
 
     @Override
     public boolean equals(Object obj) {

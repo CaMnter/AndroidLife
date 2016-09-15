@@ -40,14 +40,15 @@ final class AnnotatedHandlerFinder {
      * 缓存 @Produce 方法
      */
     private static final ConcurrentMap<Class<?>, Map<Class<?>, Method>> PRODUCERS_CACHE =
-            new ConcurrentHashMap<Class<?>, Map<Class<?>, Method>>();
+        new ConcurrentHashMap<Class<?>, Map<Class<?>, Method>>();
 
     /**
      * Cache event bus subscriber methods for each class.
      * 缓存 @Subscribe 方法
      */
     private static final ConcurrentMap<Class<?>, Map<Class<?>, Set<Method>>> SUBSCRIBERS_CACHE =
-            new ConcurrentHashMap<Class<?>, Map<Class<?>, Set<Method>>>();
+        new ConcurrentHashMap<Class<?>, Map<Class<?>, Set<Method>>>();
+
 
     private static void loadAnnotatedProducerMethods(Class<?> listenerClass,
                                                      Map<Class<?>, Method> producerMethods) {
@@ -55,14 +56,17 @@ final class AnnotatedHandlerFinder {
         loadAnnotatedMethods(listenerClass, producerMethods, subscriberMethods);
     }
 
+
     private static void loadAnnotatedSubscriberMethods(Class<?> listenerClass,
                                                        Map<Class<?>, Set<Method>> subscriberMethods) {
         Map<Class<?>, Method> producerMethods = new HashMap<Class<?>, Method>();
         loadAnnotatedMethods(listenerClass, producerMethods, subscriberMethods);
     }
 
+
     /**
-     * Load all methods annotated with {@link Produce} or {@link Subscribe} into their respective caches for the
+     * Load all methods annotated with {@link Produce} or {@link Subscribe} into their respective
+     * caches for the
      * specified class.
      * 读取目标类的 所有 @Produce 和 @Subscribe方法
      */
@@ -99,8 +103,10 @@ final class AnnotatedHandlerFinder {
                  * 方法参数是否为 1 ，为 1 抛出异常
                  */
                 if (parameterTypes.length != 1) {
-                    throw new IllegalArgumentException("Method " + method + " has @Subscribe annotation but requires "
-                            + parameterTypes.length + " arguments.  Methods must require a single argument.");
+                    throw new IllegalArgumentException(
+                        "Method " + method + " has @Subscribe annotation but requires "
+                            + parameterTypes.length +
+                            " arguments.  Methods must require a single argument.");
                 }
 
                 /**
@@ -108,15 +114,18 @@ final class AnnotatedHandlerFinder {
                  */
                 Class<?> eventType = parameterTypes[0];
                 if (eventType.isInterface()) {
-                    throw new IllegalArgumentException("Method " + method + " has @Subscribe annotation on " + eventType
-                            + " which is an interface.  Subscription must be on a concrete class type.");
+                    throw new IllegalArgumentException(
+                        "Method " + method + " has @Subscribe annotation on " + eventType
+                            +
+                            " which is an interface.  Subscription must be on a concrete class type.");
                 }
 
                 /**
                  * 方法是否public ， 不是public抛出异常
                  */
                 if ((method.getModifiers() & Modifier.PUBLIC) == 0) {
-                    throw new IllegalArgumentException("Method " + method + " has @Subscribe annotation on " + eventType
+                    throw new IllegalArgumentException(
+                        "Method " + method + " has @Subscribe annotation on " + eventType
                             + " but is not 'public'.");
                 }
 
@@ -149,8 +158,10 @@ final class AnnotatedHandlerFinder {
                  * 方法参数是否为 1 ，为 1 抛出异常
                  */
                 if (parameterTypes.length != 0) {
-                    throw new IllegalArgumentException("Method " + method + "has @Produce annotation but requires "
-                            + parameterTypes.length + " arguments.  Methods must require zero arguments.");
+                    throw new IllegalArgumentException(
+                        "Method " + method + "has @Produce annotation but requires "
+                            + parameterTypes.length +
+                            " arguments.  Methods must require zero arguments.");
                 }
 
                 /**
@@ -158,7 +169,7 @@ final class AnnotatedHandlerFinder {
                  */
                 if (method.getReturnType() == Void.class) {
                     throw new IllegalArgumentException("Method " + method
-                            + " has a return type of void.  Must declare a non-void type.");
+                        + " has a return type of void.  Must declare a non-void type.");
                 }
 
                 /**
@@ -170,22 +181,26 @@ final class AnnotatedHandlerFinder {
                  *  返回类型是否是一个接口 ， 是接口则抛出异常
                  */
                 if (eventType.isInterface()) {
-                    throw new IllegalArgumentException("Method " + method + " has @Produce annotation on " + eventType
-                            + " which is an interface.  Producers must return a concrete class type.");
+                    throw new IllegalArgumentException(
+                        "Method " + method + " has @Produce annotation on " + eventType
+                            +
+                            " which is an interface.  Producers must return a concrete class type.");
                 }
 
                 /**
                  *  返回类型是否 为 Void 类型
                  */
                 if (eventType.equals(Void.TYPE)) {
-                    throw new IllegalArgumentException("Method " + method + " has @Produce annotation but has no return type.");
+                    throw new IllegalArgumentException(
+                        "Method " + method + " has @Produce annotation but has no return type.");
                 }
 
                 /**
                  *  方法是否public ， 不是public抛出异常
                  */
                 if ((method.getModifiers() & Modifier.PUBLIC) == 0) {
-                    throw new IllegalArgumentException("Method " + method + " has @Produce annotation on " + eventType
+                    throw new IllegalArgumentException(
+                        "Method " + method + " has @Produce annotation on " + eventType
                             + " but is not 'public'.");
                 }
 
@@ -194,7 +209,8 @@ final class AnnotatedHandlerFinder {
                  *  则抛出异常
                  */
                 if (producerMethods.containsKey(eventType)) {
-                    throw new IllegalArgumentException("Producer for type " + eventType + " has already been registered.");
+                    throw new IllegalArgumentException(
+                        "Producer for type " + eventType + " has already been registered.");
                 }
 
                 /**
@@ -211,6 +227,7 @@ final class AnnotatedHandlerFinder {
         PRODUCERS_CACHE.put(listenerClass, producerMethods);
         SUBSCRIBERS_CACHE.put(listenerClass, subscriberMethods);
     }
+
 
     /**
      * This implementation finds all methods marked with a {@link Produce} annotation.
@@ -252,6 +269,7 @@ final class AnnotatedHandlerFinder {
         return handlersInMethod;
     }
 
+
     /**
      * This implementation finds all methods marked with a {@link Subscribe} annotation.
      * 寻找所有 @Subscribe 方法，封装成 EventProducer（ @Subscribe方法 和 一些数据  ）
@@ -262,7 +280,8 @@ final class AnnotatedHandlerFinder {
          * 拿到目标类
          */
         Class<?> listenerClass = listener.getClass();
-        Map<Class<?>, Set<EventHandler>> handlersInMethod = new HashMap<Class<?>, Set<EventHandler>>();
+        Map<Class<?>, Set<EventHandler>> handlersInMethod
+            = new HashMap<Class<?>, Set<EventHandler>>();
 
         /**
          * 拿到 @Subscribe 缓存Map
@@ -295,6 +314,7 @@ final class AnnotatedHandlerFinder {
 
         return handlersInMethod;
     }
+
 
     private AnnotatedHandlerFinder() {
         // No instances.

@@ -26,12 +26,12 @@ import android.os.Looper;
 public interface ThreadEnforcer {
 
     /**
-     * Enforce a valid thread for the given {@code bus}. Implementations may throw any runtime exception.
+     * Enforce a valid thread for the given {@code bus}. Implementations may throw any runtime
+     * exception.
      *
      * @param bus Event bus instance on which an action is being performed.
      */
     void enforce(Bus bus);
-
 
     /**
      * 其他线程的 ThreadEnforcer
@@ -52,7 +52,8 @@ public interface ThreadEnforcer {
         @Override
         public void enforce(Bus bus) {
             if (Looper.myLooper() != Looper.getMainLooper()) {
-                throw new IllegalStateException("Event bus " + bus + " accessed from non-main thread " + Looper.myLooper());
+                throw new IllegalStateException(
+                    "Event bus " + bus + " accessed from non-main thread " + Looper.myLooper());
             }
         }
     };

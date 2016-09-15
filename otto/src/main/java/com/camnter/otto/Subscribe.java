@@ -25,8 +25,10 @@ import java.lang.annotation.Target;
  * Marks a method as an event handler, as used by {@link AnnotatedHandlerFinder} and {@link Bus}.
  * <p/>
  * <p>The method's first (and only) parameter defines the event type.
- * <p>If this annotation is applied to methods with zero parameters or more than one parameter, the object containing
- * the method will not be able to register for event delivery from the {@link Bus}. Otto fails fast by throwing
+ * <p>If this annotation is applied to methods with zero parameters or more than one parameter, the
+ * object containing
+ * the method will not be able to register for event delivery from the {@link Bus}. Otto fails fast
+ * by throwing
  * runtime exceptions in these cases.
  *
  * @author Cliff Biffle
