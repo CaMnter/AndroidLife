@@ -25,3 +25,10 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    buildToolsVersion = "24.0.2"
+    supportLibVersion = "24.2.0"
+    runnerVersion = "0.5"
+    rulesVersion = "0.5"
+}
