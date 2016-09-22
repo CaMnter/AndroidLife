@@ -169,8 +169,13 @@
         <activity
             android:name=".ui.activity.VolleyActivity"
             android:label="VolleyActivity"/>
-        <activity android:name=".ui.activity.RemoteViewsActivity"
+        <activity
+            android:name=".ui.activity.RemoteViewsActivity"
             android:label="RemoteViewsActivity"/>
+
+        <activity
+            android:name=".ui.activity.jsbridge.JsBridgeActivity"
+            android:label="JsBridgeActivity"/>
 
         <activity
             android:name=".ui.activity.classloader.ClassLoaderActivity"
