@@ -16,6 +16,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_mm_round"
         android:label="@string/app_name"
+        android:hardwareAccelerated="false"
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.MainActivity"

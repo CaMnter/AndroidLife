@@ -3,20 +3,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/js_bridge_button"
-        android:text="load"
-        android:onClick="onButtonClick"
-        android:layout_alignParentBottom="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
 
     <WebView
-        android:layout_above="@id/js_bridge_button"
         android:id="@+id/js_bridge_webview"
         android:layout_width="match_parent"
-        android:visibility="invisible"
         android:layout_height="match_parent"/>
 
 
