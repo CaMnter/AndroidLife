@@ -175,6 +175,7 @@
 
         <activity
             android:name=".ui.activity.jsbridge.JsBridgeActivity"
+            android:hardwareAccelerated="false"
             android:label="JsBridgeActivity"/>
 
         <activity
