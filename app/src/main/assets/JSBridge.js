@@ -1,6 +1,6 @@
 (function (win) {
     var hasOwnProperty = Object.prototype.hasOwnProperty;
-    var JSBridge = win.JSBridge || (win.JSBridge = {});
+    var JsBridge = win.JsBridge || (win.JsBridge = {});
     var JS_BRIDGE_PROTOCOL = 'JsBridge';
     var Inner = {
         callbacks: {},
@@ -37,8 +37,8 @@
         }
     };
     for (var key in Inner) {
-        if (!hasOwnProperty.call(JSBridge, key)) {
-            JSBridge[key] = Inner[key];
+        if (!hasOwnProperty.call(JsBridge, key)) {
+            JsBridge[key] = Inner[key];
         }
     }
 })(window);

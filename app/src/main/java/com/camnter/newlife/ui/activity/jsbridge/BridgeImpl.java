@@ -27,7 +27,7 @@ public class BridgeImpl implements IBridge {
     }
 
 
-    public static void childThrad(WebView webView, JSONObject param, final JsCallback jsCallback) {
+    public static void childThread(WebView webView, JSONObject param, final JsCallback jsCallback) {
         new Thread(new Runnable() {
             @Override public void run() {
                 try {

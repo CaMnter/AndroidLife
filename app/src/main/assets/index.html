@@ -32,7 +32,7 @@
 <ul class="list">
     <li>
         <div>
-            <button onclick="JsBridge.call('bridge','testThread',{},function(res){alert(JSON.stringify(res))})">
+            <button onclick="JsBridge.call('bridge','childThread',{},function(res){alert(JSON.stringify(res))})">
                 子线程回调
             </button>
         </div>

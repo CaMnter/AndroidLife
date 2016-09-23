@@ -30,6 +30,6 @@ public class JsBridgeWebChromeClient extends WebChromeClient {
         super.onJsPrompt(view, url, message, defaultValue, result);
         // Js 层通过在此, 调用到 native 层的 callJava 方法
         result.confirm(JsBridge.callJava(view, message));
-        return false;
+        return true;
     }
 }

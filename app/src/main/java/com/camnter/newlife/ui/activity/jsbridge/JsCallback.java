@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 public class JsCallback {
     private static Handler mHandler = new Handler(Looper.getMainLooper());
-    private static final String JS_CALLBACK_FORMAT = "javascript:JSBridge.onFinish('%s', %s);";
+    private static final String JS_CALLBACK_FORMAT = "javascript:JsBridge.onFinish('%s', %s);";
     private String mPort;
     private WeakReference<WebView> mWebViewRef;
 
