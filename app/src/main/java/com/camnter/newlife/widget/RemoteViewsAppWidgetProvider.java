@@ -91,7 +91,8 @@ public class RemoteViewsAppWidgetProvider extends AppWidgetProvider {
      * 窗口小部件更新
      */
     @SuppressLint("LongLogTag") private void onWidgetUpdate(Context context,
-                                                            AppWidgetManager appWidgetManger, int appWidgetId) {
+                                                            AppWidgetManager appWidgetManger,
+                                                            int appWidgetId) {
 
         Log.i(TAG, "appWidgetId = " + appWidgetId);
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(),

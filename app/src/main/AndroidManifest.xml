@@ -275,6 +275,16 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".widget.RemoteViewsAppWidgetProvider">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_provider_info"/>
+            <intent-filter>
+                <action android:name="com.camnter.newlife.widget.RemoteViewsAppWidgetProvider"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+        </receiver>
+
         <meta-data
             android:name="DEBUG"
             android:label="@string/app_label"
