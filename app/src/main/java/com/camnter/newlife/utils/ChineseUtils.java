@@ -7,7 +7,7 @@ import android.util.Log;
  * Created by：CaMnter
  * Time：2015-12-02 20:17
  */
-public class ChineseUtils {
+public final class ChineseUtils {
 
     private static final String TAG = "ChineseUtil";
     public static String[] spellingString = new String[] { "a", "ai", "an", "ang", "ao", "ba",
