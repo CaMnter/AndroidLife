@@ -2,7 +2,7 @@ package com.camnter.newlife;
 
 import java.util.LinkedList;
 import java.util.List;
-import org.junit.Test;
+import junit.framework.TestCase;
 
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.atLeast;
@@ -18,12 +18,11 @@ import static org.mockito.Mockito.when;
  * Created by：CaMnter
  */
 
-public class MockitoTest {
+public class MockitoTest extends TestCase {
 
     private static final String MOCK_TEXT = "CaMnter";
 
 
-    @Test
     @SuppressWarnings("unchecked")
     public void testList() {
         List mockedList = mock(List.class);
@@ -37,7 +36,6 @@ public class MockitoTest {
     }
 
 
-    @Test
     public void testStub() {
         System.out.println("MockitoTest >>>>>> testStub  ");
         LinkedList mockedList = mock(LinkedList.class);
@@ -61,7 +59,7 @@ public class MockitoTest {
     }
 
 
-    @Test
+    @SuppressWarnings("unchecked")
     public void testArgument() {
         System.out.println("MockitoTest >>>>>> testArgument  ");
         LinkedList mockedList = mock(LinkedList.class);
@@ -73,7 +71,6 @@ public class MockitoTest {
 
 
     @SuppressWarnings("unchecked")
-    @Test
     public void testCount() {
         LinkedList mockedList = mock(LinkedList.class);
         mockedList.add(MOCK_TEXT);
