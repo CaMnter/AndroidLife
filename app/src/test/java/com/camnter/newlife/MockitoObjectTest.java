@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Description：MockitoObjectTest
@@ -32,6 +33,20 @@ public class MockitoObjectTest extends TestCase {
     public void testMockObject() {
         assertNotNull(this.tag);
         assertNotNull(this.contacts);
+    }
+
+    public void testPile(){
+        Contacts contacts = mock(Contacts.class);
+        when(contacts.getHeader())
+            .thenThrow(new RuntimeException("MockitoObjectTest >>>>>> testPile >>>>>> getHeader RuntimeException"))
+            .thenReturn("RuntimeException");
+        try {
+            contacts.getHeader();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("MockitoObjectTest >>>>>> testPile >>>>>> "+contacts.getHeader());
+        System.out.println("MockitoObjectTest >>>>>> testPile >>>>>> "+contacts.getHeader());
     }
 
 }
