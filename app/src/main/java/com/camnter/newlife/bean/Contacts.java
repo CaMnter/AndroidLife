@@ -31,6 +31,11 @@ public class Contacts {
     public boolean top = false;
 
 
+    public void setHeader(String header) {
+        this.header = header;
+    }
+
+
     public String getHeader() {
         if (this.header != null) return this.header;
         if (TextUtils.isEmpty(this.pinyin) || Character.isDigit(this.pinyin.charAt(0))) {

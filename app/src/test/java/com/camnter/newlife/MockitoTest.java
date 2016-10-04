@@ -5,7 +5,10 @@ import com.camnter.newlife.bean.Tag;
 import java.util.LinkedList;
 import java.util.List;
 import junit.framework.TestCase;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -14,9 +17,11 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -169,6 +174,44 @@ public class MockitoTest extends TestCase {
 
 
     /**
+     * 6. 验证顺序
+     */
+    @SuppressWarnings("unchecked")
+    public void test6() {
+        // A. 单个 Mock，方法必须以特定顺序调用
+        List singleMock = mock(List.class);
+
+        // 使用单个 Mock
+        singleMock.add("was added first");
+        singleMock.add("was added second");
+
+        // 为 singleMock 创建 inOrder 检验器
+        InOrder inOrder = Mockito.inOrder(singleMock);
+
+        // 下面将确保 add 方法第一次调用是用 "was added first" ,然后是用 "was added second"
+        inOrder.verify(singleMock).add("was added first");
+        inOrder.verify(singleMock).add("was added second");
+
+        // B. 多个 Mock 必须以特定顺序调用
+        List firstMock = mock(List.class);
+        List secondMock = mock(List.class);
+
+        // 使用 mock
+        firstMock.add("was called first");
+        secondMock.add("was called second");
+
+        //创建 inOrder 对象，传递任意多个需要验证顺序的 mock
+        inOrder = Mockito.inOrder(firstMock, secondMock);
+
+        // 下面将确保 firstMock 在 secondMock 之前调用
+        inOrder.verify(firstMock).add("was called first");
+        inOrder.verify(secondMock).add("was called second");
+
+        // Oh, 另外 A + B 可以任意混合
+    }
+
+
+    /**
      * 7. 确保交互从未在mock对象上发生
      */
     @SuppressWarnings("unchecked")
@@ -201,7 +244,7 @@ public class MockitoTest extends TestCase {
      * 可以看 never() - 这个更直白并且将意图交代的更好。
      */
     @SuppressWarnings("unchecked")
-    public void test8(){
+    public void test8() {
         System.out.println("\nMockitoTest >>>>>> [test8] >>>>>>");
         LinkedList mockedList = mock(LinkedList.class);
 
@@ -215,6 +258,7 @@ public class MockitoTest extends TestCase {
         //verifyNoMoreInteractions(mockedList);
     }
 
+
     /**
      * 9. 创建 mock 的捷径 - @mock 注解
      * 最大限度的减少罗嗦的创建mock对象的代码
@@ -223,7 +267,9 @@ public class MockitoTest extends TestCase {
      */
     @Mock
     private Contacts contacts;
-    public void test9(){
+
+
+    public void test9() {
         System.out.println("\nMockitoTest >>>>>> [test9] >>>>>>");
         // 初始化 有Mock 对象
         MockitoAnnotations.initMocks(this);
@@ -242,9 +288,9 @@ public class MockitoTest extends TestCase {
      * 例如，为了替代游历器可以使用Iterable或简单集合。
      * 那些可以提供存根的自然方式（例如，使用真实的集合）。在少量场景下存根连续调用是很有用的
      */
-    public void testA0(){
+    public void testA0() {
         System.out.println("\nMockitoTest >>>>>> [testA0] >>>>>>");
-        Tag tag  = mock(Tag.class);
+        Tag tag = mock(Tag.class);
         tag.setContent("CaMnter");
         when(tag.getContent())
             .thenThrow(new RuntimeException())
@@ -253,7 +299,7 @@ public class MockitoTest extends TestCase {
         // 第一次调用：抛出运行时异常
         try {
             tag.getContent();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -270,9 +316,9 @@ public class MockitoTest extends TestCase {
      * 还有另外一种有争议的特性，最初没有包含的mockito中。推荐简单用 thenReturn() 或者 thenThrow() 来做
      * 存根， 这足够用来测试/测试驱动任何干净而简单的代码。然而，如果你对使用一般Answer接口的存根有需要
      */
-    public void testA1(){
+    public void testA1() {
         System.out.println("\nMockitoTest >>>>>> [testA1] >>>>>>");
-        final Tag tag  = mock(Tag.class);
+        final Tag tag = mock(Tag.class);
         tag.setContent("CaMnter");
 
         when(tag.getContent()).thenAnswer(new Answer<String>() {
@@ -284,6 +330,116 @@ public class MockitoTest extends TestCase {
         });
         // 下面会 "called with method: getContent"
         System.out.println(tag.getContent());
+    }
+
+
+    /**
+     * 12. doReturn() | doThrow() | doAnswer() | doNothing() | doCallRealMethod() 方法家族
+     * 存根void方法需要when(Object)之外的另一个方式，因为编译器不喜欢括号内的void方法......
+     * doThrow(Throwable...) 替代 stubVoid(Object) 方法来存根void. 主要原因是改善和doAnswer()方法的可读性和一致性。
+     *
+     * 可以使用 doThrow(), doAnswer(), doNothing(), doReturn() 和 doCallRealMethod() 代替响应的使用
+     * when()的调用， 用于任何方法。下列情况是必须的
+     * 1. 存根void方法
+     * 2. 在spy对象上存根方法 (看下面)
+     * 3. 多次存根相同方法, 在测试中间改变mock的行为
+     * 如果喜欢可以用这些方法代替响应的 when()，用于所有存根调用。
+     */
+    public void testA2() {
+        System.out.println("\nMockitoTest >>>>>> [testA2] >>>>>>");
+        LinkedList mockedList = mock(LinkedList.class);
+        doThrow(new RuntimeException("testA2 RuntimeException")).when(mockedList).clear();
+        try {
+            mockedList.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Spy 与 Mock 的区别:
+     * List list = new LinkedList();
+     * List spy = spy(list);
+     *
+     * LinkedList mockedList = mock(LinkedList.class);
+     *
+     * 结论: spy 模拟和真实创建的对象 List。
+     *
+     * 可以创建实际对象的间谍 (spy)。当使用 spy 时，真实方法被调用(除非方法被存根)。
+     * 只能小心而偶尔的使用 spy，例如处理遗留代码。
+     * 在真实对象上做 spy 可以和"部分模拟"的概念关联起来。在1.8版本之前， mockito spy 不是真实的部分模拟。
+     * 理由是我们觉得部分 mock 是代码异味。
+     */
+    @SuppressWarnings("unchecked")
+    public void testA3() {
+        System.out.println("\nMockitoTest >>>>>> [testA3] >>>>>>");
+        List list = new LinkedList();
+        List spy = spy(list);
+
+        // 随意的存根某些方法
+        when(spy.size()).thenReturn(100);
+
+        // 使用 spy 调用真实方法
+        spy.add("one");
+        spy.add("two");
+
+        // 打印 "one" - 列表中的第一个元素
+        System.out.println(spy.get(0));
+
+        // size() 方法是被存根了的 - 打印100
+        System.out.println(spy.size());
+
+        // 随意验证
+        verify(spy).add("one");
+        verify(spy).add("two");
+    }
+
+
+    /**
+     * Spy实际对象时的重要提示！
+     *
+     * 1. 有时使用when(Object) 来做spy的存根是不可能或者行不通的。在这种情况下使用spy请考虑
+     * doReturn|Answer|Throw() 方法家族来做存根。例如：
+     * 2. mockito 不会 将调用代理给被传递进去的实际实例，取而代之的是创建它的一个拷贝。因此如
+     * 果你持有真实实例并和它交互，不要期待spy会感知到这些交互和实际实例的状态影响。推论是说，当
+     * 一个非存根方法在sky上被调用，而不是在真实实例上调用，真实实例不会有任何影响。
+     * 3. 对final方法保持警惕。mockito不mock final方法，因此底线是：当你在一个真实对象上 spy + 你想存根
+     * 一个final方法 = 问题。同样也无法验证这些方法。
+     */
+    public void testA4() {
+        System.out.println("\nMockitoTest >>>>>> [testA4] >>>>>>");
+        List list = new LinkedList();
+        List spy = spy(list);
+
+        //不可能: 真实方法被调用因此 spy.get(0) 会抛出IndexOutOfBoundsException (列表现在还是空的)
+        //when(spy.get(0)).thenReturn("foo");
+
+        //可以使用 doReturn() 来做存根
+        doReturn("foo").when(spy).get(0);
+    }
+
+
+    /**
+     * 15. 为进一步断言捕获参数 (Since 1.8.0)
+     * mockito 用自然 java 风格验证参数的值：使用 equals() 方法。同样这也是推荐的参数匹配的方式因为它使得
+     * 测试干净而简单。但是在某些情况下，在实际验证之后对特定参数做断言是很有用的。
+     *
+     * 警告：推荐在验证时使用ArgumentCaptor，而不是存根。在存根时使用ArgumentCaptor会减少测试的可读性，因
+     * 为捕获器是在断言(验证或者'then')块的外面创建。也可能会降低defect localization(?)因为如果存根方法没
+     * 有被调用那么就没有参数被捕获。
+     * 某种程度上，ArgumentCaptor 和自定义参数匹配器有关联。这两个技术都被用于确认传递给mock的特定参数。但
+     * 是，ArgumentCaptor在下列情况下可能会更适合些：
+     */
+    public void testA5() {
+        System.out.println("\nMockitoTest >>>>>> [testA5] >>>>>>");
+        Contacts mock = mock(Contacts.class);
+        ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
+        mock.setHeader("Y");
+        // 参数捕获
+        verify(mock).setHeader(argument.capture());
+        // 使用 equals 断言
+        assertEquals("Y", argument.getValue());
     }
 
 }
