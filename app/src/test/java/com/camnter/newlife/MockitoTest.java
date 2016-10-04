@@ -1,8 +1,14 @@
 package com.camnter.newlife;
 
+import com.camnter.newlife.bean.Contacts;
+import com.camnter.newlife.bean.Tag;
 import java.util.LinkedList;
 import java.util.List;
 import junit.framework.TestCase;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Matchers.anyInt;
@@ -183,6 +189,101 @@ public class MockitoTest extends TestCase {
 
         //验证其他mock没有交互
         verifyZeroInteractions(mockTwo, mockThree);
+    }
+
+
+    /**
+     * 8. 发现冗余调用
+     * 警告：默写做过很多经典的 expect-run-verify mock 的用户倾向于非常频繁的使用verifyNoMoreInteractions()，
+     * 甚至在每个测试方法中。不推荐在每个测试中都使用verifyNoMoreInteractions()。
+     * verifyNoMoreInteractions()是交互测试工具集中的便利断言。
+     * 仅仅在真的有必要时使用。滥用它会导致定义过度缺乏可维护性的测试。可以在这里找到更多阅读内容。
+     * 可以看 never() - 这个更直白并且将意图交代的更好。
+     */
+    @SuppressWarnings("unchecked")
+    public void test8(){
+        System.out.println("\nMockitoTest >>>>>> [test8] >>>>>>");
+        LinkedList mockedList = mock(LinkedList.class);
+
+        // 使用 mock
+        mockedList.add("one");
+        mockedList.add("two");
+
+        verify(mockedList).add("one");
+
+        // 下面的验证将会失败
+        //verifyNoMoreInteractions(mockedList);
+    }
+
+    /**
+     * 9. 创建 mock 的捷径 - @mock 注解
+     * 最大限度的减少罗嗦的创建mock对象的代码
+     * 让测试类更加可读
+     * 让验证错误更加可读因为 field name 被用于标志mock对象
+     */
+    @Mock
+    private Contacts contacts;
+    public void test9(){
+        System.out.println("\nMockitoTest >>>>>> [test9] >>>>>>");
+        // 初始化 有Mock 对象
+        MockitoAnnotations.initMocks(this);
+        // 初始化 没注解的 对象
+        Tag tag = mock(Tag.class);
+        assertNotNull(tag);
+        assertNotNull(this.contacts);
+    }
+
+
+    /**
+     * 10. 存根连续调用 ( 游历器风格存根 )
+     * 有时我们需要为同一个方法调用返回不同值/异常的存根。
+     * 典型使用场景是mock游历器。
+     * 早期版本的mockito没有这个特性来改进单一模拟。
+     * 例如，为了替代游历器可以使用Iterable或简单集合。
+     * 那些可以提供存根的自然方式（例如，使用真实的集合）。在少量场景下存根连续调用是很有用的
+     */
+    public void testA0(){
+        System.out.println("\nMockitoTest >>>>>> [testA0] >>>>>>");
+        Tag tag  = mock(Tag.class);
+        tag.setContent("CaMnter");
+        when(tag.getContent())
+            .thenThrow(new RuntimeException())
+            .thenReturn("thenReturn CaMnter");
+
+        // 第一次调用：抛出运行时异常
+        try {
+            tag.getContent();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        // 第二次调用: 打印 "thenReturn CaMnter"
+        System.out.println(tag.getContent());
+
+        // 任何连续调用: 还是打印 "thenReturn CaMnter" (最后的存根生效).
+        System.out.println(tag.getContent());
+    }
+
+
+    /**
+     * 11. 带回调的存根
+     * 还有另外一种有争议的特性，最初没有包含的mockito中。推荐简单用 thenReturn() 或者 thenThrow() 来做
+     * 存根， 这足够用来测试/测试驱动任何干净而简单的代码。然而，如果你对使用一般Answer接口的存根有需要
+     */
+    public void testA1(){
+        System.out.println("\nMockitoTest >>>>>> [testA1] >>>>>>");
+        final Tag tag  = mock(Tag.class);
+        tag.setContent("CaMnter");
+
+        when(tag.getContent()).thenAnswer(new Answer<String>() {
+            @Override public String answer(InvocationOnMock invocation) throws Throwable {
+                Object[] args = invocation.getArguments();
+                Object mock = invocation.getMock();
+                return "called with method: " + invocation.getMethod().getName();
+            }
+        });
+        // 下面会 "called with method: getContent"
+        System.out.println(tag.getContent());
     }
 
 }
