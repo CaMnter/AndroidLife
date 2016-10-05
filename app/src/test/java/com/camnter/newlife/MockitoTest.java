@@ -21,6 +21,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -440,6 +441,18 @@ public class MockitoTest extends TestCase {
         verify(mock).setHeader(argument.capture());
         // 使用 equals 断言
         assertEquals("Y", argument.getValue());
+    }
+
+
+    /**
+     * 16. 重置mock(Since 1.8.0)
+     */
+    @SuppressWarnings("unchecked")
+    public void testA6() {
+        List mock = mock(List.class);
+        when(mock.size()).thenReturn(10);
+        mock.add(1);
+        reset(mock);
     }
 
 }
