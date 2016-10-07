@@ -2,11 +2,19 @@ package com.camnter.newlife.utils;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Description：BitmapUtils
@@ -92,6 +100,98 @@ public class BitmapUtils {
         drawable.setBounds(0, 0, width, height);
         drawable.draw(canvas);
         return bitmap;
+    }
+
+    /**
+     * 压缩图片
+     *
+     * @return
+     */
+    @SuppressWarnings("deprecation")
+    public static Bitmap getBitmapCompressed(String pathName, float width, float height) {
+        BitmapFactory.Options newOpts = new BitmapFactory.Options();
+        newOpts.inJustDecodeBounds = true;// 只读边,不读内容
+        BitmapFactory.decodeFile(pathName, newOpts);
+
+        newOpts.inJustDecodeBounds = false;
+
+        int be = Math.min((int) (newOpts.outWidth / width), (int) (newOpts.outHeight / height));
+
+        newOpts.inSampleSize = be;// 设置采样率
+
+        newOpts.inPreferredConfig = Bitmap.Config.RGB_565;// 该模式是默认的,可不设
+        newOpts.inPurgeable = true;// 同时设置才会有效
+        newOpts.inInputShareable = true;// 。当系统内存不够时候图片自动被回收
+
+        Bitmap bitmap = BitmapFactory.decodeFile(pathName, newOpts);
+        // return compressBmpFromBmp(bitmap);//原来的方法调用了这个方法企图进行二次压缩
+        // 其实是无效的,大家尽管尝试
+        return bitmap;
+    }
+
+    public static Bitmap getBitmap(String path) {
+        try {
+            return BitmapFactory.decodeFile(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static Bitmap getBitmap(InputStream is) {
+        try {
+            return BitmapFactory.decodeStream(is);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Bitmap getBitmapCompressed(Bitmap bgimage, double newWidth) {
+        // 获取这个图片的宽和高
+        float width = bgimage.getWidth();
+        float height = bgimage.getHeight();
+        // 创建操作图片用的matrix对象
+        Matrix matrix = new Matrix();
+        // 计算宽高缩放率
+        float scaleWidth = ((float) newWidth) / width;
+        // 缩放图片动作
+        matrix.postScale(scaleWidth, scaleWidth);
+        Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width, (int) height, matrix, true);
+        return bitmap;
+    }
+
+    public static boolean save(String fileName, Bitmap bitmap) {
+        if (fileName == null || bitmap == null) {
+            return false;
+        }
+        boolean savedSuccessfully = false;
+        OutputStream os = null;
+        File imageFile = new File(fileName);
+        File tmpFile = new File(imageFile.getAbsolutePath() + ".tmp");
+        try {
+            if (!imageFile.getParentFile().exists()) {
+                imageFile.getParentFile().mkdirs();
+            }
+            os = new BufferedOutputStream(new FileOutputStream(tmpFile));
+            savedSuccessfully = bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (os != null) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (savedSuccessfully && tmpFile != null && !tmpFile.renameTo(imageFile)) {
+                savedSuccessfully = false;
+            }
+            if (!savedSuccessfully) {
+                tmpFile.delete();
+            }
+        }
+        return savedSuccessfully;
     }
 
 }
