@@ -1,6 +1,7 @@
 /*
  * 构建文件示例
  *
+ *
  * buildscript { ... } 配置了用于驱动构建的代码。上述代码声明了项目使用 jCenter 仓库，并且声明了一个 jCenter 文件的 classpath。
  * 该文件声明了项目的 Android Gradle 插件版本为 2.2.0。
  *

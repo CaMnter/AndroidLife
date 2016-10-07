@@ -5,10 +5,10 @@
  * 构建工具，构建过程基于 Task）。
  * Java 插件和 Android 插件都会创建以下 Task:
  *
- * assemble 组合项目所有输出任务
- * check 执行所有检查任务
- * build 执行 assemble 和 check 两个 task 的所有工作
- * clean 会清空项目的输出
+ *  assemble 组合项目所有输出任务
+ *  check 执行所有检查任务
+ *  build 执行 assemble 和 check 两个 task 的所有工作
+ *  clean 会清空项目的输出
  *
  * 实际上 assemble，check 和 build 这三个 task 不做任何事情。它们只是一个 Task 标志，用来告诉 plugin 添
  * 加实际需要执行的 task 去完成这些工作。
@@ -19,11 +19,11 @@
  *
  * 在命令行环境中，你可以执行以下命令来获取更多高级别的 task：
  *
- * gradle tasks
+ *  gradle tasks
  *
  * 查看所有 task 列表和它们之间的依赖关系可以执行以下命令：
  *
- * gradle tasks --all
+ *  gradle tasks --all
  *
  *
  * 注意：Gradle 会自动监听 task 声明的输入和输出。
