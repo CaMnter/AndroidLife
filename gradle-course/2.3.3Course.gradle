@@ -24,7 +24,7 @@
  *
  * 提示: Gradle 在命令行上支持驼峰命名法的 task 简称，例如，执行
  *
- *  gralde aR
+ *  gradle aR
  *
  * 等同与输入
  *
