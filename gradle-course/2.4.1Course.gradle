@@ -12,7 +12,8 @@
  *  testApplicationId（测试应用的包名）
  *  testInstrumentationRunner
  *
- * 可查看 Android Plugin DSL Reference 了解可配置的属性以及它们的默认值。
+ * 可查看 Android Plugin DSL Reference (http://google.github.io/android-gradle-dsl/current/)
+ * 了解可配置的属性以及它们的默认值。
  * 在构建文件中定义的强大之处在于它是动态的。例如，可以从一个文件中或者其它自定义的逻辑代码中读取版本信息：
  *
  * 注意: 不要使用在给定范围内同名的 getter 方法，否则可能引起冲突。例如，在 defaultConfig{...} 中调用
