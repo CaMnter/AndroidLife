@@ -1,0 +1,35 @@
+/*
+ * Manifest 属性
+ *
+ *
+ * 通过 DSL 可以配置以下 manifest 属性：
+ *
+ *  minSdkVersion
+ *  targetSdkVersion
+ *  versionCode
+ *  versionName
+ *  applicationId（有效的包名--查看 ApplicationId 与 PackageName 了解更多信息）
+ *  testApplicationId（测试应用的包名）
+ *  testInstrumentationRunner
+ *
+ * 可查看 Android Plugin DSL Reference 了解可配置的属性以及它们的默认值。
+ * 在构建文件中定义的强大之处在于它是动态的。例如，可以从一个文件中或者其它自定义的逻辑代码中读取版本信息：
+ *
+ * 注意: 不要使用在给定范围内同名的 getter 方法，否则可能引起冲突。例如，在 defaultConfig{...} 中调用
+ * getVersionName() 将会自动调用 defaultConfig.getVersionName() 方法而不是自定义的 getVersionName() 方法。
+ */
+apply plugin: 'com.android.application'
+def computeVersionName() {
+    // ...
+}
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        versionCode 12
+        versionName computeVersionName()
+        minSdkVersion 16
+        targetSdkVersion 23
+    }
+}
