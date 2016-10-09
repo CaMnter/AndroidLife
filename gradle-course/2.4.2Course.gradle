@@ -1,0 +1,66 @@
+/*
+ * 构建类型
+ *
+ * 默认情况下，Android Plugin 会自动给项目构建 debug 和 release 版本。两个版本的区别在于能否在安全设备
+ * （非 dev）上调试，以及 APK 如何签名。debug 使用通过通用的 name/password 对生成的密钥证书进行签名
+ * （为了防止在构建过程中出现认证请求）。release 在构建过程中不进行签名，需要自行签名。
+ *
+ * 这些配置是通过 BuildType 对象来完成的。默认情况下，debug 和 release 实例都会被创建。Android plugin 允
+ * 许像创建其他 Build Type 一样自定义这两种类型。在 buildTypes 的 DSL 容器中进行配置：
+ */
+apply plugin: 'com.android.application'
+android {
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
+
+        jnidebug {
+            initWith(buildTypes.debug)
+            // Deprecated
+//            packageNameSuffix ".jnidebug"
+            applicationIdSuffix ".jnidebug"
+            jnidebugBuild true
+        }
+    }
+    sourceSets.jnidebug.setRoot('foo/jnidebug')
+}
+/*
+ * 上面的代码片段实现了以下功能：
+ *
+ *  1.配置默认的 debug Build Type:
+ *      设置包名为 <app appliationId>.debug，以便能够在同一个设备上安装 debug 和 release 版的 apk
+ *  2.创建了名为 jnidebug 的新 BuildType，并且以 debug 的配置作为默认配置。
+ *  3.继续配置 jnidebug，开启了 JNI 组件的 debug 功能，并添加了包名后缀。
+ *
+ * 可以在 buildTypes 标签下添加新的元素来创建新的 Build Types ，并且通过调用 initWith() 或者直接使用闭包
+ * 来配置它。查看 DSL Reference (http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.BuildType.html)
+ * 了解 build type 中可以配置的属性。
+ *
+ * 除了用于修改构建属性外，Build Types 还能用于添加特定的代码及资源。每个 Build Type 都会有匹配的 sourceSet。
+ * 默认的路径为 src/<buildtypename>/，例如，src/debug/java 目录的资源只会编译于 debug APK 中。这意味着
+ * BuildType 名称不能是 main 或者 androidTest（因为它们是由 plugin 内部实现的），并且他们都必须是唯一的。
+ *
+ * 跟其他 sourceSet 设置一样，Build Type 的 source set 路径也可以重新定向：
+ *
+ * android {
+ *   sourceSets.jnidebug.setRoot('foo/jnidebug')
+ * }
+ *
+ * 另外，每个 Build Type 都会创建一个新的 assemble<BuildTypeName> 任务。
+ * 例如：assembleDebug。当 debug 和 release 构建类型被预创建的时候，assembleDebug 和 assembleRelease 会
+ * 被自动创建。同样的，上面提到的 build.gradle 代码片段中也会创建 assembleJnidebug task，并且 assemble 会
+ * 像依赖 assembleDebug 和 assembleRelease 一样依赖于 assembleJnidebug。
+ *
+ * 提示：你可以在终端下输入 gradle aJ 去运行 assembleJnidebug task。
+ *
+ * 使用场景：
+ *  1.debug 模式下才用到的权限
+ *  2.自定义的 debug 实现
+ *  3.为 debug 模式使用不同的资源（例如，当一个资源的值由绑定的证书决定）
+ *
+ * BuildType 的代码和资源会在以下场景中被用到
+ *  1.manifest 将被合并到 app 的 manifest
+ *  2.代码只是换了一个源文件夹
+ *  3.资源将叠加到 main 的资源中，并替换已存在的资源
+ */
