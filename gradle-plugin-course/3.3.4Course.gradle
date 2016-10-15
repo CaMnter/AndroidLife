@@ -1,0 +1,48 @@
+/*
+ * Library 项目发布
+ *
+ *
+ * 默认 Library 只会发布 release variant（变种）版本。该版本将会被所有引用它的项目使用，无论编译出多少个
+ * 版本。由于 Gradle 的限制，我们正在努力解决这个问题。你可以控制哪一个 Variant 版本作为发行版：
+ *
+ * android {
+ *      defaultPublishConfig "debug"
+ * }
+ *
+ * 注意这里的发布配置对应的值是完整的 variant 版本名称。release，debug 只适用于项目中没有其它 flavor（特性）
+ * 时使用。如果想要用其它使用了 flavor 的 variant 版本取代默认的发布版本，你可以：
+ *
+ * android {
+ *      defaultPublishConfig "flavor1Debug"
+ * }
+ *
+ * 也可以发布 Library 项目的所有 variant 版本。我们计划在一般的 项目依赖项目（类似于前面所述）情况下
+ * 允许这种做法，但是由于 Gradle 的限制（我们在努力克服这问题）现在还不太可能。
+ * 默认情况下不会发布所有 variant 版本，但可以通过以下代码启用：
+ *
+ * android {
+ *      publishNonDefault true
+ * }
+ *
+ * 发布多个 variant 版本意味着发布多个 aar 文件而不是一个 aar 文件包含所有 variant 版本的资源。每个 aar 包
+ * 都只包含一个 variant 版本。发布一个 variant 版本意味着将对应的 aar 文件作为 Gradle 项目的输出文件。无论
+ * 是发布到 maven 仓库，还是其它项目需要依赖该 Library 项目都可以直接使用该 aar。
+ *
+ * Gradle 有默认文件的概念。当添加以下配置后就会自动使用：
+ *
+ *  compile project(':libraries:lib2')
+ *
+ * 添加其它依赖，则需要指定具体使用哪一个：
+ *
+ * dependencies {
+ *      flavor1Compile project(path: ':lib1', configuration: 'flavor1Release')
+ *      flavor2Compile project(path: ':lib1', configuration: 'flavor2Release')
+ * }
+ *
+ * 重要：注意已发布的 configuration 是一个完整的 variant 版本，其中包括了 build type，并且需要像上面那样被
+ * 引用。
+ *
+ * 重要：当发布配置非默认时，Maven 发布插件将会发布其它 variant 版本作为扩展包（含 classifier）。意思是指
+ * 不能真正符合发布到 Maven 仓库。应该发布只含一个 variant 版本的 aar 到仓库中，或者发布所有配置以支持跨项
+ * 目依赖。
+ */
