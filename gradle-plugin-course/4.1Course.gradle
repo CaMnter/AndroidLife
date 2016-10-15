@@ -1,0 +1,9 @@
+/*
+ * 单元测试
+ *
+ *
+ * Android Studio 添加了单元测试支持，详细请看 Unit testing support（ https://developer.android.com/training/testing/start/index.html ）。
+ *
+ * 本章的其余部分描述的是 “instrumentation tests”。利用 Instrumentation 测试框架可以构建独立的测试 APK 并
+ * 运行在真实设备（或模拟器）中进行测试。
+ */
