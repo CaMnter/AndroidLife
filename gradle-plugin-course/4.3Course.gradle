@@ -1,0 +1,17 @@
+/*
+ * 解决 main APK 与 test APK 之间的冲突
+ *
+ *
+ * 当 instrumentation 测试用例运行时，main APK 与 test APK 共享相同的 classpath。如果 main APK 与 test
+ * APK 使用相同的库（例：Guava）但版本不同的时候，Gradle 将会构建失败。如果 Gradle 没有对这部分问题进行处
+ * 理（译注：估计这里是指旧版本 Gradle 没处理这个问题，但我用 0.10.+ 的 android plugin、1.11 的 gradle 也
+ * 没出现构建失败），你的应用在测试和正常运行过程中会出现不同的行为（包括崩溃的表现也可能不一样）。
+ *
+ * 为了构建成功，需确定使用了相同版本的库。如果是由于间接依赖（没有在你的 build.gradle 提及的库）而导致构建
+ * 错误，只需添加对应的新版本库依赖到配置中（"compile" 或 "androidTestCompile"），你也可以使用 Gradle's
+ * resolution strategy mechanism （https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.ResolutionStrategy.html）
+ * 来解决错误。你可以通过运行 ./gradlew :app:dependencies 及 ./gradlew :app:androidDependencies 查阅依赖树形图。
+ *
+ * Gradle's resolution strategy mechanism，是 Gradle 用于定义解析依赖策略的 API，可用于强制指定依赖库的
+ * 版本、库的替代策略、冲突解决、库缓存本地的时间等
+ */
