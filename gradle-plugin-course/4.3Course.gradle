@@ -10,7 +10,11 @@
  * 为了构建成功，需确定使用了相同版本的库。如果是由于间接依赖（没有在你的 build.gradle 提及的库）而导致构建
  * 错误，只需添加对应的新版本库依赖到配置中（"compile" 或 "androidTestCompile"），你也可以使用 Gradle's
  * resolution strategy mechanism （https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.ResolutionStrategy.html）
- * 来解决错误。你可以通过运行 ./gradlew :app:dependencies 及 ./gradlew :app:androidDependencies 查阅依赖树形图。
+ * 来解决错误。你可以通过运行
+ *
+ *    ./gradlew :app:dependencies 及 ./gradlew :app:androidDependencies
+ *
+ *查阅依赖树形图。
  *
  * Gradle's resolution strategy mechanism，是 Gradle 用于定义解析依赖策略的 API，可用于强制指定依赖库的
  * 版本、库的替代策略、冲突解决、库缓存本地的时间等

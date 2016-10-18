@@ -20,9 +20,11 @@
  * getVersionName() 将会自动调用 defaultConfig.getVersionName() 方法而不是自定义的 getVersionName() 方法。
  */
 apply plugin: 'com.android.application'
+
 def computeVersionName() {
     // ...
 }
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
