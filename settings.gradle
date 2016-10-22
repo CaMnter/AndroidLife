@@ -1,4 +1,4 @@
-include ':app',
+include ':app', ':groovy-life',
         ':gradle-plugin-course',
         ':hotfix',
         ':buildsrc',

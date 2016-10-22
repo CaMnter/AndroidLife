@@ -52,6 +52,10 @@ android {
         abortOnError false
     }
 
+    testOptions {
+        resultsDir = "${project.buildDir}/life/results"
+    }
+
     sourceSets {
         main {
             assets.srcDirs = ['src/main/assets', 'src/main/assets/']
