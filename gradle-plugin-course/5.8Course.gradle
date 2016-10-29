@@ -1,0 +1,30 @@
+/*
+ * BuildConfig
+ *
+ *
+ * 在编译时，Android Studio 会生成一个名为 BuildConfig 的类，它包含了一些编译特定 variant 时使用到的常量
+ * 指。你可以通过检查这些常量的值来改变不同的 variant 的行为，例如：
+ *
+ *      private void javaCode() {
+ *          if (BuildConfig.FLAVOR.equals("paidapp")) {
+ *              doIt();
+ *          }else {
+ *              showOnlyInPaidAppDialog();
+ *          }
+ *      }
+ *
+ * BuildConfig 包含的值如下：
+ *
+ *      boolean DEBUG —— 当前构建是否开启了 debuggable
+ *      int VERSION_CODE
+ *      String VERSION_NAME
+ *      String APPLICATION_ID
+ *      String BUILD_TYPE —— build type 的名字，例："release"
+ *      String FLAVOR —— flavor 的名字，例："paidapp"
+ *
+ * 如果项目使用了 flavor dimensions，会添加额外的值。按照之前的示例，则有如下 BuildConfig：
+ *
+ *      String FLAVOR = "armFreeapp"
+ *      String FLAVOR_abi = "arm"
+ *      String FLAVOR_version = "freeapp"
+ */
