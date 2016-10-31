@@ -1,0 +1,18 @@
+/*
+ * 清理资源
+ *
+ * 通过修改 build.gradle 文件来使得构建过程中自动移除未使用过的资源。查看 Resource Shrinking （ https://developer.android.com/studio/build/shrink-code.html ）
+ * 文档了解详细信息。
+ */
+apply plugin: 'com.android.application'
+android {
+    // ...
+    buildTypes {
+        release {
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro'
+        }
+    }
+}
