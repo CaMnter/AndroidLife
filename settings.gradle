@@ -1,4 +1,5 @@
-include ':app', ':groovy-life',
+include ':app',
+        ':groovy-life',
         ':gradle-plugin-course',
         ':hotfix',
         ':buildsrc',
@@ -10,3 +11,5 @@ include ':app', ':groovy-life',
         ':otto',
         ':volley',
         ':agera-1.0.0'
+
+println '>>>>>> AndroidLife >>>>>> setting.gradle'
