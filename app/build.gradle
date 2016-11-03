@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'com.neenbedankt.android-apt'
+//apply from: rootProject.getRootDir().getAbsolutePath() + "/common.gradle"
 //apply plugin: RocooFixPlugin
 
 def releaseTime() {
