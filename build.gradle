@@ -1,13 +1,17 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
+apply plugin: 'java'
 buildscript {
     repositories {
         jcenter()
         mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        //        ivy {
+        //         URL can refer to a local directory
+        //        maven { url '// url "../local-repo"' }
+        //        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0-rc1'
+        classpath 'com.android.tools.build:gradle:2.2.2'
         // https://github.com/KeepSafe/dexcount-gradle-plugin
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.5.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
@@ -32,3 +36,319 @@ ext {
     runnerVersion = "0.5"
     rulesVersion = "0.5"
 }
+
+
+
+println '>>>>>> AndroidLife >>>>>> build.gradle'
+task testA {
+    println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testA]'
+}
+/*
+ * << 替换 doLast
+ * 没有加 << ，这个任务在脚本初始化 initialization 阶段
+ * 加 << ，在 gradle actionTask 后才执行
+ *
+ * 没有加 << ，闭包在 task 函数返回前会执行
+ * 加了 << ，则变成调用 actionTask.doLast()，所以会等到 gradle actionTask 时执行
+ */
+task testB << {
+    println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testB]'
+}
+task testC {
+    doFirst {
+        println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testC] >>>>>> [doFirst]'
+    }
+    doLast {
+        println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testC] >>>>>> [doLast]'
+    }
+    println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testC] >>>>>> end'
+}
+
+
+// task 依赖
+task testD(dependsOn: 'testE') << {
+    println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testD]'
+}
+task testE << {
+    println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testE]'
+}
+
+// 动态 task
+4.times { int count ->
+    task "test$count" << {
+        println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [task$count]"
+    }
+}
+test1.dependsOn test2, test3
+
+// 加入行为
+task testF << {
+    println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testF]'
+}
+testF.doFirst {
+    println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testF] >>>>>> [doFirst]'
+}
+testF.doLast {
+    println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testF] >>>>>> [doLast]'
+}
+testF << {
+    println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testF] >>>>>> [ testF << ]'
+}
+
+// task 作为属性
+task testG << {
+    println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testG]'
+}
+testG.doLast {
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testG] >>>>>> [doLast]: $testG.name task"
+}
+
+// 自定义 task 属性
+// 这里定义属性的时候不能 << ，必须在在 testI 之前定义好。testI 是 << 定义的
+task testH {
+    ext.camnter = 'camnter'
+}
+task testI << {
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testI]: $testH.camnter"
+}
+
+// 默认 task，调用 :groovy-life:testI
+defaultTasks 'testI'
+
+task testJ << {
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testJ]: '$buildFile.name' in '$buildFile.parentFile.name'"
+}
+
+
+task testK << {
+    // Project 实例对象
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testK] >>>>>> [name]: $name"
+    // 项目目录的名称
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testK] >>>>>> [project.name]: $project.name"
+    // 项目的绝对路径
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testK] >>>>>> [project.path]: $project.path"
+    // 项目描述
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testK] >>>>>> [project.description]: $project.description"
+    // 包含构建脚本的目录
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testK] >>>>>> [project.projectDir]: $project.projectDir"
+    // projectDir / build
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testK] >>>>>> [project.build]: $project.buildFile"
+    // 未具体说明
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testK] >>>>>> [project.group]: $project.group"
+    // 未具体说明
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testK] >>>>>> [project.version]: $project.version"
+    // Ant 实例对象
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testK] >>>>>> [project.ant]: $project.ant"
+
+    // rootProject.getRootDir().getAbsolutePath()
+    def rootAbsolutePath = rootProject.getRootDir().getAbsolutePath()
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testK] >>>>>> [rootAbsolutePath]: $rootAbsolutePath"
+}
+
+task testL << {
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testL] >>>>>> [gradle.gradle]: $gradle.gradle"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testL] >>>>>> [gradle.gradleHomeDir]: $gradle.gradleHomeDir"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testL] >>>>>> [gradle.gradleUserHomeDir]: $gradle.gradleUserHomeDir"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testL] >>>>>> [gradle.gradleVersion]: $gradle.gradleVersion"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testL] >>>>>> [gradle.parent]: $gradle.parent"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testL] >>>>>> [gradle.pluginManager]: $gradle.pluginManager"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testL] >>>>>> [gradle.plugins]: $gradle.plugins"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testL] >>>>>> [gradle.rootProject]: $gradle.rootProject"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testL] >>>>>> [gradle.startParameter]: $gradle.startParameter"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testL] >>>>>> [gradle.taskGraph]: $gradle.taskGraph"
+}
+
+// 局部变量
+def camnter = 'camnter'
+task copy(type: Copy) {
+    into camnter
+}
+
+// 扩展变量
+ext {
+    camnter = 'camnter'
+    sign = 'Save you from anything'
+}
+task testM << {
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testM] >>>>>> [ext.camnter]: $camnter"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testM] >>>>>> [ext.sign]: $sign"
+}
+
+// 定位文件
+File volleyIgnoreFile = file('volley/.gitignore')
+File volleyIgnoreAbsoluteFile = volleyIgnoreFile.absoluteFile
+File volleyIgnoreFileByFile = file(new File('volley/.gitignore'))
+task testN << {
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testN] >>>>>> [volley/.gitignore]: $volleyIgnoreFile"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testN] >>>>>> [volley/.gitignore - AbsoluteFile]: $volleyIgnoreAbsoluteFile"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testN] >>>>>> [volley/.gitignore - ByFile]: $volleyIgnoreFileByFile"
+}
+
+// 文件集合
+def printlnFiles = { FileCollection fileCollection ->
+    fileCollection.each {
+        File file -> println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testO]: $file.name"
+    }
+    println ''
+}
+task testO {
+    FileCollection fileCollection = files('volley/.gitignore',
+            new File('volley/build.gradle'),
+            ['volley/proguard-rules.pro', 'volley/volley.iml'])
+    println '\n>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testO] >>>>>> [fileCollection]:'
+    printlnFiles(fileCollection)
+
+    //  文件集合转换
+    Set setA = fileCollection.files
+    Set setB = fileCollection as Set
+    List list = fileCollection as List
+    String fileCollectionPath = fileCollection.asPath
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testO] >>>>>> [fileCollection.files]: $setA"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testO] >>>>>> [fileCollection as Set]: $setB"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testO] >>>>>> [fileCollection as List]: $list"
+    println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testO] >>>>>> [fileCollection.asPath]: $fileCollectionPath"
+
+    def decreaseCollection = fileCollection - files('volley/.gitignore')
+    println '\n>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testO] >>>>>> [decreaseCollection]:'
+    printlnFiles.call(decreaseCollection)
+    def increaseCollection = fileCollection + files('volley/.gitignore')
+    println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testO] >>>>>> [increaseCollection]:'
+    printlnFiles.call(increaseCollection)
+}
+
+// 文件树
+FileTree treeA = fileTree(dir: 'agera-1.0.0/src/main')
+
+treeA.include '**/*.java'
+treeA.exclude '**/Abstract*'
+
+// 各种 FileTree 实例化
+treeA = fileTree('agera-1.0.0/src/main').include()
+treeA = fileTree('agera-1.0.0/src/main') {
+    include '**/*.java'
+    exclude '**/Abstract*'
+}
+treeA = fileTree(dir: 'agera-1.0.0/src/main', include: '**/*.java')
+treeA = fileTree(dir: 'agera-1.0.0/src/main', include: '**/*.java', exclude: '**/Abstract*')
+treeA = fileTree(dir: 'agera-1.0.0/src/main', includes: ['**/*.java', '**/*.xml'],
+        excludes: ['**/Abstract*'])
+
+// 遍历文件树
+def fileTreeEach = { FileTree t ->
+    println "\n>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testP] >>>>>> [FileTree]: ${t.toString()}"
+    t.each { File file ->
+        println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testP] >>>>>> $file.name"
+    }
+}
+
+FileTree treeB = treeA.matching {
+    include 'AndroidManifest.xml'
+}
+
+FileTree treeC = treeA + fileTree(dir: 'agera-1.0.0/src/test')
+
+task testP << {
+    fileTreeEach(treeA)
+    fileTreeEach.call(treeB)
+    fileTreeEach.call(treeC)
+    println "\n>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testP] >>>>>> [FileTree - visit]: "
+    treeA.visit { FileVisitDetails details -> println "$details.relativePath >>>>>> $details.file" }
+}
+
+// Zip and tar
+final def projectBaseDir = System.getProperty('user.dir')
+def checkFile = { File file ->
+    if (file == null) return
+    if (!file.parentFile.exists()) file.mkdirs()
+    if (file.exists()) file.delete()
+    file.createNewFile()
+}
+def makeWriteTree = { String baseDir, String... pathArray ->
+    println "\n>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testQ] >>>>>> [makeWriteTree]: "
+    pathArray.each { String fileName ->
+        final def makeFile = new File(baseDir, fileName)
+        println "\n>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testQ] >>>>>> [makeWriteTree.absolutePath]: $makeFile.absolutePath"
+        checkFile.call(makeFile)
+    }
+}
+final String zipTreeName = 'gradle-script-test/gradle-test.zip'
+final String tarTreeName = 'gradle-script-test/gradle-test.tar'
+task testQ << {
+    // 创建 zip
+    FileTree zipTree = zipTree(zipTreeName)
+    // 创建 tar
+    FileTree tarTree = tarTree(tarTreeName)
+    // Make file
+    makeWriteTree.call(projectBaseDir, zipTreeName, tarTreeName)
+    //    FileTree gzipTar = tarTree(resources.gzip('LICENSE'))
+}
+
+// 复制目录下的所有文件和文件夹
+task testR(type: Copy) {
+    from 'agera-1.0.0/src/main/java'
+    into 'gradle-script-test'
+}
+
+task copyTaskWithPatterns(type: Copy) {
+    from 'groovy-life/src/main/groovy'
+    into 'gradle-script-test'
+    include 'Groovy*.groovy'
+    exclude {
+        details -> details.file.name.endsWith('.groovy') && details.file.text.startsWith('Writer')
+    }
+}
+
+task testS(type: Copy) {
+    // toolbox 目录下的文件
+    from 'volley/src/main/java/con/android/volley/toolbox'
+    // 复制一个单独的文件
+    from 'volley/src/main/java/AndroidManifest.xml'
+    // 复制 copyTask 任务的输出文件
+    from testR
+    // 显式使用任务的 outputs 属性复制任务的输出文件
+    from copyTaskWithPatterns.outputs
+    // 复制一个 ZIP 压缩文件的内容
+    //    from zipTree('gradle-script-test/gradle-test.zip')
+    into 'gradle-script-test'
+}
+
+task testT << {
+    copy {
+        from 'app'
+        into 'gradle-script-test'
+        include 'test.gradle'
+    }
+}
+
+// 复制后重命名
+task testU(type: Copy) {
+    from 'groovy-life/src/main/groovy'
+    into 'gradle-script-test'
+    // 使用闭包映射文件名
+    rename { String fileName -> fileName.replace('.groovy', 'Temp.groovy') }
+    // 使用正则表达式映射文件名
+    rename '(.+).groovy(.+)', '$1$2'
+    rename(/(.+).groovy(.+)/, '$1$2')
+}
+
+// 文件同步
+task testV(type: Sync) {
+    from configurations.runtime
+    into "$buildDir/libs"
+    println "\n>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testV] >>>>>> [buildDir/libs]: buildDir/libs"
+}
+
+// 创建 Zip、Tar、Jar、War、Ear
+task testW(type: Zip) {
+    println "\n>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testW] >>>>> [configurations.runtime]: $configurations.runtime "
+    from 'groovy-life/src/main/groovy'
+    into('libs') {
+        from configurations.runtime
+    }
+}
+
+// apply from: 'save.gradle'            脚本插件
+// apply plugin: 'groovy'               二进制插件
+// apply plugin: "com.jfrog.bintray"    路径
+
+

@@ -1,4 +1,12 @@
 include ':app',
+
+        ':instant-run:annotations',
+        ':instant-run:instant-run-annotations',
+        ':instant-run:instant-run-common',
+        ':instant-run:instant-run-client',
+        ':instant-run:instant-run-runtime',
+        ':instant-run:instant-run-server',
+
         ':groovy-life',
         ':gradle-plugin-course',
         ':hotfix',
