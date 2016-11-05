@@ -19,6 +19,7 @@ apply plugin: 'jacoco'
 
 dependencies {
     compile project(':instant-run:instant-run-common')
+    compile 'com.google.guava:guava:18.0'
 //    compile project(':instant-run:ddmlib')
     testCompile 'junit:junit:4.12'
 }
