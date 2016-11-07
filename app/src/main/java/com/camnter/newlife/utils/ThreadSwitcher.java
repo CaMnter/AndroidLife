@@ -35,15 +35,10 @@ public final class ThreadSwitcher extends Thread {
 
     private static final int MAX_SIZE = 16;
     private static final int GLOBAL_MAX_SIZE = 206;
+    private volatile boolean isBreak = false;
 
     private final BlockingQueue<Runnable> runnableQueue;
     private static final Handler MAIN_THREAD_HANDLER = new Handler(Looper.getMainLooper());
-    private static final Break BREAK_TASK = new Break() {
-        @Override public void run() {
-
-        }
-    };
-
 
     private static class GlobalThreadSwitcher {
         private static final ThreadSwitcher GLOBAL_THREAD_SWITCHER = new ThreadSwitcher(
@@ -95,7 +90,7 @@ public final class ThreadSwitcher extends Thread {
 
 
     public ThreadSwitcher breakTask() {
-        this.runnableQueue.add(BREAK_TASK);
+        this.isBreak = true;
         return this;
     }
 
@@ -105,17 +100,19 @@ public final class ThreadSwitcher extends Thread {
         Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
         while (true) {
             try {
-                final Runnable task = this.runnableQueue.take();
+                if (isBreak) {
+                    isBreak = false;
+                    runnableQueue.clear();
+                    if (this != GlobalThreadSwitcher.GLOBAL_THREAD_SWITCHER) {
+                        return;
+                    }
+                }
+                final Runnable task = runnableQueue.take();
                 if (task != null) {
                     if (task instanceof IO) {
                         task.run();
                     } else if (task instanceof UI) {
                         MAIN_THREAD_HANDLER.post(task);
-                    } else if (task instanceof Break) {
-                        this.runnableQueue.clear();
-                        if (this != GlobalThreadSwitcher.GLOBAL_THREAD_SWITCHER) {
-                            return;
-                        }
                     }
                 }
             } catch (InterruptedException e) {
