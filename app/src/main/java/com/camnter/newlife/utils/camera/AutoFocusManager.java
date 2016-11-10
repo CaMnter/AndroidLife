@@ -30,7 +30,7 @@ public class AutoFocusManager implements Camera.AutoFocusCallback {
     private boolean isFocusing;
     private final boolean autoFocus;
     private final Camera camera;
-    private AsyncTask<?, ?, ?> outstandingTask;
+    private AsyncTask<?, ?, ?> intervalTask;
 
 
     public AutoFocusManager(@NonNull final Camera camera) {
@@ -48,7 +48,7 @@ public class AutoFocusManager implements Camera.AutoFocusCallback {
     public synchronized void startFocus() {
         Log.i(TAG, "[start()]:......");
         if (this.autoFocus) {
-            this.outstandingTask = null;
+            this.intervalTask = null;
             if (!this.isStopped && !this.isFocusing) {
                 try {
                     this.camera.autoFocus(this);
@@ -92,11 +92,11 @@ public class AutoFocusManager implements Camera.AutoFocusCallback {
      * 执行聚焦间隔
      */
     private synchronized void runFocusInterval() {
-        if (!this.isStopped && this.outstandingTask == null) {
+        if (!this.isStopped && this.intervalTask == null) {
             AutoFocusIntervalTask autoFocusIntervalTask = new AutoFocusIntervalTask();
             try {
                 autoFocusIntervalTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                this.outstandingTask = autoFocusIntervalTask;
+                this.intervalTask = autoFocusIntervalTask;
             } catch (RejectedExecutionException e) {
                 Log.e(TAG, "[focus]\t\t\tCould not request auto focus", e);
             }
@@ -108,11 +108,11 @@ public class AutoFocusManager implements Camera.AutoFocusCallback {
      * 取消聚焦间隔控制任务
      */
     private synchronized void cancelAutoFocusTask() {
-        if (this.outstandingTask != null) {
-            if (this.outstandingTask.getStatus() != AsyncTask.Status.FINISHED) {
-                this.outstandingTask.cancel(true);
+        if (this.intervalTask != null) {
+            if (this.intervalTask.getStatus() != AsyncTask.Status.FINISHED) {
+                this.intervalTask.cancel(true);
             }
-            this.outstandingTask = null;
+            this.intervalTask = null;
         }
     }
 
@@ -134,3 +134,4 @@ public class AutoFocusManager implements Camera.AutoFocusCallback {
     }
 
 }
+
