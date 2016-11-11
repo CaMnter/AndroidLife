@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/id_card_camera_operation_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="#ff000000">
+
+        <Button
+            android:id="@+id/id_card_camera_take_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="6dp"
+            android:text="拍照"/>
+
+        <Button
+            android:id="@+id/id_card_camera_light_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="6dp"
+            android:text="闪光"/>
+
+    </RelativeLayout>
+
+    <SurfaceView
+        android:id="@+id/id_card_camera_surface_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/id_card_camera_operation_layout"/>
+
+    <com.camnter.newlife.utils.camera.CameraPreviewView
+        android:id="@+id/id_card_surface_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/id_card_camera_operation_layout"/>
+
+
+</RelativeLayout>

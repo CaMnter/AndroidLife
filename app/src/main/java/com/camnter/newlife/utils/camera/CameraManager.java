@@ -1,11 +1,14 @@
 package com.camnter.newlife.utils.camera;
 
+import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import com.camnter.newlife.utils.BitmapUtils;
 
 /**
  * Description：CameraManager
@@ -15,16 +18,16 @@ import android.view.SurfaceHolder;
 public final class CameraManager {
 
     private static final String TAG = CameraManager.class.getSimpleName();
+    // 1kb
+    private static final int ONE_KB = 1024;
+    private static final int ONE_MB = 1024 * 1024;
+    private static final int REQUEST_CAMERA_ID = -1;
+    private volatile static CameraManager instance = null;
     private Camera camera;
     private Camera.Parameters cameraParameters;
     private AutoFocusManager autoFocusManager;
-
-    private static final int REQUEST_CAMERA_ID = -1;
-
     private boolean isInitialized = false;
     private boolean isPreviewing = false;
-
-    private volatile static CameraManager instance = null;
 
 
     private CameraManager() {
@@ -70,10 +73,9 @@ public final class CameraManager {
 
         this.isInitialized = true;
         this.cameraParameters = this.camera.getParameters();
-        this.cameraParameters.setPictureSize(800, 600);
         this.cameraParameters.setPictureFormat(ImageFormat.JPEG);
+        this.cameraParameters.setPictureSize(1280, 960);
         this.cameraParameters.setJpegQuality(100);
-        this.cameraParameters.setPictureSize(800, 600);
         cameraTemp.setParameters(this.cameraParameters);
     }
 
@@ -100,6 +102,14 @@ public final class CameraManager {
             this.isPreviewing = true;
             this.autoFocusManager = new AutoFocusManager(this.camera);
         }
+    }
+
+
+    public synchronized void mustPreview() {
+        Log.i(TAG, "[mustPreview]:......");
+        final Camera cameraTemp = this.camera;
+        if (cameraTemp == null) return;
+        cameraTemp.startPreview();
     }
 
 
@@ -146,6 +156,7 @@ public final class CameraManager {
     public synchronized void takePicture(@Nullable final Camera.ShutterCallback shutter,
                                          @Nullable final Camera.PictureCallback raw,
                                          @Nullable final Camera.PictureCallback jpeg) {
+        Log.i(TAG, "[takePicture]:......");
         this.camera.takePicture(shutter, raw, jpeg);
     }
 
@@ -201,6 +212,29 @@ public final class CameraManager {
             }
         }
         return camera;
+    }
+
+
+    private int getBitmapSize(@NonNull final Bitmap bitmap) {
+        // API 19
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            return bitmap.getAllocationByteCount();
+        }
+        // API 12
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+            return bitmap.getByteCount();
+        }
+        // earlier version
+        return bitmap.getRowBytes() * bitmap.getHeight();
+    }
+
+
+    public Bitmap adjustBitmap(@NonNull final Bitmap originalBitmap) {
+        if (this.getBitmapSize(originalBitmap) > ONE_MB) {
+            return BitmapUtils.getBitmapCompressed(originalBitmap, 800);
+        } else {
+            return originalBitmap;
+        }
     }
 
 }
