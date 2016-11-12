@@ -45,6 +45,23 @@ public class IncrementalClassLoader extends ClassLoader {
     private final DelegateClassLoader delegateClassLoader;
 
 
+    /**
+     * 为了保证和 要 Hook 的 classLoader 保持一致的 父 classLoader，特意用了  super(original.getParent()) 去实例化
+     * 一个和 要 Hook 的 classLoader 一样的 父 classLoader
+     * 然后执行 静态工厂方法 createDelegateClassLoader 去 构造一个 DelegateClassLoader
+     *
+     * 比如 original 的关系如下：BootClassLoader -> original
+     * 正常的话，我们拿到 original 去实例化一个 classLoader 会如下情况：
+     * BootClassLoader -> original —> classLoader
+     * 但是这里执行的是 super(original.getParent()) 而不是 super(original)
+     *
+     * 所以这里得到的是 BootClassLoader -> classLoader
+     *
+     * @param original hook 的 classLoader
+     * @param nativeLibraryPath 本地 lib 路径
+     * @param codeCacheDir 项目 cache 文件夹路径
+     * @param dexes dex 的所有路径
+     */
     public IncrementalClassLoader(
         ClassLoader original, String nativeLibraryPath, String codeCacheDir, List<String> dexes) {
         super(original.getParent());
@@ -80,6 +97,10 @@ public class IncrementalClassLoader extends ClassLoader {
 
 
     /**
+     * 代理 ClassLoader
+     * 没有做任何功能上的扩展
+     * 主要为了想在 findClass 里打点 Log
+     *
      * A class loader whose only purpose is to make {@code findClass()} public.
      */
     private static class DelegateClassLoader extends BaseDexClassLoader {
@@ -89,6 +110,14 @@ public class IncrementalClassLoader extends ClassLoader {
         }
 
 
+        /**
+         * 代理 BaseDexClassLoader 的 findClass(String name) 方法
+         * 主要就是想打点 Log
+         *
+         * @param name 类名
+         * @return Class
+         * @throws ClassNotFoundException
+         */
         @Override
         public Class<?> findClass(String name) throws ClassNotFoundException {
             try {
@@ -110,6 +139,15 @@ public class IncrementalClassLoader extends ClassLoader {
     }
 
 
+    /**
+     * 静态工厂方法，构建一个 DelegateClassLoader 实例
+     *
+     * @param nativeLibraryPath 本地 lib 路径
+     * @param codeCacheDir 项目 cache 文件夹路径
+     * @param dexes dex 的所有路径
+     * @param original 父 classloader（双亲机制需要）
+     * @return DelegateClassLoader
+     */
     private static DelegateClassLoader createDelegateClassLoader(
         String nativeLibraryPath, String codeCacheDir, List<String> dexes,
         ClassLoader original) {
@@ -119,11 +157,18 @@ public class IncrementalClassLoader extends ClassLoader {
     }
 
 
+    /**
+     * 拿到一组 dex 的路径，合成一个 String 数据
+     *
+     * @param dexes 一组 dex 的路径
+     * @return String
+     */
     @NonNull
     private static String createDexPath(List<String> dexes) {
         StringBuilder pathBuilder = new StringBuilder();
         boolean first = true;
         for (String dex : dexes) {
+            // 最后一个不加分隔符 "/"
             if (first) {
                 first = false;
             } else {
@@ -141,6 +186,15 @@ public class IncrementalClassLoader extends ClassLoader {
     }
 
 
+    /**
+     * Hook ClassLoader 的 parent，由于 ClassLoader 的 parent 的只涉及到加载 class 和 res，所有 hook 了加载机制
+     * newParent 一般都会是通过 BootClassloader 实例化出来的，所以 BootClassloader -> newParent
+     * Hook 之后变为
+     * BootClassloader -> classLoader  >>>>>>  BootClassloader -> newParent -> classLoader
+     *
+     * @param classLoader hook 目标 classLoader
+     * @param newParent 需要作为 classLoader 的 parent classLoader 去加载 class 和 res
+     */
     private static void setParent(ClassLoader classLoader, ClassLoader newParent) {
         try {
             Field parent = ClassLoader.class.getDeclaredField("parent");
@@ -156,6 +210,19 @@ public class IncrementalClassLoader extends ClassLoader {
     }
 
 
+    /**
+     * 静态工厂方法，通过 classLoader + nativeLibraryPath + codeCacheDir + dexes = incrementalClassLoader
+     * incrementalClassLoader 的构造方法指明了，会拿到 classLoader 的 parent 去作为 incrementalClassLoader 的 parent
+     * 去实例化 incrementalClassLoader。所以是 BootClassLoader -> incrementalClassLoader。
+     * 然后 classLoader 的关系是 BootClassLoader -> classLoader
+     * 执行 setParent 后：BootClassLoader -> classLoader -> incrementalClassLoader
+     *
+     * @param classLoader 需要 hook 的 classLoader
+     * @param nativeLibraryPath 本地 lib 路径
+     * @param codeCacheDir 项目 cache 文件夹路径
+     * @param dexes dex 的所有路径
+     * @return hook 后的 classLoader 的 parent（incrementalClassLoader）
+     */
     public static ClassLoader inject(
         ClassLoader classLoader, String nativeLibraryPath, String codeCacheDir,
         List<String> dexes) {
