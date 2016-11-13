@@ -37,6 +37,21 @@ import static com.android.tools.fd.runtime.BootstrapApplication.LOG_TAG;
  * A class loader that loads classes from any .dex file in a particular directory on the SD card.
  * <p>
  * <p>Used to implement incremental deployment to Android phones.
+ *
+ * IncrementalClassLoader 主要提供了静态方法 inject(ClassLoader classLoader,
+ *                                                 String nativeLibraryPath,
+ *                                                 String codeCacheDir,
+ *                                                 List<String> dexes)
+ *
+ * 方便将目标 classLoader 的 parent 替换为 IncrementalClassLoader
+ * 这样的话 parent 的父加载的 class 和 res 就走的是 IncrementalClassLoader 的加载
+ * BootClassLoader -> classLoader 就会变为 BootClassLoader -> IncrementalClassLoader -> classLoader
+ *
+ * 然而 IncrementalClassLoader 的加载的逻辑又靠 DelegateClassLoader
+ * DelegateClassLoader 是 BaseDexClassLoader 的子类
+ * 覆写了 findClass 方法，但是，只是为了打点 Log
+ *
+ * 可以理解 IncrementalClassLoader 就是 插件 class 的 classLoader
  */
 public class IncrementalClassLoader extends ClassLoader {
     /** When false, compiled out of runtime library */
