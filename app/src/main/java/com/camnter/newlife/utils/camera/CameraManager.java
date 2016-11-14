@@ -9,6 +9,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import com.camnter.newlife.utils.BitmapUtils;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Description：CameraManager
@@ -20,7 +23,7 @@ public final class CameraManager {
     private static final String TAG = CameraManager.class.getSimpleName();
     // 1kb
     private static final int ONE_KB = 1024;
-    private static final int ONE_MB = 1024 * 1024;
+    private static final int ONE_MB = ONE_KB * 1024;
     private static final int REQUEST_CAMERA_ID = -1;
     private volatile static CameraManager instance = null;
     private Camera camera;
@@ -28,6 +31,22 @@ public final class CameraManager {
     private AutoFocusManager autoFocusManager;
     private boolean isInitialized = false;
     private boolean isPreviewing = false;
+
+    private static final int ID_CARD_EXPECT_HEIGHT = 720;
+
+    private final Comparator<Camera.Size> sizeComparator = new Comparator<Camera.Size>() {
+        @Override
+        public int compare(Camera.Size lhs, Camera.Size rhs) {
+            if (lhs.width > rhs.width) {
+                return -1;
+            } else if (lhs.width == rhs.width) {
+                return 0;
+            } else {
+                // lhs.width < rhs.width
+                return 1;
+            }
+        }
+    };
 
 
     private CameraManager() {
@@ -67,16 +86,38 @@ public final class CameraManager {
             }
             this.camera = cameraTemp;
         }
-        cameraTemp.setPreviewDisplay(surfaceHolder);
+        this.adjustCamera();
+        this.camera.setPreviewDisplay(surfaceHolder);
 
         if (this.isInitialized) return;
-
         this.isInitialized = true;
         this.cameraParameters = this.camera.getParameters();
         this.cameraParameters.setPictureFormat(ImageFormat.JPEG);
-        this.cameraParameters.setPictureSize(1280, 960);
+        Camera.Size bestSize = this.getSystemBestSize();
+        this.cameraParameters.setPictureSize(bestSize.width, bestSize.height);
         this.cameraParameters.setJpegQuality(100);
         cameraTemp.setParameters(this.cameraParameters);
+    }
+
+
+    public void adjustCamera() {
+        if (this.camera != null) {
+            this.camera.setDisplayOrientation(90);
+        }
+    }
+
+
+    /**
+     * 查看了源码，没有进行排序
+     * 不同机型 和 系统版本会导致不同版本
+     * 所有这里会先进行排序
+     *
+     * @return BestSize
+     */
+    private Camera.Size getSystemBestSize() {
+        List<Camera.Size> supportedSizes = this.cameraParameters.getSupportedPictureSizes();
+        Collections.sort(supportedSizes, this.sizeComparator);
+        return supportedSizes.get(0);
     }
 
 
@@ -229,9 +270,16 @@ public final class CameraManager {
     }
 
 
-    public Bitmap adjustBitmap(@NonNull final Bitmap originalBitmap) {
+    /**
+     * 压缩图片
+     * 根据 height 压到 720，width 的话，根据 高度缩放比例，压到对应的宽度
+     *
+     * @param originalBitmap originalBitmap
+     * @return Bitmap
+     */
+    public Bitmap compressForIdCard(@NonNull final Bitmap originalBitmap) {
         if (this.getBitmapSize(originalBitmap) > ONE_MB) {
-            return BitmapUtils.getBitmapCompressed(originalBitmap, 800);
+            return BitmapUtils.getBitmapCompressedByHeight(originalBitmap, ID_CARD_EXPECT_HEIGHT);
         } else {
             return originalBitmap;
         }

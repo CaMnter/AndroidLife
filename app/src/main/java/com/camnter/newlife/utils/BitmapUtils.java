@@ -102,10 +102,9 @@ public class BitmapUtils {
         return bitmap;
     }
 
+
     /**
      * 压缩图片
-     *
-     * @return
      */
     @SuppressWarnings("deprecation")
     public static Bitmap getBitmapCompressed(String pathName, float width, float height) {
@@ -129,6 +128,7 @@ public class BitmapUtils {
         return bitmap;
     }
 
+
     public static Bitmap getBitmap(String path) {
         try {
             return BitmapFactory.decodeFile(path);
@@ -137,6 +137,8 @@ public class BitmapUtils {
             return null;
         }
     }
+
+
     public static Bitmap getBitmap(InputStream is) {
         try {
             return BitmapFactory.decodeStream(is);
@@ -146,7 +148,8 @@ public class BitmapUtils {
         }
     }
 
-    public static Bitmap getBitmapCompressed(Bitmap bgimage, double newWidth) {
+
+    public static Bitmap getBitmapCompressedByWidth(Bitmap bgimage, double newWidth) {
         // 获取这个图片的宽和高
         float width = bgimage.getWidth();
         float height = bgimage.getHeight();
@@ -156,9 +159,33 @@ public class BitmapUtils {
         float scaleWidth = ((float) newWidth) / width;
         // 缩放图片动作
         matrix.postScale(scaleWidth, scaleWidth);
-        Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width, (int) height, matrix, true);
-        return bitmap;
+        return Bitmap.createBitmap(bgimage, 0, 0, (int) width, (int) height, matrix, true);
     }
+
+
+    public static Bitmap getBitmapCompressedByHeight(Bitmap bgimage, double newHeight) {
+        // 获取这个图片的宽和高
+        float width = bgimage.getWidth();
+        float height = bgimage.getHeight();
+        // 创建操作图片用的matrix对象
+        Matrix matrix = new Matrix();
+        // 计算宽高缩放率
+        float scaleHeight = ((float) newHeight) / height;
+        // 缩放图片动作
+        matrix.postScale(scaleHeight, scaleHeight);
+        return Bitmap.createBitmap(bgimage, 0, 0, (int) width, (int) height, matrix, true);
+    }
+
+
+    public static Bitmap rotate(Bitmap originalBitmap, float alpha) {
+        if (originalBitmap == null) return null;
+        int width = originalBitmap.getWidth();
+        int height = originalBitmap.getHeight();
+        Matrix matrix = new Matrix();
+        matrix.setRotate(alpha);
+        return Bitmap.createBitmap(originalBitmap, 0, 0, width, height, matrix, true);
+    }
+
 
     public static boolean save(String fileName, Bitmap bitmap) {
         if (fileName == null || bitmap == null) {

@@ -1,14 +1,12 @@
 package com.camnter.newlife.utils.camera;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -22,12 +20,9 @@ import android.view.SurfaceView;
 
 public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Callback {
 
-    public static final float RECT_WIDTH_HEIGHT_RATIO = 157.33f / 98.0f;
-    private static final float SCREEN_RECT_WIDTH_RATIO = 194.0f / 140.33f;
-    private static final float SCREEN_RECT_HEIGHT_RATIO = 124.0f / 98.0f;
+    public static final float RECT_WIDTH_HEIGHT_RATIO = 98.0f / 157.33f;
+    private static final float SCREEN_RECT_WIDTH_RATIO = 124.0f / 98.33f;
     // picture 1280 x 960
-    // SCREEN_RECT_HEIGHT_RATIO / 5.0f * 6.0f
-    private static final float PICTURE_RECT_HEIGHT_RATIO = 1.5183674f;
     private static final int DEFAULT_CORNER_COLOR = 0xff2E336D;
     // corner dp
     private static final float DEFAULT_CORNER_STROKE = 3.0f;
@@ -142,18 +137,6 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
         this.surfaceThread = new SurfaceThread();
         this.surfaceThread.start();
         this.runningState = true;
-    }
-
-
-    public Bitmap cropToPreviewBitmap(@NonNull final Bitmap originalBitmap) {
-        final float originalWidth = originalBitmap.getWidth();
-        final float originalHeight = originalBitmap.getHeight();
-        final float expectWidth = originalWidth / SCREEN_RECT_WIDTH_RATIO;
-        final float expectHeight = originalHeight / PICTURE_RECT_HEIGHT_RATIO;
-        final float leftTopX = originalWidth / 2 - expectWidth / 2;
-        final float leftTopY = originalHeight / 2 - expectHeight / 2;
-        return Bitmap.createBitmap(originalBitmap, (int) leftTopX, (int) leftTopY,
-            (int) expectWidth, (int) expectHeight, null, false);
     }
 
 
