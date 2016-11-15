@@ -43,8 +43,11 @@ public class IdCardCameraActivity extends BaseActivity implements
     SurfaceHolder.Callback,
     Camera.PictureCallback {
 
-    public static final String RESULT_DATA_KEY_WATER_MARK_BITMAP
-        = "result_data_key_water_mark_bitmap";
+    private static final String DEFAULT_PACKAGE_NAME = "AndroidLife";
+    private static final String DEFAULT_PICTURE_EXTENSION_NAME = ".jpg";
+
+    public static final String RESULT_DATA_KEY_WATER_MARK_BITMAP_PATH
+        = "result_data_key_water_mark_bitmap_path";
 
     private static final int LAYOUT_TYPE_TAKE_PICTURE = 0x261;
     private static final int LAYOUT_TYPE_PICTURE_PREVIEW = 0x262;
@@ -75,11 +78,6 @@ public class IdCardCameraActivity extends BaseActivity implements
 
     // 用于缓存最后一次 takePicture 的 bitmap（带水印）
     private Bitmap watermarkBitmap;
-
-
-    public static void startActivity(@NonNull final Context context) {
-        context.startActivity(new Intent(context, IdCardCameraActivity.class));
-    }
 
 
     public static void startActivityForResult(@NonNull final Activity activity,
@@ -218,13 +216,26 @@ public class IdCardCameraActivity extends BaseActivity implements
                 this.watermarkBitmap = null;
                 break;
             case R.id.id_card_preview_confirm_text:
-                new FileSaveTask(this.getApplicationContext()).execute(this.watermarkBitmap);
-                Intent data = new Intent();
-                data.putExtra(RESULT_DATA_KEY_WATER_MARK_BITMAP, this.watermarkBitmap);
+                final String picturePath = this.createPicturePath();
+                new FileSaveTask(this.getApplicationContext(), picturePath).execute(
+                    this.watermarkBitmap);
+
+                final Intent data = new Intent();
+                data.putExtra(RESULT_DATA_KEY_WATER_MARK_BITMAP_PATH, picturePath);
                 this.setResult(RESULT_OK, data);
                 this.finish();
                 break;
         }
+    }
+
+
+    private String createPicturePath() {
+        return Environment.getExternalStorageDirectory().getAbsoluteFile() +
+            File.separator +
+            DEFAULT_PACKAGE_NAME +
+            File.separator +
+            UUID.randomUUID().toString() +
+            DEFAULT_PICTURE_EXTENSION_NAME;
     }
 
 
@@ -274,22 +285,20 @@ public class IdCardCameraActivity extends BaseActivity implements
 
     private static class FileSaveTask extends AsyncTask<Bitmap, Object, String[]> {
 
-        private static final String DEFAULT_PACKAGE_NAME = "Lmlc";
-        private static final String DEFAULT_PICTURE_EXTENSION_NAME = ".jpg";
-
+        private final String picturePath;
         private final WeakReference<Context> contextWeakReference;
 
 
-        private FileSaveTask(Context context) {
+        private FileSaveTask(Context context, String picturePath) {
             this.contextWeakReference = new WeakReference<>(context);
+            this.picturePath = picturePath;
         }
 
 
         @Override
         protected String[] doInBackground(Bitmap... params) {
             if (params == null || params.length == 0) return null;
-            return this.savePicture(DEFAULT_PACKAGE_NAME, params[0],
-                DEFAULT_PICTURE_EXTENSION_NAME);
+            return this.savePicture(this.picturePath, params[0]);
         }
 
 
@@ -303,23 +312,14 @@ public class IdCardCameraActivity extends BaseActivity implements
 
 
         /**
-         * @param packageName packageName
+         * @param picturePath picturePath
          * @param expectBitmap expectBitmap
-         * @param extensionName extensionName
          * @return absolutePath , name
          */
-        public String[] savePicture(@NonNull final String packageName,
-                                    @NonNull final Bitmap expectBitmap,
-                                    @NonNull final String extensionName) {
+        public String[] savePicture(@NonNull final String picturePath,
+                                    @NonNull final Bitmap expectBitmap) {
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                File expectFile = new File(
-                    Environment.getExternalStorageDirectory().getAbsoluteFile() +
-                        File.separator +
-                        packageName +
-                        File.separator +
-                        UUID.randomUUID().toString() +
-                        extensionName
-                );
+                File expectFile = new File(picturePath);
                 if (!expectFile.getParentFile().exists()) {
                     boolean mkdirsSuccess = expectFile.mkdirs();
                     if (!mkdirsSuccess) return null;
@@ -343,16 +343,17 @@ public class IdCardCameraActivity extends BaseActivity implements
         private void notificationMediaStore(@NonNull final Context context,
                                             @NonNull final String absolutePath,
                                             @NonNull final String fileName) {
+            final String path = "file://" + absolutePath;
             // 其次把文件插入到系统图库
             try {
                 MediaStore.Images.Media.insertImage(context.getContentResolver(),
-                    absolutePath, fileName, null);
+                    path, fileName, null);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
             // 最后通知图库更新
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                Uri.parse("file://" + absolutePath)));
+            context.sendBroadcast(
+                new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(path)));
         }
 
     }
