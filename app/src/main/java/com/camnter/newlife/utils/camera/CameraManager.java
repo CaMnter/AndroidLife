@@ -1,9 +1,13 @@
 package com.camnter.newlife.utils.camera;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.os.Build;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -20,6 +24,13 @@ import java.util.List;
 
 public final class CameraManager {
 
+    /*******************************
+     * 输出格式尽量保持 1280 x 720  *
+     *******************************/
+
+    private static final int PICTURE_OUTPUT_WIDTH = 1280;
+    private static final int PICTURE_OUTPUT_HEIGHT = 720;
+
     private static final String TAG = CameraManager.class.getSimpleName();
     // 1kb
     private static final int ONE_KB = 1024;
@@ -29,7 +40,6 @@ public final class CameraManager {
     private Camera camera;
     private Camera.Parameters cameraParameters;
     private AutoFocusManager autoFocusManager;
-    private boolean isInitialized = false;
     private boolean isPreviewing = false;
 
     private static final int ID_CARD_EXPECT_HEIGHT = 720;
@@ -89,14 +99,12 @@ public final class CameraManager {
         this.adjustCamera();
         this.camera.setPreviewDisplay(surfaceHolder);
 
-        if (this.isInitialized) return;
-        this.isInitialized = true;
         this.cameraParameters = this.camera.getParameters();
         this.cameraParameters.setPictureFormat(ImageFormat.JPEG);
-        Camera.Size bestSize = this.getSystemBestSize();
-        this.cameraParameters.setPictureSize(bestSize.width, bestSize.height);
+        this.cameraParameters.setPictureSize(1920, 1080);
         this.cameraParameters.setJpegQuality(100);
-        cameraTemp.setParameters(this.cameraParameters);
+        this.setBestPreviewAndPictureSize(this.cameraParameters);
+        this.camera.setParameters(this.cameraParameters);
     }
 
 
@@ -112,12 +120,69 @@ public final class CameraManager {
      * 不同机型 和 系统版本会导致不同版本
      * 所有这里会先进行排序
      *
-     * @return BestSize
+     * 尽量优先找 1280 x 720 的
+     * 然后再按照一下规则找
+     *
+     * 由于是自定义相机，所以采用最好的 previewSize
+     * 然后为了图片查看页面和预览页面的图片一致 pictureSize 采用和 previewSize 相同尺寸
+     *
+     * @param parameters parameters
      */
-    private Camera.Size getSystemBestSize() {
-        List<Camera.Size> supportedSizes = this.cameraParameters.getSupportedPictureSizes();
-        Collections.sort(supportedSizes, this.sizeComparator);
-        return supportedSizes.get(0);
+    private void setBestPreviewAndPictureSize(@NonNull Camera.Parameters parameters) {
+        final List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
+        if (previewSizes == null || previewSizes.size() == 0) return;
+
+        Collections.sort(previewSizes, sizeComparator);
+
+        /**********************
+         * 1280 x 720 优先逻辑 *
+         **********************/
+
+        // 1280 x 720
+        boolean foundExpectPreivew = false;
+        for (Camera.Size previewSize : previewSizes) {
+            if (previewSize.width == PICTURE_OUTPUT_WIDTH &&
+                previewSize.height == PICTURE_OUTPUT_HEIGHT) {
+                foundExpectPreivew = true;
+            }
+        }
+        if (foundExpectPreivew) {
+            boolean foundExpectSize = false;
+            for (Camera.Size size : parameters.getSupportedPictureSizes()) {
+                if (size.width == PICTURE_OUTPUT_WIDTH && size.height == PICTURE_OUTPUT_HEIGHT) {
+                    foundExpectSize = true;
+                }
+            }
+            if (foundExpectSize) {
+                parameters.setPictureSize(PICTURE_OUTPUT_WIDTH, PICTURE_OUTPUT_HEIGHT);
+                parameters.setPictureSize(PICTURE_OUTPUT_WIDTH, PICTURE_OUTPUT_HEIGHT);
+                return;
+            }
+        }
+
+        /********************
+         * 最髙 Preview 逻辑 *
+         ********************/
+
+        Camera.Size bestPreviewSize = previewSizes.get(0);
+        // preview size
+        parameters.setPreviewSize(bestPreviewSize.width, bestPreviewSize.height);
+        boolean foundPicture = false;
+        for (Camera.Size size : parameters.getSupportedPictureSizes()) {
+            if (size.width == bestPreviewSize.width && size.height == bestPreviewSize.height) {
+                foundPicture = true;
+            }
+        }
+        if (foundPicture) {
+            this.cameraParameters.setPictureSize(bestPreviewSize.width, bestPreviewSize.height);
+        } else {
+            final List<Camera.Size> pictureSizes = parameters.getSupportedPictureSizes();
+            if (pictureSizes == null || pictureSizes.size() == 0) return;
+
+            Collections.sort(pictureSizes, sizeComparator);
+            final Camera.Size bestPictureSize = pictureSizes.get(0);
+            this.cameraParameters.setPictureSize(bestPictureSize.width, bestPictureSize.height);
+        }
     }
 
 
@@ -283,6 +348,46 @@ public final class CameraManager {
         } else {
             return originalBitmap;
         }
+    }
+
+
+    /**
+     * 添加 身份证水印
+     *
+     * @param context context
+     * @param originalBitmap originalBitmap
+     * @param watermarkRes watermarkRes
+     * @return watermarkBitmap
+     */
+    public Bitmap addWatermarkBitmap(@NonNull final Context context,
+                                     @NonNull final Bitmap originalBitmap,
+                                     @DrawableRes final int watermarkRes) {
+        if (watermarkRes == 0) return originalBitmap;
+
+        final float backgroundBitmapWidth = originalBitmap.getWidth();
+        final float backgroundBitmapHeight = originalBitmap.getHeight();
+
+        final Bitmap backgroundBitmap = Bitmap.createBitmap((int) backgroundBitmapWidth,
+            (int) backgroundBitmapHeight, Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(backgroundBitmap);
+
+        // 背景
+        canvas.drawBitmap(originalBitmap, 0, 0, null);
+
+        final Bitmap markBitmap = BitmapFactory.decodeResource(context.getResources(),
+            watermarkRes);
+        final float markBitmapWidth = markBitmap.getWidth();
+        final float markBitmapHeight = markBitmap.getHeight();
+
+        final float marginTop = backgroundBitmapHeight / 2 - markBitmapHeight / 2;
+        final float marginLeft = backgroundBitmapWidth / 2 - markBitmapWidth / 2;
+
+        canvas.drawBitmap(markBitmap, marginLeft, marginTop, null);
+
+        canvas.save(Canvas.ALL_SAVE_FLAG);
+        canvas.restore();
+
+        return backgroundBitmap;
     }
 
 }
