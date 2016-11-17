@@ -28,8 +28,8 @@ public final class CameraManager {
      * 输出格式尽量保持 1280 x 720  *
      *******************************/
 
-    private static final int PICTURE_OUTPUT_WIDTH = 1280;
-    private static final int PICTURE_OUTPUT_HEIGHT = 720;
+    public static final int PICTURE_OUTPUT_WIDTH = 1280;
+    public static final int PICTURE_OUTPUT_HEIGHT = 720;
 
     private static final String TAG = CameraManager.class.getSimpleName();
     // 1kb
@@ -101,7 +101,6 @@ public final class CameraManager {
 
         this.cameraParameters = this.camera.getParameters();
         this.cameraParameters.setPictureFormat(ImageFormat.JPEG);
-        this.cameraParameters.setPictureSize(1920, 1080);
         this.cameraParameters.setJpegQuality(100);
         this.setBestPreviewAndPictureSize(this.cameraParameters);
         this.camera.setParameters(this.cameraParameters);
@@ -154,7 +153,7 @@ public final class CameraManager {
                 }
             }
             if (foundExpectSize) {
-                parameters.setPictureSize(PICTURE_OUTPUT_WIDTH, PICTURE_OUTPUT_HEIGHT);
+                parameters.setPreviewSize(PICTURE_OUTPUT_WIDTH, PICTURE_OUTPUT_HEIGHT);
                 parameters.setPictureSize(PICTURE_OUTPUT_WIDTH, PICTURE_OUTPUT_HEIGHT);
                 return;
             }
@@ -391,3 +390,4 @@ public final class CameraManager {
     }
 
 }
+

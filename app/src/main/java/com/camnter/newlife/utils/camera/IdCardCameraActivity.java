@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -41,11 +42,14 @@ import java.util.UUID;
 
 public class IdCardCameraActivity extends BaseActivity implements
     SurfaceHolder.Callback,
-    Camera.PictureCallback {
+    Camera.PictureCallback,
+    CameraPreviewView.PreviewListener {
 
     private static final String DEFAULT_PACKAGE_NAME = "AndroidLife";
     private static final String DEFAULT_PICTURE_EXTENSION_NAME = ".jpg";
 
+    private static final String INTENT_EXTRA_KEY_PROMPT_VIEW_TYPE
+        = "intent_extra_key_prompt_view_type";
     public static final String RESULT_DATA_KEY_WATER_MARK_BITMAP_PATH
         = "result_data_key_water_mark_bitmap_path";
 
@@ -59,12 +63,33 @@ public class IdCardCameraActivity extends BaseActivity implements
     }
 
 
+    public static final int PROMPT_FRONT = 0x261;
+    public static final int PROMPT_REVERSE = 0x262;
+
+
+    @IntDef({ PROMPT_FRONT, PROMPT_REVERSE })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface PromptViewType {
+    }
+
+
+    @PromptViewType
+    private int promptViewType;
+
     @BindView(R.id.id_card_camera_surface_view)
     SurfaceView cameraSurfaceView;
     @BindView(R.id.id_card_surface_preview)
     CameraPreviewView surfacePreview;
     @BindView(R.id.id_card_camera_operation_layout)
     RelativeLayout cameraOperationLayout;
+    @BindView(R.id.id_card_camera_top_bar_layout)
+    FrameLayout topBarLayout;
+    @BindView(R.id.id_card_camera_light_image)
+    ImageView lightImage;
+    @BindView(R.id.id_card_prompt_front_image)
+    ImageView promptFrontImage;
+    @BindView(R.id.id_card_prompt_reverse_image)
+    ImageView promptReverseImage;
 
     @BindView(R.id.id_card_preview_operation_layout)
     RelativeLayout previewOperationLayout;
@@ -81,9 +106,11 @@ public class IdCardCameraActivity extends BaseActivity implements
 
 
     public static void startActivityForResult(@NonNull final Activity activity,
+                                              @PromptViewType final int promptViewType,
                                               final int requestCode) {
-        activity.startActivityForResult(new Intent(activity, IdCardCameraActivity.class),
-            requestCode);
+        Intent intent = new Intent(activity, IdCardCameraActivity.class);
+        intent.putExtra(INTENT_EXTRA_KEY_PROMPT_VIEW_TYPE, promptViewType);
+        activity.startActivityForResult(intent, requestCode);
     }
 
 
@@ -111,7 +138,7 @@ public class IdCardCameraActivity extends BaseActivity implements
      * Initialize the View of the listener
      */
     @Override protected void initListeners() {
-
+        this.surfacePreview.setPreviewListener(this);
     }
 
 
@@ -119,7 +146,11 @@ public class IdCardCameraActivity extends BaseActivity implements
      * Initialize the Activity data
      */
     @Override protected void initData() {
-
+        this.promptViewType =
+            this.getIntent().getIntExtra(INTENT_EXTRA_KEY_PROMPT_VIEW_TYPE, PROMPT_FRONT) ==
+                PROMPT_FRONT ?
+            PROMPT_FRONT : PROMPT_REVERSE;
+        this.surfacePreview.setPromptViewType(this.promptViewType);
     }
 
 
@@ -193,22 +224,46 @@ public class IdCardCameraActivity extends BaseActivity implements
     }
 
 
-    @OnClick({ R.id.id_card_camera_take_button, R.id.id_card_camera_light_button,
-                 R.id.id_card_preview_reset_text, R.id.id_card_preview_confirm_text })
+    @Override
+    public void notificationFrontImageView(int frontImageMarginTop, int frontImageMarginLeft) {
+        this.promptFrontImage.setVisibility(View.VISIBLE);
+        RelativeLayout.LayoutParams layoutParams
+            = (RelativeLayout.LayoutParams) this.promptFrontImage.getLayoutParams();
+        layoutParams.setMargins(frontImageMarginLeft, frontImageMarginTop, 0, 0);
+        this.promptFrontImage.setLayoutParams(layoutParams);
+    }
+
+
+    @Override
+    public void notificationReverseImageView(int reverseImageMarginTop, int reverseImageMarginLeft) {
+        this.promptReverseImage.setVisibility(View.VISIBLE);
+        RelativeLayout.LayoutParams layoutParams
+            = (RelativeLayout.LayoutParams) this.promptReverseImage.getLayoutParams();
+        layoutParams.setMargins(reverseImageMarginLeft, reverseImageMarginTop, 0, 0);
+        this.promptReverseImage.setLayoutParams(layoutParams);
+    }
+
+
+    @OnClick({ R.id.id_card_camera_take_image,
+                 R.id.id_card_camera_light_image,
+                 R.id.id_card_preview_reset_text,
+                 R.id.id_card_preview_confirm_text,
+                 R.id.id_card_camera_close_image })
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.id_card_camera_take_button:
+            case R.id.id_card_camera_take_image:
                 if (this.isTaking) return;
                 this.cameraManager.takePicture(null, null, this);
                 break;
-            case R.id.id_card_camera_light_button:
+            case R.id.id_card_camera_light_image:
                 if (this.openLight) {
                     this.openLight = false;
                     this.cameraManager.closeLight();
+                    this.lightImage.setImageResource(R.drawable.icon_camera_light_close);
                 } else {
                     this.openLight = true;
-
                     this.cameraManager.openLight();
+                    this.lightImage.setImageResource(R.drawable.icon_camera_light_open);
                 }
                 break;
             case R.id.id_card_preview_reset_text:
@@ -223,6 +278,9 @@ public class IdCardCameraActivity extends BaseActivity implements
                 final Intent data = new Intent();
                 data.putExtra(RESULT_DATA_KEY_WATER_MARK_BITMAP_PATH, picturePath);
                 this.setResult(RESULT_OK, data);
+                this.finish();
+                break;
+            case R.id.id_card_camera_close_image:
                 this.finish();
                 break;
         }
@@ -248,10 +306,12 @@ public class IdCardCameraActivity extends BaseActivity implements
 
         // 压缩
         final Bitmap expectBitmap = this.cameraManager.compressForIdCard(originalBitmap);
-        // TODO 水印
-        this.watermarkBitmap = expectBitmap;
+        // 水印
+        this.watermarkBitmap = this.cameraManager.addWatermarkBitmap(this,
+            expectBitmap,
+            R.drawable.ic_camnter);
         // 旋转后的图片记录，为了在确认的时候保存
-        final Bitmap previewBitmap = BitmapUtils.rotate(expectBitmap, 90.f);
+        final Bitmap previewBitmap = BitmapUtils.rotate(watermarkBitmap, 90.f);
         this.previewImage.setImageBitmap(previewBitmap);
 
         this.showToast("拍照成功", Toast.LENGTH_SHORT);
@@ -268,14 +328,15 @@ public class IdCardCameraActivity extends BaseActivity implements
                 this.cameraSurfaceView.setVisibility(View.VISIBLE);
                 this.surfacePreview.setVisibility(View.VISIBLE);
                 this.cameraOperationLayout.setVisibility(View.VISIBLE);
+                this.topBarLayout.setVisibility(View.VISIBLE);
                 this.previewImage.setVisibility(View.GONE);
                 this.previewOperationLayout.setVisibility(View.GONE);
-                this.cameraManager = CameraManager.getInstance();
                 break;
             case LAYOUT_TYPE_PICTURE_PREVIEW:
                 this.cameraSurfaceView.setVisibility(View.GONE);
                 this.surfacePreview.setVisibility(View.GONE);
                 this.cameraOperationLayout.setVisibility(View.GONE);
+                this.topBarLayout.setVisibility(View.GONE);
                 this.previewImage.setVisibility(View.VISIBLE);
                 this.previewOperationLayout.setVisibility(View.VISIBLE);
                 break;

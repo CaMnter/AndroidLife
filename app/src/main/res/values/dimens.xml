@@ -20,4 +20,9 @@
     <dimen name="section_header_tv">13sp</dimen>
 
     <dimen name="volley_get_label">16sp</dimen>
+
+    <dimen name="id_card_front_image_width">162.7dp</dimen>
+    <dimen name="id_card_front_image_height">157.4dp</dimen>
+    <dimen name="id_card_reverse_image_width">77.3dp</dimen>
+    <dimen name="id_card_reverse_image_height">81.1dp</dimen>
 </resources>
