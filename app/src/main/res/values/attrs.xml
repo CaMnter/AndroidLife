@@ -14,7 +14,7 @@
     <declare-styleable name="ShaderRoundImageView">
         <attr name="imageType">
             <enum name="round"
-                value="2601"/>
+                value="2601"/>I
             <enum name="circle"
                 value="2602"/>
         </attr>
