@@ -1,7 +1,10 @@
 package com.camnter.algorithm.lintcode;
 
 /**
- * Description：
+ * Description：整数排序
+ *
+ * 对于数组 [3, 2, 1, 4, 5], 排序后为：[1, 2, 3, 4, 5]。
+ *
  * Created by：CaMnter
  */
 
@@ -17,9 +20,8 @@ public class SortIntegers {
 
     /**
      * @param A an integer array
-     * @return void
      */
-    public static void sortIntegers(int[] A) {
+    private static void sortIntegers(int[] A) {
         // Write your code here
         for (int i = 0; i < A.length; i++) {
             int selected = i;
