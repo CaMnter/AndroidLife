@@ -84,6 +84,17 @@ import static com.android.tools.fd.runtime.BootstrapApplication.LOG_TAG;
  * because any class loaded before it cannot be incrementally deployed.
  */
 public class MonkeyPatcher {
+    /**
+     * 1. Hook 掉 ActivityThread 内的所有 BootstrapApplication 为 RealApplication
+     * 2. Hook 掉 ActivityThread 内的所有 LoadedApk 内部的：
+     * BootstrapApplication 为 RealApplication
+     * mResDir 为 externalResourceFile
+     *
+     * @param context context
+     * @param bootstrap BootstrapApplication
+     * @param realApplication realApplication
+     * @param externalResourceFile 外部资源 path
+     */
     @SuppressWarnings("unchecked")  // Lots of conversions with generic types
     public static void monkeyPatchApplication(@Nullable Context context,
                                               @Nullable Application bootstrap,
@@ -159,9 +170,27 @@ public class MonkeyPatcher {
         // eventually stored in). Fortunately, it's easy to forward those to the actual real
         // Application class.
         try {
+
+            /**
+             * Step 1
+             * 各种反射寻找该进程的 ActivityThread
+             */
+
             // Find the ActivityThread instance for the current thread
             Class<?> activityThread = Class.forName("android.app.ActivityThread");
             Object currentActivityThread = getActivityThread(context, activityThread);
+
+            /**
+             * Step 2
+             *
+             * Hook ActivityThread 内的 BootStrapApplication 数据为 RealApplication
+             *
+             * 1.通过 ActivityThread 去 Hook 替换内部的 mInitialApplication Field
+             * 如果实例化的是 BootStrapApplication  就替换上 RealApplication（ 项目真正的 Application ）
+             *
+             * 2.通过 ActivityThread 去 Hook 修改内部的 mAllApplications Field
+             * 如果有 BootStrapApplication  就替换上 RealApplication（ 项目真正的 Application ）
+             */
 
             // Find the mInitialApplication field of the ActivityThread to the real application
             Field mInitialApplication = activityThread.getDeclaredField("mInitialApplication");
@@ -186,6 +215,20 @@ public class MonkeyPatcher {
                 }
             }
 
+            /**
+             * Step 3
+             *
+             * 再次 Hook ActivityThread 内的 BootStrapApplication 数据为 RealApplication
+             * 并且把资源 dir 和 RealApplication 中的 LoadedApk 也替换了
+             *
+             * 对 ActivityThread 的 ArrayMap<String, WeakReference<LoadedApk>> mPackages 和
+             * ArrayMap<String, WeakReference<LoadedApk>> mResourcePackages 进行 hook。
+             * 遍历两个 map，如果里面的 LoadedApk 的 mApplication == BootstrapApplication。
+             * 1. 替换 mApplication 为 自定义 Application；
+             * 2. 替换 LoadedApk 的 mResDir 为 externalResourceFile；
+             * 3. 用修改后的 LoadedApk hook 掉 项目 Application 中的 mLoadedApk  。
+             */
+
             // Figure out how loaded APKs are stored.
 
             // API version 8 has PackageInfo, 10 has LoadedApk. 9, I don't know.
@@ -195,6 +238,7 @@ public class MonkeyPatcher {
             } catch (ClassNotFoundException e) {
                 loadedApkClass = Class.forName("android.app.ActivityThread$PackageInfo");
             }
+
             Field mApplication = loadedApkClass.getDeclaredField("mApplication");
             mApplication.setAccessible(true);
             Field mResDir = loadedApkClass.getDeclaredField("mResDir");
@@ -247,16 +291,40 @@ public class MonkeyPatcher {
     }
 
 
+    /**
+     * 反射获取该进程实例化的 ActivityThread
+     * 1. 先从 ActivityThread 内找实例对象
+     * 2. 再反射到 Application -> LoadedApk ，在 LoadedApk 内寻找实例对象
+     *
+     * @param context context
+     * @param activityThread ActivityThread Class
+     * @return ActivityThread 实例
+     */
     @Nullable
     public static Object getActivityThread(@Nullable Context context,
                                            @Nullable Class<?> activityThread) {
         try {
+
+            /**
+             * 通过反射 ActivityThread 的 currentActivityThread 方法
+             * 拿到 ActivityThread 实例化
+             */
+
             if (activityThread == null) {
                 activityThread = Class.forName("android.app.ActivityThread");
             }
             Method m = activityThread.getMethod("currentActivityThread");
             m.setAccessible(true);
             Object currentActivityThread = m.invoke(null);
+
+            /**
+             * 这的 Context 一般都是 Application
+             * 所以，反射 Application 的 mLoadedApk Field（ LoadedApk ）
+             * mLoadedApk 属性是一个 LoadedApk 类型
+             * 再反射 LoadedApk 的 mActivityThread Field（ ActivityThread ）
+             * 拿到 返回 该 ActivityThread 对象
+             */
+
             if (currentActivityThread == null && context != null) {
                 // In older versions of Android (prior to frameworks/base 66a017b63461a22842)
                 // the currentActivityThread was built on thread locals, so we'll need to try
@@ -275,6 +343,19 @@ public class MonkeyPatcher {
     }
 
 
+    /**
+     * 1. 反射调用 AssetManager.addAssetPath 方法加载 插件资源
+     * 2. Hook Resource or ResourcesImpl 中的 mAssets，Hook 为 插件资源
+     * 3. Hook Resource or ResourcesImpl 内 Theme or ThemeImpl 中的 mAssets，Hook 为 插件资源
+     * 4. Hook Activity（ ContextThemeWrapper ）的 initializeTheme 方法去初始化 Theme
+     * 5. 如果 < 7.0， 先 Hook AssetManager 的 createTheme 方法去创建一个 插件 Theme
+     *    然后 Hook Activity 的 Theme 的 mTheme Field 为 插件 Theme
+     * 6. 调用 pruneResourceCaches(@NonNull Object resources) 方法去删除 资源缓存
+     *
+     * @param context context
+     * @param externalResourceFile 外部资源 path
+     * @param activities 运行 activity
+     */
     public static void monkeyPatchExistingResources(@Nullable Context context,
                                                     @Nullable String externalResourceFile,
                                                     @Nullable Collection<Activity> activities) {
@@ -315,6 +396,14 @@ public class MonkeyPatcher {
         */
 
         try {
+
+            /**
+             * Step 1
+             *
+             * 反射 AssetManager#addAssetPath 方法
+             * 加载插件资源的 AssetManager
+             */
+
             // Create a new AssetManager instance and point it to the resources installed under
             // /sdcard
             AssetManager newAssetManager = AssetManager.class.getConstructor().newInstance();
@@ -325,6 +414,13 @@ public class MonkeyPatcher {
                 throw new IllegalStateException("Could not create new AssetManager");
             }
 
+            /**
+             * Step 2
+             *
+             * 反射 Hook 插件资源 AssetManager 的 ensureStringBlocks Field 为 true
+             * 下面注释告诉，4.4 需要这么做
+             */
+
             // Kitkat needs this method call, Lollipop doesn't. However, it doesn't seem to cause any harm
             // in L, so we do it unconditionally.
             Method mEnsureStringBlocks = AssetManager.class.getDeclaredMethod("ensureStringBlocks");
@@ -334,6 +430,19 @@ public class MonkeyPatcher {
             if (activities != null) {
                 for (Activity activity : activities) {
                     Resources resources = activity.getResources();
+
+                    /**
+                     * Step 3
+                     *
+                     * 获取每个 Activity
+                     * 然后 Hook 每个 Resource 的 mAssets Field
+                     * 设置为 插件 AssetManager
+                     *
+                     * 如果没有 mAssets Field 就
+                     * 去找 mResourcesImpl （ ResourcesImpl ） Field
+                     * 然后 Hook ResourcesImpl 的 mAssets Field
+                     * 设置为 插件 AssetManager
+                     */
 
                     try {
                         Field mAssets = Resources.class.getDeclaredField("mAssets");
@@ -350,6 +459,20 @@ public class MonkeyPatcher {
 
                     Resources.Theme theme = activity.getTheme();
                     try {
+
+                        /**
+                         * Step 4
+                         *
+                         * 进一步 拿到 Resource 的 Theme
+                         * 然后 Hook Theme 的 mAssets Field
+                         * 设置为 插件 AssetManager
+                         *
+                         * 如果没有 mAssets Field 就
+                         * 去找 mThemeImpl （ ResourcesImpl.ThemeImpl ） Field
+                         * 然后 Hook ThemeImpl 的 mAssets Field
+                         * 设置为 插件 AssetManager
+                         */
+
                         try {
                             Field ma = Resources.Theme.class.getDeclaredField("mAssets");
                             ma.setAccessible(true);
@@ -363,12 +486,30 @@ public class MonkeyPatcher {
                             ma.set(impl, newAssetManager);
                         }
 
+                        /**
+                         * Step 5
+                         *
+                         * Hook Activity（ ContextThemeWrapper ）的 mTheme Field 为 null
+                         * Hook Activity（ ContextThemeWrapper ）的 initializeTheme 方法去初始化 Theme
+                         */
+
                         Field mt = ContextThemeWrapper.class.getDeclaredField("mTheme");
                         mt.setAccessible(true);
                         mt.set(activity, null);
                         Method mtm = ContextThemeWrapper.class.getDeclaredMethod("initializeTheme");
                         mtm.setAccessible(true);
                         mtm.invoke(activity);
+
+                        /**
+                         * Step 6
+                         *
+                         * 如果 < 24
+                         *
+                         * 先 Hook AssetManager 的 createTheme 方法
+                         * 去创建一个 插件 Theme
+                         *
+                         * 然后 Hook Activity 的 Theme 的 mTheme Field 为 插件 Theme
+                         */
 
                         if (SDK_INT < 24) { // As of API 24, mTheme is gone (but updates work
                             // without these changes
@@ -385,10 +526,34 @@ public class MonkeyPatcher {
                             e);
                     }
 
+                    /**
+                     * Step 7
+                     *
+                     * 调用 pruneResourceCaches(@NonNull Object resources) 方法去删除 资源缓存
+                     */
                     pruneResourceCaches(resources);
                 }
             }
 
+            /**
+             * Step 8
+             *
+             * 1. 如果 > 4.4，反射拿到 ResourcesManager 的 getInstance 方法。获取 ResourcesManager 的单例对象，
+             *    有两种选择：
+             *    1.1 反射获取 mActiveResources Field，强转为 ArrayMap<?, WeakReference<Resources>> 类型，赋值给 references
+             *    1.2 反射获取 mResourceReferences Field，强转为 Collection<WeakReference<Resources>> 类型，赋值给 references
+             *
+             * 2. 如果 <= 4.4，通过 getActivityThread 方法去获取进程中的 ActivityThread 实例。 然后反射
+             *    获取 ActivityThread 的 mActiveResources Field，强转为 HashMap<?, WeakReference<Resources>> 类型，赋值给 references
+             *
+             * 3. 将 1 or 2 环境中，保存下来的 references 进行遍历，拿到每一个 WeakReference<Resources>
+             *    有两种选择：
+             *    3.1 Hook Resource 的 mAssets Field 的值为 插件 AssetManager
+             *    3.2 如果 3.1 失败被 catch 了，反射拿到 Resource mResourcesImpl Field（ ResourcesImpl ）
+             *        然后 Hook ResourcesImpl 的 mAssets Field 的值为 插件 AssetManager
+             *
+             *
+             */
             // Iterate over all known Resources objects
             Collection<WeakReference<Resources>> references;
             if (SDK_INT >= KITKAT) {
@@ -451,9 +616,30 @@ public class MonkeyPatcher {
     }
 
 
+    /**
+     * 删除 资源缓存
+     *
+     * 1. 删除 Resource 内部的 TypedArrayPool 的资源缓存
+     * 2. 删除 Resource 图片、动画、颜色等资源缓存
+     * 3. 删除 ResourceImpl 图片、动画、颜色等资源缓存
+     *
+     * @param resources resources
+     */
     private static void pruneResourceCaches(@NonNull Object resources) {
         // Drain TypedArray instances from the typed array pool since these can hold on
         // to stale asset data
+
+        /**
+         * Step 1
+         *
+         * 如果 >= 5.0
+         *
+         * 反射获取 Resource 的 mTypedArrayPool Field
+         * 去到该 Field 的 Class （ SynchronizedPool ）
+         * 然后再反射获取 SynchronizedPool 的 acquire 方法
+         *
+         * 通过不断 反射调用 acquire 释放 TypedArray 数据（ 资源 ）
+         */
         if (SDK_INT >= LOLLIPOP) {
             try {
                 Field typedArrayPoolField =
@@ -473,6 +659,21 @@ public class MonkeyPatcher {
             }
         }
 
+        /**
+         * Step 2
+         *
+         * 如果 >= 6.0
+         *
+         * 反射获取 Resource 的 mResourcesImpl Field
+         * 然后通过传进来的 resource 对象去获取这个 Field 的对象 ResourcesImpl
+         *
+         * 在 >= 6.0 的版本，需要用 ResourcesImpl 去代替 Resource
+         * 所以最后将传进来的 Resource 替换为 ResourcesImpl
+         *
+         * 所以以下的步骤分为两个分水岭
+         * >= 6.0 的，resource 的对象类型为  ResourcesImpl
+         * < 6.0 的，resource 的对象类型为  Resources
+         */
         if (SDK_INT >= Build.VERSION_CODES.M) {
             // Really should only be N; fix this as soon as it has its own API level
             try {
@@ -484,6 +685,26 @@ public class MonkeyPatcher {
             } catch (Throwable ignore) {
             }
         }
+
+        /**
+         * Step 3
+         *
+         * 由于以上做了 resource 的修改
+         *
+         * 由于受到 Step 2 的影响，所以这里的话
+         *
+         * >= 4.3
+         *      再 >= 6.0 ，会取到 ResourcesImpl 的 mAccessLock Field
+         *      然后，然后获得该锁 （ Object mAccessLock ）
+         *
+         *      再 < 6.0 ，会取到 Resources 的 mAccessLock Field
+         *      然后，然后获得该锁 （ Object mAccessLock ）
+         *
+         * < 4.3 ，直接获取 Resources 的 mTmpValue Field
+         * 然后，然后获得该锁 （ Object mAccessLock ）
+         *
+         * 如果都没找到锁，就拿该类（ MonkeyPatcher.class ）作为锁
+         */
 
         // Prune bitmap and color state lists etc caches
         Object lock = null;
@@ -507,6 +728,22 @@ public class MonkeyPatcher {
             lock = MonkeyPatcher.class;
         }
 
+        /**
+         * Step 4
+         *
+         * 由于再次受到 Step 2 的影响
+         *
+         * 如果 >= 6.0 会删除
+         * ResourcesImpl 内 mDrawableCache、mColorDrawableCache、mColorStateListCache、
+         *                  mAnimatorCache、mStateListAnimatorCache 的资源缓存
+         *
+         * 如果 < 6.0 会删除
+         * ResourcesImpl 内的   mDrawableCache、mColorDrawableCache、mColorStateListCache 资源缓存
+         * 同时，如果还是 4.3 的话，会额外删除
+         * Resources 内的   sPreloadedDrawables、sPreloadedColorDrawables、sPreloadedColorStateLists
+         * 资源缓存
+         */
+
         //noinspection SynchronizationOnLocalVariableOrMethodParameter
         synchronized (lock) {
             // Prune bitmap and color caches
@@ -525,9 +762,30 @@ public class MonkeyPatcher {
     }
 
 
+    /**
+     * 如果 < 6.0 会删除
+     * ResourcesImpl 内的   mDrawableCache、mColorDrawableCache、mColorStateListCache 资源缓存
+     * 同时，如果还是 4.3 的话，会额外删除
+     * Resources 内的   sPreloadedDrawables、sPreloadedColorDrawables、sPreloadedColorStateLists
+     * 资源缓存
+     *
+     * @param resources ResourcesImpl or Resources
+     * @param fieldName 以上 field name
+     * @return 是否清空
+     */
     private static boolean pruneResourceCache(@NonNull Object resources,
                                               @NonNull String fieldName) {
         try {
+
+            /**
+             * Step 1
+             *
+             * 从 ResourcesImpl or Resources 拿到对应的 fieldName 的 Field
+             *
+             * 当然，如果 ResourcesImpl 获取失败了，会 catch 。
+             * 然后直接 Resources.class.getDeclaredField(fieldName) 去拿 Field
+             */
+
             Class<?> resourcesClass = resources.getClass();
             Field cacheField;
             try {
@@ -537,6 +795,33 @@ public class MonkeyPatcher {
             }
             cacheField.setAccessible(true);
             Object cache = cacheField.get(resources);
+
+            /**
+             * Step 2
+             *
+             * 上面拿到的 Field
+             * 然后判断 Field 的类型：
+             *
+             * 1 如果 < 4.1，有两种选择：
+             *     1.1 如果属于 SparseArray 类型，直接 clear 清空，返回 true
+             *     1.2 如果 => 4.0 并且 属于 LongSparseArray，也是直接 clear 清空，返回 true
+             *
+             * 2 如果 4.1 < x < 6.0，有四种选择：
+             *     2.1 如果 Field 是 mColorStateListCache，并且属于 LongSparseArray，也是直接 clear 清空
+             *     2.2 如果 Field 的类型实现了 ArrayMap 的超类（ Map ），然后反射调用 Resource clearDrawableCachesLocked 方法
+             *     2.3 如果 Field 是类型实现了 LongSparseArray 的超类 （ Cloneable ？ ），然后反射调用 Resource clearDrawableCachesLocked 方法
+             *         注： 2.2 与 2.3 的区别在于 clearDrawableCachesLocked 的参数不一样，一个是 ArrayMap，一个是 LongSparseArray
+             *
+             *     2.4 如果 Field 是类型实现是 数组类型，并且数组的 class 类型（ getComponentType ） 实现了 LongSparseArray 的超类 （ Cloneable ？ ）
+             *         然后强转为 LongSparseArray[] 类型，一个一个拿出 LongSparseArray，然后 clear
+             *
+             * 3. 如果 >= 6.0 （ 主要针对 Marshmallow: DrawableCache class ）
+             *    反射拿到该 Field 的 onConfigurationChange 的方法并且调用
+             *      如果有就返回
+             *      如果没有的话，继续拿到父类，继续反射拿到 onConfigurationChange 的方法并且调用。直到调用过一次 onConfigurationChange 为止
+             *
+             * 4. 如果 1-3 内又没一个选择的话，那么就是没有做任何 删除资源缓存操作 or 删除资源缓存失败了
+             */
 
             // Find the class which defines the onConfigurationChange method
             Class<?> type = cacheField.getType();
@@ -614,7 +899,6 @@ public class MonkeyPatcher {
             // to attempt to look up a field for a cache that isn't there; only if it's
             // really there will it continue to flush that particular cache.
         }
-
         return false;
     }
 }
