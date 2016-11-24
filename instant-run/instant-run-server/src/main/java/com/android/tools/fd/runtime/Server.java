@@ -66,6 +66,9 @@ public class Server {
      * system, and it could lead to conflicts with the new version of the app.
      * So this is currently turned off. See
      * https://code.google.com/p/android/issues/detail?id=200895#c9
+     *
+     * true: app 重启自己后，接受 冷部署 补丁
+     * false：只会等待远程客户端将其杀死 并重启 Activity manager
      */
     private static final boolean RESTART_LOCALLY = false;
 
@@ -82,12 +85,27 @@ public class Server {
     private static int sWrongTokenCount;
 
 
+    /**
+     * 对外提供的 静态工厂方法
+     * 用于构造一个 Server
+     *
+     * @param packageName packageName
+     * @param application application
+     */
     public static void create(@NonNull String packageName, @NonNull Application application) {
         //noinspection ResultOfObjectAllocationIgnored
         new Server(packageName, application);
     }
 
 
+    /**
+     * 私有构造方法
+     * 主要是实例化一个 LocalServerSocket
+     * 然后调用 startServer() 方法
+     *
+     * @param packageName packageName
+     * @param application application
+     */
     private Server(@NonNull String packageName, @NonNull Application application) {
         mApplication = application;
         try {
@@ -108,6 +126,9 @@ public class Server {
     }
 
 
+    /**
+     * 创建 并 启动 Socket server thread
+     */
     private void startServer() {
         try {
             Thread socketServerThread = new Thread(new SocketServerThread());
@@ -125,6 +146,12 @@ public class Server {
     private class SocketServerThread extends Thread {
         @Override
         public void run() {
+            /**
+             * Step 1
+             *
+             * 如果 POST_ALIVE_STATUS 标记为 true
+             * 则每 30 秒打一次 Log
+             */
             if (POST_ALIVE_STATUS) {
                 final Handler handler = new Handler();
                 Timer timer = new Timer();
@@ -143,6 +170,18 @@ public class Server {
                 timer.schedule(task, 1, 30000L);
             }
 
+            /**
+             * Step 2
+             *
+             * 进入一个循环体
+             * 拿到当前的 Local Server Socket，如果为 null，则退出循环体
+             *
+             * 然后开始监听数据（ accept ），监听到数据（ LocalSocket ）后
+             * 然后 new 一个 SocketServerReplyThread 去处理 LocalSocket
+             *
+             * 如果之前记录的错误次数（ sWrongTokenCount ）大于 50 次
+             * 那么，就关闭 Local Server Socket，并且退出循环体
+             */
             while (true) {
                 try {
                     LocalServerSocket serverSocket = mServerSocket;
@@ -186,6 +225,11 @@ public class Server {
         }
 
 
+        /**
+         * 获取传入 LocalSocket 内的数据流
+         * DataInputStream 和 DataOutputStream
+         * 交给 handle(...) 方法去处理业务
+         */
         @Override
         public void run() {
             try {
@@ -211,6 +255,37 @@ public class Server {
         }
 
 
+        /**
+         * 开头先获取了 magic number，判断是否与协定好的 Magic number（ PROTOCOL_IDENTIFIER ）一致
+         * 不一致的话，就视为脏数据，return
+         *
+         * 读取 version，然后通过 DataOutputStream 告诉 IDE version
+         * 然后，判断 version 是否与协定好的版本（ PROTOCOL_VERSION ）一致
+         * 不一致的话，视为版本不一致，return
+         *
+         * 然后进入循环体，开始处理 message
+         *
+         * MESSAGE_EOF: 已经读到文件的末尾，退出读取操作
+         * MESSAGE_PING: 获取当前活动活跃状态，并且进行记录
+         * MESSAGE_PATH_EXISTS: 读取 文件路径，读取该路径下文件长度，并且进行记录
+         * MESSAGE_PATH_CHECKSUM: 读取 resources.ap_ 文件路径，获取 resources.ap_ 文件的 MD5 值
+         * 如果 resources.ap_ 文件路径有文件，记录文件的 MD5 值和长度
+         * 否则 记录 0
+         * MESSAGE_RESTART_ACTIVITY：验证 token 后，如果 token 正确，则在 UI 线程重启 Activity
+         * MESSAGE_PATCHES:
+         * 1. 验证 token，不匹配则返回
+         * 2. 不断读取 补丁，没有则跳过此次的消息处理
+         * 3. 有补丁，判断其内部是否有资源，记录为 hasResources。拿到 updateMode 后， handlePatches(...) 处理补丁，同时拿到修改后的
+         * 更新模式（ updateMode ）
+         * 4. 读取 readBoolean()，是否显示 toast，然后记下为 showToast
+         * 5. 重新启动 restart。通过 updateMode, showToast, hasResources 来决定 Activity 显示的 toast 信息
+         * 以及是什么 部署策略
+         * MESSAGE_SHOW_TOAST: 读取 提示 信息，然后获取当前前台 Activity。如果有，就 show toast
+         *
+         * @param input input
+         * @param output output
+         * @throws IOException
+         */
         private void handle(DataInputStream input, DataOutputStream output) throws IOException {
             long magic = input.readLong();
             if (magic != PROTOCOL_IDENTIFIER) {
@@ -350,6 +425,13 @@ public class Server {
         }
 
 
+        /**
+         * 校验 DataInputStream 内的 token 是否与 AppInfo 的 token 一致
+         *
+         * @param input DataInputStream
+         * @return true or false
+         * @throws IOException
+         */
         private boolean authenticate(@NonNull DataInputStream input) throws IOException {
             long token = input.readLong();
             if (token != AppInfo.token) {
@@ -363,11 +445,25 @@ public class Server {
     }
 
 
+    /**
+     * 校验 资源 name（ resources.ap_ ） 和 路径是否以 res/ 开头
+     * res/resources.ap_
+     *
+     * @param path 资源路径
+     * @return 校验结果
+     */
     private static boolean isResourcePath(String path) {
         return path.equals(RESOURCE_FILE_NAME) || path.startsWith("res/");
     }
 
 
+    /**
+     * 判断 补丁 内是否有 路径
+     * 然后进行 是否是 资源路径 ( res/resources.ap_ )的校验
+     *
+     * @param changes 补丁集
+     * @return 是否有资源
+     */
     private static boolean hasResources(@NonNull List<ApplicationPatch> changes) {
         // Any non-code patch is a resource patch (normally resources.ap_ but could
         // also be individual resource files such as res/layout/activity_main.xml)
@@ -382,12 +478,28 @@ public class Server {
     }
 
 
+    /**
+     * 处理补丁
+     *
+     * @param changes 补丁集
+     * @param hasResources 是否有资源
+     * @param updateMode 更新模式
+     * @return 更新模式
+     */
     private int handlePatches(@NonNull List<ApplicationPatch> changes, boolean hasResources,
                               int updateMode) {
         if (hasResources) {
             FileManager.startUpdate();
         }
-
+        /**
+         * 检查 补丁 路径
+         * 1.
+         *      1.1 .dex 结尾的格式，就执行 handleColdSwapPatch(...) 冷部署，并且记录为 冷部署 更新模式
+         *      1.2 寻找 补丁集合内 是否有 .dex 结尾的格式 并且 名字为 "classes.dex.3" 则记录为 热部署 的更新模式（ updateMode ）
+         * 2. 如果 名字为 "classes.dex.3" 直接执行热部署 handleHotSwapPatch(...)，并记录更新模式
+         * 3. 如果 是 "res/resources.ap_" 那么直接处理资源补丁 handleResourcePatch(...)，并记录更新模式
+         * 4. 返回更新模式
+         */
         for (ApplicationPatch change : changes) {
             String path = change.getPath();
             if (path.endsWith(CLASSES_DEX_SUFFIX)) {
@@ -423,6 +535,17 @@ public class Server {
     }
 
 
+    /**
+     * 处理资源补丁
+     * 内部实质上调用  FileManager.writeAaptResources(...) 处理资源补丁
+     * Math.max(updateMode, UPDATE_MODE_WARM_SWAP) 也只有 冷部署 比 温部署大
+     * 返回的模式只可能是 冷部署 or 温部署
+     *
+     * @param updateMode 更新模式
+     * @param patch 补丁类
+     * @param path 补丁路径
+     * @return 更新模式
+     */
     private static int handleResourcePatch(int updateMode, @NonNull ApplicationPatch patch,
                                            @NonNull String path) {
         if (Log.isLoggable(LOG_TAG, Log.VERBOSE)) {
@@ -435,6 +558,20 @@ public class Server {
     }
 
 
+    /**
+     * 冷部署加载补丁
+     * 1. 将补丁文件 保存为 build/.../instant-run/dex-temp/reload0x?04x.dex
+     * 2. 然后 通过 此 dex 去创建一个 DexClassLoader
+     * 3. 通过创建的 DexClassLoader 去寻找内部的 AppPatchesLoaderImpl类
+     * 4. 进而获取 getPatchedClasses 方法，得到 String[] classes
+     * 5. 然后打 String[] classes 的 Log
+     * 6. AppPatchesLoaderImpl 向上转为 PatchesLoader 类型
+     * 7. 调用 （ AppPatchesLoaderImpl ）PatchesLoader.load() 方法打上 $override 和 $change 标记位
+     *
+     * @param updateMode 更新模式
+     * @param patch 补丁
+     * @return 更新模式
+     */
     private int handleHotSwapPatch(int updateMode, @NonNull ApplicationPatch patch) {
         if (Log.isLoggable(LOG_TAG, Log.VERBOSE)) {
             Log.v(LOG_TAG, "Received incremental code patch");
