@@ -1,7 +1,7 @@
 package com.camnter.algorithm.lintcode;
 
 /**
- * Description：删除链表中的元素
+ * Description：452.删除链表中的元素
  *
  * 删除链表中等于给定值val的所有节点。
  *

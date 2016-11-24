@@ -1,7 +1,7 @@
 package com.camnter.algorithm.lintcode;
 
 /**
- * Description：
+ * Description：1. A+B 问题
  *
  * a 和 b 都是 32位 整数
  *

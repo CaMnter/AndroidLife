@@ -1,7 +1,7 @@
 package com.camnter.algorithm.lintcode;
 
 /**
- * Description：斐波纳契数列
+ * Description：366.斐波纳契数列
  *
  * 查找斐波纳契数列中第 N 个数。
  *
