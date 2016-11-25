@@ -559,8 +559,8 @@ public class Server {
 
 
     /**
-     * 冷部署加载补丁
-     * 1. 将补丁文件 保存为 build/.../instant-run/dex-temp/reload0x?04x.dex
+     * 热部署 加载补丁
+     * 1. 将补丁文件 保存为 /data/data/.../files/instant-run/dex-temp/reload0x?04x.dex
      * 2. 然后 通过 此 dex 去创建一个 DexClassLoader
      * 3. 通过创建的 DexClassLoader 去寻找内部的 AppPatchesLoaderImpl类
      * 4. 进而获取 getPatchedClasses 方法，得到 String[] classes
@@ -625,6 +625,13 @@ public class Server {
     }
 
 
+    /**
+     * 冷部署 加载补丁
+     * 1. 判断补丁是否是 slice- 开头
+     * 2. 将补丁保存在 /data/data/.../files/instant-run/dex/ 目录下
+     *
+     * @param patch 补丁
+     */
     private static void handleColdSwapPatch(@NonNull ApplicationPatch patch) {
         if (patch.path.startsWith(Paths.DEX_SLICE_PREFIX)) {
             File file = FileManager.writeDexShard(patch.getBytes(), patch.path);
@@ -635,11 +642,27 @@ public class Server {
     }
 
 
+    /**
+     * 重启
+     *
+     * @param updateMode 更新模式
+     * @param incrementalResources 插件是否有资源（ 有增量资源 ）
+     * @param toast 是否显示 toast
+     */
     private void restart(int updateMode, boolean incrementalResources, boolean toast) {
         if (Log.isLoggable(LOG_TAG, Log.VERBOSE)) {
             Log.v(LOG_TAG, "Finished loading changes; update mode =" + updateMode);
         }
 
+        /**
+         * Step 1
+         *
+         *
+         * 1. 如果更新模式 是 None 或者 热部署。
+         *    如果要显示 toast。获取前台 Activity，然后用 前台 Activity 显示 toast，然后返回
+         *
+         * 2.
+         */
         if (updateMode == UPDATE_MODE_NONE || updateMode == UPDATE_MODE_HOT_SWAP) {
             if (Log.isLoggable(LOG_TAG, Log.VERBOSE)) {
                 Log.v(LOG_TAG, "Applying incremental code without restart");
@@ -657,6 +680,15 @@ public class Server {
             return;
         }
 
+        /**
+         * Step 2
+         *
+         * 1. 获取所有没有 paused 的 Activity
+         * 2. 获取外部资源文件路径 /data/data/.../files/instant-run/left(right)/resources.ap_
+         * 3.
+         *    3.1 如果不存在资源文件：MonkeyPatcher.monkeyPatchApplication + MonkeyPatcher.monkeyPatchExistingResources
+         *    3.2 如果存在存在资源文件：设置更新模式 - 冷部署
+         */
         List<Activity> activities = Restarter.getActivities(mApplication, false);
 
         if (incrementalResources && updateMode == UPDATE_MODE_WARM_SWAP) {
