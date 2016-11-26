@@ -655,13 +655,11 @@ public class Server {
         }
 
         /**
-         * Step 1
+         * Step 1（ 热部署 ）
          *
          *
          * 1. 如果更新模式 是 None 或者 热部署。
          *    如果要显示 toast。获取前台 Activity，然后用 前台 Activity 显示 toast，然后返回
-         *
-         * 2.
          */
         if (updateMode == UPDATE_MODE_NONE || updateMode == UPDATE_MODE_HOT_SWAP) {
             if (Log.isLoggable(LOG_TAG, Log.VERBOSE)) {
@@ -681,7 +679,7 @@ public class Server {
         }
 
         /**
-         * Step 2
+         * Step 2（ 冷部署 ）
          *
          * 1. 获取所有没有 paused 的 Activity
          * 2. 获取外部资源文件路径 /data/data/.../files/instant-run/left(right)/resources.ap_
@@ -710,6 +708,17 @@ public class Server {
             }
         }
 
+        /**
+         * Step 3（ 温部署 ）
+         *
+         * 1. 先拿到前台显示的 Activity
+         * 2. 如果是 温部署
+         *    2.1 然后反射获取 onHandleCodeChange 方法，进而传入 0L 为参数，进行反射调用
+         *    2.2 如果成功调用则记下标记为 handledRestart，同时显示 toast
+         *    2.3 如果，刚才的 handledRestart 标记为 true，那么继续显示 toast，然后重启 Activity 后返回。
+         *    2.4 最后将更新模式设置为 冷部署
+         * 3. 判断更新模式如果是冷部署则返回（ 证明没成功调用 onHandleCodeChange ）。
+         */
         Activity activity = Restarter.getForegroundActivity(mApplication);
         if (updateMode == UPDATE_MODE_WARM_SWAP) {
             if (activity != null) {
