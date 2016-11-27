@@ -54,6 +54,14 @@ import static com.android.tools.fd.runtime.BootstrapApplication.LOG_TAG;
  * </ul>
  */
 public class Restarter {
+
+    /**
+     * 只在 UiThread 线程执行 updateActivity(...)
+     *
+     * runOnUiThread 的原理很简单，就是判断是不是主线程，是的话，直接 run 这个 Runnable
+     * 不是的话，调用 Activity 内置的主线程 mHandler ，给主线程的 MessageQueue 发 消息，
+     * 回到主线程中处理该 Runnable
+     */
     /** Restart an activity. Should preserve as much state as possible. */
     public static void restartActivityOnUiThread(@NonNull final Activity activity) {
         activity.runOnUiThread(new Runnable() {
@@ -68,6 +76,14 @@ public class Restarter {
     }
 
 
+    /**
+     * 重启 Activity
+     *
+     * 1. 拿到该 Activity 的最顶层 Parent Activity
+     * 2. 然后用 最顶层 Parent Activity 执行 recreate 方法
+     *
+     * @param activity activity
+     */
     private static void restartActivity(@NonNull Activity activity) {
         if (Log.isLoggable(LOG_TAG, Log.VERBOSE)) {
             Log.v(LOG_TAG, "About to restart " + activity.getClass().getSimpleName());
@@ -180,6 +196,14 @@ public class Restarter {
     }
 
 
+    /**
+     * 获取前台显示的 Activity
+     *
+     * 也就是获取全部没有 paused 的 Activity，然后从这个取第一个
+     *
+     * @param context context
+     * @return 前台 Activity
+     */
     @Nullable
     public static Activity getForegroundActivity(@Nullable Context context) {
         List<Activity> list = getActivities(context, true);
@@ -235,6 +259,11 @@ public class Restarter {
     }
 
 
+    /**
+     * 调用 restartActivity 重启 Activity
+     *
+     * @param activity activity
+     */
     private static void updateActivity(@NonNull Activity activity) {
         // This method can be called for activities that are not in the foreground, as long
         // as some of its resources have been updated. Therefore we'll need to make sure
@@ -277,8 +306,17 @@ public class Restarter {
         restartActivity(activity);
     }
 
-
     /** Show a toast when an activity becomes available (if possible). */
+    /**
+     * 如果可能的话，显示 Toast
+     *
+     * 1. 获取前台 Activity
+     * 2.1 如果拿到了，就调用 Restarter.showToast(...)
+     * 2.2 如果没拿到，进入重试方法 showToastWhenPossible(...)，根据重试次数，不断尝试显示 toast
+     *
+     * @param context context
+     * @param message toast 内容
+     */
     public static void showToastWhenPossible(@Nullable Context context, @NonNull String message) {
         Activity activity = Restarter.getForegroundActivity(context);
         if (activity != null) {
