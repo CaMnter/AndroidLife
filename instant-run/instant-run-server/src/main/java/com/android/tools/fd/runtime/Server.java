@@ -55,6 +55,42 @@ import static com.android.tools.fd.runtime.Paths.RESOURCE_FILE_NAME;
  * Server running in the app listening for messages from the IDE and updating the code and
  * resources
  * when provided
+ *
+ * 1. LocalServerSocket 的使用
+ * 2. SocketServerThread 的设计
+ * 3. 资源校验（ res/resources.ap_ ）
+ * 4. 处理补丁：
+ * -    4.1 dex 结尾的格式，就执行 handleColdSwapPatch(...) 冷部署
+ * -    4.2 dex 结尾的格式 并且 名字为 "classes.dex.3" 则记录为 热部署
+ * -    4.3 名字为 "classes.dex.3" 直接执行热部署 handleHotSwapPatch(…)
+ * -    4.4 "res/resources.ap_" 那么直接处理资源补丁 handleResourcePatch(…)
+ * -    4.5：
+ * -    -    4.5.1 温部署 加载补丁 （ 处理资源补丁 ）：调用  FileManager.writeAaptResources(...) 处理资源补丁
+ * -    -    4.5.2 热部署 加载补丁：
+ * -    -    -     <1> 将补丁文件 保存为 /data/data/.../files/instant-run/dex-temp/reload0x?04x.dex
+ * -    -    -     <2> 然后 通过 此 dex 去创建一个 DexClassLoader
+ * -    -    -     <3> 通过创建的 DexClassLoader 去寻找内部的 AppPatchesLoaderImpl 类
+ * -    -    -     <4> 进而获取 getPatchedClasses 方法，得到 String[] classes
+ * -    -    -     <5> 然后打 String[] classes 的 Log
+ * -    -    -     <6> AppPatchesLoaderImpl 向上转为 PatchesLoader 类型
+ * -    -    -     <7> 调用 （ AppPatchesLoaderImpl ）PatchesLoader.load() 方法打上 $override 和 $change 标记位
+ * -    -    4.5.3 冷部署 加载补丁：
+ * -    -    -     <1> 判断补丁是否是 slice- 开头
+ * -    -    -     <2> 将补丁保存在 /data/data/.../files/instant-run/dex/ 目录下
+ * 5. 重启流程处理：
+ * -    5.1 热部署：如果更新模式 是 None 或者 热部署。如果要显示 toast。获取前台 Activity，然后用 前台 Activity 显示 toast，然后返回
+ * -    5.2 冷部署：
+ * -    -    <1> 获取所有没有 paused 的 Activity
+ * -    -    <2> 获取外部资源文件路径 /data/data/.../files/instant-run/left(right)/resources.ap_
+ * -    -    <3.1> 如果不存在资源文件：MonkeyPatcher.monkeyPatchApplication + MonkeyPatcher.monkeyPatchExistingResources
+ * -    -    <3.2> 如果存在存在资源文件：设置更新模式 - 冷部署
+ * -    5.3 温部署：
+ * -    -    <1> 先拿到前台显示的 Activity
+ * -    -    <2> 如果是 温部署 ：
+ * -    -    -     <2.1> 然后反射获取 onHandleCodeChange 方法，进而传入 0L 为参数，进行反射调用
+ * -    -    -     <2.2> 如果，刚才的 handledRestart 标记为 true，那么继续显示 toast，然后重启 Activity 后返回
+ * -    -    -     <2.3> 最后将更新模式设置为 冷部署
+ * -    -    <3> 判断更新模式如果是冷部署则返回（ 证明没成功调用 onHandleCodeChange ）
  */
 public class Server {
 
@@ -536,7 +572,8 @@ public class Server {
 
 
     /**
-     * 处理资源补丁
+     * 温部署 加载补丁 （ 处理资源补丁 ）
+     *
      * 内部实质上调用  FileManager.writeAaptResources(...) 处理资源补丁
      * Math.max(updateMode, UPDATE_MODE_WARM_SWAP) 也只有 冷部署 比 温部署大
      * 返回的模式只可能是 冷部署 or 温部署
@@ -560,6 +597,7 @@ public class Server {
 
     /**
      * 热部署 加载补丁
+     *
      * 1. 将补丁文件 保存为 /data/data/.../files/instant-run/dex-temp/reload0x?04x.dex
      * 2. 然后 通过 此 dex 去创建一个 DexClassLoader
      * 3. 通过创建的 DexClassLoader 去寻找内部的 AppPatchesLoaderImpl类
