@@ -24,9 +24,9 @@ import java.util.List;
 
 public final class CameraManager {
 
-    /*******************************
+    /******************************
      * 输出格式尽量保持 1280 x 720  *
-     *******************************/
+     ******************************/
 
     public static final int PICTURE_OUTPUT_WIDTH = 1280;
     public static final int PICTURE_OUTPUT_HEIGHT = 720;
@@ -36,14 +36,8 @@ public final class CameraManager {
     private static final int ONE_KB = 1024;
     private static final int ONE_MB = ONE_KB * 1024;
     private static final int REQUEST_CAMERA_ID = -1;
-    private volatile static CameraManager instance = null;
-    private Camera camera;
-    private Camera.Parameters cameraParameters;
-    private AutoFocusManager autoFocusManager;
-    private boolean isPreviewing = false;
-
     private static final int ID_CARD_EXPECT_HEIGHT = 720;
-
+    private volatile static CameraManager instance = null;
     private final Comparator<Camera.Size> sizeComparator = new Comparator<Camera.Size>() {
         @Override
         public int compare(Camera.Size lhs, Camera.Size rhs) {
@@ -57,6 +51,10 @@ public final class CameraManager {
             }
         }
     };
+    private Camera camera;
+    private Camera.Parameters cameraParameters;
+    private AutoFocusManager autoFocusManager;
+    private boolean isPreviewing = false;
 
 
     private CameraManager() {
@@ -138,14 +136,14 @@ public final class CameraManager {
          **********************/
 
         // 1280 x 720
-        boolean foundExpectPreivew = false;
+        boolean foundExpectPreview = false;
         for (Camera.Size previewSize : previewSizes) {
             if (previewSize.width == PICTURE_OUTPUT_WIDTH &&
                 previewSize.height == PICTURE_OUTPUT_HEIGHT) {
-                foundExpectPreivew = true;
+                foundExpectPreview = true;
             }
         }
-        if (foundExpectPreivew) {
+        if (foundExpectPreview) {
             boolean foundExpectSize = false;
             for (Camera.Size size : parameters.getSupportedPictureSizes()) {
                 if (size.width == PICTURE_OUTPUT_WIDTH && size.height == PICTURE_OUTPUT_HEIGHT) {

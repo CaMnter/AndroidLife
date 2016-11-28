@@ -221,6 +221,7 @@ public class IdCardCameraActivity extends BaseActivity implements
     public void surfaceDestroyed(SurfaceHolder holder) {
         if (!this.hasSurface) return;
         this.hasSurface = false;
+        this.cameraManager.stopPreview();
     }
 
 

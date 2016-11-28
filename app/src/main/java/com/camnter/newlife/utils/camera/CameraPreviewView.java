@@ -251,6 +251,15 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
     }
 
 
+    public interface PreviewListener {
+        void notificationFrontImageView(final int frontImageMarginTop,
+                                        final int frontImageMarginLeft);
+
+        void notificationReverseImageView(final int reverseImageMarginTop,
+                                          final int reverseImageMarginLeft);
+    }
+
+
     private class SurfaceThread extends Thread {
 
         @Override
@@ -342,15 +351,6 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
             }
         }
 
-    }
-
-
-    public interface PreviewListener {
-        void notificationFrontImageView(final int frontImageMarginTop,
-                                        final int frontImageMarginLeft);
-
-        void notificationReverseImageView(final int reverseImageMarginTop,
-                                          final int reverseImageMarginLeft);
     }
 
 }
