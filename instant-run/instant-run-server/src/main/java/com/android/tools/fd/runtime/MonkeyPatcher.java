@@ -82,6 +82,25 @@ import static com.android.tools.fd.runtime.BootstrapApplication.LOG_TAG;
  * <p>
  * <p>This class should use as few other classes as possible before the class loader is patched
  * because any class loaded before it cannot be incrementally deployed.
+ *
+ *
+ * monkeyPatchApplication（ Hook BootstrapApplication ）:
+ * -    1. Hook 掉 ActivityThread 内的所有 BootstrapApplication 为 RealApplication
+ * -    2. Hook 掉 ActivityThread 内的所有 LoadedApk 内部的：
+ *
+ * monkeyPatchExistingResources（ 加载插件资源，并 Hook 进 App 内  ）:
+ * -    1. 反射调用 AssetManager.addAssetPath 方法加载 插件资源
+ * -    2. Hook Resource or ResourcesImpl 中的 mAssets，Hook 为 插件资源
+ * -    3. Hook Resource or ResourcesImpl 内 Theme or ThemeImpl 中的 mAssets，Hook 为 插件资源
+ * -    4. Hook Activity（ ContextThemeWrapper ）的 initializeTheme 方法去初始化 Theme
+ * -    5. 如果 < 7.0， 先 Hook AssetManager 的 createTheme 方法去创建一个 插件 Theme
+ * -       然后 Hook Activity 的 Theme 的 mTheme Field 为 插件 Theme
+ * -    6. 调用 pruneResourceCaches(@NonNull Object resources) 方法去删除 资源缓存
+ *
+ * pruneResourceCache（ 由于 hook 进来了 newAssetManager，所以需要把原来运行 Activity 的资源缓存清空 ）:
+ * -    1. 删除 Resource 内部的 TypedArrayPool 的资源缓存
+ * -    2. 删除 Resource 图片、动画、颜色等资源缓存
+ * -    3. 删除 ResourceImpl 图片、动画、颜色等资源缓存
  */
 public class MonkeyPatcher {
     /**
