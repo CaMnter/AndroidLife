@@ -116,6 +116,18 @@ public class Restarter {
      * This may require some framework support. Apparently it may already be possible
      * (Dianne says to put the app in the background, kill it then restart it; need to
      * figure out how to do this.)
+     *
+     * 重启 App
+     *
+     * 1. 判断 activities 是否没有内容
+     * -    1.1 没有的话，这个方法就不做任何事情
+     * -    1.2 有的话，继续
+     * 2. 获取前台 Activity
+     * -    2.1 前台 Activity 为 null，那么就拿到 activities 的第一个 Activity 打 Toast，然后直接关闭 App（ 杀死进程 ）
+     * -    2.2 前台 Activity 为 存在，那么就拿 前台 Activity 打 Toast，然后继续
+     * 3. 定制了一个 PendingIntent 是为了在未来打开这个 前台 Activity
+     * 4. 获取 AlarmManager，设置定时任务，再未来的 100ms 后，通过 PendingIntent 打开这个 前台 Activity
+     * 5. 杀死进程，等待 4. 的定时任务执行，并打开 前台 Activity，实现重启 App 的效果
      */
     public static void restartApp(@Nullable Context appContext,
                                   @NonNull Collection<Activity> knownActivities,
@@ -157,6 +169,16 @@ public class Restarter {
     }
 
 
+    /**
+     * 1. 尝试获取 activity 的 base context
+     * -    1.1 拿不到的话，return
+     * -    1.2 拿到的话，继续
+     * 2. 如果如果 Toast 的内容大于 60 或者有换行（ \n ），那么持续时间长。否则，短
+     * 3. 调用 Toast.makeText(...).show() 显示 Toast
+     *
+     * @param activity activity
+     * @param text text
+     */
     static void showToast(@NonNull final Activity activity, @NonNull final String text) {
         if (Log.isLoggable(LOG_TAG, Log.VERBOSE)) {
             Log.v(LOG_TAG, "About to show toast for activity " + activity + ": " + text);
@@ -210,8 +232,28 @@ public class Restarter {
         return list.isEmpty() ? null : list.get(0);
     }
 
-
     // http://stackoverflow.com/questions/11411395/how-to-get-current-foreground-activity-context-in-android
+
+
+    /**
+     * 获取没有 paused 的 Activity
+     *
+     * 1. 反射获取 ActivityThread 的 mActivities Field
+     * 2. 获取 mActivities 的值，根据版本兼容：
+     * -    2.1 如果是 HashMap 的话，转
+     * -    2.2 如果 > 4.4 && 是 ArrayMap 的话，转
+     * -    2.3 都不是的话，会返回初始化好，没内容的 list
+     * 3. 遍历 mActivities 值，拿到每一个 ActivityRecord
+     * -    3.1 判断是否是 foregroundOnly：
+     * -    -    true 的话，过滤出 ActivityRecord 的 paused == true 的 ActivityRecord
+     * -    -    false 的话，不走过滤逻辑
+     * 4. 然后反射 3. 下来的 ActivityRecord 的 activity Field
+     * 5. 拿到 ActivityRecord 的 activity Field 的值，添加到 list 里
+     *
+     * @param context context
+     * @param foregroundOnly foregroundOnly
+     * @return activities
+     */
     @NonNull
     public static List<Activity> getActivities(@Nullable Context context, boolean foregroundOnly) {
         List<Activity> list = new ArrayList<Activity>();
@@ -312,7 +354,7 @@ public class Restarter {
      *
      * 1. 获取前台 Activity
      * 2.1 如果拿到了，就调用 Restarter.showToast(...)
-     * 2.2 如果没拿到，进入重试方法 showToastWhenPossible(...)，根据重试次数，不断尝试显示 toast
+     * 2.2 如果没拿到，进入重试方法 showToastWhenPossible(...)，根据重试次数，不断尝试显示 Toast
      *
      * @param context context
      * @param message toast 内容
@@ -328,6 +370,19 @@ public class Restarter {
     }
 
 
+    /**
+     * 重试显示 Toast 方法
+     * 根据重试次数，不断尝试显示 toast
+     *
+     * 1. 先实例化一个主线程 Handler，用于与主线程通信（ 现在 Toast ）
+     * 2. 然后希望在主线程执行的任务 Runnable 内，拿到获取前台显示 Activity
+     * -    2.1 如果此次拿到了，直接调用 showToast(...) 方法显示 Toast
+     * -    2.2 如果此次拿不到，那么递归到下次，继续尝试拿，一直递归到重试次数大于 0 为止
+     *
+     * @param context context
+     * @param message message
+     * @param remainingAttempts remainingAttempts
+     */
     private static void showToastWhenPossible(
         @Nullable final Context context,
         @NonNull final String message,
