@@ -52,6 +52,49 @@ import static com.android.tools.fd.runtime.BootstrapApplication.LOG_TAG;
  * and then restored when the user brings it back
  * <li> Restart the app completely.
  * </ul>
+ *
+ * 1. restartActivityOnUiThread：只在 UiThread 线程执行 updateActivity(...)
+ * 2. restartActivity：重启 Activity
+ * -    2.1 拿到该 Activity 的最顶层 Parent Activity
+ * -    2.2 然后用 最顶层 Parent Activity 执行 recreate 方法
+ * 3. restartApp：重启 App
+ * -    3.1 判断 activities 是否没有内容
+ * -    -    3.1.1 没有的话，这个方法就不做任何事情
+ * -    -    3.1.2 有的话，继续
+ * -    3.2 获取前台 Activity
+ * -    -    3.2.1 前台 Activity 为 null，那么就拿到 activities 的第一个 Activity 打 Toast，然后直接关闭 App（ 杀死进程 ）
+ * -    -    3.2.2 前台 Activity 为 存在，那么就拿 前台 Activity 打 Toast，然后继续
+ * -    3.3 定制了一个 PendingIntent 是为了在未来打开这个 前台 Activity
+ * -    3.4 获取 AlarmManager，设置定时任务，再未来的 100ms 后，通过 PendingIntent 打开这个 前台 Activity
+ * -    3.5 杀死进程，等待 4. 的定时任务执行，并打开 前台 Activity，实现重启 App 的效果
+ * 4. showToast：显示 toast
+ * -    4.1 尝试获取 activity 的 base context
+ * -    -    4.1.1 拿不到的话，return
+ * -    4.2 如果如果 Toast 的内容大于 60 或者有换行（ \n ），那么持续时间长。否则，短
+ * -    4.3 调用 Toast.makeText(...).show() 显示 Toast
+ * 5. getForegroundActivity：获取前台显示的 Activity，也就是获取全部没有 paused 的 Activity，然后从这个取第一个
+ * 6. getActivities：获取没有 paused 的 Activity
+ * -    6.1 反射获取 ActivityThread 的 mActivities Field
+ * -    6.2 获取 mActivities 的值，根据版本兼容：
+ * -    -    6.2.1 拿不到的话，return
+ * -    -    6.2.2 如果 > 4.4 && 是 ArrayMap 的话，转
+ * -    -    6.2.3 都不是的话，会返回初始化好，没内容的 list
+ * -    6.3 遍历 mActivities 值，拿到每一个 ActivityRecord
+ * -    -    6.3.1 判断是否是 foregroundOnly：
+ * -    -    -    6.3.1.1 true 的话，过滤出 ActivityRecord 的 paused == true 的 ActivityRecord
+ * -    -    -    6.3.1.2 false 的话，不走过滤逻辑
+ * -    6.4 然后反射 3. 下来的 ActivityRecord 的 activity Field
+ * -    6.4 拿到 ActivityRecord 的 activity Field 的值，添加到 list 里
+ * 7. updateActivity：调用 restartActivity 重启 Activity
+ * 8. showToastWhenPossible：如果可能的话，显示 Toast
+ * -    8.1 获取前台 Activity
+ * -    8.2.1 如果拿到了，就调用 Restarter.showToast(...)
+ * -    8.2.2 如果没拿到，进入重试方法 showToastWhenPossible(...)，根据重试次数，不断尝试显示 Toast
+ * 9. showToastWhenPossible：重试显示 Toast 方法，根据重试次数，不断尝试显示 Toast
+ * -    9.1 先实例化一个主线程 Handler，用于与主线程通信（ 现在 Toast ）
+ * -    9.2 然后希望在主线程执行的任务 Runnable 内，拿到获取前台显示 Activity
+ * -    -    9.2.1 如果此次拿到了，直接调用 showToast(...) 方法显示 Toast
+ * -    -    9.2.1 如果此次拿不到，那么递归到下次，继续尝试拿，一直递归到重试次数大于 0 为止
  */
 public class Restarter {
 
@@ -126,7 +169,7 @@ public class Restarter {
      * -    2.1 前台 Activity 为 null，那么就拿到 activities 的第一个 Activity 打 Toast，然后直接关闭 App（ 杀死进程 ）
      * -    2.2 前台 Activity 为 存在，那么就拿 前台 Activity 打 Toast，然后继续
      * 3. 定制了一个 PendingIntent 是为了在未来打开这个 前台 Activity
-     * 4. 获取 AlarmManager，设置定时任务，再未来的 100ms 后，通过 PendingIntent 打开这个 前台 Activity
+     * 4. 获取 AlarmManager，设置定时任务，在未来的 100ms 后，通过 PendingIntent 打开这个 前台 Activity
      * 5. 杀死进程，等待 4. 的定时任务执行，并打开 前台 Activity，实现重启 App 的效果
      */
     public static void restartApp(@Nullable Context appContext,
@@ -170,6 +213,8 @@ public class Restarter {
 
 
     /**
+     * 显示 toast
+     *
      * 1. 尝试获取 activity 的 base context
      * -    1.1 拿不到的话，return
      * -    1.2 拿到的话，继续
@@ -372,7 +417,7 @@ public class Restarter {
 
     /**
      * 重试显示 Toast 方法
-     * 根据重试次数，不断尝试显示 toast
+     * 根据重试次数，不断尝试显示 Toast
      *
      * 1. 先实例化一个主线程 Handler，用于与主线程通信（ 现在 Toast ）
      * 2. 然后希望在主线程执行的任务 Runnable 内，拿到获取前台显示 Activity
