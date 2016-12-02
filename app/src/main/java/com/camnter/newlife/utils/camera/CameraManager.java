@@ -77,14 +77,35 @@ public final class CameraManager {
     }
 
 
+    public synchronized boolean isCameraCanUse() {
+        boolean canUse = true;
+        Camera mCamera = null;
+        try {
+            mCamera = Camera.open();
+        } catch (Exception e) {
+            canUse = false;
+        }
+        if (canUse) {
+            try {
+                mCamera.release();
+            } catch (Exception e) {
+            } finally {
+                mCamera = null;
+            }
+        }
+        return canUse;
+    }
+
+
     /**
      * 打开 Camera
      *
      * @param surfaceHolder surfaceHolder
      * @throws Exception e
      */
-    public synchronized void openCamera(@NonNull final SurfaceHolder surfaceHolder)
-        throws Exception {
+    public synchronized void openCamera(@NonNull final SurfaceHolder surfaceHolder,
+                                        final int surfaceViewWidth,
+                                        final int surfaceViewHeight) throws Exception {
         Log.i(TAG, "[openCamera]:......");
         Camera cameraTemp = this.camera;
         if (cameraTemp == null) {
@@ -100,14 +121,86 @@ public final class CameraManager {
         this.cameraParameters = this.camera.getParameters();
         this.cameraParameters.setPictureFormat(ImageFormat.JPEG);
         this.cameraParameters.setJpegQuality(100);
-        this.setBestPreviewAndPictureSize(this.cameraParameters);
+
+        // set previewSize
+        final Camera.Size suitablePreviewSize = this.getSuitablePreviewSizeForSurfaceView(
+            this.camera, surfaceViewWidth, surfaceViewHeight);
+        this.cameraParameters.setPreviewSize(suitablePreviewSize.width, suitablePreviewSize.height);
+        // set pictureSize
+        final Camera.Size suitablePictureSize = this.getPictureSizeByPreviewSize(this.camera,
+            suitablePreviewSize);
+        this.cameraParameters.setPictureSize(suitablePictureSize.width, suitablePictureSize.height);
+
+        final Camera.Size previewSize = this.cameraParameters.getPreviewSize();
+        final Camera.Size pictureSize = this.cameraParameters.getPictureSize();
+        Log.d(TAG,
+            "CameraParameters >>>>>> PreviewSize >>>>> width=" + previewSize.width + "  height=" +
+                previewSize.height);
+        Log.d(TAG,
+            "CameraParameters >>>>>> PictureSize >>>>> width=" + pictureSize.width + "  height=" +
+                pictureSize.height);
         this.camera.setParameters(this.cameraParameters);
     }
 
 
-    public void adjustCamera() {
-        if (this.camera != null) {
-            this.camera.setDisplayOrientation(90);
+    private Camera.Size getSuitablePreviewSizeForSurfaceView(@NonNull Camera camera,
+                                                             int surfaceViewWidth,
+                                                             int surfaceViewHeight) {
+        final Camera.Parameters parameters = camera.getParameters();
+        List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
+        // 因为 SurfaceView 旋转了 90度
+        final float targetRatio = (float) surfaceViewHeight / (float) surfaceViewWidth;
+        float minDiff = Float.MAX_VALUE;
+        Camera.Size suitableSize = null;
+        for (Camera.Size previewSize : previewSizes) {
+            final float previewWidth = previewSize.width;
+            final float previewHeight = previewSize.height;
+            final float diff = Math.abs(targetRatio - (previewWidth / previewHeight));
+            if (diff < minDiff && previewWidth > 1000) {
+                minDiff = diff;
+                suitableSize = previewSize;
+            }
+        }
+        return suitableSize;
+    }
+
+
+    private Camera.Size getPictureSizeByPreviewSize(
+        @NonNull Camera camera, @NonNull final Camera.Size preiviewSize) {
+        final Camera.Parameters parameters = camera.getParameters();
+        List<Camera.Size> pictureSizes = parameters.getSupportedPictureSizes();
+        Collections.sort(pictureSizes, sizeComparator);
+
+        // 寻找和 previewSize 相同的 pictureSize
+        Camera.Size expectPictureSize = null;
+        for (Camera.Size pictureSize : pictureSizes) {
+            if (pictureSize.width == preiviewSize.width &&
+                pictureSize.height == preiviewSize.height) {
+                expectPictureSize = pictureSize;
+            }
+        }
+        if (expectPictureSize == null) {
+            /**
+             * 寻找差不多比例的 pictureSize，但是 width > 1000 && < 2000
+             * > 2000 容易 OOM
+             */
+            final float targetRatio = (float) preiviewSize.width / (float) preiviewSize.height;
+            float minDiff = Float.MAX_VALUE;
+            Camera.Size suitableSize = null;
+            for (Camera.Size pictureSize : pictureSizes) {
+                final float pictureWidth = pictureSize.width;
+                final float pictureHeight = pictureSize.height;
+                final float diff = Math.abs(targetRatio - (pictureWidth / pictureHeight));
+                if (diff < minDiff && pictureWidth > 1000 && pictureWidth < 2000) {
+                    minDiff = diff;
+                    suitableSize = pictureSize;
+                }
+            }
+            expectPictureSize = suitableSize;
+            // 实在找不到，才拿最优画质
+            return expectPictureSize == null ? pictureSizes.get(0) : expectPictureSize;
+        } else {
+            return expectPictureSize;
         }
     }
 
@@ -179,6 +272,13 @@ public final class CameraManager {
             Collections.sort(pictureSizes, sizeComparator);
             final Camera.Size bestPictureSize = pictureSizes.get(0);
             this.cameraParameters.setPictureSize(bestPictureSize.width, bestPictureSize.height);
+        }
+    }
+
+
+    private void adjustCamera() {
+        if (this.camera != null) {
+            this.camera.setDisplayOrientation(90);
         }
     }
 
@@ -260,7 +360,11 @@ public final class CameraManager {
                                          @Nullable final Camera.PictureCallback raw,
                                          @Nullable final Camera.PictureCallback jpeg) {
         Log.i(TAG, "[takePicture]:......");
-        this.camera.takePicture(shutter, raw, jpeg);
+        try {
+            this.camera.takePicture(shutter, raw, jpeg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -271,6 +375,19 @@ public final class CameraManager {
      */
     public synchronized boolean isOpen() {
         return this.camera != null;
+    }
+
+
+    public synchronized boolean isLightOpen() {
+        try {
+            if (camera != null) {
+                Camera.Parameters parameter = camera.getParameters();
+                return parameter.getFlashMode() == Camera.Parameters.FLASH_MODE_TORCH;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 
