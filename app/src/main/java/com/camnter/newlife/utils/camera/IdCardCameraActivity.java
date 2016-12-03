@@ -27,7 +27,6 @@ import com.camnter.newlife.R;
 import com.camnter.newlife.core.BaseActivity;
 import com.camnter.newlife.utils.BitmapUtils;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.annotation.Retention;
@@ -167,7 +166,7 @@ public class IdCardCameraActivity extends BaseActivity implements
         if (this.hasSurface) {
             // activity 在 paused 时但不会 stopped,因此 surface 仍旧存在；
             // surfaceCreated() 不会调用，因此在这里初始化 camera
-            this.initCamera(holder);
+            // this.initCamera(holder);
         } else {
             // 重置 callback，等待 surfaceCreated() 来初始化camera
             holder.addCallback(this);
@@ -187,10 +186,10 @@ public class IdCardCameraActivity extends BaseActivity implements
     }
 
 
-    private void initCamera(SurfaceHolder holder) {
+    private void initCamera(SurfaceHolder holder, int surfaceViewWidth, int surfaceViewHeight) {
         if (holder == null) return;
         try {
-            this.cameraManager.openCamera(holder);
+            this.cameraManager.openCamera(holder, surfaceViewWidth, surfaceViewHeight);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -207,7 +206,8 @@ public class IdCardCameraActivity extends BaseActivity implements
     public void surfaceCreated(SurfaceHolder holder) {
         if (this.hasSurface) return;
         this.hasSurface = true;
-        this.initCamera(holder);
+        this.initCamera(holder, this.cameraSurfaceView.getWidth(),
+            this.cameraSurfaceView.getHeight());
     }
 
 
@@ -300,26 +300,30 @@ public class IdCardCameraActivity extends BaseActivity implements
 
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
-        final BitmapFactory.Options tempOptions = new BitmapFactory.Options();
-        tempOptions.inJustDecodeBounds = false;
-        final Bitmap originalBitmap = BitmapFactory.decodeByteArray(data, 0, data.length,
-            tempOptions);
+        try {
+            final BitmapFactory.Options tempOptions = new BitmapFactory.Options();
+            tempOptions.inJustDecodeBounds = false;
+            final Bitmap originalBitmap = BitmapFactory.decodeByteArray(data, 0, data.length,
+                tempOptions);
 
-        // 压缩
-        final Bitmap expectBitmap = this.cameraManager.compressForIdCard(originalBitmap);
-        // 水印
-        this.watermarkBitmap = this.cameraManager.addWatermarkBitmap(this,
-            expectBitmap,
-            R.drawable.ic_camnter);
-        // 旋转后的图片记录，为了在确认的时候保存
-        final Bitmap previewBitmap = BitmapUtils.rotate(watermarkBitmap, 90.f);
-        this.previewImage.setImageBitmap(previewBitmap);
+            // 压缩
+            final Bitmap expectBitmap = this.cameraManager.compressForIdCard(originalBitmap);
+            // 水印
+            this.watermarkBitmap = this.cameraManager.addWatermarkBitmap(this,
+                expectBitmap,
+                R.drawable.ic_camnter);
+            // 旋转后的图片记录，为了在确认的时候保存
+            final Bitmap previewBitmap = BitmapUtils.rotate(watermarkBitmap, 90.f);
+            this.previewImage.setImageBitmap(previewBitmap);
 
-        this.showToast("拍照成功", Toast.LENGTH_SHORT);
-        this.cameraManager.mustPreview();
-        this.isTaking = false;
+            this.showToast("拍照成功", Toast.LENGTH_SHORT);
+            this.cameraManager.mustPreview();
+            this.isTaking = false;
 
-        this.switchLayoutType(LAYOUT_TYPE_PICTURE_PREVIEW);
+            this.switchLayoutType(LAYOUT_TYPE_PICTURE_PREVIEW);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
 
@@ -334,6 +338,12 @@ public class IdCardCameraActivity extends BaseActivity implements
                 this.previewOperationLayout.setVisibility(View.GONE);
                 break;
             case LAYOUT_TYPE_PICTURE_PREVIEW:
+                // close light
+                this.cameraManager.closeLight();
+                this.lightImage.setImageResource(this.cameraManager.isLightOpen() ?
+                                                 R.drawable.icon_camera_light_open :
+                                                 R.drawable.icon_camera_light_close);
+
                 this.cameraSurfaceView.setVisibility(View.GONE);
                 this.surfacePreview.setVisibility(View.GONE);
                 this.cameraOperationLayout.setVisibility(View.GONE);
@@ -410,8 +420,8 @@ public class IdCardCameraActivity extends BaseActivity implements
             try {
                 MediaStore.Images.Media.insertImage(context.getContentResolver(),
                     path, fileName, null);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
             }
             // 最后通知图库更新
             context.sendBroadcast(
