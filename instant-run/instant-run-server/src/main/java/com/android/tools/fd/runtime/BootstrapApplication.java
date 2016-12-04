@@ -66,6 +66,9 @@ public class BootstrapApplication extends Application {
     public static final String LOG_TAG = "InstantRun";
 
 
+    /**
+     * 静态代码块实例化 Logging
+     */
     static {
         com.android.tools.fd.common.Log.logging =
             new com.android.tools.fd.common.Log.Logging() {
@@ -128,6 +131,16 @@ public class BootstrapApplication extends Application {
     }
 
 
+    /**
+     * 1. /data/data/.../files/instant-run/inbox/resources.ap_ 是否存在
+     * 2. 存在的话，复制到 /data/data/.../files/instant-run/left(or right)/resources.ap_ 下
+     * 3. 判断是否 复制成功，即有文件
+     * 4. 判断 2. 路径下的 resources.ap_ 是否没被修改（ 0L = 不存在 ），并且如果资源文件的修改时间
+     * -  小于 APP 的 APK 修改时间的话，那么说明这是一个 旧的资源文件（ 失效的旧的 resources.ap_ ），应该
+     * -  忽略（ externalResourcePath = null ）
+     *
+     * @param apkModified apk 是否被修改过，0L 表示没修改（ 0L = 不存在 ），其他表示修改
+     */
     private void createResources(long apkModified) {
         // Look for changes stashed in the inbox folder while the server was not running
         FileManager.checkInbox();
@@ -161,6 +174,23 @@ public class BootstrapApplication extends Application {
     }
 
 
+    /**
+     * HOOK BootstrapApplication 的 ClassLoader 的 类加载机制
+     *
+     * 1. 获取 /data/data/.../files/instant-run/dex 下的所有 .dex 路径（ List ）
+     * 2. 如果有 dex 路径 List 没有内容，直接 return
+     * 3. 获取加载 BootstrapApplication 的 ClassLoader
+     * 4. 反射该 ClassLoader 的 getLdLibraryPath 方法拿到 nativeLibraryPath
+     * -    4.1 如果成功，则直接复制给 nativeLibraryPath
+     * -    4.2 如果失败，捕获异常，打印 Log 后，设置 nativeLibraryPath = /data/data/.../lib
+     * 5. 调用了 静态方法 IncrementalClassLoader.inject(....) 后，直接 HOOK 了 该 ClassLoader 的
+     * -    加载模式为：BootClassLoader -> incrementalClassLoader -> classLoader
+     * 6. 这样的话 BootstrapApplication 的 ClassLoader 的加载 Class 机制就会先走插件 incrementalClassLoader
+     *
+     * @param context context
+     * @param codeCacheDir /data/data/(app package name)/cache
+     * @param apkModified 该 APP 的 APK 完整路径是否有最后一次 修改时间，记录为 apkModified  （ 0L = 不存在 ）
+     */
     private static void setupClassLoaders(Context context, String codeCacheDir, long apkModified) {
         List<String> dexList = FileManager.getDexList(context, apkModified);
 
@@ -206,6 +236,14 @@ public class BootstrapApplication extends Application {
     }
 
 
+    /**
+     * 创建 真正的 Application（ App 内自定义的 Application ）
+     *
+     * 1. AppInfo 中取出，真正 Application 的 packageName，forName(...) 实例化一个 Class<? extends Application>
+     * 2. 反射这个 真正 Application 默认构造方法
+     * 3. 然后在调用这个默认的构造方法去创建这个 真正 Application
+     * 4. 最后保存 真正 Application 实例 在 realApplication 上
+     */
     private void createRealApplication() {
         if (AppInfo.applicationClass != null) {
             if (Log.isLoggable(LOG_TAG, Log.VERBOSE)) {
@@ -235,11 +273,45 @@ public class BootstrapApplication extends Application {
     }
 
 
+    /**
+     * BootstrapApplication 的 attachBaseContext 方法
+     *
+     * 1. MultiDex 处理
+     * -    1.1 判断是否使用了 MultiDex
+     * -    1.2 拿到 App 的 APK 完整路径
+     * -    1.3 判断该 APP 的 APK 完整路径是否有最后一次 修改时间，记录为 apkModified
+     * -    1.4 用 apkModified （ 0L = 不存在 ） 标记，去调用 createResources(...) 方法
+     * -    1.5 创建资源文件 resources.ap_，实质上是 将 /data/data/.../files/instant-run/inbox/resources.ap_
+     * -        复制到 /data/data/.../files/instant-run/left(or right)/resources.ap_
+     * -    1.6 /data/data/(app package name)/cache 和 apkModified 作为参数调用 setupClassLoaders(...) 方法
+     * -    1.7 HOOK BootstrapApplication 的 ClassLoader 的 类加载机制
+     *
+     * 2. 代理 realApplication.attachBaseContext(...)
+     * -    2.1 创建 真正的 Application（ App 内自定义的 Application ），保存在 realApplication
+     * -    2.2 调用 super.attachBaseContext(context)
+     * -    2.3 然后 反射 realApplication 的 attachBaseContext 方法，调用 realApplication 的 attachBaseContext
+     * 方法
+     * -        达到了 BootstrapApplication 代理了 realApplication.attachBaseContext(...) 的效果
+     *
+     * @param context BootstrapApplication 的 ContextImpl
+     */
     @Override
     protected void attachBaseContext(Context context) {
         // As of Marshmallow, we use APK splits and don't need to rely on
         // reflection to inject classes and resources for coldswap
         //noinspection PointlessBooleanExpression
+        /**
+         * Step 1 MultiDex 处理
+         *
+         * 1. 判断是否使用了 MultiDex
+         * 2. 拿到 App 的 APK 完整路径
+         * 3. 判断该 APP 的 APK 完整路径是否有最后一次 修改时间，记录为 apkModified
+         * 4. 用 apkModified （ 0L = 不存在 ） 标记，去调用 createResources(...) 方法
+         * 5. 创建资源文件 resources.ap_，实质上是 将 /data/data/.../files/instant-run/inbox/resources.ap_
+         * -  复制到 /data/data/.../files/instant-run/left(or right)/resources.ap_
+         * 6. /data/data/(app package name)/cache 和 apkModified 作为参数调用 setupClassLoaders(...) 方法
+         * 7. HOOK BootstrapApplication 的 ClassLoader 的 类加载机制
+         */
         if (!AppInfo.usingApkSplits) {
             String apkFile = context.getApplicationInfo().sourceDir;
             long apkModified = apkFile != null ? new File(apkFile).lastModified() : 0L;
@@ -247,6 +319,14 @@ public class BootstrapApplication extends Application {
             setupClassLoaders(context, context.getCacheDir().getPath(), apkModified);
         }
 
+        /**
+         * Step 2 代理 realApplication.attachBaseContext(...)
+         *
+         * 1. 创建 真正的 Application（ App 内自定义的 Application ），保存在 realApplication
+         * 2. 调用 super.attachBaseContext(context)
+         * 3. 然后 反射 realApplication 的 attachBaseContext 方法，调用 realApplication 的 attachBaseContext 方法
+         * -  达到了 BootstrapApplication 代理了 realApplication.attachBaseContext(...) 的效果
+         */
         createRealApplication();
 
         // This is called from ActivityThread#handleBindApplication() -> LoadedApk#makeApplication().
@@ -267,6 +347,14 @@ public class BootstrapApplication extends Application {
     }
 
 
+    /**
+     * 代理 RealApplication 的 createPackageContext(...) 方法
+     *
+     * @param packageName packageName
+     * @param flags flags
+     * @return Context
+     * @throws PackageManager.NameNotFoundException
+     */
     @Override
     public Context createPackageContext(String packageName, int flags)
         throws PackageManager.NameNotFoundException {
@@ -275,12 +363,22 @@ public class BootstrapApplication extends Application {
     }
 
 
+    /**
+     * 代理 RealApplication 的 registerComponentCallbacks(...) 方法
+     *
+     * @param callback callback
+     */
     @Override
     public void registerComponentCallbacks(ComponentCallbacks callback) {
         realApplication.registerComponentCallbacks(callback);
     }
 
 
+    /**
+     * 代理 RealApplication 的 registerActivityLifecycleCallbacks(...) 方法
+     *
+     * @param callback callback
+     */
     @Override
     public void registerActivityLifecycleCallbacks(
         ActivityLifecycleCallbacks callback) {
@@ -288,6 +386,11 @@ public class BootstrapApplication extends Application {
     }
 
 
+    /**
+     * 代理 RealApplication 的 registerOnProvideAssistDataListener(...) 方法
+     *
+     * @param callback callback
+     */
     @Override
     public void registerOnProvideAssistDataListener(
         OnProvideAssistDataListener callback) {
