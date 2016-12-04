@@ -230,7 +230,7 @@ public class IncrementalClassLoader extends ClassLoader {
      * incrementalClassLoader 的构造方法指明了，会拿到 classLoader 的 parent 去作为 incrementalClassLoader 的 parent
      * 去实例化 incrementalClassLoader。所以是 BootClassLoader -> incrementalClassLoader。
      * 然后 classLoader 的关系是 BootClassLoader -> classLoader
-     * 执行 setParent 后：BootClassLoader -> classLoader -> incrementalClassLoader
+     * 执行 setParent 后：BootClassLoader -> incrementalClassLoader -> classLoader
      *
      * @param classLoader 需要 hook 的 classLoader
      * @param nativeLibraryPath 本地 lib 路径
