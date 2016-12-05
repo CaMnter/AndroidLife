@@ -15,6 +15,16 @@
  */
 package com.android.tools.fd.runtime;
 
+/**
+ * App 的信息类
+ *
+ * Instant run 运行时，会生成一份这样的类，并且将 App 的相关信息写入进去
+ *
+ * 1. applicationId: xxx.xxx.xxx 的 packageName
+ * 2. applicationClass:  项目自定义的 Application
+ * 3. token:  用于检验 Socket 内的 DataInputStream
+ * 4. usingApkSplits:  是否使用了 MultiDex
+ */
 public class AppInfo {
     // Keep the structure of this class in sync with
     // GenerateInstantRunAppInfoTask#writeAppInfoClass
