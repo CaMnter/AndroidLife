@@ -88,13 +88,13 @@ import static com.android.tools.fd.runtime.BootstrapApplication.LOG_TAG;
  * -    1. Hook 掉 ActivityThread 内的所有 BootstrapApplication 为 RealApplication
  * -    2. Hook 掉 ActivityThread 内的所有 LoadedApk 内部的：
  *
- * monkeyPatchExistingResources（ 加载插件资源，并 Hook 进 App 内  ）:
- * -    1. 反射调用 AssetManager.addAssetPath 方法加载 插件资源
- * -    2. Hook Resource or ResourcesImpl 中的 mAssets，Hook 为 插件资源
- * -    3. Hook Resource or ResourcesImpl 内 Theme or ThemeImpl 中的 mAssets，Hook 为 插件资源
+ * monkeyPatchExistingResources（ 加载补丁资源，并 Hook 进 App 内  ）:
+ * -    1. 反射调用 AssetManager.addAssetPath 方法加载 补丁资源
+ * -    2. Hook Resource or ResourcesImpl 中的 mAssets，Hook 为 补丁资源
+ * -    3. Hook Resource or ResourcesImpl 内 Theme or ThemeImpl 中的 mAssets，Hook 为 补丁资源
  * -    4. Hook Activity（ ContextThemeWrapper ）的 initializeTheme 方法去初始化 Theme
- * -    5. 如果 < 7.0， 先 Hook AssetManager 的 createTheme 方法去创建一个 插件 Theme
- * -       然后 Hook Activity 的 Theme 的 mTheme Field 为 插件 Theme
+ * -    5. 如果 < 7.0， 先 Hook AssetManager 的 createTheme 方法去创建一个 补丁 Theme
+ * -       然后 Hook Activity 的 Theme 的 mTheme Field 为 补丁 Theme
  * -    6. 调用 pruneResourceCaches(@NonNull Object resources) 方法去删除 资源缓存
  *
  * pruneResourceCache（ 由于 hook 进来了 newAssetManager，所以需要把原来运行 Activity 的资源缓存清空 ）:
@@ -363,12 +363,12 @@ public class MonkeyPatcher {
 
 
     /**
-     * 1. 反射调用 AssetManager.addAssetPath 方法加载 插件资源
-     * 2. Hook Resource or ResourcesImpl 中的 mAssets，Hook 为 插件资源
-     * 3. Hook Resource or ResourcesImpl 内 Theme or ThemeImpl 中的 mAssets，Hook 为 插件资源
+     * 1. 反射调用 AssetManager.addAssetPath 方法加载 补丁资源
+     * 2. Hook Resource or ResourcesImpl 中的 mAssets，Hook 为 补丁资源
+     * 3. Hook Resource or ResourcesImpl 内 Theme or ThemeImpl 中的 mAssets，Hook 为 补丁资源
      * 4. Hook Activity（ ContextThemeWrapper ）的 initializeTheme 方法去初始化 Theme
-     * 5. 如果 < 7.0， 先 Hook AssetManager 的 createTheme 方法去创建一个 插件 Theme
-     *    然后 Hook Activity 的 Theme 的 mTheme Field 为 插件 Theme
+     * 5. 如果 < 7.0， 先 Hook AssetManager 的 createTheme 方法去创建一个 补丁 Theme
+     *    然后 Hook Activity 的 Theme 的 mTheme Field 为 补丁 Theme
      * 6. 调用 pruneResourceCaches(@NonNull Object resources) 方法去删除 资源缓存
      *
      * @param context context
@@ -420,7 +420,7 @@ public class MonkeyPatcher {
              * Step 1
              *
              * 反射 AssetManager#addAssetPath 方法
-             * 加载插件资源的 AssetManager
+             * 加载补丁资源的 AssetManager
              */
 
             // Create a new AssetManager instance and point it to the resources installed under
@@ -436,7 +436,7 @@ public class MonkeyPatcher {
             /**
              * Step 2
              *
-             * 反射 Hook 插件资源 AssetManager 的 ensureStringBlocks Field 为 true
+             * 反射 Hook 补丁资源 AssetManager 的 ensureStringBlocks Field 为 true
              * 下面注释告诉，4.4 需要这么做
              */
 
@@ -455,12 +455,12 @@ public class MonkeyPatcher {
                      *
                      * 获取每个 Activity
                      * 然后 Hook 每个 Resource 的 mAssets Field
-                     * 设置为 插件 AssetManager
+                     * 设置为 补丁 AssetManager
                      *
                      * 如果没有 mAssets Field 就
                      * 去找 mResourcesImpl （ ResourcesImpl ） Field
                      * 然后 Hook ResourcesImpl 的 mAssets Field
-                     * 设置为 插件 AssetManager
+                     * 设置为 补丁 AssetManager
                      */
 
                     try {
@@ -484,12 +484,12 @@ public class MonkeyPatcher {
                          *
                          * 进一步 拿到 Resource 的 Theme
                          * 然后 Hook Theme 的 mAssets Field
-                         * 设置为 插件 AssetManager
+                         * 设置为 补丁 AssetManager
                          *
                          * 如果没有 mAssets Field 就
                          * 去找 mThemeImpl （ ResourcesImpl.ThemeImpl ） Field
                          * 然后 Hook ThemeImpl 的 mAssets Field
-                         * 设置为 插件 AssetManager
+                         * 设置为 补丁 AssetManager
                          */
 
                         try {
@@ -525,9 +525,9 @@ public class MonkeyPatcher {
                          * 如果 < 24
                          *
                          * 先 Hook AssetManager 的 createTheme 方法
-                         * 去创建一个 插件 Theme
+                         * 去创建一个 补丁 Theme
                          *
-                         * 然后 Hook Activity 的 Theme 的 mTheme Field 为 插件 Theme
+                         * 然后 Hook Activity 的 Theme 的 mTheme Field 为 补丁 Theme
                          */
 
                         if (SDK_INT < 24) { // As of API 24, mTheme is gone (but updates work
@@ -567,9 +567,9 @@ public class MonkeyPatcher {
              *
              * 3. 将 1 or 2 环境中，保存下来的 references 进行遍历，拿到每一个 WeakReference<Resources>
              *    有两种选择：
-             *    3.1 Hook Resource 的 mAssets Field 的值为 插件 AssetManager
+             *    3.1 Hook Resource 的 mAssets Field 的值为 补丁 AssetManager
              *    3.2 如果 3.1 失败被 catch 了，反射拿到 Resource mResourcesImpl Field（ ResourcesImpl ）
-             *        然后 Hook ResourcesImpl 的 mAssets Field 的值为 插件 AssetManager
+             *        然后 Hook ResourcesImpl 的 mAssets Field 的值为 补丁 AssetManager
              *
              *
              */
