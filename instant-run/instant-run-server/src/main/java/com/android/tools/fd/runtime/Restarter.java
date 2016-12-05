@@ -66,7 +66,7 @@ import static com.android.tools.fd.runtime.BootstrapApplication.LOG_TAG;
  * -    -    3.2.2 前台 Activity 为 存在，那么就拿 前台 Activity 打 Toast，然后继续
  * -    3.3 定制了一个 PendingIntent 是为了在未来打开这个 前台 Activity
  * -    3.4 获取 AlarmManager，设置定时任务，再未来的 100ms 后，通过 PendingIntent 打开这个 前台 Activity
- * -    3.5 杀死进程，等待 4. 的定时任务执行，并打开 前台 Activity，实现重启 App 的效果
+ * -    3.5 杀死进程，等待 3.4 的定时任务执行，并打开 前台 Activity，实现重启 App 的效果
  * 4. showToast：显示 toast
  * -    4.1 尝试获取 activity 的 base context
  * -    -    4.1.1 拿不到的话，return
@@ -84,7 +84,7 @@ import static com.android.tools.fd.runtime.BootstrapApplication.LOG_TAG;
  * -    -    -    6.3.1.1 true 的话，过滤出 ActivityRecord 的 paused == true 的 ActivityRecord
  * -    -    -    6.3.1.2 false 的话，不走过滤逻辑
  * -    6.4 然后反射 3. 下来的 ActivityRecord 的 activity Field
- * -    6.4 拿到 ActivityRecord 的 activity Field 的值，添加到 list 里
+ * -    6.5 拿到 ActivityRecord 的 activity Field 的值，添加到 list 里
  * 7. updateActivity：调用 restartActivity 重启 Activity
  * 8. showToastWhenPossible：如果可能的话，显示 Toast
  * -    8.1 获取前台 Activity
@@ -94,7 +94,7 @@ import static com.android.tools.fd.runtime.BootstrapApplication.LOG_TAG;
  * -    9.1 先实例化一个主线程 Handler，用于与主线程通信（ 现在 Toast ）
  * -    9.2 然后希望在主线程执行的任务 Runnable 内，拿到获取前台显示 Activity
  * -    -    9.2.1 如果此次拿到了，直接调用 showToast(...) 方法显示 Toast
- * -    -    9.2.1 如果此次拿不到，那么递归到下次，继续尝试拿，一直递归到重试次数大于 0 为止
+ * -    -    9.2.2 如果此次拿不到，那么递归到下次，继续尝试拿，一直递归到重试次数大于 0 为止
  */
 public class Restarter {
 
