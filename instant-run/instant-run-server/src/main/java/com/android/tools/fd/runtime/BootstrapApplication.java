@@ -61,6 +61,68 @@ import java.util.logging.Level;
  * <p>
  * <p>This class should use as few other classes as possible before the class loader is patched
  * because any class loaded before it cannot be incrementally deployed.
+ *
+ * 1. createResources: 创建资源 - 本质就是 copy resources.ap_
+ * -    1.1 /data/data/.../files/instant-run/inbox/resources.ap_ 是否存在
+ * -    1.2 存在的话，复制到 /data/data/.../files/instant-run/left(or right)/resources.ap_ 下
+ * -    1.3 判断是否 复制成功，即有文件
+ * -    1.4 判断 2. 路径下的 resources.ap_ 是否没被修改（ 0L = 不存在 ），并且如果资源文件的修改时间
+ * -        小于 APP 的 APK 修改时间的话，那么说明这是一个 旧的资源文件（ 失效的旧的 resources.ap_ ），应该
+ * -        忽略（ externalResourcePath = null ）
+ * 2. setupClassLoaders: HOOK BootstrapApplication 的 ClassLoader 的 类加载机制
+ * -    2.1 获取 /data/data/.../files/instant-run/dex 下的所有 .dex 路径（ List ）
+ * -    2.2 如果有 dex 路径 List 没有内容，直接 return
+ * -    2.3 获取加载 BootstrapApplication 的 ClassLoader
+ * -    2.4 反射该 ClassLoader 的 getLdLibraryPath 方法拿到 nativeLibraryPath
+ * -        2.4.1 如果成功，则直接复制给 nativeLibraryPath
+ * -        2.4.2 如果失败，捕获异常，打印 Log 后，设置 nativeLibraryPath = /data/data/.../lib
+ * -    2.5 调用了 静态方法 IncrementalClassLoader.inject(....) 后，直接 HOOK 了 该 ClassLoader 的
+ * -        加载模式为：BootClassLoader -> incrementalClassLoader -> classLoader
+ * -    2.6 这样的话 BootstrapApplication 的 ClassLoader 的加载 Class 机制就会先走插件 incrementalClassLoader
+ * 3. createRealApplication: 创建 真正的 Application（ App 内自定义的 Application ）
+ * -    3.1 AppInfo 中取出，真正 Application 的 packageName，forName(...) 实例化一个 Class<? extends
+ * -        Application>
+ * -    3.2 反射这个 真正 Application 默认构造方法
+ * -    3.3 然后在调用这个默认的构造方法去创建这个 真正 Application
+ * -    3.4 最后保存 真正 Application 实例 在 realApplication 上
+ * 4. attachBaseContext: BootstrapApplication 的 attachBaseContext 方法
+ * -    4.1 MultiDex 处理
+ * -        4.1.1 判断是否使用了 MultiDex
+ * -        4.1.2 拿到 App 的 APK 完整路径
+ * -        4.1.3 判断该 APP 的 APK 完整路径是否有最后一次 修改时间，记录为 apkModified
+ * -        4.1.4 用 apkModified （ 0L = 不存在 ） 标记，去调用 createResources(...) 方法
+ * -        4.1.5 创建资源文件 resources.ap_，实质上是 将 /data/data/.../files/instant-run/inbox/resources.ap_
+ * -              复制到 /data/data/.../files/instant-run/left(or right)/resources.ap_
+ * -        4.1.6 /data/data/(app package name)/cache 和 apkModified 作为参数调用 setupClassLoaders(...)方法
+ * -        4.1.7 HOOK BootstrapApplication 的 ClassLoader 的 类加载机制
+ * -    4.2 代理 realApplication.attachBaseContext(...)
+ * -        4.2.1 创建 真正的 Application（ App 内自定义的 Application ），保存在 realApplication
+ * -        4.2.2 调用 super.attachBaseContext(context)
+ * -        4.2.3 然后 反射 realApplication 的 attachBaseContext 方法，调用 realApplication 的
+ * -              attachBaseContext 方法，达到了 BootstrapApplication 代理了
+ * -              realApplication.attachBaseContext(...) 的效果
+ * 5. onCreate: BootstrapApplication 的 onCreate 方法
+ * -    5.1 MultiDex 处理
+ * -        5.1.1 判断是否使用了 MultiDex
+ * -        5.1.2 如果没有使用 MultiDex
+ * -            5.1.2.1 MonkeyPatcher.monkeyPatchApplication(...) 去 hook 掉整个 ActivityThread 内
+ * -                   （ 包括 ActivityThread 内所有 LoadedApk 内部的 BootstrapApplication ）所有
+ * -                    关于 BootstrapApplication 的地方，替换为 RealApplication
+ * -            5.1.2.2 MonkeyPatcher.monkeyPatchExistingResources(...) 反射调用
+ * -                    AssetManager.addAssetPath 方法加载 补丁资源，得到一个 补丁 AssetManager。然后
+ * -                    Hook 掉 Resource, ResourcesImpl 内部的所有（ 包括内部的 Theme or ThemeImpl ）的
+ * -                    mAssets。如果 < 7.0， 先 Hook AssetManager 的 createTheme 方法去创建一个 补丁 Theme
+ * -                    然后 Hook Activity 的 Theme 的 mTheme Field 为 补丁 Theme
+ * -                    最后，pruneResourceCaches(@NonNull Object resources) 方法去删除 资源缓存
+ * -        5.1.3 如果使用 MultiDex 了，就不执行 5.1.2.1，只执行 5.1.2.2
+ * -    5.2 启动 Server 和 代理 RealApplication 的 onCreate 方法
+ * -        5.2.1 判断 AppInfo.applicationId（ applicationId = packageName ） != null
+ * -            5.2.1.1 如果 AppInfo.applicationId == null，不执行以下操作，跳过这个 if
+ * -            5.2.1.2 如果 AppInfo.applicationId != null，继续
+ * -        5.2.2 获取 ActivityManager，拿到手机内所有进程的信息（ RunningAppProcessInfo ）
+ * -        5.2.3 寻找该 App 的对应的 RunningAppProcessInfo 信息
+ * -        5.2.4 然后 Server.create(...) 创建 Server 的同时，会在 Server 的构造方法中启动 Server
+ * -        5.2.5 代理 RealApplication 的 onCreate 方法
  */
 public class BootstrapApplication extends Application {
     public static final String LOG_TAG = "InstantRun";
@@ -132,6 +194,8 @@ public class BootstrapApplication extends Application {
 
 
     /**
+     * 创建资源 - 本质就是 copy resources.ap_
+     *
      * 1. /data/data/.../files/instant-run/inbox/resources.ap_ 是否存在
      * 2. 存在的话，复制到 /data/data/.../files/instant-run/left(or right)/resources.ap_ 下
      * 3. 判断是否 复制成功，即有文件
@@ -226,6 +290,13 @@ public class BootstrapApplication extends Application {
     }
 
 
+    /**
+     * 拼接 一组 dex 的路径 的 String 内容
+     *
+     * @param on 间隔符
+     * @param list 一组 dex 的路径
+     * @return String
+     */
     public static String join(char on, List<String> list) {
         StringBuilder stringBuilder = new StringBuilder();
         for (String item : list) {
@@ -290,8 +361,7 @@ public class BootstrapApplication extends Application {
      * -    2.1 创建 真正的 Application（ App 内自定义的 Application ），保存在 realApplication
      * -    2.2 调用 super.attachBaseContext(context)
      * -    2.3 然后 反射 realApplication 的 attachBaseContext 方法，调用 realApplication 的 attachBaseContext
-     * 方法
-     * -        达到了 BootstrapApplication 代理了 realApplication.attachBaseContext(...) 的效果
+     * -        方法，达到了 BootstrapApplication 代理了 realApplication.attachBaseContext(...) 的效果
      *
      * @param context BootstrapApplication 的 ContextImpl
      */
@@ -304,13 +374,14 @@ public class BootstrapApplication extends Application {
          * Step 1 MultiDex 处理
          *
          * 1. 判断是否使用了 MultiDex
-         * 2. 拿到 App 的 APK 完整路径
-         * 3. 判断该 APP 的 APK 完整路径是否有最后一次 修改时间，记录为 apkModified
-         * 4. 用 apkModified （ 0L = 不存在 ） 标记，去调用 createResources(...) 方法
-         * 5. 创建资源文件 resources.ap_，实质上是 将 /data/data/.../files/instant-run/inbox/resources.ap_
+         * 2. 如果使用了 MultiDex，不处理以下流程
+         * 3. 拿到 App 的 APK 完整路径
+         * 4. 判断该 APP 的 APK 完整路径是否有最后一次 修改时间，记录为 apkModified
+         * 5. 用 apkModified （ 0L = 不存在 ） 标记，去调用 createResources(...) 方法
+         * 6. 创建资源文件 resources.ap_，实质上是 将 /data/data/.../files/instant-run/inbox/resources.ap_
          * -  复制到 /data/data/.../files/instant-run/left(or right)/resources.ap_
-         * 6. /data/data/(app package name)/cache 和 apkModified 作为参数调用 setupClassLoaders(...) 方法
-         * 7. HOOK BootstrapApplication 的 ClassLoader 的 类加载机制
+         * 7. /data/data/(app package name)/cache 和 apkModified 作为参数调用 setupClassLoaders(...) 方法
+         * 8. HOOK BootstrapApplication 的 ClassLoader 的 类加载机制
          */
         if (!AppInfo.usingApkSplits) {
             String apkFile = context.getApplicationInfo().sourceDir;
@@ -398,12 +469,22 @@ public class BootstrapApplication extends Application {
     }
 
 
+    /**
+     * 代理 RealApplication 的 unregisterComponentCallbacks(...) 方法
+     *
+     * @param callback callback
+     */
     @Override
     public void unregisterComponentCallbacks(ComponentCallbacks callback) {
         realApplication.unregisterComponentCallbacks(callback);
     }
 
 
+    /**
+     * 代理 RealApplication 的 unregisterActivityLifecycleCallbacks(...) 方法
+     *
+     * @param callback callback
+     */
     @Override
     public void unregisterActivityLifecycleCallbacks(
         ActivityLifecycleCallbacks callback) {
@@ -411,6 +492,11 @@ public class BootstrapApplication extends Application {
     }
 
 
+    /**
+     * 代理 RealApplication 的 unregisterOnProvideAssistDataListener(...) 方法
+     *
+     * @param callback callback
+     */
     @Override
     public void unregisterOnProvideAssistDataListener(
         OnProvideAssistDataListener callback) {
@@ -418,8 +504,50 @@ public class BootstrapApplication extends Application {
     }
 
 
+    /**
+     * BootstrapApplication 的 onCreate 方法
+     *
+     * 1. MultiDex 处理
+     * -    1.1 判断是否使用了 MultiDex
+     * -    1.2 如果没有使用 MultiDex
+     * -        1.2.1 MonkeyPatcher.monkeyPatchApplication(...) 去 hook 掉整个 ActivityThread 内
+     * -             （ 包括 ActivityThread 内所有 LoadedApk 内部的 BootstrapApplication ）所有
+     * -              关于 BootstrapApplication 的地方，替换为 RealApplication
+     * -        1.2.2 MonkeyPatcher.monkeyPatchExistingResources(...) 反射调用
+     * -              AssetManager.addAssetPath 方法加载 补丁资源，得到一个 补丁 AssetManager。然后
+     * -              Hook 掉 Resource, ResourcesImpl 内部的所有（ 包括内部的 Theme or ThemeImpl ）的
+     * -              mAssets。如果 < 7.0， 先 Hook AssetManager 的 createTheme 方法去创建一个 补丁 Theme
+     * -              然后 Hook Activity 的 Theme 的 mTheme Field 为 补丁 Theme
+     * -              最后，pruneResourceCaches(@NonNull Object resources) 方法去删除 资源缓存
+     * -    1.3 如果使用 MultiDex 了，就不执行 1.2.2，只执行 1.2.1
+     *
+     * 2. 启动 Server 和 代理 RealApplication 的 onCreate 方法
+     * -    2.1 判断 AppInfo.applicationId（ applicationId = packageName ） != null
+     * -        2.1.1 如果 AppInfo.applicationId == null，不执行以下操作，跳过这个 if
+     * -        2.1.2 如果 AppInfo.applicationId != null，继续
+     * -    2.2 获取 ActivityManager，拿到手机内所有进程的信息（ RunningAppProcessInfo ）
+     * -    2.3 寻找该 App 的对应的 RunningAppProcessInfo 信息
+     * -    2.4 然后 Server.create(...) 创建 Server 的同时，会在 Server 的构造方法中启动 Server
+     * -    2.5 代理 RealApplication 的 onCreate 方法
+     */
     @Override
     public void onCreate() {
+
+        /**
+         * Step 1 MultiDex 处理
+         *
+         * 1. 判断是否使用了 MultiDex
+         * 2. 如果没有使用 MultiDex
+         * -    2.1 MonkeyPatcher.monkeyPatchApplication(...) 去 hook 掉整个 ActivityThread 内
+         * -       （ 包括 ActivityThread 内所有 LoadedApk 内部的 BootstrapApplication ）所有
+         * -        关于 BootstrapApplication 的地方，替换为 RealApplication
+         * -    2.2 MonkeyPatcher.monkeyPatchExistingResources(...) 反射调用 AssetManager.addAssetPath 方法
+         * -        加载 补丁资源，得到一个 补丁 AssetManager。然后 Hook 掉 Resource, ResourcesImpl 内
+         * -        部的所有（ 包括内部的 Theme or ThemeImpl ）的 mAssets。如果 < 7.0， 先 Hook AssetManager
+         * -        的 createTheme 方法去创建一个 补丁 Theme，然后 Hook Activity 的 Theme 的 mTheme Field 为 补丁 Theme。
+         * -        最后，pruneResourceCaches(@NonNull Object resources) 方法去删除 资源缓存
+         * 3. 如果使用 MultiDex 了，就不执行 2.2，只执行 2.1
+         */
         // As of Marshmallow, we use APK splits and don't need to rely on
         // reflection to inject classes and resources for coldswap
         //noinspection PointlessBooleanExpression
@@ -438,6 +566,17 @@ public class BootstrapApplication extends Application {
         }
         super.onCreate();
 
+        /**
+         * Step 2 启动 Server 和 代理 RealApplication 的 onCreate 方法
+         *
+         * 1. 判断 AppInfo.applicationId（ applicationId = packageName ） != null
+         * -    1.1 如果 AppInfo.applicationId == null，不执行以下操作，跳过这个 if
+         * -    1.2 如果 AppInfo.applicationId != null，继续
+         * 2. 获取 ActivityManager，拿到手机内所有进程的信息（ RunningAppProcessInfo ）
+         * 3. 寻找该 App 的对应的 RunningAppProcessInfo 信息
+         * 4. 然后 Server.create(...) 创建 Server 的同时，会在 Server 的构造方法中启动 Server
+         * 5. 代理 RealApplication 的 onCreate 方法
+         */
         // Start server, unless we're in a multiprocess scenario and this isn't the
         // primary process
         if (AppInfo.applicationId != null) {
