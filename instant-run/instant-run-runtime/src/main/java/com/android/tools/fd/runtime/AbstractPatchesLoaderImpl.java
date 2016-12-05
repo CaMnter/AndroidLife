@@ -21,11 +21,50 @@ import java.util.logging.Level;
 
 import static com.android.tools.fd.common.Log.logging;
 
+/**
+ * Instant run 生成的 AppPatchesLoaderImpl 的 父类
+ *
+ * 主要用于：Hook 被修改的 类名 的 $change Field
+ *
+ * 1. 遍历所有 被修改的 类名
+ * 2. 拼接出 ???$override 类型
+ * 3. 通过 ClassLoader 加载 ???$override 类
+ * 4. 反射实例化一个 ???$override 类 的实例
+ * 5. 加载 被修改的 类
+ * 6. 反射 被修改的 类 的 $change Field
+ * 7. 反射获取 被修改的 类 的 $change Field 的值
+ * 8. 判断 被修改的 类 的 $change Field 的值
+ * -    8.1 如果存在值，反射获取其 $obsolete Field，如果不为 null，则设置为 true
+ * 9. HOOK 被修改的 类 的 $change Field = 4. 实例化好的 ???$override 类
+ * 10. 如果这写过程中抛出异常，返回 false。否则，返回 true
+ */
 public abstract class AbstractPatchesLoaderImpl implements PatchesLoader {
 
+    /**
+     * 拿到所有 被修改的 类名
+     *
+     * @return 被修改的 类名 集合
+     */
     public abstract String[] getPatchedClasses();
 
 
+    /**
+     * Hook 被修改的 类名 的 $change Field
+     *
+     * 1. 遍历所有 被修改的 类名
+     * 2. 拼接出 ???$override 类型
+     * 3. 通过 ClassLoader 加载 ???$override 类
+     * 4. 反射实例化一个 ???$override 类 的实例
+     * 5. 加载 被修改的 类
+     * 6. 反射 被修改的 类 的 $change Field
+     * 7. 反射获取 被修改的 类 的 $change Field 的值
+     * 8. 判断 被修改的 类 的 $change Field 的值
+     * -    7.1 如果存在值，反射获取其 $obsolete Field，如果不为 null，则设置为 true
+     * 9. HOOK 被修改的 类 的 $change Field = 4. 实例化好的 ???$override 类
+     * 10. 如果这写过程中抛出异常，返回 false。否则，返回 true
+     *
+     * @return 加载成功 or 加载失败
+     */
     @Override
     public boolean load() {
         try {
