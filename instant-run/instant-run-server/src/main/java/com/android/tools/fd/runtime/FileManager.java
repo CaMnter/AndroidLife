@@ -56,30 +56,56 @@ public class FileManager {
      * According to Dianne, using an extracted directory tree of resources rather than
      * in an archive was implemented before 1.0 and never used or tested... so we should
      * tread carefully here.
+     *
+     * 标识是否 使用提取资源
      */
     private static final boolean USE_EXTRACTED_RESOURCES = false;
 
+    /**
+     * 资源文件名 resources.ap_
+     */
     /** Name of file to write resource data into, if not extracting resources */
     private static final String RESOURCE_FILE_NAME = Paths.RESOURCE_FILE_NAME;
 
+    /**
+     * 资源文件夹 resources
+     */
     /** Name of folder to write extracted resource data into, if extracting resources */
     private static final String RESOURCE_FOLDER_NAME = "resources";
 
+    /**
+     * 用于指定文件话 left 还是 right 的 文件名 active
+     */
     /** Name of the file which points to either the left or the right data directory */
     private static final String FILE_NAME_ACTIVE = "active";
 
+    /**
+     * left 文件夹
+     */
     /** Name of the left directory */
     private static final String FOLDER_NAME_LEFT = "left";
 
+    /**
+     * right 文件夹
+     */
     /** Name of the right directory */
     private static final String FOLDER_NAME_RIGHT = "right";
 
+    /**
+     * reload.dex 的前缀
+     */
     /** Prefix for reload.dex files */
     private static final String RELOAD_DEX_PREFIX = "reload";
 
+    /**
+     * classes.dex 的扩展名
+     */
     /** Suffix for classes.dex files */
     public static final String CLASSES_DEX_SUFFIX = ".dex";
 
+    /**
+     * 标识是否 清空 temp dex 文件
+     */
     /** Whether we've purged temp dex files in this session */
     private static boolean sHavePurgedTempDexFolder;
 
@@ -90,6 +116,8 @@ public class FileManager {
      * background (to write to). These are named {@link #FOLDER_NAME_LEFT} and
      * {@link #FOLDER_NAME_RIGHT} and the current one is pointed to by
      * {@link #FILE_NAME_ACTIVE}.
+     *
+     * 获取数据目录：/data/data/( applicationId )/files/instant-run
      */
     private static File getDataFolder() {
         // TODO: Call Context#getFilesDir(), but since we don't have a context yet figure
@@ -101,13 +129,32 @@ public class FileManager {
     }
 
 
+    /**
+     * 获取资源文件
+     *
+     * 1. 如果 使用提取资源，那么路径为 父路径/resource
+     * 2. 如果 不使用提取资源，那么路径为 父路径/resources.ap_
+     *
+     * @param base 父路径
+     * @return 资源完整路径
+     */
     @NonNull
     private static File getResourceFile(File base) {
         //noinspection ConstantConditions
         return new File(base, USE_EXTRACTED_RESOURCES ? RESOURCE_FOLDER_NAME : RESOURCE_FILE_NAME);
     }
 
-
+    /**
+     * 获取 dex 文件夹
+     *
+     * 去寻找 父路径/dex 文件夹
+     * 一般都是 /data/data/( applicationId )/files/instant-run/dex
+     * 根据 createIfNecessary 的值，考虑不存在的话，是否创建
+     *
+     * @param base 父路径
+     * @param createIfNecessary 如果不存在，是否创建
+     * @return File = 父路径/dex or null
+     */
     /**
      * Returns the folder used for .dex files used during the next app start
      */
@@ -127,7 +174,15 @@ public class FileManager {
         return file;
     }
 
-
+    /**
+     * 获取临时 dex 文件夹
+     *
+     * 直接 new 一个 File = 父路径/dex-temp
+     * 一般都是 /data/data/( applicationId )/files/instant-run/dex-temp
+     *
+     * @param base 父路径
+     * @return File = 父路径/dex-temp
+     */
     /**
      * Returns the folder used for temporary .dex files (e.g. classes loaded on the fly
      * and only needing to exist during the current app process
@@ -138,11 +193,30 @@ public class FileManager {
     }
 
 
+    /**
+     * 获取本地 lib 文件夹
+     *
+     * 直接 new 一个 File = /data/data/( applicationId )/lib
+     *
+     * @return File = /data/data/( applicationId )/lib
+     */
     public static File getNativeLibraryFolder() {
         return new File(Paths.getMainApkDataDirectory(applicationId), "lib");
     }
 
-
+    /**
+     * 获取 外部资源读取的 文件夹
+     *
+     * 根据 {@link FileManager#leftIsActive} 的结果，决定读取
+     *
+     * left: /data/data/( applicationId )/files/instant-run/left
+     * 还是
+     * right: /data/data/( applicationId )/files/instant-run/right
+     *
+     * 主要用于 {@link FileManager#getExternalResourceFile}
+     *
+     * @return left or right
+     */
     /**
      * Returns the "foreground" folder: the location to read code and resources from.
      */
@@ -152,7 +226,17 @@ public class FileManager {
         return new File(getDataFolder(), name);
     }
 
-
+    /**
+     * 反转文件夹
+     *
+     * 如果 leftIsActive() 表示 true，表示 left
+     * 如果 leftIsActive() 表示 false，表示 right
+     *
+     * 但是 setLeftActive(!leftIsActive()) 之后，
+     * 会清空之前的 active 的内容，leftIsActive() 表示 true，那么在 active 文件写入 right，
+     * leftIsActive() 表示 false，那么在 active 文件写入 left
+     * 达到反转文件夹的效果
+     */
     /**
      * Swaps the read/write folders such that the next time somebody asks for the
      * read or write folders, they'll get the opposite.
@@ -161,7 +245,20 @@ public class FileManager {
         setLeftActive(!leftIsActive());
     }
 
-
+    /**
+     * 获取 外部资源写入 的文件夹
+     *
+     * 根据 {@link FileManager#leftIsActive} 的结果，决定写入
+     *
+     * left: /data/data/( applicationId )/files/instant-run/left
+     * 还是
+     * right: /data/data/( applicationId )/files/instant-run/right
+     *
+     * 然后再根据 wipe ，来决定是否 一定！ 删除或者保留之前 left( or right ) 的文件夹
+     *
+     * @param wipe 是否清空之前的文件
+     * @return 外部资源写入 的文件夹
+     */
     /**
      * Returns the "background" folder: the location to write code and resources to.
      */
@@ -180,6 +277,14 @@ public class FileManager {
     }
 
 
+    /**
+     * 删除 文件夹 or 文件
+     *
+     * 文件：直接删除
+     * 文件夹：删除文件以及文件夹
+     *
+     * @param file 要删除的文件
+     */
     private static void delete(@NonNull File file) {
         if (file.isDirectory()) {
             // Delete the contents
@@ -199,6 +304,19 @@ public class FileManager {
     }
 
 
+    /**
+     * 校验 active 文件或内容
+     *
+     * 1. 先拿到 data 目录: /data/data/( applicationId )/files/instant-run
+     * 2. 定义 File : /data/data/( applicationId )/files/instant-run/active
+     * 3. 如果 active 文件不存在，则返回 true，断定为 left
+     * 4. 尝试读取 active 的内容
+     * -    4.1 如果读到 "left"，返回 true，断定为 left
+     * -    4.2 如果读到 "right", 返回 false，断定为 right
+     * -    4.3 如果什么都没读到，或者文件不存在等等问题，返回 true，默认断定为 left
+     *
+     * @return true，断定为 left 或者 false，断定为 right
+     */
     private static boolean leftIsActive() {
         File folder = getDataFolder();
         File pointer = new File(folder, FILE_NAME_ACTIVE);
@@ -219,6 +337,22 @@ public class FileManager {
     }
 
 
+    /**
+     * 创建 active 文件
+     *
+     * 创建 active 文件，并根据传入的 boolean，写入 "left" 还是 "right"
+     *
+     * 1. 先拿到 data 目录: /data/data/( applicationId )/files/instant-run
+     * 2. 定义 File : /data/data/( applicationId )/files/instant-run/active
+     * 3. 判断 active 是否存在
+     * -    3.1 存在，则删除
+     * -    3.2 不存在，并且其父路径也不存在，则创建父路径的文件夹
+     * 4. 根据 active 值，开始创建 active 文件，并对其写入内容
+     * -    4.1 如果 active = true，写入 "left"
+     * -    4.2 如果 active = false，写入 "right"
+     *
+     * @param active active
+     */
     private static void setLeftActive(boolean active) {
         File folder = getDataFolder();
         File pointer = new File(folder, FILE_NAME_ACTIVE);
@@ -247,7 +381,14 @@ public class FileManager {
         }
     }
 
-
+    /**
+     * 复制资源文件 resources.ap_
+     *
+     * 1. /data/data/( applicationId )/files/instant-run/inbox/resources.ap_ 是否存在
+     * 2. 存在的话，复制到 /data/data/.../files/instant-run/left(or right)/resources.ap_ 下
+     *
+     * 主要用于 {@link BootstrapApplication#createResources(long)}
+     */
     /** Looks in the inbox for new changes sent while the app wasn't running and apply them */
     public static void checkInbox() {
         File inbox = new File(Paths.getInboxDirectory(applicationId));
@@ -273,7 +414,19 @@ public class FileManager {
         }
     }
 
-
+    /**
+     * 获取 外部资源文件
+     *
+     * 根据 {@link FileManager#leftIsActive} 的结果，决定读取
+     *
+     * left: /data/data/( applicationId )/files/instant-run/left
+     * 还是
+     * right: /data/data/( applicationId )/files/instant-run/right
+     *
+     * 如果不存在则返回 null，存在则 返回 left or right
+     *
+     * @return null，left，right
+     */
     /** Returns the current/active resource file, if it exists */
     @Nullable
     public static File getExternalResourceFile() {
@@ -297,6 +450,15 @@ public class FileManager {
      */
     @NonNull
     public static List<String> getDexList(Context context, long apkModified) {
+
+        /**
+         * Step 1
+         *
+         * 1. 获取 /data/data/( applicationId )/files/instant-run/dex-temp 文件夹下，最近修改的.dex 文
+         * -  件的更新时间，记录为 newestHotswapPatch
+         * 2. 获取 /data/data/( applicationId )/files/instant-run/dex File，但不一定创建
+         */
+
         File dataFolder = getDataFolder();
 
         long newestHotswapPatch = FileManager.getMostRecentTempDexTime(dataFolder);
@@ -728,10 +890,20 @@ public class FileManager {
         return null;
     }
 
-
     /**
      * Returns the modification time of the newest hotswap (reload) dex file
      * or 0 if there are no hotswap dex files in the passed dataFolder
+     */
+    /**
+     * 获取 dex-temp 文件夹下，最近修改的.dex 文件的更新时间
+     *
+     * 获取 /data/data/( applicationId )/files/instant-run/dex-temp 文件夹下，最近修改的
+     * .dex 文件的更新时间
+     * 如果 /data/data/( applicationId )/files/instant-run/dex-temp 文件夹 不存在 或者
+     * 文件夹内没有文件 return 0L
+     *
+     * @param dataFolder /data/data/( applicationId )/files/instant-run
+     * @return 最新 .dex 的时间
      */
     public static long getMostRecentTempDexTime(@NonNull File dataFolder) {
         File dexFolder = getTempDexFileFolder(dataFolder);
@@ -753,7 +925,16 @@ public class FileManager {
         return newest;
     }
 
-
+    /**
+     * 清空 dex-temp 下的 .dex 文件
+     *
+     * 清空 /data/data/( applicationId )/files/instant-run/dex-temp 文件夹下的 .dex 文件
+     * 但是，保留 dex-temp 文件夹
+     *
+     * 同时记录 sHavePurgedTempDexFolder = true
+     *
+     * @param dataFolder /data/data/( applicationId )/files/instant-run
+     */
     /**
      * Removes .dex files from the temp dex file folder
      */
