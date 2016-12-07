@@ -598,7 +598,7 @@ public class Server {
     /**
      * 热部署 加载补丁
      *
-     * 1. 将补丁文件 保存为 /data/data/.../files/instant-run/dex-temp/reload0x?04x.dex
+     * 1. 将补丁文件 保存为 /data/data/.../files/instant-run/dex-temp/reload0x????.dex
      * 2. 然后 通过 此 dex 去创建一个 DexClassLoader
      * 3. 通过创建的 DexClassLoader 去寻找内部的 AppPatchesLoaderImpl类
      * 4. 进而获取 getPatchedClasses 方法，得到 String[] classes
