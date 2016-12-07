@@ -50,6 +50,96 @@ import static com.android.tools.fd.runtime.BootstrapApplication.LOG_TAG;
 /**
  * Class which handles locating existing code and resource files on the device,
  * as well as writing new versions of these.
+ *
+ * 最核心方法：
+ *
+ * 1. checkInbox: 复制资源文件 resources.ap_（ 主要用于 创建资源 ）
+ * -    1.1 判断 /data/data/( applicationId )/files/instant-run/inbox/resources.ap_ 是否存在
+ * -    1.2 存在的话，复制到 /data/data/.../files/instant-run/left(or right)/resources.ap_ 下
+ * 2. getDexList: 获取 /data/data/( applicationId )/files/instant-run/dex 的 .dex 路径集合
+ * -              ( 主要用于 HOOK BootstrapApplication 的 ClassLoader 的 类加载机制 )
+ * -    2.1 获取 /data/data/( applicationId )/files/instant-run/dex-temp 文件夹下，最近修改的.dex 文
+ * -        件的更新时间，记录为 newestHotswapPatch
+ * -    2.2 获取 File: /data/data/( applicationId )/files/instant-run/dex ，但不一定创建
+ * -    2.3 校验 /data/data/( applicationId )/files/instant-run/dex 文件夹：
+ * -        2.3.1 如果不存在，那么会创建该文件夹后，将 instant-run.zip 内的所有 .dex ，加上前缀
+ * -              "slice-" 复制到 /data/data/( applicationId )/files/instant-run/dex 文件夹 中
+ * -              最后，获取该文件夹内的所有文件，保存在 File[] dexFiles
+ * -        2.3.2 如果直接存在，直接获取 /data/data/( applicationId )/files/instant-run/dex 文件
+ * -              夹中的所有文件，保存在 File[] dexFiles
+ * -    2.4 如果 2.3 内提取 instant-run.zip :
+ * -        2.4.1 失败了。再次校验 /data/data/( applicationId )/files/instant-run/dex 文件夹。遍历所有
+ * -              文件，如果有一个文件的修改时间小于 APK 的修改时间，证明存在旧的 dex。将 instant-run.zip
+ * -              内的所有 .dex ，加上前缀"slice-" 复制到 /data/data/( applicationId )/files/instant-run/dex
+ * -              文件夹 中。然后，清空不是提取复制过来的 dex（ 旧 dex ）。
+ * -        2.4.2 成功了。判断 1. 中的 dex-temp 文件夹是否存在 dex。存在的话，清空 dex-temp 文件夹
+ * -    2.5 最后判断 hotSwap 的时间是不是比 coldSwap 的时间新。实质上就是 dex-temp 文件夹内的 files 和
+ * -        dex 文件夹内的 files，谁最新！如果 hotSwap 的时间比 coldSwap 的时间新，调用 Restarter.showToastWhenPossible
+ * -        提示 the app is older
+ * -    2.6 返回 /data/data/( applicationId )/files/instant-run/dex 的 .dex 路径集合
+ * 3. extractSlices: 提取 instant-run.zip 的资源（ 主要用于获取所有 dex 集合，然后实例化一个补丁 ClassLoader
+ * -                 进而 HOOK BootstrapApplication 的 ClassLoader 的 类加载机制 ）
+ * -    3.1 Class.getResourceAsStream("/instant-run.zip") 去加载 instant-run.zip 的资源
+ * -    3.2 提取出 instant-run.zip 内的资源（ 内部都是 .dex 文件 ）：
+ * -        3.2.1 过滤掉 META-INF
+ * -        3.2.2 过滤掉有 "/" 的 文件或文件夹
+ * -        3.2.3 找出所有 .dex 文件，将其文件名加上前缀 "slice-" 保存在 Set<String> sliceNames
+ * -        3.2.4 再将这些 .dex 文件，加载前缀 "slice-"，复制到 /data/data/( applicationId )/files/instant-run/dex
+ * -              文件夹中
+ * -        3.2.5 校验 /data/data/( applicationId )/files/instant-run/dex 文件夹中，是非存在不是 3.2.4
+ * _              复制过来的文件。如果不是 2.4 复制过来的文件，证明是旧 "slice-" 文件，则删除
+ * 4. getTempDexFile: 获取 dex-temp 文件夹下，下版本要创建的 File  ( 主要用于 热部署 )
+ * -    4.1 获取 /data/data/( applicationId )/files/instant-run/dex-temp 文件夹
+ * -    4.2 校验 dex-temp 文件夹：
+ * -        4.2.1 不存在，则创建
+ * -        4.2.2 存在，则判断是否要清空。清空的话，则删除该文件夹下的所有 .dex 文件
+ * -    4.3 然后遍历 dex-temp 文件夹下的文件:
+ * -        4.3.1 截断 "reload" 和 ".dex" 之间的 十六进制版本号
+ * -        4.3.2 找出版本号最大的 .dex 文件
+ * -    4.4 根据 4.3.2 的找出的最大版本号的基础上，最大版本号+1，然后创建一个 "reload最大版本号.dex"
+ * -        的 File 返回
+ * 5. writeRawBytes: 二进制 生成 文件 （ 所有部署 ）。主要将 二进制数据 输出为 resources.ap_ or .dex
+ * 6. extractZip:  提取出 instant-run.zip 流 内的 .dex 文件 ( 主要用于 温部署 )
+ * -               注: 这提取出的 .dex ，不带 "slice-" 前缀。与 extractSlices 方法不同
+ * -    6.1 过滤掉 META-INF
+ * -    6.2 如果父路径文件夹不存在，则创建
+ * 7. writeDexShard: 生成 dex（ 主要用于 冷部署  ）
+ * -    7.1 校验目录：/data/data/( applicationId )/files/instant-run/dex。没有，则创建
+ * -    7.2 通过调用 writeRawBytes 方法，在该目录下保存 dex 文件
+ * 8. writeAaptResources: 生成资源文件 resources 或者 resources.ap_ ( 主要用于 温部署 )
+ * -                      路径一般为 /data/data/( applicationId )/files/instant-run/left( right )
+ * -                                /resources.ap_( resources )
+ * -    8.1 拿到以上路径后，创建该路径的父文件夹
+ * -    8.2 生成资源文件：
+ * -        8.2.1 如果生成 resources.ap_：
+ * -            8.2.1.1 如果 USE_EXTRACTED_RESOURCES = true，那么该流为 instant-run.zip 的数据，直接复
+ * -                    制出内部的 dex 到 /data/data/( applicationId )/files/instant-run/left( right )
+ * -                    目录下
+ * -            8.2.1.2 如果 USE_EXTRACTED_RESOURCES = false，生成
+ * -                    /data/data/( applicationId )/files/instant-run/left( right )/resources.ap_
+ * -        8.2.2 如果生成 resources，那么直接写出
+ * -              /data/data/( applicationId )/files/instant-run/left( right )/resources
+ * 9. writeTempDexFile: 在 dex-temp 文件夹下 生成 dex ( 主要用于 热部署 )
+ * 10. purgeTempDexFiles:  清空 dex-temp 下的 .dex 文件 ( 用于清空 热部署 产生的 dex-temp 文件夹中的 dex )
+ * 11. readRawBytes: 读取 inbox/resources.ap_ ( 主要用于创建资源时，读取 inbox/resources.ap_ )
+ * -    11.1 路径为: /data/data/( applicationId )/files/instant-run/inbox/resources.ap_
+ * -    11.2 为了复制到 /data/data/.../files/instant-run/left(or right)/resources.ap_
+ *
+ * >>>>>>>
+ *
+ * 文件以及目录归类:
+ *
+ * 热部署：
+ * /data/data/( applicationId )/files/instant-run/dex-temp
+ *
+ * 温部署：
+ * /instant-run.zip
+ * /data/data/( applicationId )/files/instant-run/left( right )
+ * /data/data/( applicationId )/files/instant-run/inbox/resources.ap_
+ * /data/data/( applicationId )/files/instant-run/left(or right)/resources.ap_
+ *
+ * 冷部署：
+ * /data/data/( applicationId )/files/instant-run/dex
  */
 public class FileManager {
     /**
@@ -182,11 +272,11 @@ public class FileManager {
     /**
      * 获取临时 dex 文件夹
      *
-     * 直接 new 一个 File = 父路径/dex-temp
+     * 直接 new 一个 File = /data/data/( applicationId )/files/instant-run/dex-temp
      * 一般都是 /data/data/( applicationId )/files/instant-run/dex-temp
      *
-     * @param base 父路径
-     * @return File = 父路径/dex-temp
+     * @param base /data/data/( applicationId )/files/instant-run
+     * @return File = /data/data/( applicationId )/files/instant-run/dex-temp
      */
     /**
      * Returns the folder used for temporary .dex files (e.g. classes loaded on the fly
@@ -389,7 +479,7 @@ public class FileManager {
     /**
      * 复制资源文件 resources.ap_（ 主要用于 创建资源 ）
      *
-     * 1. /data/data/( applicationId )/files/instant-run/inbox/resources.ap_ 是否存在
+     * 1. 判断 /data/data/( applicationId )/files/instant-run/inbox/resources.ap_ 是否存在
      * 2. 存在的话，复制到 /data/data/.../files/instant-run/left(or right)/resources.ap_ 下
      *
      * 主要用于 {@link BootstrapApplication#createResources(long)}
@@ -586,7 +676,7 @@ public class FileManager {
 
     /**
      * 提取 instant-run.zip 的资源（ 主要用于获取所有 dex 集合，然后实例化一个补丁 ClassLoader，进而
-     *  HOOK BootstrapApplication 的 ClassLoader 的 类加载机制 ）
+     * HOOK BootstrapApplication 的 ClassLoader 的 类加载机制 ）
      *
      * 1. Class.getResourceAsStream("/instant-run.zip") 去加载 instant-run.zip 的资源
      * 2. 提取出 instant-run.zip 内的资源（ 内部都是 .dex 文件 ）：
@@ -1058,7 +1148,7 @@ public class FileManager {
     }
 
     /**
-     * 清空 dex-temp 下的 .dex 文件 ( 用于清空热部署 产生的 dex-temp 文件夹中的 dex )
+     * 清空 dex-temp 下的 .dex 文件 ( 用于清空 热部署 产生的 dex-temp 文件夹中的 dex )
      *
      * 清空 /data/data/( applicationId )/files/instant-run/dex-temp 文件夹下的 .dex 文件
      * 但是，保留 dex-temp 文件夹
