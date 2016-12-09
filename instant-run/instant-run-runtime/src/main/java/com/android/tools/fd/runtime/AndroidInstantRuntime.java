@@ -70,18 +70,40 @@ public class AndroidInstantRuntime {
     }
 
 
+    /**
+     * 反射获取 Field 的值
+     *
+     * @param targetClass 目标类 Class
+     * @param fieldName Field name
+     * @return 目标 Field 的值
+     */
     @Nullable
     public static Object getStaticPrivateField(Class targetClass, String fieldName) {
         return getPrivateField(null /* targetObject */, targetClass, fieldName);
     }
 
 
+    /**
+     * Hook 私有 Field 的值
+     *
+     * @param value 要设置的 Field 值
+     * @param targetClass 目标类 Class
+     * @param fieldName Field name
+     */
     public static void setStaticPrivateField(
         @NonNull Object value, @NonNull Class targetClass, @NonNull String fieldName) {
         setPrivateField(null /* targetObject */, value, targetClass, fieldName);
     }
 
 
+    /**
+     * Hook 私有 Field 的值
+     *
+     * @param targetObject 目标类 实例
+     * @param value 要设置的 Field 值
+     * @param targetClass 目标类 Class
+     * @param fieldName Field name
+     */
     public static void setPrivateField(
         @Nullable Object targetObject,
         @Nullable Object value,
@@ -101,6 +123,14 @@ public class AndroidInstantRuntime {
     }
 
 
+    /**
+     * 反射获取 私有 Field 的值
+     *
+     * @param targetObject 目标类 实例
+     * @param targetClass 目标类 Class
+     * @param fieldName Field name
+     * @return 私有 Field 的值
+     */
     @Nullable
     public static Object getPrivateField(
         @Nullable Object targetObject,
@@ -122,6 +152,13 @@ public class AndroidInstantRuntime {
     }
 
 
+    /**
+     * 反射获取 Field，并且设置为 public
+     *
+     * @param target 目标类 Class
+     * @param name Field name
+     * @return Field
+     */
     @NonNull
     private static Field getField(Class target, String name) {
         Field declareField = getFieldByName(target, name);
@@ -133,6 +170,16 @@ public class AndroidInstantRuntime {
     }
 
 
+    /**
+     * 反射调用 目标类 的方法
+     *
+     * @param receiver 目标类 实例
+     * @param params 参数值 Object[]
+     * @param parameterTypes 方法参数类型 Class[]
+     * @param methodName 方法名
+     * @return 方法返回值
+     * @throws Throwable
+     */
     public static Object invokeProtectedMethod(Object receiver,
                                                Object[] params,
                                                Class[] parameterTypes,
@@ -159,6 +206,16 @@ public class AndroidInstantRuntime {
     }
 
 
+    /**
+     * 反射调用 目标类 的方法
+     *
+     * @param params 参数值 Object[]
+     * @param parameterTypes 方法参数类型 Class[]
+     * @param methodName 方法名
+     * @param receiverClass 目标类 Class
+     * @return 方法返回值
+     * @throws Throwable
+     */
     public static Object invokeProtectedStaticMethod(
         Object[] params,
         Class[] parameterTypes,
@@ -188,6 +245,16 @@ public class AndroidInstantRuntime {
     }
 
 
+    /**
+     * 反射实例化目标类
+     *
+     * @param params 构造方法参数值 Object[]
+     * @param paramTypes 构造方法参数类型 Class[]
+     * @param targetClass 目标类 Class
+     * @param <T> Class 类型
+     * @return 目标类实例
+     * @throws Throwable
+     */
     public static <T> T newForClass(Object[] params, Class[] paramTypes, Class<T> targetClass)
         throws Throwable {
         Constructor declaredConstructor;
@@ -215,6 +282,13 @@ public class AndroidInstantRuntime {
     }
 
 
+    /**
+     * 反射获取 Field
+     *
+     * @param aClass 目标类 Class
+     * @param name Field name
+     * @return field
+     */
     private static Field getFieldByName(Class<?> aClass, String name) {
 
         if (logging != null && logging.isLoggable(Level.FINE)) {
@@ -235,6 +309,14 @@ public class AndroidInstantRuntime {
     }
 
 
+    /**
+     * 反射获取 Method
+     *
+     * @param aClass 目标类 Class
+     * @param name Method name
+     * @param paramTypes 方法参数
+     * @return Method
+     */
     private static Method getMethodByName(Class<?> aClass, String name, Class[] paramTypes) {
 
         if (aClass == null) {
@@ -285,4 +367,5 @@ public class AndroidInstantRuntime {
             logging.log(Level.FINE, String.format("%s %s %s %s", s1, s2, s3, s4));
         }
     }
+
 }
