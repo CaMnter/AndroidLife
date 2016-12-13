@@ -18,6 +18,12 @@ package com.android.tools.fd.runtime;
 
 public class PatchesLoaderDumper {
 
+    /**
+     * 反射 PatchesLoader 构造方法，并实例化一个实例
+     * 然后调用 PatchesLoader 的 load 方法
+     *
+     * @param args args
+     */
     public static void main(String[] args) {
         try {
             Class<?> aClass = Class.forName("com.android.tools.fd.runtime.AppPatchesLoaderImpl");
