@@ -49,6 +49,14 @@ public class ApplicationPatch {
     }
 
 
+    /**
+     * 不断从 LocalSocket 的 DataInputStream 读取出 path, size 和 data
+     * 保存在每一个 ApplicationPatch 中
+     *
+     * @param input DataInputStream
+     * @return List<ApplicationPatch>
+     * @throws IOException
+     */
     // Only needed on the Android side
     @Nullable
     public static List<ApplicationPatch> read(@NonNull DataInputStream input) throws IOException {

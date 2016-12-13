@@ -41,30 +41,50 @@ public final class Paths {
     public static final String DEX_SLICE_PREFIX = "slice-";
 
 
+    /**
+     * @param applicationId applicationId
+     * @return /data/data/( applicationId )
+     */
     @NonNull
     public static String getMainApkDataDirectory(@NonNull String applicationId) {
         return "/data/data/" + applicationId;
     }
 
 
+    /**
+     * @param applicationId applicationId
+     * @return /data/data/( applicationId )/files/instant-run
+     */
     @NonNull
     public static String getDataDirectory(@NonNull String applicationId) {
         return "/data/data/" + applicationId + "/files/instant-run";
     }
 
 
+    /**
+     * @param applicationId applicationId
+     * @return /data/data/( applicationId )/files/instant-run/dex
+     */
     @NonNull
     public static String getDexFileDirectory(@NonNull String applicationId) {
         return getDataDirectory(applicationId) + "/" + DEX_DIRECTORY_NAME;
     }
 
 
+    /**
+     * @param applicationId applicationId
+     * @return /data/data/( applicationId )/files/instant-run/inbox
+     */
     @NonNull
     public static String getInboxDirectory(@NonNull String applicationId) {
         return getDataDirectory(applicationId) + "/inbox";
     }
 
 
+    /**
+     * @param pkg pkg
+     * @return /data/local/tmp/( pkg )-build-id.txt
+     */
     @NonNull
     public static String getDeviceIdFolder(@NonNull String pkg) {
         return DEVICE_TEMP_DIR + "/" + pkg + "-" + BUILD_ID_TXT;
