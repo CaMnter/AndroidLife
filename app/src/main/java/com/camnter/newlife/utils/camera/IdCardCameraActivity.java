@@ -150,6 +150,7 @@ public class IdCardCameraActivity extends BaseActivity implements
                 PROMPT_FRONT ?
             PROMPT_FRONT : PROMPT_REVERSE;
         this.surfacePreview.setPromptViewType(this.promptViewType);
+        this.surfacePreview.setDrawMode(CameraPreviewView.DRAW_MODE_BY_DRAWABLE);
     }
 
 

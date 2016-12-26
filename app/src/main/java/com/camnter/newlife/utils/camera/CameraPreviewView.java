@@ -1,13 +1,19 @@
 package com.camnter.newlife.utils.camera;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.Layout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
@@ -16,7 +22,13 @@ import android.util.TypedValue;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import com.camnter.newlife.R;
+import com.camnter.newlife.utils.BitmapUtils;
 import com.camnter.newlife.utils.DeviceUtils;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.ref.WeakReference;
+
+import static com.camnter.newlife.utils.camera.IdCardCameraActivity.PROMPT_FRONT;
 
 /**
  * Description：CameraPreviewView
@@ -25,13 +37,15 @@ import com.camnter.newlife.utils.DeviceUtils;
 
 public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Callback {
 
-    // 1080.0f / 835.2f
-    private static final float SCREEN_RECT_WIDTH_RATIO = 1.2931035f;
+    // 1080.0f / 792.0f
+    private static final float SCREEN_RECT_WIDTH_RATIO = 1.3636364f;
     // 1488.0f / 1224.0f
     private static final float SCREEN_RECT_HEIGHT_RATIO = 1.2156863f;
 
-    // 1080.0f / 72.0f
-    private static final float SCREEN_WIDTH_RECT_MARGIN_LEFT_RATIO = 15.0f;
+    // 1080.0f / 100.8f
+    private static final float SCREEN_WIDTH_RECT_MARGIN_LEFT_RATIO = 10.714286f;
+    // 1080.0f / 64.9f
+    private static final float SCREEN_WIDTH_RECT_MARGIN_RIGHT_RATIO = 16.640985f;
 
     // 1224.0f / 634.97f
     private static final float RECT_HEIGHT_FRONT_IMAGE_MARGIN_TOP_RATIO = 1.9276502f;
@@ -40,11 +54,22 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
     // 1080.0f / 421.92f
     private static final float RECT_HEIGHT_REVERSE_IMAGE_MARGIN_LEFT_RATIO = 2.559727f;
 
-    private static final String PROMPT_CONTENT = "将身份证正面放入框中，并对准头像";
+    private static final String PROMPT_CONTENT_FRONT = "将身份证正面 对准边框和头像";
+    private static final String PROMPT_CONTENT_REVERSE = "将身份证背面 对准边框和国徽";
     private static final float PROMPT_SIZE = 13.4f;
 
     private static final int DEFAULT_PROMPT_COLOR = 0xffFFFFFF;
     private static final int DEFAULT_CORNER_COLOR = 0xffFFFFFF;
+
+    public static final int DRAW_MODE_BY_SELF = 0x261;
+    public static final int DRAW_MODE_BY_DRAWABLE = 0x262;
+
+
+    @IntDef({ DRAW_MODE_BY_SELF, DRAW_MODE_BY_DRAWABLE })
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface DrawMode {
+    }
+
 
     // corner dp
     private static final float DEFAULT_CORNER_STROKE = 2.4f;
@@ -71,6 +96,11 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
 
     @IdCardCameraActivity.PromptViewType
     private int promptViewType;
+    private String promptTipContent = "";
+
+    @DrawMode
+    private int drawMode;
+    private DrawProxy drawProxy;
 
     private PreviewListener previewListener;
 
@@ -93,6 +123,19 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
 
     public void setPromptViewType(@IdCardCameraActivity.PromptViewType final int promptViewType) {
         this.promptViewType = promptViewType;
+        this.promptTipContent = this.promptViewType == PROMPT_FRONT ?
+                                PROMPT_CONTENT_FRONT : PROMPT_CONTENT_REVERSE;
+        this.initPromptPaint();
+    }
+
+
+    public void setDrawMode(@DrawMode final int drawMode) {
+        this.drawMode = drawMode;
+        if (this.drawProxy == null) {
+            this.drawProxy = new DrawProxy(this.getContext(), this.drawMode, this.promptViewType);
+            return;
+        }
+        this.drawProxy.setDrawMode(this.drawMode);
     }
 
 
@@ -146,7 +189,7 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
         this.promptPaint.setTextSize(promptSize);
         this.promptPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
-        this.promptWidth = Layout.getDesiredWidth(PROMPT_CONTENT, promptPaint);
+        this.promptWidth = Layout.getDesiredWidth(this.promptTipContent, promptPaint);
     }
 
 
@@ -154,46 +197,29 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
     public void surfaceCreated(SurfaceHolder holder) {
         this.screenWidth = this.getWidth();
         this.screenHeight = this.getHeight();
-        this.rectWidthHeight = this.getRectWidthHeight();
-        this.initRect();
+        this.rectWidthHeight = this.drawProxy.getRectWidthHeightProxy();
         this.start();
     }
 
 
-    private void initRect() {
-        this.rect = new Rect();
-        if (this.rectWidthHeight == null) return;
-        final int rectMarginLeft = (int) (this.screenWidth / SCREEN_WIDTH_RECT_MARGIN_LEFT_RATIO);
-        final int rectMarginTop = (int) (this.screenHeight / 2 -
-            ((float) this.rectWidthHeight[1]) / 2);
-        this.rect.left = rectMarginLeft;
-        this.rect.top = rectMarginTop;
-        this.rect.right = rectMarginLeft + this.rectWidthHeight[0];
-        this.rect.bottom = rectMarginTop + this.rectWidthHeight[1];
-
-        if (this.previewListener != null) {
-            this.handlePreviewListener(this.previewListener);
-        }
-    }
-
-
-    private void handlePreviewListener(@NonNull final PreviewListener previewListener) {
+    private void handlePreviewListener(@NonNull final PreviewListener previewListener,
+                                       final int[] rectWidthHeight) {
         switch (this.promptViewType) {
-            case IdCardCameraActivity.PROMPT_FRONT:
+            case PROMPT_FRONT:
                 final int frontImageViewWidth = this.getResources()
                     .getDimensionPixelOffset(R.dimen.id_card_front_image_width);
                 final int frontImageMarginTop = this.rect.top +
-                    (int) (this.rectWidthHeight[1] / RECT_HEIGHT_FRONT_IMAGE_MARGIN_TOP_RATIO);
+                    (int) (rectWidthHeight[1] / RECT_HEIGHT_FRONT_IMAGE_MARGIN_TOP_RATIO);
                 final int frontImageMarginLeft = this.rect.left +
-                    (int) (this.rectWidthHeight[0] / 2.0f - frontImageViewWidth / 2.0f);
+                    (int) (rectWidthHeight[0] / 2.0f - frontImageViewWidth / 2.0f);
                 previewListener.notificationFrontImageView(frontImageMarginTop,
                     frontImageMarginLeft);
                 break;
             case IdCardCameraActivity.PROMPT_REVERSE:
                 final int reverseImageMarginTop = this.rect.top +
-                    (int) (this.rectWidthHeight[1] / RECT_HEIGHT_REVERSE_IMAGE_MARGIN_TOP_RATIO);
+                    (int) (rectWidthHeight[1] / RECT_HEIGHT_REVERSE_IMAGE_MARGIN_TOP_RATIO);
                 final int reverseImageMarginLeft = this.rect.left +
-                    (int) (this.rectWidthHeight[1] / RECT_HEIGHT_REVERSE_IMAGE_MARGIN_LEFT_RATIO);
+                    (int) (rectWidthHeight[1] / RECT_HEIGHT_REVERSE_IMAGE_MARGIN_LEFT_RATIO);
                 previewListener.notificationReverseImageView(reverseImageMarginTop,
                     reverseImageMarginLeft);
                 break;
@@ -203,13 +229,6 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
 
     public void setPreviewListener(PreviewListener previewListener) {
         this.previewListener = previewListener;
-    }
-
-
-    private int[] getRectWidthHeight() {
-        return this.screenWidth > 0 ? new int[] {
-            (int) (this.screenWidth / SCREEN_RECT_WIDTH_RATIO),
-            (int) (this.screenHeight / SCREEN_RECT_HEIGHT_RATIO) } : null;
     }
 
 
@@ -268,15 +287,29 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
             try {
                 canvas = surfaceHolder.lockCanvas();
 
-                /********
-                 * 框框 *
-                 ********/
+                /***************
+                 * 抽离透明区域 *
+                 ***************/
                 canvas.save();
-
                 canvas.drawARGB(100, 0, 0, 0);
                 canvas.drawRect(rect, rectPaint);
-                float cornerHalfStroke = cornerStroke / 2;
+                canvas.restore();
 
+                /*************
+                 * 身份证图片 *
+                 *************/
+                if (drawMode == DRAW_MODE_BY_DRAWABLE) {
+                    canvas.save();
+                    drawProxy.drawIdCardContourProxy(canvas);
+                    canvas.save(Canvas.ALL_SAVE_FLAG);
+                    canvas.restore();
+                }
+
+                /********
+                 * 边框 *
+                 ********/
+                canvas.save();
+                float cornerHalfStroke = cornerStroke / 2;
                 // leftTop >> h + v
                 canvas.drawLine(rect.left - cornerHalfStroke, rect.top - cornerHalfStroke,
                     rect.left - cornerHalfStroke + cornerLength, rect.top - cornerHalfStroke,
@@ -284,7 +317,6 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
                 canvas.drawLine(rect.left - cornerHalfStroke, rect.top - cornerHalfStroke,
                     rect.left - cornerHalfStroke, rect.top - cornerHalfStroke + cornerLength,
                     cornerPaint);
-
                 // leftBottom >> h + v
                 canvas.drawLine(rect.left - cornerHalfStroke, rect.bottom + cornerHalfStroke,
                     rect.left - cornerHalfStroke + cornerLength, rect.bottom + cornerHalfStroke,
@@ -292,7 +324,6 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
                 canvas.drawLine(rect.left - cornerHalfStroke, rect.bottom + cornerHalfStroke,
                     rect.left - cornerHalfStroke, rect.bottom + cornerHalfStroke - cornerLength,
                     cornerPaint);
-
                 // rightTop >> h + v
                 canvas.drawLine(rect.right + cornerHalfStroke, rect.top - cornerHalfStroke,
                     rect.right + cornerHalfStroke - cornerLength, rect.top - cornerHalfStroke,
@@ -300,7 +331,6 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
                 canvas.drawLine(rect.right + cornerHalfStroke, rect.top - cornerHalfStroke,
                     rect.right + cornerHalfStroke, rect.top - cornerHalfStroke + cornerLength,
                     cornerPaint);
-
                 // rightBottom >> h + v
                 canvas.drawLine(rect.right + cornerHalfStroke, rect.bottom + cornerHalfStroke,
                     rect.right + cornerHalfStroke - cornerLength, rect.bottom + cornerHalfStroke,
@@ -308,22 +338,21 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
                 canvas.drawLine(rect.right + cornerHalfStroke, rect.bottom + cornerHalfStroke,
                     rect.right + cornerHalfStroke, rect.bottom + cornerHalfStroke - cornerLength,
                     cornerPaint);
-
                 canvas.restore();
 
                 /********
                  * 文字 *
                  ********/
-
                 canvas.save();
-
                 // X = rect.marginLeft + rectWidth + rect.marginLeft
                 // Y = screenHeight / 2 - 文字宽度 / 2
-                drawTextRotate(canvas, PROMPT_CONTENT, rect.left * 2 + rectWidthHeight[0],
-                    screenHeight / 2.0f - promptWidth / 2.0f, promptPaint, 90);
-
+                drawTextRotate(canvas,
+                    promptTipContent,
+                    rect.left + (int) (screenWidth / SCREEN_WIDTH_RECT_MARGIN_RIGHT_RATIO) +
+                        rectWidthHeight[0],
+                    screenHeight / 2.0f - promptWidth / 2.0f,
+                    promptPaint, 90);
                 canvas.restore();
-
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -348,6 +377,143 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
             canvas.drawText(text, x, y, paint);
             if (angle != 0) {
                 canvas.rotate(-angle, x, y);
+            }
+        }
+
+    }
+
+
+    private final class DrawProxy {
+
+        @DrawMode
+        private int drawMode;
+        @IdCardCameraActivity.PromptViewType
+        private final int promptViewType;
+
+        @DrawableRes
+        private static final int ID_CARD_FRONT_CONTOUR = R.drawable.bg_id_card_front_contour;
+        @DrawableRes
+        private static final int ID_CARD_REVERSE_CONTOUR = R.drawable.bg_id_card_reverse_contour;
+
+        private static final int DEFAULT_RETRY_COUNT = 3;
+
+        private WeakReference<Context> contextReference;
+        private Bitmap expectBitmap;
+
+
+        public DrawProxy(@NonNull final Context context,
+                         @DrawMode final int drawMode,
+                         @IdCardCameraActivity.PromptViewType final int promptViewType) {
+            this.drawMode = drawMode;
+            this.promptViewType = promptViewType;
+            this.contextReference = new WeakReference<>(context);
+        }
+
+
+        private void setDrawMode(@DrawableRes final int drawMode) {
+            this.drawMode = drawMode;
+        }
+
+
+        @Nullable
+        private int[] getRectWidthHeightProxy() {
+            final int[] rectWidthHeight = new int[2];
+            if (screenWidth <= 0) return rectWidthHeight;
+            // width
+            rectWidthHeight[0] = (int) (screenWidth / SCREEN_RECT_WIDTH_RATIO);
+            rect = new Rect();
+            final int rectMarginLeft = (int) (screenWidth / SCREEN_WIDTH_RECT_MARGIN_LEFT_RATIO);
+            switch (this.drawMode) {
+                case DRAW_MODE_BY_SELF: {
+                    // height
+                    rectWidthHeight[1] = (int) (screenHeight / SCREEN_RECT_HEIGHT_RATIO);
+                    final int rectMarginTop = (int) (screenHeight / 2 -
+                        ((float) rectWidthHeight[1]) / 2);
+                    rect.left = rectMarginLeft;
+                    rect.top = rectMarginTop;
+                    rect.right = rectMarginLeft + rectWidthHeight[0];
+                    rect.bottom = rectMarginTop + rectWidthHeight[1];
+                    if (previewListener != null) {
+                        handlePreviewListener(previewListener, rectWidthHeight);
+                    }
+                    break;
+                }
+                case DRAW_MODE_BY_DRAWABLE: {
+                    this.initExpectBitmap(rectWidthHeight[0]);
+                    if (this.expectBitmap == null) return rectWidthHeight;
+                    final int expectBitmapWidth = this.expectBitmap.getWidth();
+                    final int expectBitmapHeight = this.expectBitmap.getHeight();
+                    // height
+                    rectWidthHeight[1] = expectBitmapHeight;
+                    final int rectMarginTop = (int) (screenHeight / 2 -
+                        ((float) expectBitmapHeight) / 2);
+                    rect.left = rectMarginLeft;
+                    rect.top = rectMarginTop;
+                    rect.right = rectMarginLeft + expectBitmapWidth;
+                    rect.bottom = rectMarginTop + expectBitmapHeight;
+                    break;
+                }
+            }
+            return rectWidthHeight;
+        }
+
+
+        private void drawIdCardContourProxy(@NonNull final Canvas canvas) {
+            canvas.drawBitmap(this.expectBitmap, rect.left, rect.top, null);
+        }
+
+
+        private void initExpectBitmap(final int newWidth) {
+            @DrawableRes
+            final int idCardContour = this.promptViewType == PROMPT_FRONT ?
+                                      ID_CARD_FRONT_CONTOUR :
+                                      ID_CARD_REVERSE_CONTOUR;
+            try {
+                final Context context = this.contextReference.get();
+                if (context == null) return;
+                final Bitmap originalBitmap = this.decodeResourceSafely(
+                    context.getResources(),
+                    idCardContour,
+                    DEFAULT_RETRY_COUNT
+                );
+                if (originalBitmap == null) return;
+                this.expectBitmap = this.getBitmapCompressedByWidthSafely(
+                    originalBitmap,
+                    newWidth,
+                    DEFAULT_RETRY_COUNT
+                );
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+        }
+
+
+        @Nullable
+        private Bitmap decodeResourceSafely(@NonNull final Resources res,
+                                            final int drawableRes,
+                                            final int retryCount) {
+            try {
+                return BitmapFactory.decodeResource(res, drawableRes);
+            } catch (OutOfMemoryError outOfMemoryError) {
+                outOfMemoryError.printStackTrace();
+                System.gc();
+                if (retryCount <= 0) return null;
+                return this.decodeResourceSafely(res, drawableRes, retryCount - 1);
+            }
+        }
+
+
+        @Nullable
+        private Bitmap getBitmapCompressedByWidthSafely(@NonNull final Bitmap bitmap,
+                                                        final double newWidth,
+                                                        final int retryCount) {
+            try {
+                return BitmapUtils.getBitmapCompressedByWidth(bitmap, newWidth);
+            } catch (OutOfMemoryError outOfMemoryError) {
+                outOfMemoryError.printStackTrace();
+                System.gc();
+                if (retryCount <= 0) return null;
+                return this.getBitmapCompressedByWidthSafely(bitmap, newWidth, retryCount - 1);
             }
         }
 
