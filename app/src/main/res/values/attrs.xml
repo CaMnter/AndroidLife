@@ -33,4 +33,15 @@
             format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="CountDownView">
+        <attr name="countDownBorderColor"
+            format="color"/>
+        <attr name="countDownTimeColor"
+            format="color"/>
+        <attr name="countDownBackgroundColor"
+            format="color"/>
+        <attr name="countDownColonColor"
+            format="color"/>
+    </declare-styleable>
+
 </resources>
