@@ -22,7 +22,7 @@ import java.util.logging.Level;
 import static com.android.tools.fd.common.Log.logging;
 
 /**
- * Instant run 生成的 AppPatchesLoaderImpl 的 父类
+ * Instant Run 生成的 AppPatchesLoaderImpl 的 父类
  *
  * 主要用于：Hook 被修改的 类名 的 $change Field
  *

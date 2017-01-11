@@ -87,6 +87,8 @@ import static com.android.tools.fd.runtime.BootstrapApplication.LOG_TAG;
  * monkeyPatchApplication（ Hook BootstrapApplication ）:
  * -    1. Hook 掉 ActivityThread 内的所有 BootstrapApplication 为 RealApplication
  * -    2. Hook 掉 ActivityThread 内的所有 LoadedApk 内部的：
+ * -    -   2.1 BootstrapApplication 为 RealApplication
+ * -    -   2.2 mResDir 为 externalResourceFile
  *
  * monkeyPatchExistingResources（ 加载补丁资源，并 Hook 进 App 内  ）:
  * -    1. 反射调用 AssetManager.addAssetPath 方法加载 补丁资源
