@@ -44,4 +44,38 @@
             format="color"/>
     </declare-styleable>
 
+    <!-- TextView -->
+    <declare-styleable name="TextView">
+        <attr name="textStyle">
+            <flag name="normal"
+                value="0"/>
+            <flag name="bold"
+                value="1"/>
+            <flag name="italic"
+                value="2"/>
+            <flag name="black"
+                value="8"/>
+            <flag name="condensed"
+                value="16"/>
+            <flag name="light"
+                value="32"/>
+            <flag name="medium"
+                value="64"/>
+            <flag name="thin"
+                value="128"/>
+        </attr>
+        <attr name="typeface"
+            format="reference|string"/>
+        <attr name="_textAllCaps"
+            format="reference|boolean"/>
+    </declare-styleable>
+
+    <!-- AutoResizeTextView -->
+    <declare-styleable name="AutoResizeTextView">
+        <attr name="maxTextSize"
+            format="reference|dimension"/>
+        <attr name="minTextSize"
+            format="reference|dimension"/>
+    </declare-styleable>
+
 </resources>
