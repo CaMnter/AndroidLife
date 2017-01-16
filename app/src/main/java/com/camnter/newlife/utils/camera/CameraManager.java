@@ -1,5 +1,6 @@
 package com.camnter.newlife.utils.camera;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +12,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import com.camnter.newlife.utils.BitmapUtils;
 import java.util.Collections;
@@ -24,9 +26,9 @@ import java.util.List;
 
 public final class CameraManager {
 
-    /******************************
+    /*******************************
      * 输出格式尽量保持 1280 x 720  *
-     ******************************/
+     *******************************/
 
     public static final int PICTURE_OUTPUT_WIDTH = 1280;
     public static final int PICTURE_OUTPUT_HEIGHT = 720;
@@ -52,6 +54,7 @@ public final class CameraManager {
         }
     };
     private Camera camera;
+    private int cameraId;
     private Camera.Parameters cameraParameters;
     private AutoFocusManager autoFocusManager;
     private boolean isPreviewing = false;
@@ -103,7 +106,8 @@ public final class CameraManager {
      * @param surfaceHolder surfaceHolder
      * @throws Exception e
      */
-    public synchronized void openCamera(@NonNull final SurfaceHolder surfaceHolder,
+    public synchronized void openCamera(@NonNull final Activity activity,
+                                        @NonNull final SurfaceHolder surfaceHolder,
                                         final int surfaceViewWidth,
                                         final int surfaceViewHeight) throws Exception {
         Log.i(TAG, "[openCamera]:......");
@@ -115,7 +119,7 @@ public final class CameraManager {
             }
             this.camera = cameraTemp;
         }
-        this.adjustCamera();
+        this.adjustCamera(activity, this.cameraId);
         this.camera.setPreviewDisplay(surfaceHolder);
 
         this.cameraParameters = this.camera.getParameters();
@@ -276,10 +280,54 @@ public final class CameraManager {
     }
 
 
-    private void adjustCamera() {
+    private void adjustCamera(@NonNull final Activity activity, int cameraId) {
         if (this.camera != null) {
+            this.setCameraDisplayOrientation(activity, cameraId, camera);
             this.camera.setDisplayOrientation(90);
         }
+
+    }
+
+
+    /**
+     * Google 祖传代码
+     * 用于解决不同 ROM 上的相机默认显示问题
+     *
+     * @param activity activity
+     * @param cameraId cameraId
+     * @param camera camera
+     */
+    private void setCameraDisplayOrientation(@NonNull final Activity activity,
+                                             int cameraId,
+                                             @NonNull final android.hardware.Camera camera) {
+        android.hardware.Camera.CameraInfo info =
+            new android.hardware.Camera.CameraInfo();
+        android.hardware.Camera.getCameraInfo(cameraId, info);
+        int rotation = activity.getWindowManager().getDefaultDisplay()
+            .getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
+        }
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            result = (info.orientation - degrees + 360) % 360;
+        }
+        camera.setDisplayOrientation(result);
     }
 
 
@@ -422,6 +470,7 @@ public final class CameraManager {
         if (cameraId < numberOfCameras) {
             Log.i(TAG, "[obtainCamera]\t\t\t open the camera: " + cameraId);
             camera = Camera.open(cameraId);
+            this.cameraId = cameraId;
         } else {
             if (explicitRequest) {
                 Log.e(TAG, "[obtainCamera]\t\t\t Requested camera does not exist: " + cameraId);
@@ -429,6 +478,7 @@ public final class CameraManager {
             } else {
                 Log.e(TAG, "[obtainCamera]\t\t\t No camera facing back; returning camera #0");
                 camera = Camera.open(0);
+                this.cameraId = 0;
             }
         }
         return camera;
@@ -505,4 +555,5 @@ public final class CameraManager {
     }
 
 }
+
 
