@@ -3,9 +3,12 @@ package com.camnter.newlife.widget.synchorizontalscrollview;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.HorizontalScrollView;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description：SyncHorizontalScrollView
@@ -14,7 +17,7 @@ import android.widget.HorizontalScrollView;
 
 public class SyncHorizontalScrollView extends HorizontalScrollView {
 
-    private View targetView;
+    private ScrollViewObserver scrollViewObserver = new ScrollViewObserver();
 
 
     public SyncHorizontalScrollView(Context context) {
@@ -38,27 +41,87 @@ public class SyncHorizontalScrollView extends HorizontalScrollView {
     }
 
 
-    /**
-     * This is called in response to an internal scroll in this view (i.e., the
-     * view scrolled its own contents). This is typically as a result of
-     * {@link #scrollBy(int, int)} or {@link #scrollTo(int, int)} having been
-     * called.
-     *
-     * @param l Current horizontal scroll origin.
-     * @param t Current vertical scroll origin.
-     * @param oldl Previous horizontal scroll origin.
-     * @param oldt Previous vertical scroll origin.
-     */
     @Override
-    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        super.onScrollChanged(l, t, oldl, oldt);
-        if (this.targetView == null) return;
-        this.targetView.scrollTo(l, t);
+    protected void onScrollChanged(int l, int t, int oldL, int oldT) {
+        if (this.scrollViewObserver != null) {
+            this.scrollViewObserver.notifyOnScrollChanged(l, t, oldL, oldT);
+        }
+        super.onScrollChanged(l, t, oldL, oldT);
     }
 
 
-    public void setTargetView(View targetView) {
-        this.targetView = targetView;
+    public void addOnScrollChangedListener(OnScrollChangedListener listener) {
+        this.scrollViewObserver.addOnScrollChangedListener(listener);
+    }
+
+
+    public void removeOnScrollChangedListener(OnScrollChangedListener listener) {
+        this.scrollViewObserver.removeOnScrollChangedListener(listener);
+    }
+
+
+    private static class ScrollViewObserver {
+
+        @NonNull
+        private final List<OnScrollChangedListener> scrollChangedListeners;
+
+
+        ScrollViewObserver() {
+            this.scrollChangedListeners = new ArrayList<>();
+        }
+
+
+        void addOnScrollChangedListener(
+            @Nullable final OnScrollChangedListener onScrollChangedListener) {
+            if (onScrollChangedListener == null) return;
+            this.scrollChangedListeners.add(onScrollChangedListener);
+        }
+
+
+        void removeOnScrollChangedListener(
+            @Nullable final OnScrollChangedListener onScrollChangedListener) {
+            if (onScrollChangedListener == null) return;
+            this.scrollChangedListeners.remove(onScrollChangedListener);
+        }
+
+
+        void notifyOnScrollChanged(int l, int t, int oldL, int oldT) {
+            if (this.scrollChangedListeners.size() == 0) return;
+            for (OnScrollChangedListener onScrollChangedListener : this.scrollChangedListeners) {
+                onScrollChangedListener.onScrollChanged(l, t, oldL, oldT);
+            }
+        }
+
+    }
+
+
+    public interface OnScrollChangedListener {
+        void onScrollChanged(int l, int t, int oldL, int oldT);
+    }
+
+
+    public static class SimpleOnScrollChangedListener implements OnScrollChangedListener {
+
+        private final SyncHorizontalScrollView syncHorizontalScrollView;
+
+
+        public SimpleOnScrollChangedListener(
+            @NonNull final SyncHorizontalScrollView syncHorizontalScrollView) {
+            this.syncHorizontalScrollView = syncHorizontalScrollView;
+        }
+
+
+        @Override
+        public void onScrollChanged(int l, int t, int oldL, int oldT) {
+            this.syncHorizontalScrollView.smoothScrollTo(l, t);
+        }
+
+    }
+
+
+    @Override
+    public void fling(int velocityX) {
+        super.fling(velocityX / 15);
     }
 
 }
