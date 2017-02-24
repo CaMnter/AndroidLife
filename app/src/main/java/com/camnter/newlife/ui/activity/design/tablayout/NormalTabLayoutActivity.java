@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import com.camnter.newlife.R;
 import com.camnter.newlife.adapter.tablayout.NormalTabLayoutFragmentAdapter;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.ui.fragment.tablayoutfragment.TabLayoutFirstFragment;
 import com.camnter.newlife.ui.fragment.tablayoutfragment.TabLayoutFourthFragment;
 import com.camnter.newlife.ui.fragment.tablayoutfragment.TabLayoutSecondFragment;

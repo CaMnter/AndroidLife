@@ -6,7 +6,7 @@ import com.camnter.easyrecyclerview.widget.decorator.EasyDividerItemDecoration;
 import com.camnter.newlife.R;
 import com.camnter.newlife.adapter.sqlite.SQLiteRecyclerViewAdapter;
 import com.camnter.newlife.bean.SQLiteData;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import java.util.ArrayList;
 
 public class SQLiteActivity extends BaseAppCompatActivity {

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import com.camnter.newlife.R;
 import com.camnter.newlife.component.broadcastreceiver.StaticReceiver;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import java.util.UUID;
 
 /**

@@ -6,7 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Toast;
 import com.camnter.newlife.R;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 
 /**
  * Description：SnackbarActivity

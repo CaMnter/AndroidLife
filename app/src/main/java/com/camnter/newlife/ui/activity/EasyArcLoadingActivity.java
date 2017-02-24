@@ -2,7 +2,7 @@ package com.camnter.newlife.ui.activity;
 
 import android.os.Bundle;
 import com.camnter.newlife.R;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 
 /**
  * Description：EasyArcLoadingActivity

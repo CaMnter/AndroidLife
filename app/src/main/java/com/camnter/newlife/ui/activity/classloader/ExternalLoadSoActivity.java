@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.stackblur.NativeBlurProcess;
 import java.io.File;
 import java.io.FileOutputStream;

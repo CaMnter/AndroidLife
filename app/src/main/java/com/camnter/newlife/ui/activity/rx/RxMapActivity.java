@@ -5,7 +5,7 @@ import android.widget.TextView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.RxChildData;
 import com.camnter.newlife.bean.RxData;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;

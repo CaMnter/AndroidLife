@@ -9,7 +9,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.utils.agera.AgeraBroadcastObservable;
 import com.google.android.agera.Updatable;
 import java.util.UUID;

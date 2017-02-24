@@ -11,7 +11,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.utils.cache.LruCache;
 import java.math.BigDecimal;
 import java.util.HashMap;

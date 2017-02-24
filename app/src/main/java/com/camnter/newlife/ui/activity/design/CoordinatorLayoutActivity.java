@@ -6,7 +6,7 @@ import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
 import com.camnter.newlife.R;
-import com.camnter.newlife.core.BaseActivity;
+import com.camnter.newlife.core.activity.BaseActivity;
 import java.util.LinkedList;
 import java.util.List;
 

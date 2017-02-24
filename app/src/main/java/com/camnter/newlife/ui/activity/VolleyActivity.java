@@ -9,7 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.camnter.newlife.R;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.utils.volley.GsonRequest;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;

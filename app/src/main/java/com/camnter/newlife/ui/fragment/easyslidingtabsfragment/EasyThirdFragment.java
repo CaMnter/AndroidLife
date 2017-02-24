@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import com.camnter.newlife.R;
-import com.camnter.newlife.core.BaseFragment;
+import com.camnter.newlife.core.fragment.BaseFragment;
 
 /**
  * Description：EasyThirdFragment

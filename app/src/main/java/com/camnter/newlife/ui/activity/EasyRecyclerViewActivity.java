@@ -7,7 +7,7 @@ import com.camnter.easyrecyclerview.widget.decorator.EasyDividerItemDecoration;
 import com.camnter.newlife.R;
 import com.camnter.newlife.adapter.easyrecyclerview.MyRecyclerViewAdapter;
 import com.camnter.newlife.bean.RecyclerViewData;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import java.util.ArrayList;
 
 /**

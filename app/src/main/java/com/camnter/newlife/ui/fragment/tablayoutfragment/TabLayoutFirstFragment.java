@@ -9,7 +9,7 @@ import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
 import com.camnter.easyrecyclerview.widget.decorator.EasyDividerItemDecoration;
 import com.camnter.newlife.R;
-import com.camnter.newlife.core.BaseFragment;
+import com.camnter.newlife.core.fragment.BaseFragment;
 import java.util.LinkedList;
 import java.util.List;
 

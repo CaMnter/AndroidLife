@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.aidl.IPushMessage;
 import com.camnter.newlife.aidl.PushMessageService;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 
 /**
  * Description：AIDLActivity

@@ -16,7 +16,7 @@ import com.camnter.newlife.R;
 import com.camnter.newlife.bean.ProviderData;
 import com.camnter.newlife.bean.SQLiteData;
 import com.camnter.newlife.component.contentprovider.MessageContentProvider;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

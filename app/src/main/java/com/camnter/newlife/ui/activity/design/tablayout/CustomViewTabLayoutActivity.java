@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.adapter.tablayout.CustomViewTabLayoutFragmentAdapter;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.ui.fragment.tablayoutfragment.TabLayoutFirstFragment;
 import com.camnter.newlife.ui.fragment.tablayoutfragment.TabLayoutFourthFragment;
 import com.camnter.newlife.ui.fragment.tablayoutfragment.TabLayoutSecondFragment;

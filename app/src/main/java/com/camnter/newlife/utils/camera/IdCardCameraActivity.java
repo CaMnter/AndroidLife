@@ -24,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.camnter.newlife.R;
-import com.camnter.newlife.core.BaseActivity;
+import com.camnter.newlife.core.activity.BaseActivity;
 import com.camnter.newlife.utils.BitmapUtils;
 import java.io.File;
 import java.io.FileOutputStream;

@@ -6,7 +6,7 @@ import android.support.v4.view.ViewPager;
 import com.camnter.easyslidingtabs.widget.EasySlidingTabs;
 import com.camnter.newlife.R;
 import com.camnter.newlife.adapter.easyslidingtabs.EasySlidingTabsFragmentAdapter;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.ui.fragment.easyslidingtabsfragment.EasyFirstFragment;
 import com.camnter.newlife.ui.fragment.easyslidingtabsfragment.EasyFourthFragment;
 import com.camnter.newlife.ui.fragment.easyslidingtabsfragment.EasySecondFragment;

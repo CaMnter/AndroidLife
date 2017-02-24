@@ -6,7 +6,7 @@ import android.webkit.WebView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 
 /**
  * Description：JsBridgeActivity

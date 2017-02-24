@@ -1,4 +1,4 @@
-package com.camnter.newlife.core;
+package com.camnter.newlife.core.activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;

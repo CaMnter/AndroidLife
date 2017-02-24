@@ -10,7 +10,7 @@ import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
 import com.camnter.easyrecyclerview.widget.decorator.EasyDividerItemDecoration;
 import com.camnter.newlife.R;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.ui.activity.agera.AgeraActivity;
 import com.camnter.newlife.ui.activity.classloader.ClassLoaderActivity;
 import com.camnter.newlife.ui.activity.classloader.ExternalLoadSoActivity;

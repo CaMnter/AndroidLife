@@ -3,7 +3,7 @@ package com.camnter.newlife.ui.activity.util;
 import android.os.Bundle;
 import android.widget.TextView;
 import com.camnter.newlife.R;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.utils.DateUtils;
 import java.util.Date;
 

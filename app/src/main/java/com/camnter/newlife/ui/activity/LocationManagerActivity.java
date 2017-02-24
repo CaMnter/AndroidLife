@@ -15,7 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.TextView;
 import com.camnter.newlife.R;
-import com.camnter.newlife.core.BaseAppCompatActivity;
+import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 
 /**
  * Description：LocationManagerActivity
