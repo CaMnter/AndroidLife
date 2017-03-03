@@ -13,20 +13,19 @@ import android.widget.Scroller;
 
 public class ViewPagerTab extends ViewGroup {
 
-    private PageListener mPageListener = new PageListener();
+    private PageListener pageListener = new PageListener();
 
-    private int mWidth;
+    private int width;
     private int mHeight;
     private int itemCount;
-    private Scroller mScroller;
+    private Scroller scroller;
     // 120 px
     private int tabLineSize = 120;
 
 
     public ViewPagerTab(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Context mContext = context;
-        mScroller = new Scroller(mContext);
+        scroller = new Scroller(context);
     }
 
 
@@ -39,9 +38,9 @@ public class ViewPagerTab extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         if (this.getChildCount() <= 0) return;
         this.getChildAt(0).layout(
-            (mWidth / itemCount - tabLineSize) / 2,
+            (width / itemCount - tabLineSize) / 2,
             0,
-            (mWidth / itemCount - tabLineSize) / 2 + tabLineSize,
+            (width / itemCount - tabLineSize) / 2 + tabLineSize,
             mHeight
         );
     }
@@ -50,22 +49,22 @@ public class ViewPagerTab extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mWidth = MeasureSpec.getSize(widthMeasureSpec);
+        width = MeasureSpec.getSize(widthMeasureSpec);
         mHeight = MeasureSpec.getSize(heightMeasureSpec);
     }
 
 
     public void setViewPager(ViewPager viewPager) {
         ViewPager mViewPager = viewPager;
-        mViewPager.addOnPageChangeListener(mPageListener);
+        mViewPager.addOnPageChangeListener(pageListener);
     }
 
 
     @Override
     public void computeScroll() {
         super.computeScroll();
-        if (mScroller.computeScrollOffset()) {
-            scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+        if (scroller.computeScrollOffset()) {
+            scrollTo(scroller.getCurrX(), scroller.getCurrY());
             postInvalidate();
         }
     }
@@ -88,9 +87,7 @@ public class ViewPagerTab extends ViewGroup {
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            scrollTo(
-                -position * mWidth / itemCount - Math.round(positionOffset * mWidth / itemCount),
-                0);
+            scrollToProxyByOnPageChangeListener(position, positionOffset);
         }
 
 
@@ -111,13 +108,20 @@ public class ViewPagerTab extends ViewGroup {
     }
 
 
+    public void scrollToProxyByOnPageChangeListener(final int position,
+                                                    final float positionOffset) {
+        this.scrollTo(-position * this.width / this.itemCount -
+            Math.round(positionOffset * this.width / this.itemCount), 0);
+    }
+
+
     public PageListener getPagerListener() {
-        return mPageListener;
+        return pageListener;
     }
 
 
     public void setPagerListener(PageListener listener) {
-        this.mPageListener = listener;
+        this.pageListener = listener;
     }
 
 
