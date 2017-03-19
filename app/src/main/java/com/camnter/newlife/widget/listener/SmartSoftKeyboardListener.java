@@ -35,11 +35,11 @@ public class SmartSoftKeyboardListener implements ViewTreeObserver.OnGlobalLayou
     @Override
     public void onGlobalLayout() {
 
-    /*
-     * 判断 Listener 的类型
-     * 如果 是 HeightListener，那么只计算一次
-     * 其他，Listener or ShowListener，计算多次
-     */
+        /*
+         * 判断 Listener 的类型
+         * 如果 是 HeightListener，那么只计算一次
+         * 其他，Listener or ShowListener，计算多次
+         */
         if (this.listener instanceof HeightListener && !this.first) {
             return;
         }
@@ -86,16 +86,19 @@ public class SmartSoftKeyboardListener implements ViewTreeObserver.OnGlobalLayou
          * 禁掉 hasShow
          *
          * @param show show
-         * @param height height
-         * @Override public void hasShow(boolean show) {
-         * // Nothing to do
-         * }
-         * }
-         *
-         *
-         * public static abstract class ShowListener implements Listener {
-         * /**
+         */
+        @Override
+        public void hasShow(boolean show) {
+            // Nothing to do
+        }
+    }
+
+
+    public static abstract class ShowListener implements Listener {
+        /**
          * 禁掉 getSoftKeyboardHeight
+         *
+         * @param height height
          */
         @Override
         public void getSoftKeyboardHeight(int height) {
