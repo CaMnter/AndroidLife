@@ -1,7 +1,7 @@
 package com.camnter.algorithm.lintcode;
 
 /**
- * Description：比较字符串
+ * Description：55.比较字符串
  *
  * 比较两个字符串 A 和 B，确定 A 中是否包含 B 中所有的字符。字符串 A 和 B 中的字符都是 大写字母
  *

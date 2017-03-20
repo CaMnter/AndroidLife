@@ -190,7 +190,7 @@ public class IdCardCameraActivity extends BaseActivity implements
     private void initCamera(SurfaceHolder holder, int surfaceViewWidth, int surfaceViewHeight) {
         if (holder == null) return;
         try {
-            this.cameraManager.openCamera(holder, surfaceViewWidth, surfaceViewHeight);
+            this.cameraManager.openCamera(this, holder, surfaceViewWidth, surfaceViewHeight);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

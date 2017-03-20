@@ -17,16 +17,7 @@ package com.camnter.newlife.widget.autoresizetextview;/*
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Build;
 import com.camnter.newlife.BuildConfig;
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 
 public class Log {
 
@@ -242,33 +233,6 @@ public class Log {
         return 0;
     }
 
-
-    public static void remote(final String msg) {
-        if (mRemoteUrl == null) {
-            return;
-        }
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    DefaultHttpClient httpClient = new DefaultHttpClient();
-                    HttpPost httpPost = new HttpPost(mRemoteUrl);
-
-                    List<NameValuePair> params = new ArrayList<NameValuePair>();
-                    params.add(new BasicNameValuePair("package_name", mPackageName));
-                    params.add(new BasicNameValuePair("package_version", mPackageVersion));
-                    params.add(new BasicNameValuePair("phone_model", Build.MODEL));
-                    params.add(new BasicNameValuePair("sdk_version", Build.VERSION.RELEASE));
-                    params.add(new BasicNameValuePair("message", msg));
-
-                    httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-                    httpClient.execute(httpPost);
-                } catch (Exception e) {
-                }
-            }
-        }).start();
-    }
 
 
     public static void dump(String longMsg) {
