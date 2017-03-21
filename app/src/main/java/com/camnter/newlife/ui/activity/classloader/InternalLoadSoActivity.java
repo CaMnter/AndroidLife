@@ -85,4 +85,5 @@ public class InternalLoadSoActivity extends BaseAppCompatActivity implements Vie
                 break;
         }
     }
+
 }

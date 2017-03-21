@@ -101,4 +101,5 @@ public class SQLiteRecyclerViewAdapter extends EasyRecyclerViewAdapter
         this.setList(allData);
         this.notifyDataSetChanged();
     }
+
 }

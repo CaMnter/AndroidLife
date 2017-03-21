@@ -183,4 +183,5 @@ public class SensorManagerActivity extends BaseAppCompatActivity {
 
         this.rootLayout.addView(linearLayout);
     }
+
 }

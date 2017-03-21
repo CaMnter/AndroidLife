@@ -15,6 +15,7 @@ import org.json.JSONObject;
  */
 
 public class JsCallback {
+
     private static Handler mHandler = new Handler(Looper.getMainLooper());
     private static final String JS_CALLBACK_FORMAT = "javascript:JsBridge.onFinish('%s', %s);";
     private String mPort;
@@ -31,13 +32,8 @@ public class JsCallback {
         final String execJs = String.format(JS_CALLBACK_FORMAT, this.mPort,
             String.valueOf(jsonObject));
         if (this.mWebViewRef != null && this.mWebViewRef.get() != null) {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    mWebViewRef.get().loadUrl(execJs);
-                }
-            });
+            mHandler.post(() -> mWebViewRef.get().loadUrl(execJs));
         }
-
     }
+    
 }

@@ -46,4 +46,5 @@ public class MessageSQLiteHelper extends SQLiteOpenHelper {
     @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.i(TAG, "onUpgrade");
     }
+
 }

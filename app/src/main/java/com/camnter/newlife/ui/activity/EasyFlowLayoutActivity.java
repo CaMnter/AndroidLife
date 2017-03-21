@@ -45,4 +45,5 @@ public class EasyFlowLayoutActivity extends BaseAppCompatActivity {
     @Override protected void initData() {
 
     }
+
 }

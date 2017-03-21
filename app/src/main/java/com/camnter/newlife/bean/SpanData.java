@@ -65,4 +65,5 @@ public class SpanData implements Parcelable {
         dest.writeString(this.content);
         dest.writeInt(this.type);
     }
+
 }

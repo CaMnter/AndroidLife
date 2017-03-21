@@ -76,4 +76,5 @@ public class EasyRecyclerViewActivity extends BaseAppCompatActivity {
     public int getDrawableId(Context context, String name) {
         return context.getResources().getIdentifier(name, "drawable", context.getPackageName());
     }
+
 }

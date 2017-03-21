@@ -10,6 +10,7 @@ import com.camnter.newlife.core.activity.BaseAppCompatActivity;
  * Time：2016-02-29 17:16
  */
 public class CanvasClipViewActivity extends BaseAppCompatActivity {
+
     /**
      * Fill in layout id
      *
@@ -44,4 +45,5 @@ public class CanvasClipViewActivity extends BaseAppCompatActivity {
     @Override protected void initData() {
 
     }
+
 }

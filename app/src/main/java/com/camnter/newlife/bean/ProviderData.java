@@ -6,6 +6,8 @@ package com.camnter.newlife.bean;
  * Time：2015-11-13 14:56
  */
 public class ProviderData {
+
     public int id;
     public String content;
+
 }

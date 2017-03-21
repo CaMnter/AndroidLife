@@ -56,4 +56,5 @@ public class SetIconTabLayoutFragmentAdapter extends FragmentPagerAdapter {
         // 多返回三个空格，作为padding的作用，挤开图片
         return "  " + this.tabTitles[position];
     }
+
 }

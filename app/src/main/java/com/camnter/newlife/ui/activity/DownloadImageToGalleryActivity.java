@@ -294,4 +294,5 @@ public class DownloadImageToGalleryActivity extends BaseAppCompatActivity
             super.onCancelled();
         }
     }
+
 }

@@ -50,4 +50,5 @@ public class NormalTabLayoutFragmentAdapter extends FragmentPagerAdapter {
     @Override public CharSequence getPageTitle(int position) {
         return this.tabTitles[position];
     }
+
 }

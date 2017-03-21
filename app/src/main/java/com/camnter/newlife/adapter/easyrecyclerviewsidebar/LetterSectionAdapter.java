@@ -47,4 +47,5 @@ public class LetterSectionAdapter extends SectionAdapter {
             }
         }
     }
+
 }

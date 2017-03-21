@@ -93,4 +93,5 @@ public class EasySlidingTabsFragmentAdapter extends FragmentPagerAdapter
     @Override public int getCount() {
         return this.fragments.size();
     }
+
 }

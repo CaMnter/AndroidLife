@@ -143,4 +143,5 @@ public class EasyLikeAreaTopicActivity extends AppCompatActivity implements View
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, this.mMetrics);
     }
+
 }

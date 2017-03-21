@@ -55,4 +55,5 @@ public class SQLiteActivity extends BaseAppCompatActivity {
         sqLiteRecyclerViewAdapter.setList(allData);
         sqLiteRecyclerViewAdapter.notifyDataSetChanged();
     }
+
 }

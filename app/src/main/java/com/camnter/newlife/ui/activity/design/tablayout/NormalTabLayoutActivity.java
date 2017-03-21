@@ -65,4 +65,5 @@ public class NormalTabLayoutActivity extends BaseAppCompatActivity {
         this.viewPager.setAdapter(fragmentAdapter);
         this.tabLayout.setupWithViewPager(this.viewPager);
     }
+
 }

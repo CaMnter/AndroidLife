@@ -216,4 +216,5 @@ public class CustomContentProviderActivity extends BaseAppCompatActivity {
             return allData;
         }
     }
+
 }

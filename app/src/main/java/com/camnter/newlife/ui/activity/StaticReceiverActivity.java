@@ -65,4 +65,5 @@ public class StaticReceiverActivity extends BaseAppCompatActivity implements Vie
                 break;
         }
     }
+
 }

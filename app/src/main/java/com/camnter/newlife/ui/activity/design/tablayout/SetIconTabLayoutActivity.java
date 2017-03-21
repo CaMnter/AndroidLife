@@ -72,4 +72,5 @@ public class SetIconTabLayoutActivity extends BaseAppCompatActivity {
             tab.setIcon(icons[i]);
         }
     }
+
 }

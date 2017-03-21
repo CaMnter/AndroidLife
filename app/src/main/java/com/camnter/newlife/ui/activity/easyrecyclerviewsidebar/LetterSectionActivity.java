@@ -40,4 +40,5 @@ public class LetterSectionActivity extends SectionActivity {
     @Override public List<Contacts> getData() {
         return Constant.letterSectionList;
     }
+
 }

@@ -6,6 +6,7 @@ package com.camnter.newlife.bean;
  * Time：2015-12-01 18:40
  */
 public class RxChildData {
+
     private long id;
     private String childContent;
 
@@ -33,4 +34,5 @@ public class RxChildData {
     public void setChildContent(String childContent) {
         this.childContent = childContent;
     }
+
 }

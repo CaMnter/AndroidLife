@@ -84,4 +84,5 @@ public class CoordinatorLayoutActivity extends BaseActivity {
             return 0;
         }
     }
+
 }

@@ -45,4 +45,5 @@ public class AutoAdjustSizeTextViewActivity extends BaseAppCompatActivity {
     @Override protected void initData() {
 
     }
+
 }

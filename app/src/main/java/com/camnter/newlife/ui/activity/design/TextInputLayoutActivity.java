@@ -10,6 +10,7 @@ import com.camnter.newlife.core.activity.BaseAppCompatActivity;
  * Time：2015-09-18 14:19
  */
 public class TextInputLayoutActivity extends BaseAppCompatActivity {
+
     /**
      * Fill in layout id
      *
@@ -44,4 +45,5 @@ public class TextInputLayoutActivity extends BaseAppCompatActivity {
     @Override protected void initData() {
 
     }
+
 }

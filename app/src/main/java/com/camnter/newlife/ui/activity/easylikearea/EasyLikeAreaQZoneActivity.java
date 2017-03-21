@@ -26,6 +26,7 @@ import com.camnter.newlife.R;
  * Time：2016-04-20 14:47
  */
 public class EasyLikeAreaQZoneActivity extends EasyLikeAreaTopicActivity {
+
     public void setOmitView(int count) {
         View omitView = LayoutInflater.from(this).inflate(R.layout.view_omit_style_qzone, null);
         this.omitTv = (TextView) omitView.findViewById(R.id.qzone_omit_tv);
@@ -37,4 +38,5 @@ public class EasyLikeAreaQZoneActivity extends EasyLikeAreaTopicActivity {
     @Override public int getOmitVieStringFormatId() {
         return R.string.view_omit_style_qzone_content;
     }
+
 }

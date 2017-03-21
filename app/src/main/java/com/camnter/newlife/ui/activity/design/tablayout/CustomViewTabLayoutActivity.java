@@ -83,4 +83,5 @@ public class CustomViewTabLayoutActivity extends BaseAppCompatActivity {
             tab.setCustomView(view);
         }
     }
+
 }

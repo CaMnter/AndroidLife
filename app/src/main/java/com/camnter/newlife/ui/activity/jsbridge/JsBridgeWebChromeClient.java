@@ -10,6 +10,7 @@ import android.webkit.WebView;
  */
 
 public class JsBridgeWebChromeClient extends WebChromeClient {
+
     /**
      * Tell the client to display a prompt dialog to the user. If the client
      * returns true, WebView will assume that the client will handle the
@@ -32,4 +33,5 @@ public class JsBridgeWebChromeClient extends WebChromeClient {
         result.confirm(JsBridge.callJava(view, message));
         return true;
     }
+
 }

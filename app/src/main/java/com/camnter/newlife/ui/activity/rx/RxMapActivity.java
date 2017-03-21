@@ -71,14 +71,12 @@ public class RxMapActivity extends BaseAppCompatActivity {
          * 传入的是Integer，改后变为String
          * 订阅者接收到的也是String
          */
-        this.rxOneSubscription = Observable.just(KEY).map(new Func1<Integer, String>() {
-            @Override public String call(Integer integer) {
-                switch (integer) {
-                    case KEY:
-                        return VALUE;
-                    default:
-                        return VALUE;
-                }
+        this.rxOneSubscription = Observable.just(KEY).map(integer -> {
+            switch (integer) {
+                case KEY:
+                    return VALUE;
+                default:
+                    return VALUE;
             }
         }).subscribe(new Subscriber<String>() {
             @Override public void onCompleted() {
@@ -110,27 +108,25 @@ public class RxMapActivity extends BaseAppCompatActivity {
          * 传入的是RxData，改后变为Long
          * 订阅者接收到的也是Long
          */
-        this.rxTwoSubscription = Observable.from(data).map(new Func1<RxData, Long>() {
-            @Override public Long call(RxData rxData) {
-                return rxData.getId();
-            }
-        }).subscribe(new Subscriber<Long>() {
-            @Override public void onCompleted() {
+        this.rxTwoSubscription = Observable.from(data)
+            .map(rxData -> rxData.getId())
+            .subscribe(new Subscriber<Long>() {
+                @Override public void onCompleted() {
 
-            }
+                }
 
 
-            @Override public void onError(Throwable e) {
+                @Override public void onError(Throwable e) {
 
-            }
+                }
 
 
-            @Override public void onNext(Long aLong) {
-                String text = RxMapActivity.this.rxMapTwoTV.getText().toString();
-                text += aLong + " ";
-                RxMapActivity.this.rxMapTwoTV.setText(text);
-            }
-        });
+                @Override public void onNext(Long aLong) {
+                    String text = RxMapActivity.this.rxMapTwoTV.getText().toString();
+                    text += aLong + " ";
+                    RxMapActivity.this.rxMapTwoTV.setText(text);
+                }
+            });
 
         RxData parentData = new RxData();
         RxChildData childData1 = new RxChildData();
@@ -140,7 +136,7 @@ public class RxMapActivity extends BaseAppCompatActivity {
         RxChildData childData3 = new RxChildData();
         childData3.setChildContent("childData3");
         RxChildData[] childData = { childData1, childData2, childData3 };
-        parentData.setChildDatas(childData);
+        parentData.setChildData(childData);
 
         /**
          * flatMap一对多的类型转换
@@ -159,7 +155,7 @@ public class RxMapActivity extends BaseAppCompatActivity {
             .flatMap(new Func1<RxData, Observable<RxChildData>>() {
                 @Override
                 public Observable<RxChildData> call(RxData rxData) {
-                    return Observable.from(rxData.getChildDatas());
+                    return Observable.from(rxData.getChildData());
                 }
             })
             .subscribe(new Subscriber<RxChildData>() {
@@ -199,25 +195,20 @@ public class RxMapActivity extends BaseAppCompatActivity {
          * 这样就实现了 lift() 过程，有点像一种代理机制，通过事件拦截和处理实现事件序列的变换。
          */
         this.rxFouSubscription = Observable.from(new Integer[] { 6, 7 })
-            .lift(new Observable.Operator<String, Integer>() {
+            .lift((Observable.Operator<String, Integer>) subscriber -> new Subscriber<Integer>() {
+                @Override public void onCompleted() {
+
+                }
+
+
+                @Override public void onError(Throwable e) {
+
+                }
+
+
                 @Override
-                public Subscriber<? super Integer> call(final Subscriber<? super String> subscriber) {
-                    return new Subscriber<Integer>() {
-                        @Override public void onCompleted() {
-
-                        }
-
-
-                        @Override public void onError(Throwable e) {
-
-                        }
-
-
-                        @Override
-                        public void onNext(Integer integer) {
-                            subscriber.onNext(integer + "");
-                        }
-                    };
+                public void onNext(Integer integer) {
+                    subscriber.onNext(integer + "");
                 }
             })
             .subscribe(new Subscriber<String>() {
@@ -249,4 +240,5 @@ public class RxMapActivity extends BaseAppCompatActivity {
         this.rxFouSubscription.unsubscribe();
         super.onDestroy();
     }
+
 }

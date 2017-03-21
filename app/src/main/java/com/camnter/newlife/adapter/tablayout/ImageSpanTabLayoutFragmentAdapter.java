@@ -73,4 +73,5 @@ public class ImageSpanTabLayoutFragmentAdapter extends FragmentPagerAdapter {
         spannableString.setSpan(imageSpan, 0, 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spannableString;
     }
+
 }

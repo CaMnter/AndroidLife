@@ -6,8 +6,10 @@ package com.camnter.newlife.ui.activity.hotfix;
  */
 
 public class LoadFixCall {
+
     public String getCall() {
         FixCall fixCall = new FixCall();
         return fixCall.call();
     }
+
 }

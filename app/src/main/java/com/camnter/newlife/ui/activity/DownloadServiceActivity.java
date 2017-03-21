@@ -133,4 +133,5 @@ public class DownloadServiceActivity extends BaseAppCompatActivity
     @Override public void downloadFailure() {
         this.startBT.setEnabled(true);
     }
+
 }

@@ -66,4 +66,5 @@ public class LaunchModeActivity extends BaseAppCompatActivity implements View.On
             }
         }
     }
+
 }

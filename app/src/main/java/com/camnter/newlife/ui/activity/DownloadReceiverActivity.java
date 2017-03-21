@@ -153,4 +153,5 @@ public class DownloadReceiverActivity extends BaseAppCompatActivity
             }
         }
     }
+
 }

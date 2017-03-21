@@ -19,9 +19,9 @@ public class MyRecyclerViewAdapter extends EasyRecyclerViewAdapter {
 
 
     /**
-     * 请返回RecycleView加载的布局Id数组
+     * 请返回 RecycleView 加载的布局Id数组
      *
-     * @return 布局Id数组
+     * @return 布局 Id 数组
      */
     @Override public int[] getItemLayouts() {
         return new int[] { R.layout.item_recyclerview_multiple, R.layout.item_recyclerview_single };
@@ -29,8 +29,8 @@ public class MyRecyclerViewAdapter extends EasyRecyclerViewAdapter {
 
 
     /**
-     * 对接了onBindViewHolder
-     * onBindViewHolder里的逻辑写在这
+     * 对接了 onBindViewHolder
+     * onBindViewHolder 里的逻辑写在这
      *
      * @param viewHolder viewHolder
      * @param position position
@@ -60,7 +60,7 @@ public class MyRecyclerViewAdapter extends EasyRecyclerViewAdapter {
      * 单布局可以不写
      *
      * @param position Item position
-     * @return 布局Id数组中的index
+     * @return 布局 Id 数组中的 index
      */
     @Override public int getRecycleViewItemType(int position) {
         if (position % 2 == 0) {
@@ -69,4 +69,5 @@ public class MyRecyclerViewAdapter extends EasyRecyclerViewAdapter {
             return MULTIPLE_ITEM_TYPE;
         }
     }
+
 }

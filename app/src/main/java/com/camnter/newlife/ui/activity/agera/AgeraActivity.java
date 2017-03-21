@@ -9,6 +9,7 @@ import com.camnter.newlife.ui.activity.MainActivity;
  * Time：2016-05-30 15:24
  */
 public class AgeraActivity extends MainActivity {
+
     @Override protected void setListData() {
         this.showTag = false;
         this.classes.add(AgeraSimpleActivity.class);
@@ -25,4 +26,5 @@ public class AgeraActivity extends MainActivity {
     @Override protected int getLayoutId() {
         return R.layout.activity_agera;
     }
+
 }

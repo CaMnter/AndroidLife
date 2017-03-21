@@ -52,7 +52,6 @@ public class OttoActivity extends BaseAppCompatActivity implements View.OnClickL
      */
     @Subscribe public void hello(OttoEvent event) {
         ToastUtils.show(this, event.toString() +
-
             "\thello", ToastUtils.LENGTH_SHORT);
     }
 
@@ -119,4 +118,5 @@ public class OttoActivity extends BaseAppCompatActivity implements View.OnClickL
                 '}';
         }
     }
+
 }

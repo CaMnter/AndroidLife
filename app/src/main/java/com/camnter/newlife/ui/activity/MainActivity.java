@@ -79,11 +79,9 @@ public class MainActivity extends BaseAppCompatActivity {
      * Initialize the View of the listener
      */
     @Override protected void initListeners() {
-        this.adapter.setOnItemClickListener(new EasyRecyclerViewHolder.OnItemClickListener() {
-            @Override public void onItemClick(View view, int i) {
-                Class c = MainActivity.this.classes.get(i);
-                MainActivity.this.startActivity(new Intent(MainActivity.this, c));
-            }
+        this.adapter.setOnItemClickListener((view, i) -> {
+            Class c = MainActivity.this.classes.get(i);
+            MainActivity.this.startActivity(new Intent(MainActivity.this, c));
         });
     }
 
@@ -206,4 +204,5 @@ public class MainActivity extends BaseAppCompatActivity {
             return 0;
         }
     }
+
 }

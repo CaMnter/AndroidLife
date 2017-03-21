@@ -66,5 +66,6 @@ public class SingleTaskActivity extends BaseAppCompatActivity implements View.On
             }
         }
     }
+
 }
 

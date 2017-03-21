@@ -6,6 +6,7 @@ package com.camnter.newlife.ui.activity.hotfix;
  */
 
 public class FixCall {
+
     private final String content;
 
 
@@ -17,4 +18,5 @@ public class FixCall {
     public String call() {
         return this.content;
     }
+
 }

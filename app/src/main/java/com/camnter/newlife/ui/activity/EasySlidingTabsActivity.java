@@ -72,4 +72,5 @@ public class EasySlidingTabsActivity extends BaseAppCompatActivity {
         this.easyVP.setAdapter(adapter);
         this.easySlidingTabs.setViewPager(this.easyVP);
     }
+
 }

@@ -67,4 +67,5 @@ public class ImageSpanTabLayoutActivity extends BaseAppCompatActivity {
         this.viewPager.setAdapter(fragmentAdapter);
         this.tabLayout.setupWithViewPager(this.viewPager);
     }
+
 }

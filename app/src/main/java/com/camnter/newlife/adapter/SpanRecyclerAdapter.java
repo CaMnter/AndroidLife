@@ -401,5 +401,7 @@ public class SpanRecyclerAdapter extends EasyRecyclerViewAdapter {
         public void setUrlString(String urlString) {
             this.urlString = urlString;
         }
+
     }
+
 }

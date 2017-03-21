@@ -136,4 +136,5 @@ public class SectionActivity extends AppCompatActivity
     private void scrollToPosition(int position) {
         this.imageSectionRv.getLinearLayoutManager().scrollToPositionWithOffset(position, 0);
     }
+
 }

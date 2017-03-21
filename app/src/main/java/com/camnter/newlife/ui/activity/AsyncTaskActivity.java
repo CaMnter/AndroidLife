@@ -74,4 +74,5 @@ public class AsyncTaskActivity extends BaseAppCompatActivity implements View.OnC
             }
         }
     }
+
 }

@@ -120,4 +120,5 @@ public class ExternalLoadSoActivity extends BaseAppCompatActivity implements Vie
                 break;
         }
     }
+
 }

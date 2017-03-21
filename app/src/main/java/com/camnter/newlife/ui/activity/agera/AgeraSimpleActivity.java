@@ -11,10 +11,7 @@ import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.google.android.agera.Function;
 import com.google.android.agera.Functions;
-import com.google.android.agera.Merger;
 import com.google.android.agera.Observable;
-import com.google.android.agera.Predicate;
-import com.google.android.agera.Receiver;
 import com.google.android.agera.Repositories;
 import com.google.android.agera.Repository;
 import com.google.android.agera.Reservoir;
@@ -71,10 +68,8 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
      * Test - 2 - Repository *
      *************************/
 
-    private Supplier<String> supplierTestTwo = new Supplier<String>() {
-        @NonNull @Override public String get() {
-            return "Jud: " + UUID.randomUUID().toString();
-        }
+    private Supplier<String> supplierTestTwo = () -> {
+        return "Jud: " + UUID.randomUUID().toString();
     };
     private Repository<String> repositoryTestTwo = Repositories
         .repositoryWithInitialValue("Tes")
@@ -95,26 +90,9 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
         .repositoryWithInitialValue("Tes")
         .observe()
         .onUpdatesPerLoop()
-        .getFrom(new Supplier<Integer>() {
-            @NonNull @Override public Integer get() {
-                return 6;
-            }
-        })
-        .transform(new Function<Integer, String>() {
-            @NonNull @Override public String apply(@NonNull Integer input) {
-                return "Save you from anything " + input;
-            }
-        })
-        .thenMergeIn(new Supplier<Integer>() {
-            @NonNull @Override public Integer get() {
-                return 7;
-            }
-        }, new Merger<String, Integer, String>() {
-            @NonNull @Override
-            public String merge(@NonNull String s, @NonNull Integer integer) {
-                return s + " and " + integer;
-            }
-        })
+        .getFrom(() -> 6)
+        .transform(input -> "Save you from anything " + input)
+        .thenMergeIn(() -> 7, (s, integer) -> s + " and " + integer)
         .compile();
     private Updatable updatableThree = new Updatable() {
         @Override public void update() {
@@ -132,14 +110,12 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
         .observe()
         .onUpdatesPerLoop()
         .goTo(executor)
-        .thenGetFrom(new Supplier<String>() {
-            @NonNull @Override public String get() {
-                if (Looper.myLooper() != null || Looper.myLooper() == Looper.getMainLooper()) {
-                    return "Main UI Thread: Save you from anything";
-                } else {
-                    return "Child Thread(" + Thread.currentThread().getId() +
-                        "): Save you from anything";
-                }
+        .thenGetFrom(() -> {
+            if (Looper.myLooper() != null || Looper.myLooper() == Looper.getMainLooper()) {
+                return "Main UI Thread: Save you from anything";
+            } else {
+                return "Child Thread(" + Thread.currentThread().getId() +
+                    "): Save you from anything";
             }
         })
         .compile();
@@ -165,16 +141,8 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
                 }
             }
         })
-        .orEnd(new Function<Throwable, String>() {
-            @NonNull @Override public String apply(@NonNull Throwable input) {
-                return "Throwable message: " + input.getMessage();
-            }
-        })
-        .thenTransform(new Function<String, String>() {
-            @NonNull @Override public String apply(@NonNull String input) {
-                return input;
-            }
-        })
+        .orEnd(input -> "Throwable message: " + input.getMessage())
+        .thenTransform(input -> input)
         .compile();
     private Updatable updatableFive = new Updatable() {
         @Override public void update() {
@@ -198,33 +166,16 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
                 }
             }
         })
-        .orEnd(new Function<Throwable, Result<String>>() {
-            @NonNull @Override public Result<String> apply(@NonNull Throwable input) {
-                return Result.failure(input);
-            }
-        })
-        .thenTransform(new Function<String, Result<String>>() {
-            @NonNull @Override public Result<String> apply(@NonNull String input) {
-                return Result.absentIfNull(input);
-            }
-        })
+        .orEnd(input -> Result.failure(input))
+        .thenTransform(input -> Result.absentIfNull(input))
         .compile();
     private Updatable updatableSix = new Updatable() {
-        @Override public void update() {
+        @SuppressLint("SetTextI18n") @Override public void update() {
             repositoryTestSix
                 .get()
-                .ifFailedSendTo(new Receiver<Throwable>() {
-                    @SuppressLint("SetTextI18n") @Override
-                    public void accept(@NonNull Throwable value) {
-                        observableSixText.setText("ifFailedSendTo -> " + value);
-                    }
-                })
-                .ifSucceededSendTo(new Receiver<String>() {
-                    @SuppressLint("SetTextI18n") @Override
-                    public void accept(@NonNull String value) {
-                        observableSixText.setText("ifSucceededSendTo -> " + value);
-                    }
-                });
+                .ifFailedSendTo(value -> observableSixText.setText("ifFailedSendTo -> " + value))
+                .ifSucceededSendTo(
+                    value -> observableSixText.setText("ifSucceededSendTo -> " + value));
         }
     };
     /************************
@@ -238,11 +189,7 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
         .onUpdatesPerLoop()
         .attemptGetFrom(reservoir)
         .orSkip()
-        .thenTransform(new Function<String, String>() {
-            @NonNull @Override public String apply(@NonNull String input) {
-                return "Reservoir test: Save you from anything " + input;
-            }
-        })
+        .thenTransform(input -> "Reservoir test: Save you from anything " + input)
         .compile();
     private Updatable updatableSeven = new Updatable() {
         @Override public void update() {
@@ -252,41 +199,29 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
     private Function<String, Integer> function = Functions
         .functionFrom(String.class)
         .unpack(
-            new Function<String, List<String>>() {
-                @NonNull @Override public List<String> apply(@NonNull String input) {
-                    List<String> list = new ArrayList<>();
-                    list.add("Function test:");
-                    list.add(" ");
-                    list.add(input);
-                    list.add(" ");
-                    list.add("you");
-                    list.add(" ");
-                    list.add("from");
-                    list.add(" ");
-                    list.add("anything");
-                    list.add(" ");
-                    list.add(filterString);
-                    return list;
-                }
+            input -> {
+                List<String> list = new ArrayList<>();
+                list.add("Function test:");
+                list.add(" ");
+                list.add(input);
+                list.add(" ");
+                list.add("you");
+                list.add(" ");
+                list.add("from");
+                list.add(" ");
+                list.add("anything");
+                list.add(" ");
+                list.add(filterString);
+                return list;
             })
-        .filter(new Predicate<String>() {
-            @Override public boolean apply(@NonNull String value) {
-                return value.equals(filterString);
+        .filter(value -> value.equals(filterString))
+        .map(input -> input.getBytes())
+        .thenApply(input -> {
+            int totalLength = 0;
+            for (byte[] byteArray : input) {
+                totalLength += byteArray.length;
             }
-        })
-        .map(new Function<String, byte[]>() {
-            @NonNull @Override public byte[] apply(@NonNull String input) {
-                return input.getBytes();
-            }
-        })
-        .thenApply(new Function<List<byte[]>, Integer>() {
-            @NonNull @Override public Integer apply(@NonNull List<byte[]> input) {
-                int totalLength = 0;
-                for (byte[] byteArray : input) {
-                    totalLength += byteArray.length;
-                }
-                return totalLength;
-            }
+            return totalLength;
         });
 
     private Repository<String> repositoryTestEight = Repositories
@@ -294,17 +229,9 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
         .observe()
         .onUpdatesPerLoop()
         .getFrom(
-            new Supplier<String>() {
-                @NonNull @Override public String get() {
-                    return "Save";
-                }
-            })
+            () -> "Save")
         .transform(function)
-        .thenTransform(new Function<Integer, String>() {
-            @NonNull @Override public String apply(@NonNull Integer input) {
-                return "Function test: list size = " + input;
-            }
-        })
+        .thenTransform(input -> "Function test: list size = " + input)
         .compile();
 
     private Updatable updatableEight = new Updatable() {
@@ -364,4 +291,5 @@ public class AgeraSimpleActivity extends BaseAppCompatActivity {
     @Override protected void initData() {
 
     }
+
 }

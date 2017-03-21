@@ -86,4 +86,5 @@ public class TagTextViewActivity extends BaseAppCompatActivity
     @Override public void onClick(View widget, TagTextView.TagClickableSpan span) {
         ToastUtils.show(this, span.getId() + ":" + span.getContent(), Toast.LENGTH_SHORT);
     }
+
 }

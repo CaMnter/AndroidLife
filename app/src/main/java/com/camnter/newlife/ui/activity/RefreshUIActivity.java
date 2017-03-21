@@ -18,17 +18,15 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
 
     private static final int HANDLER_SUCCESS = 206;
     private final RefreshHandler refreshHandler = new RefreshHandler(RefreshUIActivity.this);
-    private final Runnable mRunnable = new Runnable() {
-        @Override public void run() {
-            Message message = RefreshUIActivity.this.refreshHandler.obtainMessage();
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            message.what = HANDLER_SUCCESS;
-            refreshHandler.sendMessageDelayed(message, 2000);
+    private final Runnable mRunnable = () -> {
+        Message message = RefreshUIActivity.this.refreshHandler.obtainMessage();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        message.what = HANDLER_SUCCESS;
+        refreshHandler.sendMessageDelayed(message, 2000);
     };
     private final Thread mThread = new Thread(mRunnable);
     private final MThread runThread = new MThread();
@@ -36,17 +34,11 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
     private TextView asyncTaskTV;
     private MAsyncTask mAsyncTask;
     private TextView runOnUiThreadTV;
-    private final Runnable uiRunnable = new Runnable() {
-        @Override public void run() {
-            RefreshUIActivity.this.runOnUiThreadTV.setText("Use: runOnUiThread");
-        }
-    };
+    private final Runnable uiRunnable = () -> RefreshUIActivity.this.runOnUiThreadTV.setText(
+        "Use: runOnUiThread");
     private TextView postHandlerTV;
-    private final Runnable postRunnable = new Runnable() {
-        @Override public void run() {
-            RefreshUIActivity.this.postHandlerTV.setText("Use: Handler.post(...)");
-        }
-    };
+    private final Runnable postRunnable = () -> RefreshUIActivity.this.postHandlerTV.setText(
+        "Use: Handler.post(...)");
 
 
     /**
@@ -234,4 +226,5 @@ public class RefreshUIActivity extends BaseAppCompatActivity {
             RefreshUIActivity.this.runOnUiThread(RefreshUIActivity.this.uiRunnable);
         }
     }
+
 }

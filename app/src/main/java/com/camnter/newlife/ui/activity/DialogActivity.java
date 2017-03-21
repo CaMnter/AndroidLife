@@ -36,17 +36,13 @@ public class DialogActivity extends BaseAppCompatActivity implements View.OnClic
      */
     @Override protected void initViews(Bundle savedInstanceState) {
         this.menuDialog = new MenuDialog(this);
-        this.menuDialog.setCaseListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                ToastUtils.show(DialogActivity.this, "Case", Toast.LENGTH_SHORT);
-                DialogActivity.this.menuDialog.dismiss();
-            }
+        this.menuDialog.setCaseListener(v -> {
+            ToastUtils.show(DialogActivity.this, "Case", Toast.LENGTH_SHORT);
+            DialogActivity.this.menuDialog.dismiss();
         });
-        this.menuDialog.setHelpListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                ToastUtils.show(DialogActivity.this, "Help", Toast.LENGTH_SHORT);
-                DialogActivity.this.menuDialog.dismiss();
-            }
+        this.menuDialog.setHelpListener(v -> {
+            ToastUtils.show(DialogActivity.this, "Help", Toast.LENGTH_SHORT);
+            DialogActivity.this.menuDialog.dismiss();
         });
     }
 
@@ -80,11 +76,8 @@ public class DialogActivity extends BaseAppCompatActivity implements View.OnClic
                 d.setDuration(2000L);
                 d.setContent("CustomDialog");
                 d.setCanceledOnTouchOutside(false);
-                d.setCallback(new CustomDialog.DialogCallback() {
-                    @Override public void onDismiss() {
-                        ToastUtils.showCenter(DialogActivity.this, "CustomDialog dismiss");
-                    }
-                });
+                d.setCallback(
+                    () -> ToastUtils.showCenter(DialogActivity.this, "CustomDialog dismiss"));
                 d.show();
                 break;
             case R.id.dialog_menu:
@@ -92,4 +85,5 @@ public class DialogActivity extends BaseAppCompatActivity implements View.OnClic
                 break;
         }
     }
+
 }

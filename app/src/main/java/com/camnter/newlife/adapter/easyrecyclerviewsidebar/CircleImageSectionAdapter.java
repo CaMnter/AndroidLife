@@ -53,4 +53,5 @@ public class CircleImageSectionAdapter extends SectionAdapter {
             this.setHeader(false, headerTv, null);
         }
     }
+
 }

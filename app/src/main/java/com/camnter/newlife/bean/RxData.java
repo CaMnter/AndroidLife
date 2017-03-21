@@ -6,18 +6,19 @@ package com.camnter.newlife.bean;
  * Time：2015-12-01 17:40
  */
 public class RxData {
+
     private long id;
     private String content;
-    private RxChildData[] childDatas;
+    private RxChildData[] childData;
 
 
-    public RxChildData[] getChildDatas() {
-        return childDatas;
+    public RxChildData[] getChildData() {
+        return childData;
     }
 
 
-    public void setChildDatas(RxChildData[] childDatas) {
-        this.childDatas = childDatas;
+    public void setChildData(RxChildData[] childData) {
+        this.childData = childData;
     }
 
 
@@ -39,4 +40,5 @@ public class RxData {
     public void setContent(String content) {
         this.content = content;
     }
+
 }

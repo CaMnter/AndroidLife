@@ -15,4 +15,5 @@ public class ImageScaleTypesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_scale_type);
     }
+
 }

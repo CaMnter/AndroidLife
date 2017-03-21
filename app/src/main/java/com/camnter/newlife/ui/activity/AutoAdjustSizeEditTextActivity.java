@@ -10,6 +10,7 @@ import com.camnter.newlife.core.activity.BaseAppCompatActivity;
  * Time：2015-10-19 15:31
  */
 public class AutoAdjustSizeEditTextActivity extends BaseAppCompatActivity {
+
     /**
      * Fill in layout id
      *
@@ -44,4 +45,5 @@ public class AutoAdjustSizeEditTextActivity extends BaseAppCompatActivity {
     @Override protected void initData() {
 
     }
+
 }

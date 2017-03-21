@@ -83,4 +83,5 @@ public class AgeraClickActivity extends BaseAppCompatActivity {
             dispatchUpdate();
         }
     }
+
 }

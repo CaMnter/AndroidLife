@@ -62,4 +62,5 @@ public class ListViewLayout extends LinearLayout {
         this.adapter = adapter;
         this.onClickListener = onClickListener;
     }
+
 }

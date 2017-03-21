@@ -40,4 +40,5 @@ public class CircleImageSectionActivity extends SectionActivity {
     @Override public List<Contacts> getData() {
         return Constant.circleImageSectionList;
     }
+
 }

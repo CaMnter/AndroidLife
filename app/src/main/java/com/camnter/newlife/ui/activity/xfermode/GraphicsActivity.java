@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 class GraphicsActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,4 +38,5 @@ class GraphicsActivity extends AppCompatActivity {
         }
         super.setContentView(view);
     }
+
 }

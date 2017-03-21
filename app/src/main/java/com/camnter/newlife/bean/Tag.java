@@ -6,6 +6,7 @@ package com.camnter.newlife.bean;
  * Time：2015-12-23 12:20
  */
 public class Tag {
+
     private Long id;
     private String content;
 
@@ -28,4 +29,5 @@ public class Tag {
     public void setContent(String content) {
         this.content = content;
     }
+
 }

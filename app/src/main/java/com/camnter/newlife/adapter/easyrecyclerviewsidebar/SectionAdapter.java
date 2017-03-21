@@ -191,4 +191,5 @@ public class SectionAdapter extends EasyRecyclerViewAdapter
     @Override public int getSectionForPosition(int position) {
         return sectionOfPosition.get(position);
     }
+
 }

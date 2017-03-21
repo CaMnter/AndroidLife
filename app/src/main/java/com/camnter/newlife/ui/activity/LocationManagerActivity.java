@@ -203,4 +203,5 @@ public class LocationManagerActivity extends BaseAppCompatActivity {
             // permissions this app might request
         }
     }
+
 }

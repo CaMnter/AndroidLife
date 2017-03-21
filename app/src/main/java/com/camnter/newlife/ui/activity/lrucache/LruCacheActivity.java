@@ -261,4 +261,5 @@ import java.util.Map;
         }
         textView.setText(String.format(Locale.getDefault(), format, recentText));
     }
+
 }

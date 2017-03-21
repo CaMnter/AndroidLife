@@ -57,4 +57,5 @@ public class ResourcesUtilActivity extends BaseAppCompatActivity {
 
         this.resourcesIV.setImageResource(ResourcesUtils.getMipmapId(this, "img_mm_1"));
     }
+
 }

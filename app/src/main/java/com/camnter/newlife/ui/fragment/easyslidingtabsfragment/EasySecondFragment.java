@@ -61,4 +61,5 @@ public class EasySecondFragment extends BaseFragment {
     @Override protected void initData() {
 
     }
+
 }

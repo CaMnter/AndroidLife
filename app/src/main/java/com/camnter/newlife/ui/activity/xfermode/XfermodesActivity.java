@@ -156,4 +156,5 @@ public class XfermodesActivity extends GraphicsActivity {
             }
         }
     }
+
 }

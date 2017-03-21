@@ -189,4 +189,5 @@ public abstract class BaseContentProvider extends ContentProvider {
      */
     @Override public abstract int update(
         @NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs);
+
 }

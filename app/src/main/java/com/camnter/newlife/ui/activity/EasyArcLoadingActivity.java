@@ -10,6 +10,7 @@ import com.camnter.newlife.core.activity.BaseAppCompatActivity;
  * Time：2016-03-13 22:36
  */
 public class EasyArcLoadingActivity extends BaseAppCompatActivity {
+
     /**
      * Fill in layout id
      *
@@ -44,4 +45,5 @@ public class EasyArcLoadingActivity extends BaseAppCompatActivity {
     @Override protected void initData() {
 
     }
+
 }

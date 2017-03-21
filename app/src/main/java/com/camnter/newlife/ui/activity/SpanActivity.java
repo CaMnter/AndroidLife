@@ -75,4 +75,5 @@ public class SpanActivity extends BaseAppCompatActivity {
         adapter.setList(spans);
         adapter.notifyDataSetChanged();
     }
+
 }

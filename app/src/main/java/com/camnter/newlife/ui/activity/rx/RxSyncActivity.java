@@ -29,7 +29,6 @@ import java.util.UUID;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.functions.Action1;
 
 /**
  * Description：RxSyncActivity
@@ -125,13 +124,11 @@ public class RxSyncActivity extends BaseAppCompatActivity implements View.OnClic
             });
 
         String[] sign = { "From", "save", "you", "from", "anything" };
-        this.fromSubscription = Observable.from(sign).subscribe(new Action1<String>() {
-            @Override public void call(String s) {
-                RxSyncActivity.this.checkThread("from -> Subscriber.onNext()");
-                String text = RxSyncActivity.this.syncRxFromTV.getText().toString();
-                text += s + " ";
-                RxSyncActivity.this.syncRxFromTV.setText(text);
-            }
+        this.fromSubscription = Observable.from(sign).subscribe(s -> {
+            RxSyncActivity.this.checkThread("from -> Subscriber.onNext()");
+            String text = RxSyncActivity.this.syncRxFromTV.getText().toString();
+            text += s + " ";
+            RxSyncActivity.this.syncRxFromTV.setText(text);
         });
     }
 
@@ -160,13 +157,12 @@ public class RxSyncActivity extends BaseAppCompatActivity implements View.OnClic
                  * 失败会走到onError方法
                  * 成功的话，因为call方法有Subscriber对象，这是添加的订阅者，可以调用它的onNext或onCompleted
                  */
-                this.downloadSubscription = Observable.create(new Observable.OnSubscribe<String>() {
-                    @Override public void call(Subscriber<? super String> subscriber) {
+                this.downloadSubscription = Observable.create(
+                    (Observable.OnSubscribe<String>) subscriber -> {
                         RxSyncActivity.this.checkThread("create -> OnSubscribe.create()");
-                        new RxSyncActivity.DownloadImageAsyncTask(RxSyncActivity.this,
+                        new DownloadImageAsyncTask(RxSyncActivity.this,
                             subscriber).execute(OBJECT_IMAGE_URL);
-                    }
-                }).subscribe(new Subscriber<String>() {
+                    }).subscribe(new Subscriber<String>() {
                     @Override public void onCompleted() {
 
                     }
@@ -231,13 +227,11 @@ public class RxSyncActivity extends BaseAppCompatActivity implements View.OnClic
                 switch (msg.what) {
                     case HANDLER_LOADING: {
                         final int progressValue = (int) msg.obj;
-                        activity.runOnUiThread(new Runnable() {
-                            @Override public void run() {
-                                try {
-                                    activity.dialog.setLoadPrompt(progressValue + "%");
-                                    activity.dialog.show();
-                                } catch (Exception ignored) {
-                                }
+                        activity.runOnUiThread(() -> {
+                            try {
+                                activity.dialog.setLoadPrompt(progressValue + "%");
+                                activity.dialog.show();
+                            } catch (Exception ignored) {
                             }
                         });
                         break;
@@ -392,4 +386,5 @@ public class RxSyncActivity extends BaseAppCompatActivity implements View.OnClic
             super.onCancelled();
         }
     }
+
 }

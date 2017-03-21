@@ -34,4 +34,5 @@ public class CustomViewTabLayoutFragmentAdapter extends FragmentPagerAdapter {
     @Override public int getCount() {
         return this.fragments.length;
     }
+
 }

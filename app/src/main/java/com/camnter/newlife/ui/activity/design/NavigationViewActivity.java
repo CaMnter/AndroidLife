@@ -88,4 +88,5 @@ public class NavigationViewActivity extends BaseAppCompatActivity {
     @Override protected void initData() {
 
     }
+
 }

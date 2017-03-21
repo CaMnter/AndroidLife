@@ -13,6 +13,7 @@ import com.camnter.newlife.core.activity.BaseAppCompatActivity;
  * Time：2015-09-23 15:29
  */
 public class MActivity extends BaseAppCompatActivity implements View.OnClickListener {
+
     private Button startBT;
 
 
@@ -65,4 +66,5 @@ public class MActivity extends BaseAppCompatActivity implements View.OnClickList
             }
         }
     }
+
 }

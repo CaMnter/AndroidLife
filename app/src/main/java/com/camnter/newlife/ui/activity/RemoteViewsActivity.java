@@ -20,6 +20,7 @@ import com.camnter.newlife.utils.BitmapUtils;
  */
 
 public class RemoteViewsActivity extends BaseAppCompatActivity {
+
     /**
      * Fill in layout id
      *

@@ -157,4 +157,5 @@ public class MessageContentProvider extends BaseContentProvider {
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
     }
+
 }

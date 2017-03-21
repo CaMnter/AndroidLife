@@ -208,4 +208,5 @@ public class DownloadService extends Service {
             ((DownloadServiceBinder) DownloadService.this.binder).iBinderView.downloadFailure();
         }
     }
+
 }

@@ -40,7 +40,7 @@ public class PushMessageService extends Service {
 
     /**
      * AIDL implement
-     * 实现AIDL生成静态抽象类 IPushMessage.Stub
+     * 实现 AIDL 生成静态抽象类 IPushMessage.Stub
      */
     private class IPushMessageImpl extends IPushMessage.Stub {
         /**
@@ -65,4 +65,5 @@ public class PushMessageService extends Service {
             return UUID.randomUUID().toString();
         }
     }
+
 }

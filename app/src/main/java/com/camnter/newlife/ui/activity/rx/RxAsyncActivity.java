@@ -115,12 +115,10 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
                  * subscribeOn(Schedulers.io()) 表示观察者做子线程I/O操作
                  * observeOn(AndroidSchedulers.mainThread()) 表示订阅者做主线程操作
                  */
-                Observable.create(new Observable.OnSubscribe<String>() {
-                    @Override public void call(Subscriber<? super String> subscriber) {
-                        RxAsyncActivity.this.checkThread("create -> OnSubscribe.create()");
-                        new RxAsyncActivity.DownloadImageAsyncTask(RxAsyncActivity.this, subscriber)
-                            .execute(OBJECT_IMAGE_URL);
-                    }
+                Observable.create((Observable.OnSubscribe<String>) subscriber -> {
+                    RxAsyncActivity.this.checkThread("create -> OnSubscribe.create()");
+                    new DownloadImageAsyncTask(RxAsyncActivity.this, subscriber)
+                        .execute(OBJECT_IMAGE_URL);
                 })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -188,13 +186,11 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
                 switch (msg.what) {
                     case HANDLER_LOADING: {
                         final int progressValue = (int) msg.obj;
-                        activity.runOnUiThread(new Runnable() {
-                            @Override public void run() {
-                                try {
-                                    activity.dialog.setLoadPrompt(progressValue + "%");
-                                    activity.dialog.show();
-                                } catch (Exception ignored) {
-                                }
+                        activity.runOnUiThread(() -> {
+                            try {
+                                activity.dialog.setLoadPrompt(progressValue + "%");
+                                activity.dialog.show();
+                            } catch (Exception ignored) {
                             }
                         });
                         break;
@@ -348,4 +344,5 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
             super.onCancelled();
         }
     }
+
 }

@@ -65,4 +65,5 @@ public class DynamicReceiverActivity extends BaseAppCompatActivity implements Vi
                 break;
         }
     }
+
 }

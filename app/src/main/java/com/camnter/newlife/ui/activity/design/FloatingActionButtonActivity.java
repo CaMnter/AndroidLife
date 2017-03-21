@@ -10,6 +10,7 @@ import com.camnter.newlife.core.activity.BaseAppCompatActivity;
  * Time：2015-10-14 22:22
  */
 public class FloatingActionButtonActivity extends BaseAppCompatActivity {
+
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -49,4 +50,5 @@ public class FloatingActionButtonActivity extends BaseAppCompatActivity {
     @Override protected void initData() {
 
     }
+
 }

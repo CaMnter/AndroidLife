@@ -28,18 +28,16 @@ public class BridgeImpl implements IBridge {
 
 
     public static void childThread(WebView webView, JSONObject param, final JsCallback jsCallback) {
-        new Thread(new Runnable() {
-            @Override public void run() {
-                try {
-                    Thread.sleep(2666);
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("key", "value");
-                    jsCallback.apply(getJSONObject(0, "ok", jsonObject));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        new Thread(() -> {
+            try {
+                Thread.sleep(2666);
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("key", "value");
+                jsCallback.apply(getJSONObject(0, "ok", jsonObject));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }).start();
     }
@@ -57,4 +55,5 @@ public class BridgeImpl implements IBridge {
         }
         return null;
     }
+
 }

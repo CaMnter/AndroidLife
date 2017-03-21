@@ -13,6 +13,7 @@ import java.util.Date;
  * Time：2015-10-14 15:47
  */
 public class DateUtilActivity extends BaseAppCompatActivity {
+
     TextView string2DateTv;
     TextView date2StringTv;
     TextView getYearMonthDayTv;
@@ -73,4 +74,5 @@ public class DateUtilActivity extends BaseAppCompatActivity {
         this.time24To12Tv.setText(DateUtils.time24To12("16:26"));
         this.getTimestampStringTv.setText(DateUtils.getTimestampString(date));
     }
+
 }

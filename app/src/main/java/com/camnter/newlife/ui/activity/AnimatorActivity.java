@@ -381,4 +381,5 @@ public class AnimatorActivity extends BaseAppCompatActivity implements View.OnCl
             this.surfacePaint);
         this.holder.unlockCanvasAndPost(this.holderCanvas);
     }
+
 }

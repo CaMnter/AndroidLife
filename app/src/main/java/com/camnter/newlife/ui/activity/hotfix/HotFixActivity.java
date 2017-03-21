@@ -54,4 +54,5 @@ public final class HotFixActivity extends BaseAppCompatActivity {
     public void onClick(View v) {
         this.showToast(this.loadFixCall.getCall());
     }
+
 }

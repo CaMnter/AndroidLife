@@ -71,4 +71,5 @@ public class DynamicReceiver extends BroadcastReceiver {
         notificationManager.notify(206, notification);
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
+
 }
