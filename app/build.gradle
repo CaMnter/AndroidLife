@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 //apply from: rootProject.getRootDir().getAbsolutePath() + "/common.gradle"
 //apply plugin: RocooFixPlugin
 
@@ -17,6 +18,11 @@ repositories {
 android {
     compileSdkVersion 24
     buildToolsVersion rootProject.buildToolsVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         minSdkVersion 11
