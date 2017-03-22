@@ -36,5 +36,3 @@ proguard/
 # # Mac
 .DS_Store
 apks/
-
-/instant-run/instant-run-server/platform/
