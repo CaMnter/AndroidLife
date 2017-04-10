@@ -30,26 +30,48 @@ android {
         targetSdkVersion 24
         versionCode 2
         versionName "1.0"
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+    }
+    signingConfigs {
+        // debug的签名
+        debug {
+            storeFile file("../camnter.jks")
+            storePassword "123456"
+            keyAlias "camnter"
+            keyPassword "123456"
+        }
     }
     buildTypes {
         release {
             println("====== buildTypes.release ======")
-//            minifyEnabled true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //            minifyEnabled true
+            //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
             manifestPlaceholders = [DEBUG: "release"]
         }
         debug {
             println("====== buildTypes.debug ======")
-//            minifyEnabled true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
             manifestPlaceholders = [DEBUG: "debug"]
+
+            // app-debug-androidTest-unaligned.apk
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        def fileName = "app-debug-androidTest-unaligned.apk"
+                        println("====== buildTypes.output ======")
+                        println("AppName: " + fileName)
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
         }
     }
+
 //    // 渠道Flavors
 //    productFlavors {
-//        debug {
+//        github {
 //            applicationId "com.camnter.newlife"
 //            manifestPlaceholders = [DEBUG: "debug"]
 //        }
@@ -82,6 +104,10 @@ dependencies {
     androidTestCompile 'org.mockito:mockito-core:2.1.0-RC.2'
     androidTestCompile "com.google.dexmaker:dexmaker:1.2"
     androidTestCompile "com.google.dexmaker:dexmaker-mockito:1.2"
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs'
+    })
 
     // Google
     compile 'com.android.support:support-v4:'+rootProject.supportLibVersion
@@ -128,5 +154,3 @@ task nativeLibsToJar(type: Zip, description: 'create a jar archive of the native
 tasks.withType(JavaCompile) {
     compileTask -> compileTask.dependsOn(nativeLibsToJar)
 }
-
-
