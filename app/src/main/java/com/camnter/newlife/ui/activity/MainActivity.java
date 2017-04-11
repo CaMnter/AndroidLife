@@ -1,8 +1,11 @@
 package com.camnter.newlife.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
@@ -95,6 +98,34 @@ public class MainActivity extends BaseAppCompatActivity {
         this.adapter = new MenuRecyclerViewAdapter();
         this.adapter.setList(classes);
         this.menuList.setAdapter(adapter);
+        this.replaceAppIcon();
+    }
+
+
+    private void replaceAppIcon() {
+        final ComponentName defaultComponentName = this.getComponentName();
+        final ComponentName newComponentName = new ComponentName(this.getBaseContext(),
+            "com.camnter.newlife.icon.round");
+        final PackageManager packageManager = this.getApplicationContext().getPackageManager();
+
+        this.disableComponent(packageManager,defaultComponentName);
+        this.enableComponent(packageManager,newComponentName);
+    }
+
+
+    private void enableComponent(@NonNull final PackageManager packageManager,
+                                 @NonNull final ComponentName componentName) {
+        packageManager.setComponentEnabledSetting(componentName,
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP);
+    }
+
+
+    private void disableComponent(@NonNull final PackageManager packageManager,
+                                  @NonNull final ComponentName componentName) {
+        packageManager.setComponentEnabledSetting(componentName,
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            PackageManager.DONT_KILL_APP);
     }
 
 
@@ -163,10 +194,10 @@ public class MainActivity extends BaseAppCompatActivity {
     }
 
 
-    public class MenuRecyclerViewAdapter extends EasyRecyclerViewAdapter {
+    private class MenuRecyclerViewAdapter extends EasyRecyclerViewAdapter {
 
-        public final int camnterColor = 0xffC04F90;
-        public final int drakeetColor = 0xff5B64AF;
+        final int camnterColor = 0xffC04F90;
+        final int drakeetColor = 0xff5B64AF;
 
 
         @Override public int[] getItemLayouts() {
