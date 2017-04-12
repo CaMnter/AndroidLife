@@ -21,19 +21,30 @@ public abstract class SmartListViewListener implements AbsListView.OnScrollListe
     protected abstract void onScrollToBottom();
 
 
+    protected void onScrollToTop() {
+    }
+
+
     protected void onTouchScroll() {
     }
 
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        Log.d(TAG, "[ListViewScrollToBottomListener]\t\t[onScrollStateChanged]\n[scrollState] = " +
-            scrollState);
+        Log.d(TAG,
+            "[ListViewScrollToBottomListener]    [onScrollStateChanged]    [scrollState] = " +
+                scrollState);
         // 当不滚动时
         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
             // 判断是否滚动到底部
             if (view.getLastVisiblePosition() == view.getCount() - 1) {
                 this.onScrollToBottom();
+            } else if (view.getFirstVisiblePosition() == 0) {
+                final View firstView = view.getChildAt(0);
+                if (firstView.getTop() == view.getListPaddingTop()) {
+                    // 顶部
+                    this.onScrollToTop();
+                }
             }
         } else if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
             this.onTouchScroll();
