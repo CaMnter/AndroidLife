@@ -108,7 +108,7 @@ public class MainActivity extends BaseAppCompatActivity {
             "com.camnter.newlife.icon.round");
         final PackageManager packageManager = this.getApplicationContext().getPackageManager();
 
-        this.disableComponent(packageManager,defaultComponentName);
+        // this.disableComponent(packageManager,defaultComponentName);
         this.enableComponent(packageManager,newComponentName);
     }
 
