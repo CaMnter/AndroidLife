@@ -1,7 +1,7 @@
 buildscript {
     dependencies {
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
+//        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+//        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
         classpath 'org.codehaus.groovy:groovy-all:2.4.1'
     }
     repositories {
@@ -29,7 +29,6 @@ repositories {
 dependencies {
     compile localGroovy()
     compile gradleApi()
-    compile 'com.android.tools.build:gradle:1.5.0'
     compile 'commons-io:commons-io:2.4'
     compile 'commons-codec:commons-codec:1.6'
     compile 'org.apache.commons:commons-lang3:3.4'
