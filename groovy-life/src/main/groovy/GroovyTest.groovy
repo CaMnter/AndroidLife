@@ -225,8 +225,8 @@ assert colorObject.@value == colorObject.@value ?: '??????'
 colors = [new Color('#ffffffff'),
           new Color('#ff000000'),
           null]
-assert (colors*.value as String).equals('[value: #ffffffff, value: #ff000000, null]')
-assert (colors*.@value as String).equals('[#ffffffff, #ff000000, null]')
+assert (colors*.value as String) == '[value: #ffffffff, value: #ff000000, null]'
+assert (colors*.@value as String) == '[#ffffffff, #ff000000, null]'
 
 
 println "\n 16. <Import>"

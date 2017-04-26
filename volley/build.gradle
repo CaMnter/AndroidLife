@@ -1,17 +1,18 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion rootProject.buildToolsVersion
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+    }
 
     useLibrary 'org.apache.http.legacy'
 
-    defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
-    }
     buildTypes {
         release {
             minifyEnabled false
@@ -26,7 +27,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
+    testCompile rootProject.ext.denpendencies["junit"]
+    testCompile rootProject.ext.denpendencies["mockito-core"]
     testCompile "org.robolectric:robolectric:3.0"
-    testCompile "org.mockito:mockito-core:1.10.19"
 }

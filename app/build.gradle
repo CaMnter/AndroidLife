@@ -8,6 +8,7 @@ apply plugin: 'me.tatarka.retrolambda'
 def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
+
 repositories {
 //    maven { url 'http://uk.maven.org/maven2' }
 //    maven { url 'https://raw.githubusercontent.com/umeng/mvn-repo-umeng/master/repository' }
@@ -16,22 +17,23 @@ repositories {
 }
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion rootProject.buildToolsVersion
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        applicationId "com.camnter.newlife"
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    defaultConfig {
-        minSdkVersion 11
-        applicationId "com.camnter.newlife"
-        targetSdkVersion 24
-        versionCode 2
-        versionName "1.0"
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-    }
     signingConfigs {
         // debug的签名
         debug {
@@ -92,48 +94,52 @@ android {
         }
     }
 
+    dataBinding {
+        enabled = true
+    }
+
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    testCompile 'junit:junit:4.12'
+    testCompile rootProject.ext.denpendencies["junit"]
     // 如果要使用 Mockito，你需要添加此条依赖库
-    testCompile 'org.mockito:mockito-core:2.1.0-RC.2'
+    testCompile rootProject.ext.denpendencies["mockito-core"]
     // 如果你要使用 Mockito 用于 Android instrumentation tests，那么需要你添加以下三条依赖库
-    androidTestCompile 'org.mockito:mockito-core:2.1.0-RC.2'
-    androidTestCompile "com.google.dexmaker:dexmaker:1.2"
-    androidTestCompile "com.google.dexmaker:dexmaker-mockito:1.2"
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestCompile rootProject.ext.denpendencies["mockito-core"]
+    androidTestCompile rootProject.ext.denpendencies["dexmaker"]
+    androidTestCompile rootProject.ext.denpendencies["dexmaker-mockito"]
+    androidTestCompile(rootProject.ext.denpendencies["espresso-core"], {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
     })
 
     // Google
-    compile 'com.android.support:support-v4:'+rootProject.supportLibVersion
-    compile 'com.android.support:appcompat-v7:'+rootProject.supportLibVersion
-    compile 'com.android.support:recyclerview-v7:'+rootProject.supportLibVersion
-    compile 'com.android.support:design:'+rootProject.supportLibVersion
-    compile 'com.google.code.gson:gson:2.7'
+    compile rootProject.ext.denpendencies["support-v4"]
+    compile rootProject.ext.denpendencies["appcompat-v7"]
+    compile rootProject.ext.denpendencies["recyclerview-v7"]
+    compile rootProject.ext.denpendencies["design"]
+    compile rootProject.ext.denpendencies["gson"]
     // camnter
-    compile 'com.camnter.easyslidingtabs:easyslidingtabs:0.2.1'
-    compile 'com.camnter.easyrecyclerview:easyrecyclerview:1.3'
-    compile 'com.camnter.easyarcloading:easyarcloading:1.0'
-    compile 'com.camnter.easylikearea:easylikearea:1.3'
-    compile 'com.camnter.easyrecyclerviewsidebar:easyrecyclerviewsidebar:1.3'
+    compile rootProject.ext.denpendencies["easyslidingtabs"]
+    compile rootProject.ext.denpendencies["easyrecyclerview"]
+    compile rootProject.ext.denpendencies["easyarcloading"]
+    compile rootProject.ext.denpendencies["easylikearea"]
+    compile rootProject.ext.denpendencies["easyrecyclerviewsidebar"]
     // ReactiveX
-    compile 'io.reactivex:rxandroid:1.0.1'
-    compile 'io.reactivex:rxjava:1.0.16'
+    compile rootProject.ext.denpendencies["rxandroid"]
+    compile rootProject.ext.denpendencies["rxjava"]
     // Square
-    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile rootProject.ext.denpendencies["retrofit"]
+    compile rootProject.ext.denpendencies["picasso"]
     // Alibaba
-    compile 'com.alibaba:fastjson:1.2.7'
+    compile rootProject.ext.denpendencies["fastjson"]
     // Glide
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile rootProject.ext.denpendencies["glide"]
     // butterknife
-    compile 'com.jakewharton:butterknife:8.4.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile rootProject.ext.denpendencies["butterknife"]
+    apt rootProject.ext.apt["butterknife-compiler"]
     compile project(':otto')
     compile project(':volley')
     compile project(':agera-1.0.0')
