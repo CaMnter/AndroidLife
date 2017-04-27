@@ -15,6 +15,9 @@ import java.util.List;
 /**
  * Description：MVVMViewAdapter
  *
+ * Refer to the
+ * {@link "https://github.com/markzhai/DataBindingAdapter/blob/master/adapter/src/main/java/com/github/markzhai/recyclerview/BaseViewAdapter.java"}
+ *
  * Created by：CaMnter
  */
 
