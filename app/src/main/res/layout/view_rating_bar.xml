@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/view_rating_bar_first_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_evaluate_unselected"/>
+
+    <ImageView
+        android:id="@+id/view_rating_bar_second_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:src="@drawable/icon_evaluate_unselected"/>
+
+    <ImageView
+        android:id="@+id/view_rating_bar_third_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:src="@drawable/icon_evaluate_unselected"/>
+
+    <ImageView
+        android:id="@+id/view_rating_bar_fourth_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:src="@drawable/icon_evaluate_unselected"/>
+
+    <ImageView
+        android:id="@+id/view_rating_bar_fifth_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:src="@drawable/icon_evaluate_unselected"/>
+
+</LinearLayout>

@@ -1,0 +1,160 @@
+{
+    "code": 200,
+    "msg": "异空间错误",
+    "data": {
+        "totalPage": 4,
+        "totalSize": 102,
+        "funds": [
+            {
+                "name": "二次元大法好基金-1",
+                "fundCode": "23333331",
+                "latestUpdatedDate": 2333333,
+                "level": 5
+            },
+            {
+                "name": "二次元大法好基金-2",
+                "fundCode": "23333332",
+                "latestUpdatedDate": 2333333,
+                "level": 5
+            },
+            {
+                "name": "二次元大法好基金-3",
+                "fundCode": "23333333",
+                "latestUpdatedDate": 2333333,
+                "level": 4
+            },
+            {
+                "name": "二次元大法好基金-4",
+                "fundCode": "23333334",
+                "latestUpdatedDate": 2333333,
+                "level": 4
+            },
+            {
+                "name": "二次元大法好基金-5",
+                "fundCode": "23333335",
+                "latestUpdatedDate": 2333333,
+                "level": 3
+            },
+            {
+                "name": "二次元大法好基金-6",
+                "fundCode": "23333336",
+                "latestUpdatedDate": 2333333,
+                "level": 3
+            },
+            {
+                "name": "二次元大法好基金-7",
+                "fundCode": "23333337",
+                "latestUpdatedDate": 2333333,
+                "level": 2
+            },
+            {
+                "name": "二次元大法好基金-8",
+                "fundCode": "23333338",
+                "latestUpdatedDate": 2333333,
+                "level": 2
+            },
+            {
+                "name": "二次元大法好基金-9",
+                "fundCode": "23333339",
+                "latestUpdatedDate": 2333333,
+                "level": 1
+            },
+            {
+                "name": "二次元大法好基金-10",
+                "fundCode": "233333310",
+                "latestUpdatedDate": 2333333,
+                "level": 1
+            },
+            {
+                "name": "二次元大法好基金-11",
+                "fundCode": "233333311",
+                "latestUpdatedDate": 2333333,
+                "level": 0
+            },
+            {
+                "name": "二次元大法好基金-12",
+                "fundCode": "233333312",
+                "latestUpdatedDate": 2333333,
+                "level": 0
+            },
+            {
+                "name": "二次元大法好基金-13",
+                "fundCode": "233333313",
+                "latestUpdatedDate": 2333333,
+                "level": 5
+            },
+            {
+                "name": "二次元大法好基金-14",
+                "fundCode": "233333314",
+                "latestUpdatedDate": 2333333,
+                "level": 5
+            },
+            {
+                "name": "二次元大法好基金-15",
+                "fundCode": "233333315",
+                "latestUpdatedDate": 2333333,
+                "level": 4
+            },
+            {
+                "name": "二次元大法好基金-16",
+                "fundCode": "233333316",
+                "latestUpdatedDate": 2333333,
+                "level": 4
+            },
+            {
+                "name": "二次元大法好基金-17",
+                "fundCode": "233333317",
+                "latestUpdatedDate": 2333333,
+                "level": 3
+            },
+            {
+                "name": "二次元大法好基金-18",
+                "fundCode": "233333318",
+                "latestUpdatedDate": 2333333,
+                "level": 3
+            },
+            {
+                "name": "二次元大法好基金-19",
+                "fundCode": "233333319",
+                "latestUpdatedDate": 2333333,
+                "level": 2
+            },
+            {
+                "name": "二次元大法好基金-20",
+                "fundCode": "233333320",
+                "latestUpdatedDate": 2333333,
+                "level": 2
+            },
+            {
+                "name": "二次元大法好基金-21",
+                "fundCode": "233333321",
+                "latestUpdatedDate": 2333333,
+                "level": 1
+            },
+            {
+                "name": "二次元大法好基金-22",
+                "fundCode": "233333322",
+                "latestUpdatedDate": 2333333,
+                "level": 1
+            },
+            {
+                "name": "二次元大法好基金-23",
+                "fundCode": "233333323",
+                "latestUpdatedDate": 2333333,
+                "level": 0
+            },
+            {
+                "name": "二次元大法好基金-24",
+                "fundCode": "233333324",
+                "latestUpdatedDate": 2333333,
+                "level": 0
+            },
+            {
+                "name": "二次元大法好基金-25",
+                "fundCode": "233333325",
+                "latestUpdatedDate": 2333333,
+                "level": 5
+            }
+        ]
+    }
+}

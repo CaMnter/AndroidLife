@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rating_ranking_item_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_item_selector">
+
+    <com.camnter.newlife.widget.RatingBar
+        android:id="@+id/rating_ranking_fund_rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="14.4dp"
+        android:visibility="invisible"
+        auto:backgroundDrawable="@drawable/icon_evaluate_unselected"
+        auto:progressDrawable="@drawable/icon_evaluate_selected"
+        auto:spacing="2dp"/>
+
+    <TextView
+        android:id="@+id/rating_ranking_fund_null_rating_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/rating_ranking_fund_rating_bar"
+        android:layout_alignRight="@id/rating_ranking_fund_rating_bar"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:text="暂无评级"
+        android:textColor="#666666"
+        android:textSize="13.4dp"
+        android:visibility="invisible"/>
+
+    <LinearLayout
+        android:id="@+id/rating_ranking_fund_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="12.8dp"
+        android:paddingLeft="14dp"
+        android:layout_toLeftOf="@id/rating_ranking_fund_rating_bar"
+        android:paddingRight="10dp"
+        android:paddingTop="12.8dp">
+
+        <TextView
+            android:id="@+id/rating_ranking_fund_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="#333333"
+            android:textSize="14.4dp"/>
+
+        <TextView
+            android:id="@+id/rating_ranking_fund_code_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:singleLine="true"
+            android:textColor="#999999"
+            android:textSize="11.5dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/rating_ranking_fund_content_layout"/>
+
+</RelativeLayout>

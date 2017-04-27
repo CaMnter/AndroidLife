@@ -121,6 +121,7 @@ dependencies {
     compile rootProject.ext.denpendencies["recyclerview-v7"]
     compile rootProject.ext.denpendencies["design"]
     compile rootProject.ext.denpendencies["gson"]
+    compile rootProject.ext.denpendencies["guava"]
     // camnter
     compile rootProject.ext.denpendencies["easyslidingtabs"]
     compile rootProject.ext.denpendencies["easyrecyclerview"]
