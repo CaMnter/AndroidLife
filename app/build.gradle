@@ -138,14 +138,20 @@ dependencies {
     compile rootProject.ext.denpendencies["fastjson"]
     // Glide
     compile rootProject.ext.denpendencies["glide"]
+
+    apt 'com.android.databinding:compiler:2.3.0'
     // butterknife
     compile rootProject.ext.denpendencies["butterknife"]
     apt rootProject.ext.apt["butterknife-compiler"]
+
     compile project(':otto')
     compile project(':volley')
     compile project(':agera-1.0.0')
     compile project(':stackblur')
     compile project(':hotfix')
+    compile project(':mvvm')
+
+
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.0'
 }
 
