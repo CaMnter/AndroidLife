@@ -17,6 +17,7 @@
     <color name="blank_color">#ff999999</color>
     <color name="green">#ff5EBF60</color>
     <color name="gray">#FFcccccc</color>
+    <color name="bg_selected">#ffd7d7d7</color>
 
     <color name="qzone_omit_tv">#ffBBBBBB</color>
     <color name="topic_omit_tv">#ffBBBBBB</color>
