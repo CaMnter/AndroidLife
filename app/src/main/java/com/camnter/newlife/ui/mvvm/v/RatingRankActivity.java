@@ -2,22 +2,13 @@ package com.camnter.newlife.ui.mvvm.v;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
-import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
-import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
 import com.camnter.newlife.R;
-import com.camnter.newlife.bean.ratingrank.RatingFund;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.databinding.ActivityRatingRankBinding;
 import com.camnter.newlife.ui.mvvm.mock.Injection;
 import com.camnter.newlife.ui.mvvm.vm.RatingRankViewModel;
-import com.camnter.newlife.widget.RatingBar;
 
 /**
  * Description：RatingRankActivity
@@ -31,8 +22,6 @@ public class RatingRankActivity extends BaseAppCompatActivity {
     private RatingRankViewModel viewModel;
 
     private EasyRecyclerView recyclerView;
-    private RatingRankAdapter adapter;
-
 
     /**
      * Fill in layout id
