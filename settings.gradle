@@ -1,4 +1,6 @@
-include ':app', ':algorithm',
+include ':app',
+        ':algorithm',
+        ':mvvm',
 
         ':instant-run:annotations',
         ':instant-run:instant-run-annotations',
