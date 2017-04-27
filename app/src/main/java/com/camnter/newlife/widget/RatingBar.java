@@ -25,22 +25,27 @@ public class RatingBar extends LinearLayout {
     private Drawable backgroundDrawable;
 
     private int spacing;
+    private int number;
 
     private List<ImageView> imageList;
+
 
     public RatingBar(Context context) {
         super(context);
     }
+
 
     public RatingBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.initAttributes(context, attrs);
     }
 
+
     public RatingBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.initAttributes(context, attrs);
     }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public RatingBar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -48,14 +53,17 @@ public class RatingBar extends LinearLayout {
         this.initAttributes(context, attrs);
     }
 
+
     private void initAttributes(Context context, AttributeSet attrs) {
         LayoutInflater.from(context).inflate(R.layout.view_rating_bar, this);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RatingBar);
         this.spacing = typedArray.getDimensionPixelSize(R.styleable.RatingBar_spacing, 0);
+        this.number = typedArray.getDimensionPixelSize(R.styleable.RatingBar_number, 0);
         this.progressDrawable = typedArray.getDrawable(R.styleable.RatingBar_progressDrawable);
         this.backgroundDrawable = typedArray.getDrawable(R.styleable.RatingBar_backgroundDrawable);
         typedArray.recycle();
     }
+
 
     /**
      * Finalize inflating a view from XML.  This is called as the last phase
@@ -84,7 +92,10 @@ public class RatingBar extends LinearLayout {
             }
             imageView.setImageDrawable(this.backgroundDrawable);
         }
+
+        this.setNumber(this.number);
     }
+
 
     public void setNumber(int number) {
         if (this.progressDrawable == null || this.backgroundDrawable == null) return;
@@ -93,7 +104,8 @@ public class RatingBar extends LinearLayout {
         number = number > size ? size : number;
         for (int i = 0; i < size; i++) {
             final ImageView imageView = this.imageList.get(i);
-            imageView.setImageDrawable(number - 1 >= i ? this.progressDrawable : this.backgroundDrawable);
+            imageView.setImageDrawable(
+                number - 1 >= i ? this.progressDrawable : this.backgroundDrawable);
         }
     }
 

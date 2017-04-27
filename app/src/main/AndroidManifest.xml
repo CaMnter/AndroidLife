@@ -24,7 +24,8 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.DEFAULT" />
+
+                <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -241,6 +242,9 @@
         <activity
             android:name=".ui.activity.agera.AgeraBroadcastActivity"
             android:label="AgeraBroadcastActivity"/>
+        <activity
+            android:name=".ui.mvvm.view.RatingRankActivity"
+            android:label="RatingRankActivity"/>
 
         <activity
             android:name="me.drakeet.newlife.RxBusActivity"
@@ -299,7 +303,8 @@
             android:targetActivity=".ui.activity.easyrecyclerviewsidebar.RoundImageSectionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.DEFAULT" />
+
+                <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity-alias>

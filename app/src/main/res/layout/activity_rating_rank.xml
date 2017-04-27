@@ -5,11 +5,16 @@
 
     <data>
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
+
+        <variable
+            name="adapter"
+            type="com.camnter.mvvm.MVVMViewAdapter"/>
 
         <variable
             name="viewModel"
             type="com.camnter.newlife.ui.mvvm.vm.RatingRankViewModel"/>
+
     </data>
 
     <RelativeLayout
@@ -21,12 +26,13 @@
             android:id="@+id/rating_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:items="@{viewModel.funds}"/>
+            app:adapter="@{adapter}"/>
 
         <ProgressBar
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:visibility="@{viewModel.dataLoading?View.VISIBLE:View.GONE}"/>
 
     </RelativeLayout>

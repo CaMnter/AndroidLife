@@ -40,7 +40,7 @@ public class RatingRankRepository implements RatingRankDataSource {
 
     @Override
     public void query(@NonNull final Activity activity, @NonNull QueryRanksCallback callback) {
-
+        this.remoteRepository.query(activity, callback);
     }
 
 }

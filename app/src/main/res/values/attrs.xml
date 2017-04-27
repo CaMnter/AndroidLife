@@ -79,9 +79,14 @@
     </declare-styleable>
 
     <declare-styleable name="RatingBar">
-        <attr name="spacing" format="dimension"/>
-        <attr name="progressDrawable" format="reference"/>
-        <attr name="backgroundDrawable" format="reference"/>
+        <attr name="spacing"
+            format="dimension"/>
+        <attr name="number"
+            format="integer"/>
+        <attr name="progressDrawable"
+            format="reference"/>
+        <attr name="backgroundDrawable"
+            format="reference"/>
     </declare-styleable>
 
 </resources>
