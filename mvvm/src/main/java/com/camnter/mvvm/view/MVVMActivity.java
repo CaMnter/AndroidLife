@@ -18,7 +18,12 @@ public abstract class MVVMActivity extends AppCompatActivity {
 
         if (this.getLayoutId() == 0) return;
         ViewDataBinding binding = DataBindingUtil.setContentView(this, this.getLayoutId());
-        this.onAfterDataBinding(binding, savedInstanceState);
+        try {
+            this.castingBinding(binding);
+            this.onAfterDataBinding(savedInstanceState);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -30,12 +35,15 @@ public abstract class MVVMActivity extends AppCompatActivity {
     protected abstract int getLayoutId();
 
     /**
+     * @param binding binding
+     */
+    protected abstract void castingBinding(@NonNull final ViewDataBinding binding);
+
+    /**
      * on after data binding
      *
-     * @param binding binding
      * @param savedInstanceState savedInstanceState
      */
-    protected abstract void onAfterDataBinding(
-        @NonNull final ViewDataBinding binding, @NonNull final Bundle savedInstanceState);
+    protected abstract void onAfterDataBinding(@NonNull final Bundle savedInstanceState);
 
 }

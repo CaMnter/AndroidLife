@@ -8,7 +8,7 @@
             type="com.camnter.mvvm.Faker"/>
 
         <variable
-            name="listener"
+            name="vHandler"
             type="com.camnter.mvvm.Faker"/>
 
     </data>

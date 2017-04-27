@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,7 +24,7 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
     private final List<T> list;
     private final LayoutInflater inflater;
 
-    private Listener listener;
+    private WeakReference<VHandler> vHandler;
 
 
     public MVVMViewAdapter(Context context) {
@@ -33,8 +34,8 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
     }
 
 
-    public void setListener(@NonNull final Listener listener) {
-        this.listener = listener;
+    public void setVHandler(@NonNull final VHandler vHandler) {
+        this.vHandler = new WeakReference<>(vHandler);
     }
 
 
@@ -46,6 +47,7 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
      */
     public abstract int[] getItemLayouts();
 
+
     /**
      * Please write judgment logic when more layout
      * and not write when single layout
@@ -55,7 +57,9 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
      * @param position Item position
      * @return 布局 Id 数组中的 index
      */
-    public abstract int getRecycleViewItemType(int position);
+    protected int getRecycleViewItemType(int position) {
+        return 0;
+    }
 
 
     /**
@@ -75,7 +79,9 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
      * @param position position
      * @param viewType viewType
      */
-    public abstract void onBindRecycleViewHolder(MVVMViewHolder holder, int position, int viewType);
+    protected void onBindRecycleViewHolder(MVVMViewHolder holder, int position, int viewType) {
+        // Nothing to do
+    }
 
 
     /******************
@@ -101,7 +107,7 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
             final T itemValue = this.list.get(position);
             final ViewDataBinding binding = holder.getBinding();
             binding.setVariable(com.camnter.mvvm.BR.itemValue, itemValue);
-            binding.setVariable(com.camnter.mvvm.BR.listener, itemValue);
+            binding.setVariable(com.camnter.mvvm.BR.vHandler, this.vHandler.get());
             binding.executePendingBindings();
 
             this.onBindRecycleViewHolder(holder, position, this.getRecycleViewItemType(position));
@@ -120,7 +126,7 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
      * Listener *
      ************/
 
-    public interface Listener {
+    public interface VHandler {
     }
 
 
