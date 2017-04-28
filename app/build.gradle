@@ -144,15 +144,15 @@ dependencies {
     compile rootProject.ext.denpendencies["butterknife"]
     annotationProcessor rootProject.ext.annotationProcessor["butterknife-compiler"]
 
+    compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.0'
+
     compile project(':otto')
     compile project(':volley')
     compile project(':agera-1.0.0')
     compile project(':stackblur')
     compile project(':hotfix')
     compile project(':mvvm')
-
-
-    compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.0'
+    compile project(':widget')
 }
 
 task nativeLibsToJar(type: Zip, description: 'create a jar archive of the native libs') {

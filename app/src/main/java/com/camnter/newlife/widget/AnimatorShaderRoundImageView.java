@@ -34,11 +34,6 @@ public class AnimatorShaderRoundImageView extends ShaderRoundImageView {
     }
 
 
-    public AnimatorShaderRoundImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-
     @Override protected void onDraw(Canvas canvas) {
         if (currentCoordinates != null) {
             this.mRoundRect.left = this.currentCoordinates.left;

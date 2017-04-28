@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="#df000000">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
+        android:drawableLeft="@drawable/ic_popupwindow_read"
+        android:drawablePadding="6.5dp"
+        android:drawableStart="@drawable/ic_popupwindow_read"
+        android:textSize="12sp"
+        android:textColor="#ff97A4AF"
+        android:text="查看"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ffDDDDDD"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
+        android:drawableLeft="@drawable/ic_popupwindow_praise_unclick"
+        android:drawablePadding="6.5dp"
+        android:drawableStart="@drawable/ic_popupwindow_praise_unclick"
+        android:textSize="12sp"
+        android:textColor="#ff97A4AF"
+        android:text="点赞"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ffDDDDDD"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
+        android:drawableLeft="@drawable/ic_popupwindow_discussion"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/ic_popupwindow_discussion"
+        android:textSize="12sp"
+        android:textColor="#ff97A4AF"
+        android:text="评论"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ffDDDDDD"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
+        android:drawableLeft="@drawable/ic_popupwindow_share"
+        android:drawablePadding="6.5dp"
+        android:drawableStart="@drawable/ic_popupwindow_share"
+        android:textSize="12sp"
+        android:textColor="#ff97A4AF"
+        android:text="分享"/>
+
+</LinearLayout>

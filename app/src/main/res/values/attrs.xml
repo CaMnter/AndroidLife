@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <declare-styleable name="EasyFlowLayout">
         <attr name="gravity">
             <enum name="left"
@@ -9,84 +10,6 @@
             <enum name="right"
                 value="1"/>
         </attr>
-    </declare-styleable>
-
-    <declare-styleable name="ShaderRoundImageView">
-        <attr name="imageType">
-            <enum name="round"
-                value="2601"/>I
-            <enum name="circle"
-                value="2602"/>
-        </attr>
-        <attr name="borderRadius"
-            format="dimension"/>
-    </declare-styleable>
-
-    <declare-styleable name="XfermodeRoundImageView">
-        <attr name="xfermodeImageType">
-            <enum name="round"
-                value="2601"/>
-            <enum name="circle"
-                value="2602"/>
-        </attr>
-        <attr name="xfermodeBorderRadius"
-            format="dimension"/>
-    </declare-styleable>
-
-    <declare-styleable name="CountDownView">
-        <attr name="countDownBorderColor"
-            format="color"/>
-        <attr name="countDownTimeColor"
-            format="color"/>
-        <attr name="countDownBackgroundColor"
-            format="color"/>
-        <attr name="countDownColonColor"
-            format="color"/>
-    </declare-styleable>
-
-    <!-- TextView -->
-    <declare-styleable name="TextView">
-        <attr name="textStyle">
-            <flag name="normal"
-                value="0"/>
-            <flag name="bold"
-                value="1"/>
-            <flag name="italic"
-                value="2"/>
-            <flag name="black"
-                value="8"/>
-            <flag name="condensed"
-                value="16"/>
-            <flag name="light"
-                value="32"/>
-            <flag name="medium"
-                value="64"/>
-            <flag name="thin"
-                value="128"/>
-        </attr>
-        <attr name="typeface"
-            format="reference|string"/>
-        <attr name="_textAllCaps"
-            format="reference|boolean"/>
-    </declare-styleable>
-
-    <!-- AutoResizeTextView -->
-    <declare-styleable name="AutoResizeTextView">
-        <attr name="maxTextSize"
-            format="reference|dimension"/>
-        <attr name="minTextSize"
-            format="reference|dimension"/>
-    </declare-styleable>
-
-    <declare-styleable name="RatingBar">
-        <attr name="spacing"
-            format="dimension"/>
-        <attr name="number"
-            format="integer"/>
-        <attr name="progressDrawable"
-            format="reference"/>
-        <attr name="backgroundDrawable"
-            format="reference"/>
     </declare-styleable>
 
 </resources>
