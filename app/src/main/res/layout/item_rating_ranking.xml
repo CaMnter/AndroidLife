@@ -3,9 +3,13 @@
 
     <data>
 
-        <import type="android.view.View"/>
         <import type="java.lang.String"/>
 
+        <import type="android.view.View"/>
+
+        <variable
+            name="position"
+            type="java.lang.Integer"/>
 
         <variable
             name="itemValue"
@@ -13,7 +17,7 @@
 
         <variable
             name="vHandler"
-            type="com.camnter.mvvm.MVVMViewAdapter.VHandler"/>
+            type="com.camnter.newlife.ui.mvvm.vm.RatingRankViewModel"/>
 
     </data>
 
@@ -22,6 +26,7 @@
         android:id="@+id/rating_ranking_item_root_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="@{() -> vHandler.itemClick(position, itemValue)}"
         android:background="@drawable/bg_item_selector">
 
         <com.camnter.newlife.widget.RatingBar

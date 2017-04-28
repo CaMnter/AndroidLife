@@ -6,6 +6,7 @@ import android.databinding.Bindable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 import com.camnter.mvvm.MVVMViewModel;
 import com.camnter.newlife.bean.ratingrank.RatingFund;
 import com.camnter.newlife.ui.mvvm.model.RatingRankRepository;
@@ -51,6 +52,12 @@ public class RatingRankViewModel<T> extends MVVMViewModel<T> implements
 
     public void onActivityDestroyed() {
         this.context = null;
+    }
+
+
+    public void itemClick(int position, RatingFund fund) {
+        Toast.makeText(this.context, "position = " + position + "  name = " + fund.getName(),
+            Toast.LENGTH_SHORT).show();
     }
 
 }
