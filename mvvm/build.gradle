@@ -29,6 +29,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile rootProject.ext.denpendencies["junit"]
-    compile rootProject.ext.denpendencies["recyclerview-v7"]
-    compile rootProject.ext.denpendencies["appcompat-v7"]
+    provided rootProject.ext.denpendencies["recyclerview-v7"]
+    compile rootProject.ext.denpendencies["support-v7"]
 }

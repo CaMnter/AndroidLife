@@ -34,6 +34,6 @@ public abstract class MVVMViewModel<T>
         this.adapter = adapter;
     }
 
-    // Waiting for you implementing
+    // Waiting for you implement
 
 }

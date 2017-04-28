@@ -116,7 +116,7 @@ dependencies {
 
     // Google
     compile rootProject.ext.denpendencies["support-v4"]
-    compile rootProject.ext.denpendencies["appcompat-v7"]
+    compile rootProject.ext.denpendencies["support-v7"]
     compile rootProject.ext.denpendencies["recyclerview-v7"]
     compile rootProject.ext.denpendencies["design"]
     compile rootProject.ext.denpendencies["gson"]
