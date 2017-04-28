@@ -109,6 +109,7 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
         try {
             final T itemValue = this.list.get(position);
             final ViewDataBinding binding = holder.getBinding();
+            binding.setVariable(com.camnter.mvvm.BR.position, position);
             binding.setVariable(com.camnter.mvvm.BR.itemValue, itemValue);
             binding.setVariable(com.camnter.mvvm.BR.vHandler, this.vHandler.get());
             binding.executePendingBindings();

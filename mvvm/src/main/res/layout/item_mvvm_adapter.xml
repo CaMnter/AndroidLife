@@ -4,6 +4,10 @@
     <data>
 
         <variable
+            name="position"
+            type="java.lang.Integer"/>
+
+        <variable
             name="itemValue"
             type="com.camnter.mvvm.Faker"/>
 
