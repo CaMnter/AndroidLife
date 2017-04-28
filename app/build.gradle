@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 //apply from: rootProject.getRootDir().getAbsolutePath() + "/common.gradle"
 //apply plugin: RocooFixPlugin
@@ -139,10 +138,11 @@ dependencies {
     // Glide
     compile rootProject.ext.denpendencies["glide"]
 
-    apt 'com.android.databinding:compiler:2.3.0'
+    // databinding
+    annotationProcessor rootProject.ext.annotationProcessor["databinding-compiler"]
     // butterknife
     compile rootProject.ext.denpendencies["butterknife"]
-    apt rootProject.ext.apt["butterknife-compiler"]
+    annotationProcessor rootProject.ext.annotationProcessor["butterknife-compiler"]
 
     compile project(':otto')
     compile project(':volley')
