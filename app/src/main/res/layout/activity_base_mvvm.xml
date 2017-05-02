@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/base_activity_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.camnter.newlife.widget.titilebar.TitleBar
+        android:id="@+id/base_activity_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"/>
+
+    <RelativeLayout
+        android:id="@+id/base_activity_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/base_activity_title_bar"/>
+
+</RelativeLayout>

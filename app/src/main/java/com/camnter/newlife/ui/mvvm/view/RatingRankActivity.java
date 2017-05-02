@@ -28,9 +28,11 @@ public class RatingRankActivity extends MVVMActivity {
 
 
     /**
+     * on casting binding
+     *
      * @param binding binding
      */
-    @Override protected void castingBinding(@NonNull ViewDataBinding binding) {
+    @Override protected void onCastingBinding(@NonNull ViewDataBinding binding) {
         if (binding instanceof ActivityRatingRankBinding) {
             this.binding = (ActivityRatingRankBinding) binding;
         }
