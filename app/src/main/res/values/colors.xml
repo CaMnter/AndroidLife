@@ -7,6 +7,7 @@
     <color name="theme_purple">#ff3E55AE</color>
     <color name="theme_black">#ff000000</color>
     <color name="fern">#5BC15B</color>
+    <color name="app_bg">#ffF6F6F6</color>
     <color name="tabLayoutBackground">#ffe5e5e5</color>
     <color name="red">#ffFF4081</color>
     <color name="black">#ff000000</color>
