@@ -22,6 +22,10 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile(rootProject.ext.denpendencies["espresso-core"], {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs'
+    })
     testCompile rootProject.ext.denpendencies["junit"]
     provided rootProject.ext.denpendencies["recyclerview-v7"]
     provided rootProject.ext.denpendencies["support-v7"]
