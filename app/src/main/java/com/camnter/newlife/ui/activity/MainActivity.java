@@ -40,6 +40,7 @@ import com.camnter.newlife.ui.activity.rx.RxAsyncActivity;
 import com.camnter.newlife.ui.activity.rx.RxMapActivity;
 import com.camnter.newlife.ui.activity.rx.RxSyncActivity;
 import com.camnter.newlife.ui.activity.singletask.LaunchModeActivity;
+import com.camnter.newlife.ui.activity.tabalphaview.TabAlphaViewActivity;
 import com.camnter.newlife.ui.activity.util.DateUtilActivity;
 import com.camnter.newlife.ui.activity.util.DeviceUtilActivity;
 import com.camnter.newlife.ui.activity.util.ReflectionUtilActivity;
@@ -193,6 +194,7 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(RemoteViewsActivity.class);
         this.classes.add(JsBridgeActivity.class);
         this.classes.add(RatingRankActivity.class);
+        this.classes.add(TabAlphaViewActivity.class);
     }
 
 

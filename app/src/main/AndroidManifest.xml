@@ -245,6 +245,9 @@
         <activity
             android:name=".ui.mvvm.view.RatingRankActivity"
             android:label="RatingRankActivity"/>
+        <activity
+            android:name=".ui.activity.tabalphaview.TabAlphaViewActivity"
+            android:label="TabAlphaViewActivity"/>
 
         <activity
             android:name="me.drakeet.newlife.RxBusActivity"

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.camnter.newlife.widget.alphaview.TabAlphaIndicator
+        android:id="@+id/tab_alpha_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <com.camnter.newlife.widget.alphaview.TabAlphaView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            auto:normalDrawable="@drawable/icon_home_normal"
+            auto:selectedDrawable="@drawable/icon_home_selected"
+            auto:tabText="微信"
+            auto:tabTextSize="12dp"
+            auto:iconPadding="1dp"
+            auto:normalColor="#ff999999"
+            auto:selectedColor="#ff46C01B"/>
+
+        <com.camnter.newlife.widget.alphaview.TabAlphaView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            auto:normalDrawable="@drawable/icon_service_normal"
+            auto:selectedDrawable="@drawable/icon_service_selected"
+            auto:tabText="发现"
+            auto:tabTextSize="12dp"
+            auto:iconPadding="1dp"
+            auto:normalColor="#ff999999"
+            auto:selectedColor="#ff46C01B"/>
+
+        <com.camnter.newlife.widget.alphaview.TabAlphaView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            auto:normalDrawable="@drawable/icon_mine_normal"
+            auto:selectedDrawable="@drawable/icon_mine_selected"
+            auto:tabText="我"
+            auto:tabTextSize="12dp"
+            auto:iconPadding="1dp"
+            auto:normalColor="#ff999999"
+            auto:selectedColor="#ff46C01B"/>
+
+    </com.camnter.newlife.widget.alphaview.TabAlphaIndicator>
+
+    <View
+        android:id="@+id/tab_alpha_indicator_top_view"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@id/tab_alpha_indicator"
+        android:background="#ffCCCCCC"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/tab_alpha_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/tab_alpha_indicator_top_view"/>
+
+</RelativeLayout>
