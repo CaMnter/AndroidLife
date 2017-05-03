@@ -90,4 +90,21 @@
             format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="TabAlphaView">
+        <attr name="normalDrawable"
+            format="reference"/>
+        <attr name="selectedDrawable"
+            format="reference"/>
+        <attr name="tabText"
+            format="string"/>
+        <attr name="tabTextSize"
+            format="dimension"/>
+        <attr name="iconPadding"
+            format="dimension"/>
+        <attr name="normalColor"
+            format="color"/>
+        <attr name="selectedColor"
+            format="color"/>
+    </declare-styleable>
+
 </resources>
