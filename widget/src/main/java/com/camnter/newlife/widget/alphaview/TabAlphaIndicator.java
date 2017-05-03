@@ -1,12 +1,10 @@
 package com.camnter.newlife.widget.alphaview;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
@@ -21,44 +19,39 @@ import java.util.List;
 
 public class TabAlphaIndicator extends LinearLayout {
 
+    private static final int MAGIC_EMPTY_DEF_STYLE_ATTR = -2233;
+
     private ViewPager viewPager;
     private List<TabAlphaView> tabAlphaViewList = new ArrayList<>();
 
-    private int childCount;
     private int currentPosition;
 
 
     public TabAlphaIndicator(Context context) {
-        super(context);
+        super(context, null);
     }
 
 
     public TabAlphaIndicator(Context context,
                              @Nullable AttributeSet attrs) {
-        super(context, attrs);
+        super(context, attrs, MAGIC_EMPTY_DEF_STYLE_ATTR);
     }
 
 
     public TabAlphaIndicator(Context context,
-                             @Nullable AttributeSet attrs, int defStyleAttr) {
+                             @Nullable AttributeSet attrs,
+                             int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public TabAlphaIndicator(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
 
     public void setViewPager(@NonNull final ViewPager viewPager) {
         this.viewPager = viewPager;
-
-        this.childCount = this.getChildCount();
-        if (this.viewPager.getAdapter().getCount() != this.childCount) {
+        int childCount = this.getChildCount();
+        if (this.viewPager.getAdapter().getCount() != childCount) {
             throw new IllegalArgumentException("The ViewPager adapter count != child view count");
         }
-        for (int i = 0; i < this.childCount; i++) {
+        for (int i = 0; i < childCount; i++) {
             if (this.getChildAt(i) instanceof TabAlphaView) {
                 final TabAlphaView tabAlphaView = (TabAlphaView) this.getChildAt(i);
                 this.tabAlphaViewList.add(tabAlphaView);
@@ -67,11 +60,6 @@ public class TabAlphaIndicator extends LinearLayout {
         }
         this.viewPager.addOnPageChangeListener(new OnPageChangeListener());
         this.tabAlphaViewList.get(this.currentPosition).setIconAlpha(1.0f);
-    }
-
-
-    @Override public int getChildCount() {
-        return this.childCount;
     }
 
 

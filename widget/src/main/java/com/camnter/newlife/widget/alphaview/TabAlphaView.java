@@ -43,18 +43,21 @@ public class TabAlphaView extends View {
 
     public TabAlphaView(Context context) {
         super(context);
+        this.initAttributes(context, null);
     }
 
 
     public TabAlphaView(Context context,
                         @Nullable AttributeSet attrs) {
         super(context, attrs);
+        this.initAttributes(context, attrs);
     }
 
 
     public TabAlphaView(Context context,
                         @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.initAttributes(context, attrs);
     }
 
 
@@ -64,6 +67,7 @@ public class TabAlphaView extends View {
                                                                          int defStyleAttr,
                                                                          int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        this.initAttributes(context, attrs);
     }
 
 
