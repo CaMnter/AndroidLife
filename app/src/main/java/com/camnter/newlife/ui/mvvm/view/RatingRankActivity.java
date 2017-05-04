@@ -4,19 +4,20 @@ import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import com.camnter.mvvm.MVVMViewAdapter;
-import com.camnter.mvvm.view.MVVMActivity;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.ratingrank.RatingFund;
+import com.camnter.newlife.core.activity.BaseMVVMActivity;
 import com.camnter.newlife.databinding.ActivityRatingRankBinding;
 import com.camnter.newlife.ui.mvvm.mock.Injection;
 import com.camnter.newlife.ui.mvvm.vm.RatingRankViewModel;
+import com.camnter.newlife.widget.titilebar.TitleBar;
 
 /**
  * Description：RatingRankActivity
  * Created by：CaMnter
  */
 
-public class RatingRankActivity extends MVVMActivity {
+public class RatingRankActivity extends BaseMVVMActivity {
 
     private ActivityRatingRankBinding binding;
     private RatingRankViewModel<RatingFund> viewModel;
@@ -27,14 +28,10 @@ public class RatingRankActivity extends MVVMActivity {
     }
 
 
-    /**
-     * on casting binding
-     *
-     * @param binding binding
-     */
-    @Override protected void onCastingBinding(@NonNull ViewDataBinding binding) {
-        if (binding instanceof ActivityRatingRankBinding) {
-            this.binding = (ActivityRatingRankBinding) binding;
+    @Override
+    protected void onCastingContentBinding(@NonNull ViewDataBinding contentBinding) {
+        if (contentBinding instanceof ActivityRatingRankBinding) {
+            this.binding = (ActivityRatingRankBinding) contentBinding;
         }
     }
 
@@ -57,6 +54,11 @@ public class RatingRankActivity extends MVVMActivity {
         this.binding.setAdapter(adapter);
         this.binding.setViewModel(this.viewModel);
         this.viewModel.query(this);
+    }
+
+
+    @Override protected boolean getTitleBar(TitleBar titleBar) {
+        return false;
     }
 
 }
