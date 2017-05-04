@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 /**
@@ -13,6 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 
 public abstract class MVVMActivity extends AppCompatActivity {
 
+    protected ViewDataBinding rootBinding;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,15 +24,27 @@ public abstract class MVVMActivity extends AppCompatActivity {
         this.onBeforeDataBinding(savedInstanceState);
         if (this.getLayoutId() == 0) return;
         try {
-            ViewDataBinding binding = DataBindingUtil.setContentView(this, this.getLayoutId());
-            // binding success
-            this.onCastingBinding(binding);
+            if (autoSetContentView()) {
+                this.rootBinding = DataBindingUtil.setContentView(this, this.getLayoutId());
+            }
+            // binding success, but maybe this.contentViewBinding == null
+            this.onCastingRootBinding(this.rootBinding);
             // cast success
             this.baseActivityInit();
             this.onAfterDataBinding(savedInstanceState);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * default true
+     *
+     * @return auto ?
+     */
+    protected boolean autoSetContentView() {
+        return true;
     }
 
 
@@ -40,11 +56,12 @@ public abstract class MVVMActivity extends AppCompatActivity {
     protected abstract int getLayoutId();
 
     /**
-     * on casting binding
+     * on casting root binding
      *
-     * @param binding binding
+     * @param rootBinding rootBinding
      */
-    protected abstract void onCastingBinding(@NonNull final ViewDataBinding binding);
+    protected abstract void onCastingRootBinding(
+        @Nullable final ViewDataBinding rootBinding);
 
 
     /**
