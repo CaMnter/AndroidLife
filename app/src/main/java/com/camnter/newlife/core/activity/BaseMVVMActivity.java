@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -36,10 +37,8 @@ import java.lang.reflect.Method;
 
 public abstract class BaseMVVMActivity extends MVVMActivity {
 
-    private static final String TAG = BaseMVVMActivity.class.getSimpleName();
-
     protected Activity activity;
-    private ActivityBaseMvvmBinding castedRootBindng;
+    private ActivityBaseMvvmBinding castedRootBinding;
     private ViewDataBinding contentBinding;
 
     private TitleBar titleBar;
@@ -76,13 +75,13 @@ public abstract class BaseMVVMActivity extends MVVMActivity {
 
     private void castToBaseMVVMBinding(@NonNull ViewDataBinding rootBinding) {
         if (rootBinding instanceof ActivityBaseMvvmBinding) {
-            this.castedRootBindng = (ActivityBaseMvvmBinding) rootBinding;
+            this.castedRootBinding = (ActivityBaseMvvmBinding) rootBinding;
         }
     }
 
 
-    public ActivityBaseMvvmBinding getCastedRootBindng() {
-        return this.castedRootBindng;
+    public ActivityBaseMvvmBinding getCastedRootBinding() {
+        return this.castedRootBinding;
     }
 
 
@@ -117,6 +116,7 @@ public abstract class BaseMVVMActivity extends MVVMActivity {
     private void renderingTitle() {
         final TitleBar titleBar = this.titleBar;
         if (titleBar == null) return;
+        titleBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
         if (!this.getTitleBar(this.titleBar)) this.titleBar.setVisibility(View.GONE);
     }
 
