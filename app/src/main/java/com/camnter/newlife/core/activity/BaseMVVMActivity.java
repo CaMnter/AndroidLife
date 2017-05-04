@@ -3,10 +3,14 @@ package com.camnter.newlife.core.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -20,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.camnter.mvvm.view.MVVMActivity;
 import com.camnter.newlife.R;
+import com.camnter.newlife.databinding.ActivityBaseMvvmBinding;
 import com.camnter.newlife.utils.ToastUtils;
 import com.camnter.newlife.widget.titilebar.TitleBar;
 import java.lang.reflect.Method;
@@ -31,10 +36,59 @@ import java.lang.reflect.Method;
 
 public abstract class BaseMVVMActivity extends MVVMActivity {
 
+    private static final String TAG = BaseMVVMActivity.class.getSimpleName();
+
     protected Activity activity;
+    private ActivityBaseMvvmBinding castedRootBindng;
+    private ViewDataBinding contentBinding;
 
     private TitleBar titleBar;
     private RelativeLayout contentLayout;
+    private LayoutInflater inflater;
+
+
+    /**
+     * default true
+     *
+     * @return auto ?
+     */
+    @Override protected boolean autoSetContentView() {
+        return false;
+    }
+
+
+    /**
+     * on casting root binding
+     *
+     * @param rootBinding rootBinding
+     */
+    @Override protected void onCastingRootBinding(
+        @Nullable ViewDataBinding rootBinding) {
+        if (rootBinding != null) {
+            this.castToBaseMVVMBinding(rootBinding);
+        } else {
+            // reset content view, because auto == false
+            this.rootBinding = DataBindingUtil.setContentView(this, R.layout.activity_base_mvvm);
+            this.castToBaseMVVMBinding(this.rootBinding);
+        }
+    }
+
+
+    private void castToBaseMVVMBinding(@NonNull ViewDataBinding rootBinding) {
+        if (rootBinding instanceof ActivityBaseMvvmBinding) {
+            this.castedRootBindng = (ActivityBaseMvvmBinding) rootBinding;
+        }
+    }
+
+
+    public ActivityBaseMvvmBinding getCastedRootBindng() {
+        return this.castedRootBindng;
+    }
+
+
+    public ViewDataBinding getContentBinding() {
+        return this.contentBinding;
+    }
 
 
     @Override
@@ -45,12 +99,11 @@ public abstract class BaseMVVMActivity extends MVVMActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         }
-
-        this.setContentView(R.layout.activity_base_mvvm);
-
+        this.inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.initBaseActivityViews();
-
+        // rendering title
         this.renderingTitle();
+        // rendering content
         this.renderingContent();
     }
 
@@ -70,27 +123,18 @@ public abstract class BaseMVVMActivity extends MVVMActivity {
 
     private void renderingContent() {
         final int layoutId = this.getLayoutId();
-        if (layoutId <= 0) {
-            final View layoutView = this.getLayoutView();
-            if (layoutView != null) {
-                this.contentLayout.removeAllViews();
-                this.contentLayout.addView(layoutView);
-            } else {
-                LayoutInflater.from(this).inflate(layoutId, this.contentLayout, true);
-            }
+        if (layoutId > 0) {
+            this.contentBinding = DataBindingUtil.inflate(this.inflater, layoutId,
+                this.contentLayout, true);
+            this.contentLayout = (RelativeLayout) this.contentBinding.getRoot();
+            this.onCastingContentBinding(this.contentBinding);
+        } else {
+            throw new IllegalArgumentException("Layout id <= 0");
         }
     }
 
 
-    /**
-     * 整个布局渲染这个 View
-     *
-     * @return View
-     */
-    protected View getLayoutView() {
-        return null;
-    }
-
+    protected abstract void onCastingContentBinding(@NonNull final ViewDataBinding contentBinding);
 
     protected abstract boolean getTitleBar(TitleBar titleBar);
 
