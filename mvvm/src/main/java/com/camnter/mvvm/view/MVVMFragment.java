@@ -4,47 +4,44 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 /**
- * Description：MVVMActivity
+ * Description：MVVMFragment
  * Created by：CaMnter
  */
 
-public abstract class MVVMActivity extends AppCompatActivity {
+public abstract class MVVMFragment extends Fragment {
+
+    protected View self;
+    protected LayoutInflater inflater;
 
     protected ViewDataBinding rootBinding;
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    @Nullable @Override public View onCreateView(LayoutInflater inflater,
+                                                 @Nullable ViewGroup container,
+                                                 @Nullable Bundle savedInstanceState) {
         this.onBeforeDataBinding(savedInstanceState);
         final int layoutId = this.getLayoutId();
-        if (layoutId == 0) return;
+        if (layoutId == 0) return null;
         try {
-            if (this.autoSetContentView()) {
-                this.rootBinding = DataBindingUtil.setContentView(this, layoutId);
-            }
+            this.inflater = inflater;
+            this.rootBinding = DataBindingUtil.inflate(inflater, layoutId, container, false);
+            this.self = this.rootBinding.getRoot();
             // binding success, but maybe this.contentViewBinding == null
             this.onCastingRootBinding(this.rootBinding);
-            // cast success
-            this.baseActivityInit();
-            this.onAfterDataBinding(savedInstanceState);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-    /**
-     * default true
-     *
-     * @return auto ?
-     */
-    protected boolean autoSetContentView() {
-        return true;
+        // cast success
+        this.baseFragmentInit();
+        this.onAfterDataBinding(savedInstanceState);
+        // self may be null
+        return this.self;
     }
 
 
@@ -75,9 +72,9 @@ public abstract class MVVMActivity extends AppCompatActivity {
 
 
     /**
-     * baseActivity init
+     * baseFragment init
      */
-    protected void baseActivityInit() {
+    protected void baseFragmentInit() {
         // Nothing to do
     }
 
