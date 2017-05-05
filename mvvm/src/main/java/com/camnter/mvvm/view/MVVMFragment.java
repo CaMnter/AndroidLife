@@ -1,5 +1,6 @@
 package com.camnter.mvvm.view;
 
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -17,9 +18,16 @@ import android.view.ViewGroup;
 public abstract class MVVMFragment extends Fragment {
 
     protected View self;
+    protected Activity activity;
     protected LayoutInflater inflater;
 
     protected ViewDataBinding rootBinding;
+
+
+    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.activity = this.getActivity();
+    }
 
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater,
