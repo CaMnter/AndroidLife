@@ -110,8 +110,9 @@ public abstract class BaseMVVMActivity extends MVVMActivity {
 
 
     private void initBaseActivityViews() {
-        this.contentLayout = (RelativeLayout) this.findViewById(R.id.base_activity_content_layout);
-        this.titleBar = (TitleBar) this.findViewById(R.id.base_activity_title_bar);
+        if (this.castedRootBinding == null) return;
+        this.contentLayout = this.castedRootBinding.baseActivityContentLayout;
+        this.titleBar = this.castedRootBinding.baseActivityTitleBar;
     }
 
 
