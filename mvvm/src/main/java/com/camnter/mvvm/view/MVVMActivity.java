@@ -24,7 +24,7 @@ public abstract class MVVMActivity extends AppCompatActivity {
         this.onBeforeDataBinding(savedInstanceState);
         if (this.getLayoutId() == 0) return;
         try {
-            if (autoSetContentView()) {
+            if (this.autoSetContentView()) {
                 this.rootBinding = DataBindingUtil.setContentView(this, this.getLayoutId());
             }
             // binding success, but maybe this.contentViewBinding == null

@@ -1,8 +1,6 @@
 package com.camnter.newlife.core.activity;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -65,9 +63,6 @@ public abstract class BaseActivity extends Activity {
 
     /**
      * @param intent The intent to start.
-     * @throws ActivityNotFoundException
-     * @see {@link #startActivity(Intent, Bundle)}
-     * @see #startActivityForResult
      */
     @Override public void startActivity(Intent intent) {
         super.startActivity(intent);
@@ -78,11 +73,6 @@ public abstract class BaseActivity extends Activity {
     /**
      * @param intent The intent to start.
      * @param options Additional options for how the Activity should be started.
-     * See {@link Context#startActivity(Intent, Bundle)
-     * Context.startActivity(Intent, Bundle)} for more details.
-     * @throws ActivityNotFoundException
-     * @see {@link #startActivity(Intent)}
-     * @see #startActivityForResult
      */
     @Override public void startActivity(Intent intent, Bundle options) {
         super.startActivity(intent, options);
@@ -95,10 +85,6 @@ public abstract class BaseActivity extends Activity {
      * @param requestCode If >= 0, this code will be returned in
      * onActivityResult() when the activity exits.
      * @param options Additional options for how the Activity should be started.
-     * See {@link Context#startActivity(Intent, Bundle)
-     * Context.startActivity(Intent, Bundle)} for more details.
-     * @throws ActivityNotFoundException
-     * @see #startActivity
      */
     @Override public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
         super.startActivityForResult(intent, requestCode, options);
