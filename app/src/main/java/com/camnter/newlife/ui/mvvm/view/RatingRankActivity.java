@@ -3,6 +3,7 @@ package com.camnter.newlife.ui.mvvm.view;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.camnter.mvvm.MVVMViewAdapter;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.ratingrank.RatingFund;
@@ -41,7 +42,7 @@ public class RatingRankActivity extends BaseMVVMActivity {
      *
      * @param savedInstanceState savedInstanceState
      */
-    @Override protected void onAfterDataBinding(@NonNull Bundle savedInstanceState) {
+    @Override protected void onAfterDataBinding(@Nullable Bundle savedInstanceState) {
         this.viewModel = new RatingRankViewModel<>(this,
             Injection.provideRatingRankRepository());
         MVVMViewAdapter<RatingFund> adapter = new MVVMViewAdapter<RatingFund>(this) {
