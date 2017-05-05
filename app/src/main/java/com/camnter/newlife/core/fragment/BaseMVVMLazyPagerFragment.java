@@ -10,8 +10,6 @@ import android.support.annotation.Nullable;
 
 public abstract class BaseMVVMLazyPagerFragment extends BaseMVVMPagerFragment {
 
-    private static final String EMPTY_VIEW_TEXT_NULL_DATA = "暂无数据";
-
     private boolean hasLoaded = false;
     private boolean isCreateView = false;
 
