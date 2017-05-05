@@ -31,6 +31,7 @@
     <color name="section_header_tv">#ff666666</color>
     <color name="section_header_tv_bg">#ffE8EDEE</color>
     <color name="image_section_name_tv">#ff444444</color>
+    <color name="text_color_grey">#ff999999</color>
 
     <dimen name="add_friend_name">16sp</dimen>
     <dimen name="add_friend_by_contacts_header_tv">13sp</dimen>

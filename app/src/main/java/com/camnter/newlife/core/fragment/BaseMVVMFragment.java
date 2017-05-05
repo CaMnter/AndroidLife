@@ -3,6 +3,9 @@ package com.camnter.newlife.core.fragment;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.databinding.DataBindingUtil;
+import android.databinding.ObservableBoolean;
+import android.databinding.ViewDataBinding;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,9 +17,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.camnter.mvvm.view.MVVMFragment;
+import com.camnter.newlife.R;
+import com.camnter.newlife.databinding.FragmentBaseMvvmBinding;
 import com.camnter.newlife.utils.ToastUtils;
 import java.lang.reflect.Method;
 
@@ -30,6 +36,104 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 public abstract class BaseMVVMFragment extends MVVMFragment {
 
     private static final String EMPTY_LENGTH_STRING = "";
+
+    private ViewDataBinding contentBinding;
+    private FragmentBaseMvvmBinding castedRootBinding;
+
+    private RelativeLayout contentLayout;
+
+    private ObservableBoolean firstLoading = new ObservableBoolean(true);
+
+
+    /**
+     * default true
+     *
+     * @return auto ?
+     */
+    @Override
+    protected boolean autoInflateView() {
+        return false;
+    }
+
+
+    /**
+     * on casting root binding
+     *
+     * @param rootBinding rootBinding
+     */
+    @Override
+    protected void onCastingRootBinding(@Nullable ViewDataBinding rootBinding) {
+        if (rootBinding != null) {
+            this.castToBaseMVVMBinding(rootBinding);
+        } else {
+            // reset content view, because auto == false
+            this.rootBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_base_mvvm,
+                container, false);
+            this.castToBaseMVVMBinding(this.rootBinding);
+        }
+    }
+
+
+    private void castToBaseMVVMBinding(@NonNull ViewDataBinding rootBinding) {
+        if (rootBinding instanceof FragmentBaseMvvmBinding) {
+            this.castedRootBinding = (FragmentBaseMvvmBinding) rootBinding;
+            this.castedRootBinding.setFirstLoading(this.firstLoading);
+        }
+    }
+
+
+    public ViewDataBinding getContentBinding() {
+        return this.contentBinding;
+    }
+
+
+    public FragmentBaseMvvmBinding getCastedRootBinding() {
+        return this.castedRootBinding;
+    }
+
+
+    /**
+     * baseFragment init
+     */
+    @Override
+    protected void baseFragmentInit() {
+        super.baseFragmentInit();
+
+        this.initBaseFragmentViews();
+        // rendering content
+        this.renderingContent();
+    }
+
+
+    private void initBaseFragmentViews() {
+        if (this.castedRootBinding == null) return;
+        this.contentLayout = this.castedRootBinding.baseFragmentContentLayout;
+    }
+
+
+    private void renderingContent() {
+        final int layoutId = this.getLayoutId();
+        if (layoutId > 0) {
+            this.contentBinding = DataBindingUtil.inflate(this.inflater, layoutId,
+                this.contentLayout, true);
+            this.contentLayout = (RelativeLayout) this.contentBinding.getRoot();
+            this.onCastingContentBinding(this.contentBinding);
+        } else {
+            throw new IllegalArgumentException("Layout id <= 0");
+        }
+    }
+
+
+    protected abstract void onCastingContentBinding(@NonNull final ViewDataBinding contentBinding);
+
+    //*************************//
+    // First loading progress *//
+    //*************************//
+
+
+    protected void closeFirstLoadingProgress() {
+        this.firstLoading.set(false);
+    }
 
     //***************//
     // Magic Method *//
