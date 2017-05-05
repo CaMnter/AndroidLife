@@ -1,6 +1,6 @@
 ext {
     // compileSdkVersion rootProject.ext.android.compileSdkVersion
-    android = [compileSdkVersion: 24,
+    android = [compileSdkVersion: 25,
                buildToolsVersion: '25.0.0',
                minSdkVersion    : 14,
                targetSdkVersion : 24,
