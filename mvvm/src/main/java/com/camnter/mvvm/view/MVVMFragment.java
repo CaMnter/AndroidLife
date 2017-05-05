@@ -19,29 +19,38 @@ public abstract class MVVMFragment extends Fragment {
 
     protected View self;
     protected Activity activity;
+
     protected LayoutInflater inflater;
+    protected ViewGroup container;
 
     protected ViewDataBinding rootBinding;
 
 
-    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.activity = this.getActivity();
     }
 
 
-    @Nullable @Override public View onCreateView(LayoutInflater inflater,
-                                                 @Nullable ViewGroup container,
-                                                 @Nullable Bundle savedInstanceState) {
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         this.onBeforeDataBinding(savedInstanceState);
         final int layoutId = this.getLayoutId();
         if (layoutId == 0) return null;
         try {
             this.inflater = inflater;
-            this.rootBinding = DataBindingUtil.inflate(inflater, layoutId, container, false);
-            this.self = this.rootBinding.getRoot();
+            if (this.autoInflateView()) {
+                this.rootBinding = DataBindingUtil.inflate(inflater, layoutId, container, false);
+            }
             // binding success, but maybe this.contentViewBinding == null
             this.onCastingRootBinding(this.rootBinding);
+            if (this.rootBinding != null) {
+                this.self = this.rootBinding.getRoot();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,6 +59,16 @@ public abstract class MVVMFragment extends Fragment {
         this.onAfterDataBinding(savedInstanceState);
         // self may be null
         return this.self;
+    }
+
+
+    /**
+     * default true
+     *
+     * @return auto ?
+     */
+    protected boolean autoInflateView() {
+        return true;
     }
 
 
