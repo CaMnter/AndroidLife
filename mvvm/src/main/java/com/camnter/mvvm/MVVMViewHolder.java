@@ -6,10 +6,6 @@ import android.support.v7.widget.RecyclerView;
 
 /**
  * Description：MVVMViewHolder
- *
- * Refer to the
- * {@link "https://github.com/markzhai/DataBindingAdapter/blob/master/adapter/src/main/java/com/github/markzhai/recyclerview/BindingViewHolder.java"}
- *
  * Created by：CaMnter
  */
 

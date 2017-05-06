@@ -14,10 +14,6 @@ import java.util.List;
 
 /**
  * Description：MVVMViewAdapter
- *
- * Refer to the
- * {@link "https://github.com/markzhai/DataBindingAdapter/blob/master/adapter/src/main/java/com/github/markzhai/recyclerview/BaseViewAdapter.java"}
- *
  * Created by：CaMnter
  */
 
@@ -70,7 +66,7 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
      * 根据 position 获取 itemType
      *
      * @param position Item position
-     * @return 默认 ItemType 等于0
+     * @return 默认 ItemType 等于 0
      */
     @Override public int getItemViewType(int position) {
         return this.getRecycleViewItemType(position);
