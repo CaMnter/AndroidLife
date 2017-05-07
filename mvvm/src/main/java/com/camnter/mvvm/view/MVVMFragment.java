@@ -44,6 +44,8 @@ public abstract class MVVMFragment extends Fragment {
         try {
             this.inflater = inflater;
             if (this.autoInflateView()) {
+                final View self = this.inflater.inflate(layoutId, container, false);
+                this.rootBinding = DataBindingUtil.bind(self);
                 this.rootBinding = DataBindingUtil.inflate(inflater, layoutId, container, false);
             }
             // binding success, but maybe this.contentViewBinding == null

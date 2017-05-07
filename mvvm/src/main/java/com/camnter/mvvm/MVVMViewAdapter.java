@@ -101,7 +101,8 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
     }
 
 
-    @Override public void onBindViewHolder(MVVMViewHolder holder, int position) {
+    @Override
+    public void onBindViewHolder(MVVMViewHolder holder, int position) {
         try {
             final T itemValue = this.list.get(position);
             final ViewDataBinding binding = holder.getBinding();
@@ -117,7 +118,8 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
     }
 
 
-    @Override public int getItemCount() {
+    @Override @SuppressWarnings("unchecked")
+    public int getItemCount() {
         return this.list.size();
     }
 
