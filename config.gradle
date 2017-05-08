@@ -16,7 +16,7 @@ ext {
                      "dexmaker-mockito"       : 'com.google.dexmaker:dexmaker-mockito:1.2',
                      "espresso-core"          : 'com.android.support.test.espresso:espresso-core:2.2.2',
                      "support-v4"             : 'com.android.support:support-v4:25.0.0',
-                     "support-v7"           : 'com.android.support:appcompat-v7:25.0.0',
+                     "support-v7"             : 'com.android.support:appcompat-v7:25.0.0',
                      "recyclerview-v7"        : 'com.android.support:recyclerview-v7:25.0.0',
                      "design"                 : 'com.android.support:design:25.0.0',
                      "gson"                   : 'com.google.code.gson:gson:2.7',
