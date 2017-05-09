@@ -16,7 +16,7 @@
             type="com.camnter.newlife.bean.ratingrank.RatingFund"/>
 
         <variable
-            name="vHandler"
+            name="collaborator"
             type="com.camnter.newlife.ui.mvvm.vm.RatingRankViewModel"/>
 
     </data>
@@ -26,7 +26,7 @@
         android:id="@+id/rating_ranking_item_root_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> vHandler.itemClick(position, itemValue)}"
+        android:onClick="@{() -> collaborator.itemClick(position, itemValue)}"
         android:background="@drawable/bg_item_selector">
 
         <com.camnter.newlife.widget.RatingBar

@@ -9,7 +9,7 @@ import android.databinding.BaseObservable;
 
 public abstract class MVVMViewModel<T>
     extends BaseObservable
-    implements MVVMViewAdapter.VHandler {
+    implements MVVMViewAdapter.Collaborator {
 
     protected T data;
     protected MVVMViewAdapter<T> adapter;

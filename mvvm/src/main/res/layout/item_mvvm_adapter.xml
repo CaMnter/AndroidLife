@@ -12,7 +12,7 @@
             type="com.camnter.mvvm.Faker"/>
 
         <variable
-            name="vHandler"
+            name="collaborator"
             type="com.camnter.mvvm.Faker"/>
 
     </data>

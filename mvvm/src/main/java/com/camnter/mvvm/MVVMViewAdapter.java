@@ -23,7 +23,7 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
     private final List<T> list;
     private final LayoutInflater inflater;
 
-    private WeakReference<VHandler> vHandler;
+    private WeakReference<Collaborator> collaborator;
 
 
     public MVVMViewAdapter(Context context) {
@@ -33,8 +33,8 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
     }
 
 
-    public void setVHandler(@NonNull final VHandler vHandler) {
-        this.vHandler = new WeakReference<>(vHandler);
+    public void setVHandler(@NonNull final Collaborator collaborator) {
+        this.collaborator = new WeakReference<>(collaborator);
     }
 
 
@@ -68,7 +68,8 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
      * @param position Item position
      * @return 默认 ItemType 等于 0
      */
-    @Override public int getItemViewType(int position) {
+    @Override
+    public int getItemViewType(int position) {
         return this.getRecycleViewItemType(position);
     }
 
@@ -87,8 +88,8 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
      * Magic extension
      ******************/
 
-    @SuppressWarnings("unchecked")
-    @Override public MVVMViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override
+    public MVVMViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType < 0) return null;
         if (this.getItemLayouts() == null) return null;
         int[] layoutIds = this.getItemLayouts();
@@ -96,29 +97,25 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
 
         int itemLayoutId;
         itemLayoutId = layoutIds.length == 1 ? layoutIds[0] : layoutIds[viewType];
-        return new MVVMViewHolder(
+        return new MVVMViewHolder<>(
             DataBindingUtil.inflate(this.inflater, itemLayoutId, parent, false));
     }
 
 
     @Override
     public void onBindViewHolder(MVVMViewHolder holder, int position) {
-        try {
-            final T itemValue = this.list.get(position);
-            final ViewDataBinding binding = holder.getBinding();
-            binding.setVariable(com.camnter.mvvm.BR.position, position);
-            binding.setVariable(com.camnter.mvvm.BR.itemValue, itemValue);
-            binding.setVariable(com.camnter.mvvm.BR.vHandler, this.vHandler.get());
-            binding.executePendingBindings();
+        final T itemValue = this.list.get(position);
+        final ViewDataBinding binding = holder.getBinding();
+        binding.setVariable(com.camnter.mvvm.BR.position, position);
+        binding.setVariable(com.camnter.mvvm.BR.itemValue, itemValue);
+        binding.setVariable(com.camnter.mvvm.BR.collaborator, this.collaborator.get());
+        binding.executePendingBindings();
 
-            this.onBindRecycleViewHolder(holder, position, this.getRecycleViewItemType(position));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.onBindRecycleViewHolder(holder, position, this.getRecycleViewItemType(position));
     }
 
 
-    @Override @SuppressWarnings("unchecked")
+    @Override
     public int getItemCount() {
         return this.list.size();
     }
@@ -128,7 +125,7 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
      * Listener *
      ************/
 
-    public interface VHandler {
+    public interface Collaborator {
     }
 
 
@@ -141,7 +138,7 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
     }
 
 
-    @SuppressWarnings("unchecked") public T getItem(int position) {
+    public T getItem(int position) {
         return this.list.get(position);
     }
 
@@ -151,9 +148,9 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
     }
 
 
-    @SuppressWarnings("unchecked") public void setList(List list) {
+    public void setList(@NonNull final List<T> list) {
         this.list.clear();
-        if (list == null) return;
+        if (list.size() == 0) return;
         this.list.addAll(list);
         this.notifyDataSetChanged();
     }
@@ -172,12 +169,12 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
 
 
     @NonNull
-    public List getList() {
+    public List<T> getList() {
         return this.list;
     }
 
 
-    @SuppressWarnings("unchecked") public void addAll(Collection list) {
+    public void addAll(@NonNull final Collection<T> list) {
         this.list.addAll(list);
     }
 
