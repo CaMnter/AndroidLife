@@ -18,7 +18,7 @@ import java.util.List;
  * Created by：CaMnter
  */
 
-public class RatingRankViewModel<T> extends MVVMViewModel<T> implements
+public class RatingRankViewModel extends MVVMViewModel<RatingFund> implements
     RatingRankDataSource.QueryRanksCallback {
 
     @Bindable

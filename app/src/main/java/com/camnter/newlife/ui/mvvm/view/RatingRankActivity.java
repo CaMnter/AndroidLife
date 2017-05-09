@@ -21,7 +21,7 @@ import com.camnter.newlife.widget.titilebar.TitleBar;
 public class RatingRankActivity extends BaseMVVMActivity {
 
     private ActivityRatingRankBinding binding;
-    private RatingRankViewModel<RatingFund> viewModel;
+    private RatingRankViewModel viewModel;
 
 
     @Override protected int getLayoutId() {
@@ -43,7 +43,7 @@ public class RatingRankActivity extends BaseMVVMActivity {
      * @param savedInstanceState savedInstanceState
      */
     @Override protected void onAfterDataBinding(@Nullable Bundle savedInstanceState) {
-        this.viewModel = new RatingRankViewModel<>(this,
+        this.viewModel = new RatingRankViewModel(this,
             Injection.provideRatingRankRepository());
         MVVMViewAdapter<RatingFund> adapter = new MVVMViewAdapter<RatingFund>(this) {
             @Override public int[] getItemLayouts() {
