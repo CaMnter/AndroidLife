@@ -5,7 +5,7 @@ package com.camnter.newlife.core.fragment;
  * Created by：CaMnter
  */
 
-public abstract class BaseMVVMPagerFragment extends BaseMVVMFragment {
+public abstract class BaseBindingPagerFragment extends BaseBindingFragment {
 
     protected boolean isBaseVisibleToUser;
 

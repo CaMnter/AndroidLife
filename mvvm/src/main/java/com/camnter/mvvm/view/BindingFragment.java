@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Description：MVVMFragment
- * Created by：CaMnter
+ * Description：BindingFragment
+ * @author CaMnter
  */
 
-public abstract class MVVMFragment extends Fragment {
+public abstract class BindingFragment extends Fragment {
 
     protected View self;
     protected Activity activity;

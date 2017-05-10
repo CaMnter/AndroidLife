@@ -12,7 +12,7 @@ import com.camnter.newlife.ui.mvvm.model.datasource.RatingRankDataSource;
 import java.util.List;
 
 /**
- * Description：RatingRankViewModel
+ * Description：RatingRankCollaborator
  * Created by：CaMnter
  */
 

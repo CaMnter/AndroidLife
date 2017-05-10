@@ -4,10 +4,10 @@ import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.camnter.mvvm.MVVMViewAdapter;
+import com.camnter.mvvm.BindingAdapter;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.ratingrank.RatingFund;
-import com.camnter.newlife.core.activity.BaseMVVMActivity;
+import com.camnter.newlife.core.activity.BaseBindingActivity;
 import com.camnter.newlife.databinding.ActivityRatingRankBinding;
 import com.camnter.newlife.ui.mvvm.collaborator.RatingRankCollaborator;
 import com.camnter.newlife.ui.mvvm.mock.Injection;
@@ -18,7 +18,7 @@ import com.camnter.newlife.widget.titilebar.TitleBar;
  * Created by：CaMnter
  */
 
-public class RatingRankActivity extends BaseMVVMActivity {
+public class RatingRankActivity extends BaseBindingActivity {
 
     private ActivityRatingRankBinding binding;
     private RatingRankCollaborator collaborator;
@@ -45,7 +45,7 @@ public class RatingRankActivity extends BaseMVVMActivity {
     @Override protected void onAfterDataBinding(@Nullable Bundle savedInstanceState) {
         this.collaborator = new RatingRankCollaborator(this,
             Injection.provideRatingRankRepository());
-        MVVMViewAdapter<RatingFund> adapter = new MVVMViewAdapter<RatingFund>(this) {
+        BindingAdapter<RatingFund> adapter = new BindingAdapter<RatingFund>(this) {
             @Override public int[] getItemLayouts() {
                 return new int[] { R.layout.item_rating_ranking };
             }

@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
  * Created by：CaMnter
  */
 
-public abstract class BaseMVVMLazyPagerFragment extends BaseMVVMPagerFragment {
+public abstract class BaseBindingLazyPagerFragment extends BaseBindingPagerFragment {
 
     private boolean hasLoaded = false;
     private boolean isCreateView = false;

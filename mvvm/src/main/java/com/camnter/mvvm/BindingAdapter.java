@@ -12,18 +12,18 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Description：MVVMViewAdapter
- * Created by：CaMnter
+ * Description：BindingAdapter
+ * @author CaMnter
  */
 
-public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHolder> {
+public abstract class BindingAdapter<T> extends RecyclerView.Adapter<BindingHolder> {
 
     private final Context context;
     private final List<T> list;
     private final LayoutInflater inflater;
 
 
-    public MVVMViewAdapter(Context context) {
+    public BindingAdapter(Context context) {
         this.context = context;
         this.list = new ArrayList<>();
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -71,7 +71,7 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
      * @param position position
      * @param viewType viewType
      */
-    protected void onBindRecycleViewHolder(MVVMViewHolder holder, int position, int viewType) {
+    protected void onBindRecycleViewHolder(BindingHolder holder, int position, int viewType) {
         // Nothing to do
     }
 
@@ -81,7 +81,7 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
      ******************/
 
     @Override
-    public MVVMViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BindingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType < 0) return null;
         if (this.getItemLayouts() == null) return null;
         int[] layoutIds = this.getItemLayouts();
@@ -89,13 +89,13 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
 
         int itemLayoutId;
         itemLayoutId = layoutIds.length == 1 ? layoutIds[0] : layoutIds[viewType];
-        return new MVVMViewHolder<>(
+        return new BindingHolder<>(
             DataBindingUtil.inflate(this.inflater, itemLayoutId, parent, false));
     }
 
 
     @Override
-    public void onBindViewHolder(MVVMViewHolder holder, int position) {
+    public void onBindViewHolder(BindingHolder holder, int position) {
         final T itemValue = this.list.get(position);
         final ViewDataBinding binding = holder.getBinding();
         binding.setVariable(com.camnter.mvvm.BR.position, position);

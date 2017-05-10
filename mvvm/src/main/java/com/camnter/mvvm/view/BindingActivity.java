@@ -7,11 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 /**
- * Description：MVVMActivity
- * Created by：CaMnter
+ * Description：BindingActivity
+ * @author CaMnter
  */
 
-public abstract class MVVMActivity extends AppCompatActivity {
+public abstract class BindingActivity extends AppCompatActivity {
 
     protected ViewDataBinding rootBinding;
 
