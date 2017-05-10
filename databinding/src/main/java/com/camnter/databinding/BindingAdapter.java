@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Description：BindingAdapter
+ *
  * @author CaMnter
  */
 
@@ -66,16 +67,6 @@ public abstract class BindingAdapter<T> extends RecyclerView.Adapter<BindingHold
     }
 
 
-    /**
-     * @param holder holder
-     * @param position position
-     * @param viewType viewType
-     */
-    protected void onBindRecycleViewHolder(BindingHolder holder, int position, int viewType) {
-        // Nothing to do
-    }
-
-
     /******************
      * Magic extension
      ******************/
@@ -101,8 +92,6 @@ public abstract class BindingAdapter<T> extends RecyclerView.Adapter<BindingHold
         binding.setVariable(BR.position, position);
         binding.setVariable(BR.itemValue, itemValue);
         binding.executePendingBindings();
-
-        this.onBindRecycleViewHolder(holder, position, this.getRecycleViewItemType(position));
     }
 
 
