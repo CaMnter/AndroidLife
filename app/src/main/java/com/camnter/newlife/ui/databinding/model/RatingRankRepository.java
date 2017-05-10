@@ -1,10 +1,10 @@
-package com.camnter.newlife.ui.mvvm.model;
+package com.camnter.newlife.ui.databinding.model;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import com.camnter.newlife.ui.mvvm.model.datasource.RatingRankDataSource;
-import com.camnter.newlife.ui.mvvm.model.local.RatingRankLocalRepository;
-import com.camnter.newlife.ui.mvvm.model.remote.RatingRankRemoteRepository;
+import com.camnter.newlife.ui.databinding.model.datasource.RatingRankDataSource;
+import com.camnter.newlife.ui.databinding.model.local.RatingRankLocalRepository;
+import com.camnter.newlife.ui.databinding.model.remote.RatingRankRemoteRepository;
 import com.google.common.base.Preconditions;
 
 /**

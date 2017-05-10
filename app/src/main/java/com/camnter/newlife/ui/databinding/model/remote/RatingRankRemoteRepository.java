@@ -1,11 +1,11 @@
-package com.camnter.newlife.ui.mvvm.model.remote;
+package com.camnter.newlife.ui.databinding.model.remote;
 
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import com.camnter.newlife.bean.ratingrank.RatingRankResponse;
-import com.camnter.newlife.ui.mvvm.model.datasource.RatingRankDataSource;
+import com.camnter.newlife.ui.databinding.model.datasource.RatingRankDataSource;
 import com.google.gson.Gson;
 import java.io.File;
 import java.io.InputStream;

@@ -243,7 +243,7 @@
             android:name=".ui.activity.agera.AgeraBroadcastActivity"
             android:label="AgeraBroadcastActivity"/>
         <activity
-            android:name=".ui.mvvm.view.RatingRankActivity"
+            android:name=".ui.databinding.view.RatingRankActivity"
             android:label="RatingRankActivity"/>
         <activity
             android:name=".ui.activity.tabalphaview.TabAlphaViewActivity"

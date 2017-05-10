@@ -1,4 +1,4 @@
-package com.camnter.newlife.ui.mvvm.model.datasource;
+package com.camnter.newlife.ui.databinding.model.datasource;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;

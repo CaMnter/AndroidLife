@@ -13,7 +13,7 @@
 
         <variable
             name="collaborator"
-            type="com.camnter.newlife.ui.mvvm.collaborator.RatingRankCollaborator"/>
+            type="com.camnter.newlife.ui.databinding.collaborator.RatingRankCollaborator"/>
 
     </data>
 

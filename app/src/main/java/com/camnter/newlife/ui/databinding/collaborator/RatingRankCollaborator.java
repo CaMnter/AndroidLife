@@ -1,4 +1,4 @@
-package com.camnter.newlife.ui.mvvm.collaborator;
+package com.camnter.newlife.ui.databinding.collaborator;
 
 import android.app.Activity;
 import android.databinding.ObservableBoolean;
@@ -7,9 +7,9 @@ import android.support.annotation.NonNull;
 import android.widget.Toast;
 import com.camnter.newlife.bean.ratingrank.RatingFund;
 import com.camnter.newlife.core.BaseActivityCollaborator;
-import com.camnter.newlife.ui.mvvm.model.RatingRankRepository;
-import com.camnter.newlife.ui.mvvm.model.datasource.RatingRankDataSource;
-import com.camnter.newlife.ui.mvvm.view.RatingRankActivity;
+import com.camnter.newlife.ui.databinding.model.RatingRankRepository;
+import com.camnter.newlife.ui.databinding.model.datasource.RatingRankDataSource;
+import com.camnter.newlife.ui.databinding.view.RatingRankActivity;
 import java.util.List;
 
 /**

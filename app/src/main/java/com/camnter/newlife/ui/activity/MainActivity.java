@@ -46,7 +46,7 @@ import com.camnter.newlife.ui.activity.util.DeviceUtilActivity;
 import com.camnter.newlife.ui.activity.util.ReflectionUtilActivity;
 import com.camnter.newlife.ui.activity.util.ResourcesUtilActivity;
 import com.camnter.newlife.ui.activity.xfermode.XfermodesActivity;
-import com.camnter.newlife.ui.mvvm.view.RatingRankActivity;
+import com.camnter.newlife.ui.databinding.view.RatingRankActivity;
 import java.util.ArrayList;
 import me.drakeet.newlife.RxBusActivity;
 

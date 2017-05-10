@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.camnter.newlife.ui.mvvm.mock;
+package com.camnter.newlife.ui.databinding.mock;
 
-import com.camnter.newlife.ui.mvvm.model.RatingRankRepository;
-import com.camnter.newlife.ui.mvvm.model.local.RatingRankLocalRepository;
-import com.camnter.newlife.ui.mvvm.model.remote.RatingRankRemoteRepository;
+import com.camnter.newlife.ui.databinding.model.RatingRankRepository;
+import com.camnter.newlife.ui.databinding.model.local.RatingRankLocalRepository;
+import com.camnter.newlife.ui.databinding.model.remote.RatingRankRemoteRepository;
 
 public class Injection {
 

@@ -1,9 +1,9 @@
-package com.camnter.newlife.ui.mvvm.model.local;
+package com.camnter.newlife.ui.databinding.model.local;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import com.camnter.newlife.bean.ratingrank.RatingFund;
-import com.camnter.newlife.ui.mvvm.model.datasource.RatingRankDataSource;
+import com.camnter.newlife.ui.databinding.model.datasource.RatingRankDataSource;
 import java.util.ArrayList;
 import java.util.List;
 

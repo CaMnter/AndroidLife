@@ -1,4 +1,4 @@
-package com.camnter.newlife.ui.mvvm.view;
+package com.camnter.newlife.ui.databinding.view;
 
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import com.camnter.newlife.bean.ratingrank.RatingFund;
 import com.camnter.newlife.core.activity.BaseBindingActivity;
 import com.camnter.newlife.databinding.ActivityRatingRankBinding;
 import com.camnter.newlife.databinding.ItemRatingRankingBinding;
-import com.camnter.newlife.ui.mvvm.collaborator.RatingRankCollaborator;
-import com.camnter.newlife.ui.mvvm.mock.Injection;
+import com.camnter.newlife.ui.databinding.collaborator.RatingRankCollaborator;
+import com.camnter.newlife.ui.databinding.mock.Injection;
 import com.camnter.newlife.widget.titilebar.TitleBar;
 import java.util.List;
 
@@ -73,9 +73,9 @@ public class RatingRankActivity extends BaseBindingActivity {
         return false;
     }
 
-    public void onQuerySuccess(@NonNull List<RatingFund> funds){
-        this.adapter.setList(funds
-        );
+
+    public void onQuerySuccess(@NonNull List<RatingFund> funds) {
+        this.adapter.setList(funds);
     }
 
 }
