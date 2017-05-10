@@ -11,10 +11,6 @@
             name="itemValue"
             type="java.lang.Object"/>
 
-        <variable
-            name="collaborator"
-            type="java.lang.Object"/>
-
     </data>
 
     <View

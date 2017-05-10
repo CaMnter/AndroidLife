@@ -5,15 +5,15 @@
 
     <data>
 
-        <import type="android.view.View" />
+        <import type="android.view.View"/>
 
         <variable
             name="adapter"
             type="com.camnter.mvvm.MVVMViewAdapter"/>
 
         <variable
-            name="viewModel"
-            type="com.camnter.newlife.ui.mvvm.vm.RatingRankViewModel"/>
+            name="collaborator"
+            type="com.camnter.newlife.ui.mvvm.collaborator.RatingRankCollaborator"/>
 
     </data>
 
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="@{viewModel.dataLoading?View.VISIBLE:View.GONE}"/>
+            android:visibility="@{collaborator.dataLoading?View.VISIBLE:View.GONE}"/>
 
     </RelativeLayout>
 

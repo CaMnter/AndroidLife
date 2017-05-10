@@ -17,7 +17,7 @@
 
         <variable
             name="collaborator"
-            type="com.camnter.newlife.ui.mvvm.vm.RatingRankViewModel"/>
+            type="com.camnter.newlife.ui.mvvm.collaborator.RatingRankCollaborator"/>
 
     </data>
 

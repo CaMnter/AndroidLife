@@ -1,13 +1,11 @@
-package com.camnter.newlife.ui.mvvm.vm;
+package com.camnter.newlife.ui.mvvm.collaborator;
 
 import android.app.Activity;
 import android.content.Context;
-import android.databinding.Bindable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
-import com.camnter.mvvm.MVVMViewModel;
 import com.camnter.newlife.bean.ratingrank.RatingFund;
 import com.camnter.newlife.ui.mvvm.model.RatingRankRepository;
 import com.camnter.newlife.ui.mvvm.model.datasource.RatingRankDataSource;
@@ -18,20 +16,17 @@ import java.util.List;
  * Created by：CaMnter
  */
 
-public class RatingRankViewModel extends MVVMViewModel<RatingFund> implements
+public class RatingRankCollaborator implements
     RatingRankDataSource.QueryRanksCallback {
 
-    @Bindable
     public final ObservableBoolean dataLoading = new ObservableBoolean(false);
-
-    @Bindable
     private final ObservableField<List<RatingFund>> funds = new ObservableField<>();
 
     private Context context;
     private final RatingRankRepository repository;
 
 
-    public RatingRankViewModel(Context context, RatingRankRepository repository) {
+    public RatingRankCollaborator(Context context, RatingRankRepository repository) {
         this.context = context;
         this.repository = repository;
     }
@@ -46,7 +41,6 @@ public class RatingRankViewModel extends MVVMViewModel<RatingFund> implements
     @Override public void onRanksLoaded(@NonNull List<RatingFund> funds) {
         this.dataLoading.set(false);
         this.funds.set(funds);
-        this.adapter.setList(funds);
     }
 
 

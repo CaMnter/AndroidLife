@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,18 +22,11 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
     private final List<T> list;
     private final LayoutInflater inflater;
 
-    private WeakReference<Collaborator> collaborator;
-
 
     public MVVMViewAdapter(Context context) {
         this.context = context;
         this.list = new ArrayList<>();
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-
-    public void setVHandler(@NonNull final Collaborator collaborator) {
-        this.collaborator = new WeakReference<>(collaborator);
     }
 
 
@@ -108,7 +100,6 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
         final ViewDataBinding binding = holder.getBinding();
         binding.setVariable(com.camnter.mvvm.BR.position, position);
         binding.setVariable(com.camnter.mvvm.BR.itemValue, itemValue);
-        binding.setVariable(com.camnter.mvvm.BR.collaborator, this.collaborator.get());
         binding.executePendingBindings();
 
         this.onBindRecycleViewHolder(holder, position, this.getRecycleViewItemType(position));
@@ -118,14 +109,6 @@ public abstract class MVVMViewAdapter<T> extends RecyclerView.Adapter<MVVMViewHo
     @Override
     public int getItemCount() {
         return this.list.size();
-    }
-
-
-    /************
-     * Listener *
-     ************/
-
-    public interface Collaborator {
     }
 
 
