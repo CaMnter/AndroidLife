@@ -1,4 +1,4 @@
-package com.camnter.mvvm;
+package com.camnter.databinding;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -98,8 +98,8 @@ public abstract class BindingAdapter<T> extends RecyclerView.Adapter<BindingHold
     public void onBindViewHolder(BindingHolder holder, int position) {
         final T itemValue = this.list.get(position);
         final ViewDataBinding binding = holder.getBinding();
-        binding.setVariable(com.camnter.mvvm.BR.position, position);
-        binding.setVariable(com.camnter.mvvm.BR.itemValue, itemValue);
+        binding.setVariable(BR.position, position);
+        binding.setVariable(BR.itemValue, itemValue);
         binding.executePendingBindings();
 
         this.onBindRecycleViewHolder(holder, position, this.getRecycleViewItemType(position));

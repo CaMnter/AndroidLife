@@ -24,7 +24,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.camnter.mvvm.view.BindingActivity;
+import com.camnter.databinding.view.BindingActivity;
 import com.camnter.newlife.R;
 import com.camnter.newlife.databinding.ActivityBaseMvvmBinding;
 import com.camnter.newlife.utils.ToastUtils;

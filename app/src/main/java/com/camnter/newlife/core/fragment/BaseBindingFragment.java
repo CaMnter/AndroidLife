@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.camnter.mvvm.view.BindingFragment;
+import com.camnter.databinding.view.BindingFragment;
 import com.camnter.newlife.R;
 import com.camnter.newlife.databinding.FragmentBaseMvvmBinding;
 import com.camnter.newlife.utils.ToastUtils;

@@ -9,7 +9,7 @@
 
         <variable
             name="adapter"
-            type="com.camnter.mvvm.BindingAdapter"/>
+            type="com.camnter.databinding.BindingAdapter"/>
 
         <variable
             name="collaborator"

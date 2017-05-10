@@ -1,4 +1,4 @@
-package com.camnter.mvvm.view;
+package com.camnter.databinding.view;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;

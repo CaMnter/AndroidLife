@@ -1,7 +1,7 @@
-include ':app',
+include ':app', ':databinding',
         ':widget',
         ':algorithm',
-        ':mvvm',
+        ':databinding',
 
         ':instant-run:annotations',
         ':instant-run:instant-run-annotations',

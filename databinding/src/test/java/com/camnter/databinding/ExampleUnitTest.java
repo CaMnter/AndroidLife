@@ -1,4 +1,4 @@
-package com.camnter.mvvm;
+package com.camnter.databinding;
 
 import org.junit.Test;
 

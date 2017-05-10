@@ -4,7 +4,7 @@ import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.camnter.mvvm.BindingAdapter;
+import com.camnter.databinding.BindingAdapter;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.ratingrank.RatingFund;
 import com.camnter.newlife.core.activity.BaseBindingActivity;
