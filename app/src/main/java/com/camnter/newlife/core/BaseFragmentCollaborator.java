@@ -11,7 +11,12 @@ import java.lang.ref.WeakReference;
 public class BaseFragmentCollaborator<F extends Fragment> {
 
     @NonNull
-    private final WeakReference<F> fragmentReference;
+    protected final WeakReference<F> fragmentReference;
+
+
+    private BaseFragmentCollaborator() {
+        this.fragmentReference = new WeakReference<>(null);
+    }
 
 
     public BaseFragmentCollaborator(@NonNull final F fragment) {

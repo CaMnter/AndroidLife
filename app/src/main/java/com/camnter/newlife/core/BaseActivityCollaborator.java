@@ -11,7 +11,12 @@ import java.lang.ref.WeakReference;
 public class BaseActivityCollaborator<A extends Activity> {
 
     @NonNull
-    private final WeakReference<A> activityRefrence;
+    protected final WeakReference<A> activityRefrence;
+
+
+    private BaseActivityCollaborator() {
+        this.activityRefrence = new WeakReference<>(null);
+    }
 
 
     public BaseActivityCollaborator(@NonNull final A activity) {
