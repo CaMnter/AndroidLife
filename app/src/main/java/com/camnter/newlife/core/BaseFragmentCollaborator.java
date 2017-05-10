@@ -1,6 +1,7 @@
 package com.camnter.newlife.core;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import java.lang.ref.WeakReference;
 
@@ -11,7 +12,7 @@ import java.lang.ref.WeakReference;
 public class BaseFragmentCollaborator<F extends Fragment> {
 
     @NonNull
-    protected final WeakReference<F> fragmentReference;
+    private final WeakReference<F> fragmentReference;
 
 
     private BaseFragmentCollaborator() {
@@ -21,6 +22,17 @@ public class BaseFragmentCollaborator<F extends Fragment> {
 
     public BaseFragmentCollaborator(@NonNull final F fragment) {
         this.fragmentReference = new WeakReference<>(fragment);
+    }
+
+
+    @Nullable
+    protected F getFragment() {
+        return this.fragmentReference.get();
+    }
+
+
+    protected void clearReference() {
+        this.fragmentReference.clear();
     }
 
 }

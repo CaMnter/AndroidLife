@@ -2,6 +2,7 @@ package com.camnter.newlife.core;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import java.lang.ref.WeakReference;
 
 /**
@@ -11,16 +12,27 @@ import java.lang.ref.WeakReference;
 public class BaseActivityCollaborator<A extends Activity> {
 
     @NonNull
-    protected final WeakReference<A> activityRefrence;
+    private final WeakReference<A> activityReference;
 
 
     private BaseActivityCollaborator() {
-        this.activityRefrence = new WeakReference<>(null);
+        this.activityReference = new WeakReference<>(null);
     }
 
 
     public BaseActivityCollaborator(@NonNull final A activity) {
-        this.activityRefrence = new WeakReference<>(activity);
+        this.activityReference = new WeakReference<>(activity);
+    }
+
+
+    @Nullable
+    protected A getActivity() {
+        return this.activityReference.get();
+    }
+
+
+    protected void clearReference() {
+        this.activityReference.clear();
     }
 
 }
