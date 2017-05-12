@@ -117,7 +117,10 @@
             android:name=".ui.activity.DownloadServiceActivity"
             android:label="DownloadServiceActivity"/>
         <activity
-            android:name=".ui.activity.AIDLActivity"
+            android:name=".ui.activity.ipc.AIDLActivity"
+            android:label="AIDLActivity"/>
+        <activity
+            android:name=".ui.activity.ipc.MessengerActivity"
             android:label="AIDLActivity"/>
         <activity
             android:name=".ui.activity.util.ReflectionUtilActivity"
@@ -267,6 +270,17 @@
             android:process=":remote">
             <intent-filter>
                 <action android:name="com.camnter.newlife.aidl.IPushMessage"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.camnter.newlife.utils.ipc.MessengerService"
+            android:process=":remote"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.camnter.rpc.messenger"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </service>
 

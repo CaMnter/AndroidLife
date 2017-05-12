@@ -1,4 +1,4 @@
-package com.camnter.newlife.ui.activity;
+package com.camnter.newlife.ui.activity.ipc;
 
 import android.content.ComponentName;
 import android.content.Context;

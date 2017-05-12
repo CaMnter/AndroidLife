@@ -34,8 +34,10 @@ import com.camnter.newlife.ui.activity.easyrecyclerviewsidebar.CircleImageSectio
 import com.camnter.newlife.ui.activity.easyrecyclerviewsidebar.LetterSectionActivity;
 import com.camnter.newlife.ui.activity.easyrecyclerviewsidebar.RoundImageSectionActivity;
 import com.camnter.newlife.ui.activity.hotfix.HotFixActivity;
+import com.camnter.newlife.ui.activity.ipc.MessengerActivity;
 import com.camnter.newlife.ui.activity.jsbridge.JsBridgeActivity;
 import com.camnter.newlife.ui.activity.lrucache.LruCacheActivity;
+import com.camnter.newlife.ui.activity.ipc.AIDLActivity;
 import com.camnter.newlife.ui.activity.rx.RxAsyncActivity;
 import com.camnter.newlife.ui.activity.rx.RxMapActivity;
 import com.camnter.newlife.ui.activity.rx.RxSyncActivity;
@@ -157,6 +159,7 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(CustomContentProviderActivity.class);
         this.classes.add(DownloadServiceActivity.class);
         this.classes.add(AIDLActivity.class);
+        this.classes.add(MessengerActivity.class);
         this.classes.add(ReflectionUtilActivity.class);
         this.classes.add(StaticReceiverActivity.class);
         this.classes.add(DynamicReceiverActivity.class);
