@@ -50,40 +50,7 @@ public class MessengerActivity extends BaseAppCompatActivity {
      */
     @Override protected void initViews(Bundle savedInstanceState) {
         ButterKnife.bind(this);
-        Handler mainHandler = new Handler(Looper.getMainLooper()) {
-            @Override public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case MessengerService.ENCODING_REQUEST_TASK_CALL_BACK:
-                        Bundle bundle = msg.getData();
-                        Log.e(TAG, "[BUNDLE_REQUEST_CODE] = " +
-                            bundle.getInt(MessengerService.BUNDLE_REQUEST_CODE));
-                        break;
-                }
-            }
-        };
-        this.serviceCallBackMessenger = new Messenger(mainHandler);
 
-        this.connection = new ServiceConnection() {
-            @Override public void onServiceConnected(ComponentName name, IBinder service) {
-                sendMessenger = new Messenger(service);
-                Message message = Message.obtain(null, MessengerService.ENCODING_REQUEST_TASK);
-                Bundle bundle = new Bundle();
-                bundle.putString(MessengerService.BUNDLE_KEY_PATH, "https://www.camnter.com");
-                message.setData(bundle);
-
-                message.replyTo = serviceCallBackMessenger;
-                try {
-                    sendMessenger.send(message);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-            @Override public void onServiceDisconnected(ComponentName name) {
-
-            }
-        };
     }
 
 
@@ -112,11 +79,70 @@ public class MessengerActivity extends BaseAppCompatActivity {
     @OnClick(R.id.messenger_send_text) public void onViewClicked(View v) {
         switch (v.getId()) {
             case R.id.messenger_send_text:
-                Intent intent = new Intent(this, MessengerService.class);
-                intent.setAction("com.camnter.rpc.messenger");
-                this.bindService(intent, this.connection, Context.BIND_AUTO_CREATE);
+                this.requestMessengerService();
                 break;
         }
+    }
+
+
+    private void requestMessengerService() {
+        if (this.connection == null) {
+            this.bindMessengerService();
+            Intent intent = new Intent(this, MessengerService.class);
+            intent.setAction("com.camnter.ipc.messenger");
+            this.bindService(intent, this.connection, Context.BIND_AUTO_CREATE);
+        } else {
+            try {
+                this.sendMessenger.send(this.createRequestMessage());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private Message createRequestMessage() {
+        Message message = Message.obtain(null,
+            MessengerService.ENCODING_REQUEST_TASK);
+        Bundle bundle = new Bundle();
+        bundle.putString(MessengerService.BUNDLE_KEY_PATH,
+            "https://www.camnter.com");
+        message.setData(bundle);
+
+        message.replyTo = this.serviceCallBackMessenger;
+        return message;
+    }
+
+
+    private void bindMessengerService() {
+        Handler mainHandler = new Handler(Looper.getMainLooper()) {
+            @Override public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case MessengerService.ENCODING_REQUEST_TASK_CALL_BACK:
+                        Bundle bundle = msg.getData();
+                        Log.e(TAG, "[BUNDLE_REQUEST_CODE] = " +
+                            bundle.getInt(MessengerService.BUNDLE_REQUEST_CODE));
+                        break;
+                }
+            }
+        };
+        this.serviceCallBackMessenger = new Messenger(mainHandler);
+
+        this.connection = new ServiceConnection() {
+            @Override public void onServiceConnected(ComponentName name, IBinder service) {
+                sendMessenger = new Messenger(service);
+                try {
+                    sendMessenger.send(createRequestMessage());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            @Override public void onServiceDisconnected(ComponentName name) {
+
+            }
+        };
     }
 
 }

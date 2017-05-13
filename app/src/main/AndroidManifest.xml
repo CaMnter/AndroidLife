@@ -279,7 +279,7 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.camnter.rpc.messenger"/>
+                <action android:name="com.camnter.ipc.messenger"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </service>
