@@ -5,10 +5,24 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/messenger_send_text"
         style="@style/TextButton"
+        android:id="@+id/messenger_send_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Send Message"/>
+
+    <TextView
+        style="@style/TextButton"
+        android:id="@+id/messenger_send_array_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Array Message"/>
+
+    <TextView
+        style="@style/TextButton"
+        android:id="@+id/messenger_send_sparse_array"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Sparse Array Message"/>
 
 </LinearLayout>
