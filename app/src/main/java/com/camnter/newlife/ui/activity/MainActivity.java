@@ -50,7 +50,6 @@ import com.camnter.newlife.ui.activity.util.ResourcesUtilActivity;
 import com.camnter.newlife.ui.activity.xfermode.XfermodesActivity;
 import com.camnter.newlife.ui.databinding.view.RatingRankActivity;
 import java.util.ArrayList;
-import me.drakeet.newlife.RxBusActivity;
 
 public class MainActivity extends BaseAppCompatActivity {
 
@@ -180,7 +179,6 @@ public class MainActivity extends BaseAppCompatActivity {
         this.classes.add(RoundImageViewActivity.class);
         this.classes.add(XfermodesActivity.class);
         this.classes.add(EasyArcLoadingActivity.class);
-        this.classes.add(RxBusActivity.class);
         this.classes.add(EasyLikeAreaTopicActivity.class);
         this.classes.add(EasyLikeAreaQZoneActivity.class);
         this.classes.add(EasyLikeAreaStyleActivity.class);

@@ -140,8 +140,8 @@ dependencies {
     compile rootProject.ext.denpendencies["easylikearea"]
     compile rootProject.ext.denpendencies["easyrecyclerviewsidebar"]
     // ReactiveX
-    compile rootProject.ext.denpendencies["rxandroid"]
-    compile rootProject.ext.denpendencies["rxjava"]
+    compile rootProject.ext.denpendencies["rxandroid2"]
+    compile rootProject.ext.denpendencies["rxjava2"]
     // Square
     compile rootProject.ext.denpendencies["retrofit"]
     compile rootProject.ext.denpendencies["picasso"]
@@ -163,7 +163,9 @@ dependencies {
     compile project(':agera-1.0.0')
     compile project(':stackblur')
     compile project(':hotfix')
+    compile project(':rxjava2')
     compile project(':databinding')
+    compile project(':databinding-rxjava')
     compile project(':widget')
     compile project(':utils')
 }

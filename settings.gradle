@@ -1,6 +1,9 @@
 include ':app',
         ':rxjava2',
+
         ':databinding',
+        ':databinding-rxjava',
+
         ':utils',
         ':widget',
         ':algorithm',

@@ -1,12 +1,10 @@
 package com.camnter.newlife.ui.activity.rx;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.widget.CustomProgressBarDialog;
-import com.camnter.utils.ImageUtil;
 import com.camnter.utils.ThreadUtils;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,10 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import org.reactivestreams.Subscriber;
 
 /**
  * Description：RxAsyncActivity
@@ -115,45 +109,45 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
                  * subscribeOn(Schedulers.io()) 表示观察者做子线程I/O操作
                  * observeOn(AndroidSchedulers.mainThread()) 表示订阅者做主线程操作
                  */
-                Observable.create((Observable.OnSubscribe<String>) subscriber -> {
-                    RxAsyncActivity.this.checkThread("create -> OnSubscribe.create()");
-                    new DownloadImageAsyncTask(RxAsyncActivity.this, subscriber)
-                        .execute(OBJECT_IMAGE_URL);
-                })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<String>() {
-                        @Override public void onCompleted() {
-
-                        }
-
-
-                        @Override public void onError(Throwable e) {
-
-                        }
-
-
-                        @Override public void onNext(String s) {
-                            RxAsyncActivity.this.checkThread("create -> Subscriber.onNext()");
-                            /**
-                             * 设置按钮可用，并隐藏Dialog
-                             */
-                            RxAsyncActivity.this.asyncRxSaveBT.setEnabled(true);
-                            RxAsyncActivity.this.dialog.hide();
-
-                            DisplayMetrics metrics = new DisplayMetrics();
-                            getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                            int screenWidth = metrics.widthPixels;
-                            int screenHeight = metrics.heightPixels;
-                            /**
-                             * ImageUtil.decodeScaleImage 解析图片
-                             */
-                            Bitmap bitmap = ImageUtil.decodeScaleImage(s, screenWidth,
-                                screenHeight);
-                            RxAsyncActivity.this.asyncRxOneIV.setImageBitmap(bitmap);
-                            RxAsyncActivity.this.asyncRxTwoIV.setImageBitmap(bitmap);
-                        }
-                    });
+                // Observable.create((Observable.OnSubscribe<String>) subscriber -> {
+                //     RxAsyncActivity.this.checkThread("create -> OnSubscribe.create()");
+                //     new DownloadImageAsyncTask(RxAsyncActivity.this, subscriber)
+                //         .execute(OBJECT_IMAGE_URL);
+                // })
+                //     .subscribeOn(Schedulers.io())
+                //     .observeOn(AndroidSchedulers.mainThread())
+                //     .subscribe(new Subscriber<String>() {
+                //         @Override public void onCompleted() {
+                //
+                //         }
+                //
+                //
+                //         @Override public void onError(Throwable e) {
+                //
+                //         }
+                //
+                //
+                //         @Override public void onNext(String s) {
+                //             RxAsyncActivity.this.checkThread("create -> Subscriber.onNext()");
+                //             /**
+                //              * 设置按钮可用，并隐藏Dialog
+                //              */
+                //             RxAsyncActivity.this.asyncRxSaveBT.setEnabled(true);
+                //             RxAsyncActivity.this.dialog.hide();
+                //
+                //             DisplayMetrics metrics = new DisplayMetrics();
+                //             getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                //             int screenWidth = metrics.widthPixels;
+                //             int screenHeight = metrics.heightPixels;
+                //             /**
+                //              * ImageUtil.decodeScaleImage 解析图片
+                //              */
+                //             Bitmap bitmap = ImageUtil.decodeScaleImage(s, screenWidth,
+                //                 screenHeight);
+                //             RxAsyncActivity.this.asyncRxOneIV.setImageBitmap(bitmap);
+                //             RxAsyncActivity.this.asyncRxTwoIV.setImageBitmap(bitmap);
+                //         }
+                //     });
                 break;
         }
     }
@@ -290,7 +284,7 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
              * 通知订阅者
              */
             subscriber.onNext(localFilePath);
-            subscriber.onCompleted();
+            // subscriber.onCompleted();
         }
 
 

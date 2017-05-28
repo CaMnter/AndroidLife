@@ -1,4 +1,4 @@
-package com.camnter.newlife.core.activity;
+package com.camnter.databinding.rxjava.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -12,7 +12,6 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -24,23 +23,22 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.camnter.databinding.rxjava.R;
+import com.camnter.databinding.rxjava.databinding.ActivityBaseBinding;
 import com.camnter.databinding.view.BindingActivity;
-import com.camnter.newlife.R;
-import com.camnter.newlife.databinding.ActivityBaseMvvmBinding;
 import com.camnter.newlife.widget.titilebar.TitleBar;
 import com.camnter.utils.ToastUtils;
 import java.lang.reflect.Method;
 
 /**
- * Description：BaseMVVMActivity
- * Created by：CaMnter
+ * @author CaMnter
  */
 
 public abstract class BaseBindingActivity extends BindingActivity {
 
     private static final String EMPTY_LENGTH_STRING = "";
     protected Activity activity;
-    private ActivityBaseMvvmBinding castedRootBinding;
+    private ActivityBaseBinding castedRootBinding;
     private ViewDataBinding contentBinding;
 
     private TitleBar titleBar;
@@ -76,13 +74,13 @@ public abstract class BaseBindingActivity extends BindingActivity {
 
 
     private void castToBaseMVVMBinding(@NonNull ViewDataBinding rootBinding) {
-        if (rootBinding instanceof ActivityBaseMvvmBinding) {
-            this.castedRootBinding = (ActivityBaseMvvmBinding) rootBinding;
+        if (rootBinding instanceof ActivityBaseBinding) {
+            this.castedRootBinding = (ActivityBaseBinding) rootBinding;
         }
     }
 
 
-    public ActivityBaseMvvmBinding getCastedRootBinding() {
+    public ActivityBaseBinding getCastedRootBinding() {
         return this.castedRootBinding;
     }
 
@@ -119,7 +117,6 @@ public abstract class BaseBindingActivity extends BindingActivity {
     private void renderingTitle() {
         final TitleBar titleBar = this.titleBar;
         if (titleBar == null) return;
-        titleBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
         if (!this.getTitleBar(this.titleBar)) this.titleBar.setVisibility(View.GONE);
     }
 
@@ -277,7 +274,7 @@ public abstract class BaseBindingActivity extends BindingActivity {
     public void hideSoftInputMethod(EditText editText, Boolean visible) {
         this.getWindow()
             .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        final int currentVersion = android.os.Build.VERSION.SDK_INT;
+        final int currentVersion = Build.VERSION.SDK_INT;
         String methodName = null;
         if (currentVersion >= 16) {
             // 4.2

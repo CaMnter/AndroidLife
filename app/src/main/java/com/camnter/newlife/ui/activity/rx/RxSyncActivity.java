@@ -1,12 +1,10 @@
 package com.camnter.newlife.ui.activity.rx;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.widget.CustomProgressBarDialog;
-import com.camnter.utils.ImageUtil;
 import com.camnter.utils.ThreadUtils;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,9 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
+import org.reactivestreams.Subscriber;
 
 /**
  * Description：RxSyncActivity
@@ -46,9 +41,9 @@ public class RxSyncActivity extends BaseAppCompatActivity implements View.OnClic
     private TextView syncRxFromTV;
     private ImageView syncRxIV;
     private Button syncRxSaveBT;
-    private Subscription justSubscription;
-    private Subscription fromSubscription;
-    private Subscription downloadSubscription;
+    // private Subscription justSubscription;
+    // private Subscription fromSubscription;
+    // private Subscription downloadSubscription;
     private CustomProgressBarDialog dialog;
 
 
@@ -100,36 +95,36 @@ public class RxSyncActivity extends BaseAppCompatActivity implements View.OnClic
          * 调用了3次onNext
          * 一次onCompleted
          */
-        this.justSubscription = Observable.just("Just", "save", "you", "from", "anything")
-            .subscribe(new Subscriber<String>() {
-                @Override public void onCompleted() {
-
-                }
-
-
-                @Override public void onError(Throwable e) {
-
-                }
-
-
-                @Override public void onNext(String s) {
-                    RxSyncActivity.this.checkThread(
-                        "just -> Subscriber.onNext()");
-                    String text
-                        = RxSyncActivity.this.syncRxJustTV.getText()
-                        .toString();
-                    text += s + " ";
-                    RxSyncActivity.this.syncRxJustTV.setText(text);
-                }
-            });
-
-        String[] sign = { "From", "save", "you", "from", "anything" };
-        this.fromSubscription = Observable.from(sign).subscribe(s -> {
-            RxSyncActivity.this.checkThread("from -> Subscriber.onNext()");
-            String text = RxSyncActivity.this.syncRxFromTV.getText().toString();
-            text += s + " ";
-            RxSyncActivity.this.syncRxFromTV.setText(text);
-        });
+        // this.justSubscription = Observable.just("Just", "save", "you", "from", "anything")
+        //     .subscribe(new Subscriber<String>() {
+        //         @Override public void onCompleted() {
+        //
+        //         }
+        //
+        //
+        //         @Override public void onError(Throwable e) {
+        //
+        //         }
+        //
+        //
+        //         @Override public void onNext(String s) {
+        //             RxSyncActivity.this.checkThread(
+        //                 "just -> Subscriber.onNext()");
+        //             String text
+        //                 = RxSyncActivity.this.syncRxJustTV.getText()
+        //                 .toString();
+        //             text += s + " ";
+        //             RxSyncActivity.this.syncRxJustTV.setText(text);
+        //         }
+        //     });
+        //
+        // String[] sign = { "From", "save", "you", "from", "anything" };
+        // this.fromSubscription = Observable.from(sign).subscribe(s -> {
+        //     RxSyncActivity.this.checkThread("from -> Subscriber.onNext()");
+        //     String text = RxSyncActivity.this.syncRxFromTV.getText().toString();
+        //     text += s + " ";
+        //     RxSyncActivity.this.syncRxFromTV.setText(text);
+        // });
     }
 
 
@@ -157,50 +152,50 @@ public class RxSyncActivity extends BaseAppCompatActivity implements View.OnClic
                  * 失败会走到onError方法
                  * 成功的话，因为call方法有Subscriber对象，这是添加的订阅者，可以调用它的onNext或onCompleted
                  */
-                this.downloadSubscription = Observable.create(
-                    (Observable.OnSubscribe<String>) subscriber -> {
-                        RxSyncActivity.this.checkThread("create -> OnSubscribe.create()");
-                        new DownloadImageAsyncTask(RxSyncActivity.this,
-                            subscriber).execute(OBJECT_IMAGE_URL);
-                    }).subscribe(new Subscriber<String>() {
-                    @Override public void onCompleted() {
-
-                    }
-
-
-                    @Override public void onError(Throwable e) {
-
-                    }
-
-
-                    @Override public void onNext(String s) {
-                        RxSyncActivity.this.checkThread("create -> Subscriber.onNext()");
-                        /**
-                         * 设置按钮可用，并隐藏Dialog
-                         */
-                        RxSyncActivity.this.syncRxSaveBT.setEnabled(true);
-                        RxSyncActivity.this.dialog.hide();
-
-                        DisplayMetrics metrics = new DisplayMetrics();
-                        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                        int screenWidth = metrics.widthPixels;
-                        int screenHeight = metrics.heightPixels;
-                        /**
-                         * ImageUtil.decodeScaleImage 解析图片
-                         */
-                        Bitmap bitmap = ImageUtil.decodeScaleImage(s, screenWidth, screenHeight);
-                        RxSyncActivity.this.syncRxIV.setImageBitmap(bitmap);
-                    }
-                });
+                // this.downloadSubscription = Observable.create(
+                //     (Observable.OnSubscribe<String>) subscriber -> {
+                //         RxSyncActivity.this.checkThread("create -> OnSubscribe.create()");
+                //         new DownloadImageAsyncTask(RxSyncActivity.this,
+                //             subscriber).execute(OBJECT_IMAGE_URL);
+                //     }).subscribe(new Subscriber<String>() {
+                //     @Override public void onCompleted() {
+                //
+                //     }
+                //
+                //
+                //     @Override public void onError(Throwable e) {
+                //
+                //     }
+                //
+                //
+                //     @Override public void onNext(String s) {
+                //         RxSyncActivity.this.checkThread("create -> Subscriber.onNext()");
+                //         /**
+                //          * 设置按钮可用，并隐藏Dialog
+                //          */
+                //         RxSyncActivity.this.syncRxSaveBT.setEnabled(true);
+                //         RxSyncActivity.this.dialog.hide();
+                //
+                //         DisplayMetrics metrics = new DisplayMetrics();
+                //         getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                //         int screenWidth = metrics.widthPixels;
+                //         int screenHeight = metrics.heightPixels;
+                //         /**
+                //          * ImageUtil.decodeScaleImage 解析图片
+                //          */
+                //         Bitmap bitmap = ImageUtil.decodeScaleImage(s, screenWidth, screenHeight);
+                //         RxSyncActivity.this.syncRxIV.setImageBitmap(bitmap);
+                //     }
+                // });
                 break;
         }
     }
 
 
     @Override protected void onDestroy() {
-        this.justSubscription.unsubscribe();
-        this.fromSubscription.unsubscribe();
-        if (this.downloadSubscription != null) this.downloadSubscription.unsubscribe();
+        // this.justSubscription.unsubscribe();
+        // this.fromSubscription.unsubscribe();
+        // if (this.downloadSubscription != null) this.downloadSubscription.unsubscribe();
         this.dialog.dismiss();
         super.onDestroy();
     }
@@ -332,7 +327,7 @@ public class RxSyncActivity extends BaseAppCompatActivity implements View.OnClic
              * 通知订阅者
              */
             subscriber.onNext(localFilePath);
-            subscriber.onCompleted();
+            // subscriber.onCompleted();
         }
 
 
