@@ -1,10 +1,12 @@
-package com.camnter.newlife.ui.activity.rx;
+package com.camnter.newlife.ui.activity.rxjava;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +15,15 @@ import android.widget.TextView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.widget.CustomProgressBarDialog;
+import com.camnter.rxjava2.RxUtil;
+import com.camnter.utils.ImageUtil;
 import com.camnter.utils.ThreadUtils;
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,20 +33,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
-import org.reactivestreams.Subscriber;
 
 /**
  * Description：RxAsyncActivity
  * Created by：CaMnter
  * Time：2015-12-01 15:49
  */
-public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnClickListener {
+public class RxJavaAsyncActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "RxAsyncActivity";
     private static final String OBJECT_IMAGE_URL = "http://img.blog.csdn.net/20150913233900119";
 
     private static final int HANDLER_LOADING = 262;
-    private final LoadingHandler loadingHandler = new LoadingHandler(RxAsyncActivity.this);
+    private final LoadingHandler loadingHandler = new LoadingHandler(RxJavaAsyncActivity.this);
     private ImageView asyncRxOneIV;
     private ImageView asyncRxTwoIV;
     private Button asyncRxSaveBT;
@@ -109,45 +118,38 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
                  * subscribeOn(Schedulers.io()) 表示观察者做子线程I/O操作
                  * observeOn(AndroidSchedulers.mainThread()) 表示订阅者做主线程操作
                  */
-                // Observable.create((Observable.OnSubscribe<String>) subscriber -> {
-                //     RxAsyncActivity.this.checkThread("create -> OnSubscribe.create()");
-                //     new DownloadImageAsyncTask(RxAsyncActivity.this, subscriber)
-                //         .execute(OBJECT_IMAGE_URL);
-                // })
-                //     .subscribeOn(Schedulers.io())
-                //     .observeOn(AndroidSchedulers.mainThread())
-                //     .subscribe(new Subscriber<String>() {
-                //         @Override public void onCompleted() {
-                //
-                //         }
-                //
-                //
-                //         @Override public void onError(Throwable e) {
-                //
-                //         }
-                //
-                //
-                //         @Override public void onNext(String s) {
-                //             RxAsyncActivity.this.checkThread("create -> Subscriber.onNext()");
-                //             /**
-                //              * 设置按钮可用，并隐藏Dialog
-                //              */
-                //             RxAsyncActivity.this.asyncRxSaveBT.setEnabled(true);
-                //             RxAsyncActivity.this.dialog.hide();
-                //
-                //             DisplayMetrics metrics = new DisplayMetrics();
-                //             getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                //             int screenWidth = metrics.widthPixels;
-                //             int screenHeight = metrics.heightPixels;
-                //             /**
-                //              * ImageUtil.decodeScaleImage 解析图片
-                //              */
-                //             Bitmap bitmap = ImageUtil.decodeScaleImage(s, screenWidth,
-                //                 screenHeight);
-                //             RxAsyncActivity.this.asyncRxOneIV.setImageBitmap(bitmap);
-                //             RxAsyncActivity.this.asyncRxTwoIV.setImageBitmap(bitmap);
-                //         }
-                //     });
+                Flowable
+                    .create(new FlowableOnSubscribe<String>() {
+                        @Override public void subscribe(@NonNull FlowableEmitter<String> emitter)
+                            throws Exception {
+                            RxJavaAsyncActivity.this.checkThread("create -> OnSubscribe.create()");
+                            new DownloadImageAsyncTask(RxJavaAsyncActivity.this, emitter)
+                                .execute(OBJECT_IMAGE_URL);
+                        }
+                    }, BackpressureStrategy.BUFFER)
+                    .compose(RxUtil.applyIOToMainThreadSchedulers())
+                    .subscribe(new Consumer<String>() {
+                        @Override public void accept(@NonNull String s) throws Exception {
+                            RxJavaAsyncActivity.this.checkThread("create -> onNext()");
+                            /*
+                             * 设置按钮可用，并隐藏Dialog
+                             */
+                            RxJavaAsyncActivity.this.asyncRxSaveBT.setEnabled(true);
+                            RxJavaAsyncActivity.this.dialog.hide();
+
+                            DisplayMetrics metrics = new DisplayMetrics();
+                            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                            int screenWidth = metrics.widthPixels;
+                            int screenHeight = metrics.heightPixels;
+                            /*
+                             * ImageUtil.decodeScaleImage 解析图片
+                             */
+                            Bitmap bitmap = ImageUtil.decodeScaleImage(s, screenWidth,
+                                screenHeight);
+                            RxJavaAsyncActivity.this.asyncRxOneIV.setImageBitmap(bitmap);
+                            RxJavaAsyncActivity.this.asyncRxTwoIV.setImageBitmap(bitmap);
+                        }
+                    });
                 break;
         }
     }
@@ -163,10 +165,10 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
      * 刷新Dialog显示的进度
      */
     private static class LoadingHandler extends Handler {
-        private final WeakReference<RxAsyncActivity> mActivity;
+        private final WeakReference<RxJavaAsyncActivity> mActivity;
 
 
-        public LoadingHandler(RxAsyncActivity activity) {
+        public LoadingHandler(RxJavaAsyncActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
 
@@ -175,7 +177,7 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
          * Subclasses must implement this to receive messages.
          */
         @Override public void handleMessage(Message msg) {
-            final RxAsyncActivity activity = this.mActivity.get();
+            final RxJavaAsyncActivity activity = this.mActivity.get();
             if (activity != null) {
                 switch (msg.what) {
                     case HANDLER_LOADING: {
@@ -202,13 +204,13 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
 
         private Activity activity;
         private String localFilePath;
-        private Subscriber<? super String> subscriber;
+        private FlowableEmitter<String> emitter;
 
 
-        public DownloadImageAsyncTask(Activity activity, Subscriber<? super String> subscriber) {
+        public DownloadImageAsyncTask(Activity activity, FlowableEmitter<String> emitter) {
             super();
             this.activity = activity;
-            this.subscriber = subscriber;
+            this.emitter = emitter;
         }
 
 
@@ -280,11 +282,12 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
          * @see #onCancelled(Object)
          */
         @Override protected void onPostExecute(String string) {
+            Log.d(TAG, "[localFilePath] = " + localFilePath);
             /**
              * 通知订阅者
              */
-            subscriber.onNext(localFilePath);
-            // subscriber.onCompleted();
+            emitter.onNext(localFilePath);
+            emitter.onComplete();
         }
 
 
@@ -299,11 +302,11 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
          */
         @Override protected void onProgressUpdate(Integer... values) {
             // 主线程Handler实例消息
-            Message message = RxAsyncActivity.this.loadingHandler.obtainMessage();
+            Message message = RxJavaAsyncActivity.this.loadingHandler.obtainMessage();
             message.obj = values[0];
             message.what = HANDLER_LOADING;
             // 给主线程Handler发送消息
-            RxAsyncActivity.this.loadingHandler.handleMessage(message);
+            RxJavaAsyncActivity.this.loadingHandler.handleMessage(message);
         }
 
 
@@ -334,7 +337,7 @@ public class RxAsyncActivity extends BaseAppCompatActivity implements View.OnCli
             /**
              * 设置按钮可用
              */
-            RxAsyncActivity.this.asyncRxSaveBT.setEnabled(true);
+            RxJavaAsyncActivity.this.asyncRxSaveBT.setEnabled(true);
             super.onCancelled();
         }
     }

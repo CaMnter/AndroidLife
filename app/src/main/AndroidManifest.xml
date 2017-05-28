@@ -204,13 +204,10 @@
             android:name=".ui.activity.xfermode.XfermodesActivity"
             android:label="XfermodesActivity"/>
         <activity
-            android:name=".ui.activity.rx.RxSyncActivity"
-            android:label="RxSyncActivity"/>
-        <activity
-            android:name=".ui.activity.rx.RxAsyncActivity"
+            android:name=".ui.activity.rxjava.RxJavaAsyncActivity"
             android:label="RxAsyncActivity"/>
         <activity
-            android:name=".ui.activity.rx.RxMapActivity"
+            android:name=".ui.activity.rxjava.RxJavaMapActivity"
             android:label="RxMapActivity"/>
         <activity
             android:name=".ui.activity.easylikearea.EasyLikeAreaTopicActivity"
