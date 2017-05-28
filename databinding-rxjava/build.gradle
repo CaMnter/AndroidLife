@@ -36,6 +36,7 @@ dependencies {
     provided rootProject.ext.denpendencies["rxjava2"]
     provided rootProject.ext.denpendencies["rxandroid2"]
     provided project(':databinding')
+    provided project(':rxjava2')
     provided project(':widget')
     provided project(':utils')
 }
