@@ -120,6 +120,9 @@ dependencies {
     androidTestCompile rootProject.ext.denpendencies["dexmaker-mockito"]
     androidTestCompile(rootProject.ext.denpendencies["espresso-core"], {
         exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'support-v7'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.google.code.findbugs'
     })
 
@@ -162,6 +165,7 @@ dependencies {
     compile project(':hotfix')
     compile project(':databinding')
     compile project(':widget')
+    compile project(':utils')
 }
 
 task nativeLibsToJar(type: Zip, description: 'create a jar archive of the native libs') {

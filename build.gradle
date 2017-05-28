@@ -28,6 +28,12 @@ allprojects {
         jcenter()
         maven { url 'http://android-mirror.bugly.qq.com:8080/' }
     }
+
+    // 有版本冲突的时候强制使用指定的版本，对于相关依赖也同样有效
+    configurations.all {
+        resolutionStrategy.force rootProject.ext.denpendencies["support-v7"]
+        resolutionStrategy.force rootProject.ext.denpendencies["support-v4"]
+    }
 }
 
 task cleanTask(type: Delete) {
