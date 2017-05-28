@@ -7,9 +7,9 @@ import android.widget.Toast;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.Tag;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
-import com.camnter.newlife.utils.ToastUtils;
 import com.camnter.newlife.widget.TagTextView;
 import com.camnter.newlife.widget.span.ClickableSpanNoUnderline;
+import com.camnter.utils.ToastUtils;
 import java.util.ArrayList;
 
 /**

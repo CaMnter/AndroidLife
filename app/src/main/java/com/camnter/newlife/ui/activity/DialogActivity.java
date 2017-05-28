@@ -5,9 +5,9 @@ import android.view.View;
 import android.widget.Toast;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
-import com.camnter.newlife.utils.ToastUtils;
 import com.camnter.newlife.widget.CustomDialog;
 import com.camnter.newlife.widget.MenuDialog;
+import com.camnter.utils.ToastUtils;
 
 /**
  * Description：DialogActivity

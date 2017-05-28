@@ -12,7 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
-import com.camnter.newlife.utils.BitmapUtils;
+import com.camnter.utils.BitmapUtils;
 
 /**
  * Description：RemoteViewsActivity

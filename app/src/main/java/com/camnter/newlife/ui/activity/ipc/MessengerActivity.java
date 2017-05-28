@@ -20,8 +20,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
-import com.camnter.newlife.utils.ToastUtils;
 import com.camnter.newlife.utils.ipc.MessengerService;
+import com.camnter.utils.ToastUtils;
 import java.util.ArrayList;
 
 import static com.camnter.newlife.utils.ipc.MessengerService.BUNDLE_SPARSE_PARCELABLE_BUNDLE;

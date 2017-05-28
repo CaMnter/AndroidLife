@@ -23,7 +23,7 @@ import android.widget.Toast;
 import com.camnter.databinding.view.BindingFragment;
 import com.camnter.newlife.R;
 import com.camnter.newlife.databinding.FragmentBaseMvvmBinding;
-import com.camnter.newlife.utils.ToastUtils;
+import com.camnter.utils.ToastUtils;
 import java.lang.reflect.Method;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;

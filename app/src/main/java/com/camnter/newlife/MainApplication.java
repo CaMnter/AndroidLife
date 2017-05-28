@@ -2,7 +2,7 @@ package com.camnter.newlife;
 
 import android.app.Application;
 import android.content.Context;
-import com.camnter.newlife.utils.AssetsUtils;
+import com.camnter.utils.AssetsUtils;
 import dodola.hotfix.HotFix;
 import java.io.File;
 

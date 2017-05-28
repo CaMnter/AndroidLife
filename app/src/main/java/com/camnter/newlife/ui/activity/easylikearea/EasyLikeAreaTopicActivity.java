@@ -28,7 +28,7 @@ import com.camnter.easylikearea.EasyLikeArea;
 import com.camnter.easylikearea.widget.EasyLikeImageView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.constant.Constant;
-import com.camnter.newlife.utils.GlideUtils;
+import com.camnter.utils.GlideUtils;
 
 /**
  * Description：EasyLikeAreaTopicActivity

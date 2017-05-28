@@ -1,6 +1,6 @@
 package com.camnter.newlife;
 
-import com.camnter.newlife.utils.Base64UtilsTest;
+import com.camnter.utils.Base64UtilsTest;
 import com.camnter.newlife.utils.ChineseUtilsTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

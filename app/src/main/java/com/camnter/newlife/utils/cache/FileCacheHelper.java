@@ -3,7 +3,7 @@ package com.camnter.newlife.utils.cache;
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.camnter.newlife.MainApplication;
-import com.camnter.newlife.utils.DeviceUtils;
+import com.camnter.utils.DeviceUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

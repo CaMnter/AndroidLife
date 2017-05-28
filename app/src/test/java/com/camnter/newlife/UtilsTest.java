@@ -1,6 +1,6 @@
 package com.camnter.newlife;
 
-import com.camnter.newlife.utils.Base64UtilsTest;
+import com.camnter.utils.Base64UtilsTest;
 import com.camnter.newlife.utils.ChineseUtilsTest;
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;

@@ -27,8 +27,8 @@ import android.widget.Toast;
 import com.camnter.databinding.view.BindingActivity;
 import com.camnter.newlife.R;
 import com.camnter.newlife.databinding.ActivityBaseMvvmBinding;
-import com.camnter.newlife.utils.ToastUtils;
 import com.camnter.newlife.widget.titilebar.TitleBar;
+import com.camnter.utils.ToastUtils;
 import java.lang.reflect.Method;
 
 /**

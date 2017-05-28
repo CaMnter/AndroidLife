@@ -1,4 +1,6 @@
-include ':app', ':databinding',
+include ':app',
+        ':databinding',
+        ':utils',
         ':widget',
         ':algorithm',
         ':databinding',

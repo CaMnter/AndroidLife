@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
-import com.camnter.newlife.utils.ReflectionUtils;
+import com.camnter.utils.ReflectionUtils;
 
 /**
  * Description：ReflectionUtilActivity

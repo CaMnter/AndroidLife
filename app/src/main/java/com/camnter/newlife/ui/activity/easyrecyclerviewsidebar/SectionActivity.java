@@ -30,7 +30,7 @@ import com.camnter.newlife.adapter.easyrecyclerviewsidebar.CircleImageSectionAda
 import com.camnter.newlife.adapter.easyrecyclerviewsidebar.SectionAdapter;
 import com.camnter.newlife.bean.Contacts;
 import com.camnter.newlife.constant.Constant;
-import com.camnter.newlife.utils.GlideUtils;
+import com.camnter.utils.GlideUtils;
 import java.util.List;
 
 /**

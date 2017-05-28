@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
-import com.camnter.newlife.utils.ToastUtils;
 import com.camnter.newlife.utils.otto.BusProvider;
 import com.camnter.otto.Produce;
 import com.camnter.otto.Subscribe;
+import com.camnter.utils.ToastUtils;
 
 /**
  * Description：OttoActivity

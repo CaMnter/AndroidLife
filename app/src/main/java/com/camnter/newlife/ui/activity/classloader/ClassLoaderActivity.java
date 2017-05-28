@@ -7,7 +7,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
-import com.camnter.newlife.utils.DeviceUtils;
+import com.camnter.utils.DeviceUtils;
 
 /**
  * Description：ClassLoaderActivity

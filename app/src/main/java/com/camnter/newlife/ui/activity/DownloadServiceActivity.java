@@ -16,7 +16,7 @@ import com.camnter.newlife.R;
 import com.camnter.newlife.component.service.DownloadService;
 import com.camnter.newlife.component.service.IBinderView;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
-import com.camnter.newlife.utils.ImageUtil;
+import com.camnter.utils.ImageUtil;
 
 /**
  * Description：DownloadServiceActivity

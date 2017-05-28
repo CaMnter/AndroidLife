@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
-import com.camnter.newlife.utils.DateUtils;
+import com.camnter.utils.DateUtils;
 import java.util.Date;
 
 /**

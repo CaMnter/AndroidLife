@@ -27,7 +27,7 @@ import com.camnter.easyrecyclerviewsidebar.sections.EasyImageSection;
 import com.camnter.easyrecyclerviewsidebar.sections.EasySection;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.Contacts;
-import com.camnter.newlife.utils.GlideUtils;
+import com.camnter.utils.GlideUtils;
 import java.util.ArrayList;
 import java.util.List;
 

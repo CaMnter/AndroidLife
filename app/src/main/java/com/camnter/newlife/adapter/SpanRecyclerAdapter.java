@@ -49,8 +49,8 @@ import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.newlife.R;
 import com.camnter.newlife.bean.SpanData;
-import com.camnter.newlife.utils.ResourcesUtils;
 import com.camnter.newlife.widget.span.ClickableSpanNoUnderline;
+import com.camnter.utils.ResourcesUtils;
 
 /**
  * Description：SpanRecyclerAdapter

@@ -10,7 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
-import com.camnter.newlife.utils.DeviceUtils;
+import com.camnter.utils.DeviceUtils;
 
 /**
  * Description：DeviceUtilActivity

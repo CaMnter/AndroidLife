@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
-import com.camnter.newlife.utils.ResourcesUtils;
+import com.camnter.utils.ResourcesUtils;
 
 /**
  * Description：ResourcesUtilActivity

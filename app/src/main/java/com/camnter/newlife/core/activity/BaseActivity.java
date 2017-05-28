@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 import com.camnter.newlife.R;
-import com.camnter.newlife.utils.ToastUtils;
+import com.camnter.utils.ToastUtils;
 
 /**
  * Description：BaseActivity
