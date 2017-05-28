@@ -31,6 +31,11 @@ public abstract class BindingAdapter<T> extends RecyclerView.Adapter<BindingHold
     }
 
 
+    public Context getContext() {
+        return this.context;
+    }
+
+
     /**
      * Please return RecyclerView loading layout Id array
      * 请返回 RecyclerView 加载的布局 Id 数组
@@ -87,10 +92,13 @@ public abstract class BindingAdapter<T> extends RecyclerView.Adapter<BindingHold
 
     @Override
     public void onBindViewHolder(BindingHolder holder, int position) {
-        final T itemValue = this.list.get(position);
+        T itemValue = null;
         final ViewDataBinding binding = holder.getBinding();
-        binding.setVariable(BR.position, position);
-        binding.setVariable(BR.itemValue, itemValue);
+        if (position < this.list.size()) {
+            itemValue = this.list.get(position);
+        }
+        binding.setVariable(com.camnter.databinding.BR.position, position);
+        binding.setVariable(com.camnter.databinding.BR.itemValue, itemValue);
         binding.executePendingBindings();
     }
 
@@ -148,6 +156,7 @@ public abstract class BindingAdapter<T> extends RecyclerView.Adapter<BindingHold
 
     public void addAll(@NonNull final Collection<T> list) {
         this.list.addAll(list);
+        this.notifyDataSetChanged();
     }
 
 }
