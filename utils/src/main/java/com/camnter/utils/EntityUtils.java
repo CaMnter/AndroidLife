@@ -1,5 +1,7 @@
 package com.camnter.utils;
 
+import android.support.annotation.NonNull;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,10 +12,6 @@ import java.util.List;
  */
 
 public final class EntityUtils {
-
-    private static final String GET = "get";
-    private static final String SET = "set";
-
 
     /**
      * 利用反射实现对象之间属性复制
@@ -40,43 +38,21 @@ public final class EntityUtils {
         if (excludeArray != null && excludeArray.length > 0) {
             excludesList = Arrays.asList(excludeArray);
         }
-        Method[] fromMethods = from.getClass().getDeclaredMethods();
-        Method[] toMethods = to.getClass().getDeclaredMethods();
-        Method fromMethod, toMethod;
-        String fromMethodName, toMethodName;
-        for (Method fMethod : fromMethods) {
-            fromMethod = fMethod;
-            fromMethodName = fromMethod.getName();
-            if (!fromMethodName.contains(GET)) {
-                continue;
-            }
-            // 排除列表检测
-            String upperFieldName;
-            if (excludesList != null &&
-                excludesList.contains(
-                    (upperFieldName = fromMethodName.substring(GET.length())).substring(0, 1)
-                        .toLowerCase() + upperFieldName.substring(1)
-                )) {
-                continue;
-            }
+        Class fromClass = from.getClass();
+        Class toClass = to.getClass();
+        Field[] fromFields = fromClass.getDeclaredFields();
+        Field[] toFields = toClass.getDeclaredFields();
 
-            toMethodName = SET + fromMethodName.substring(SET.length());
-            toMethod = findMethodByName(toMethods, toMethodName);
-            if (toMethod == null) {
+        for (Field fromField : fromFields) {
+            fromField.setAccessible(true);
+            String fromFieldName = fromField.getName();
+            Field toField;
+            if ((excludesList != null && excludesList.contains(fromFieldName)) ||
+                (toField = findFieldByName(toFields, fromFieldName)) == null) {
                 continue;
             }
-            Object value = fromMethod.invoke(from);
-            if (value == null) {
-                continue;
-            }
-            // 集合类判空处理
-            if (value instanceof Collection) {
-                Collection newValue = (Collection) value;
-                if (newValue.size() <= 0) {
-                    continue;
-                }
-            }
-            toMethod.invoke(to, value);
+            toField.setAccessible(true);
+            toField.set(to, fromField.get(from));
         }
     }
 
@@ -98,45 +74,36 @@ public final class EntityUtils {
         } else {
             return;
         }
-        Method[] fromMethods = from.getClass().getDeclaredMethods();
-        Method[] toMethods = to.getClass().getDeclaredMethods();
-        Method fromMethod, toMethod;
-        String fromMethodName, toMethodName;
-        for (Method fMethod : fromMethods) {
-            fromMethod = fMethod;
-            fromMethodName = fromMethod.getName();
-            if (!fromMethodName.contains(GET)) {
-                continue;
-            }
-            String upperFieldName;
-            if (!includesList.contains(
-                (upperFieldName = fromMethodName.substring(GET.length())).substring(0, 1).toLowerCase() +
-                    upperFieldName.substring(1))) {
-                continue;
-            }
-            toMethodName = SET + fromMethodName.substring(SET.length());
-            toMethod = findMethodByName(toMethods, toMethodName);
-            if (toMethod == null) {
-                continue;
-            }
-            Object value = fromMethod.invoke(from);
-            if (value == null) {
+
+        Class fromClass = from.getClass();
+        Class toClass = to.getClass();
+        Field[] fromFields = fromClass.getDeclaredFields();
+        Field[] toFields = toClass.getDeclaredFields();
+
+        for (Field fromField : fromFields) {
+            fromField.setAccessible(true);
+            String fromFieldName = fromField.getName();
+            Field toField;
+            if (!includesList.contains(fromFieldName) ||
+                (toField = findFieldByName(toFields, fromFieldName)) == null) {
                 continue;
             }
             // 集合类判空处理
-            if (value instanceof Collection) {
-                Collection newValue = (Collection) value;
+            Object fromValue = fromField.get(from);
+            if (fromValue instanceof Collection) {
+                Collection newValue = (Collection) fromValue;
                 if (newValue.size() <= 0) {
                     continue;
                 }
             }
-            toMethod.invoke(to, value);
+            toField.setAccessible(true);
+            toField.set(to, fromField.get(from));
         }
     }
 
 
     /**
-     * 从方法数组中获取指定名称的方法
+     * 从方法数组中获取指定名称的 方法
      *
      * @param methods methods
      * @param name name
@@ -146,6 +113,24 @@ public final class EntityUtils {
         for (Method method : methods) {
             if (method.getName().equals(name)) {
                 return method;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * 从方法数组中获取指定名称的 属性
+     *
+     * @param fields fields
+     * @param name name
+     * @return Field
+     */
+    private static Field findFieldByName(@NonNull final Field[] fields,
+                                         @NonNull final String name) {
+        for (Field field : fields) {
+            if (field.getName().equals(name)) {
+                return field;
             }
         }
         return null;
