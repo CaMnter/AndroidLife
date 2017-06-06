@@ -11,6 +11,10 @@ import java.util.List;
 
 public final class EntityUtils {
 
+    private static final String GET = "get";
+    private static final String SET = "set";
+
+
     /**
      * 利用反射实现对象之间属性复制
      *
@@ -30,12 +34,10 @@ public final class EntityUtils {
      * @param excludeArray 排除属性列表
      * @throws Exception exception
      */
-    @SuppressWarnings("unchecked")
     public static void copyPropertiesExclude(Object from, Object to, String[] excludeArray) throws
                                                                                             Exception {
         List<String> excludesList = null;
         if (excludeArray != null && excludeArray.length > 0) {
-            // 构造列表对象
             excludesList = Arrays.asList(excludeArray);
         }
         Method[] fromMethods = from.getClass().getDeclaredMethods();
@@ -45,15 +47,20 @@ public final class EntityUtils {
         for (Method fMethod : fromMethods) {
             fromMethod = fMethod;
             fromMethodName = fromMethod.getName();
-            if (!fromMethodName.contains("get")) {
+            if (!fromMethodName.contains(GET)) {
                 continue;
             }
             // 排除列表检测
+            String upperFieldName;
             if (excludesList != null &&
-                excludesList.contains(fromMethodName.substring(3).toLowerCase())) {
+                excludesList.contains(
+                    (upperFieldName = fromMethodName.substring(GET.length())).substring(0, 1)
+                        .toLowerCase() + upperFieldName.substring(1)
+                )) {
                 continue;
             }
-            toMethodName = "set" + fromMethodName.substring(3);
+
+            toMethodName = SET + fromMethodName.substring(SET.length());
             toMethod = findMethodByName(toMethods, toMethodName);
             if (toMethod == null) {
                 continue;
@@ -75,7 +82,6 @@ public final class EntityUtils {
 
 
     /**
-     * e
      * 对象属性值复制，仅复制指定名称的属性值
      *
      * @param from from
@@ -88,7 +94,6 @@ public final class EntityUtils {
                                                                                             Exception {
         List<String> includesList;
         if (includeArray != null && includeArray.length > 0) {
-            // 构造列表对象
             includesList = Arrays.asList(includeArray);
         } else {
             return;
@@ -97,18 +102,19 @@ public final class EntityUtils {
         Method[] toMethods = to.getClass().getDeclaredMethods();
         Method fromMethod, toMethod;
         String fromMethodName, toMethodName;
-        for (Method tempFromMethod : fromMethods) {
-            fromMethod = tempFromMethod;
+        for (Method fMethod : fromMethods) {
+            fromMethod = fMethod;
             fromMethodName = fromMethod.getName();
-            if (!fromMethodName.contains("get")) {
+            if (!fromMethodName.contains(GET)) {
                 continue;
             }
-            // 排除列表检测
-            String str = fromMethodName.substring(3);
-            if (!includesList.contains(str.substring(0, 1).toLowerCase() + str.substring(1))) {
+            String upperFieldName;
+            if (!includesList.contains(
+                (upperFieldName = fromMethodName.substring(GET.length())).substring(0, 1).toLowerCase() +
+                    upperFieldName.substring(1))) {
                 continue;
             }
-            toMethodName = "set" + fromMethodName.substring(3);
+            toMethodName = SET + fromMethodName.substring(SET.length());
             toMethod = findMethodByName(toMethods, toMethodName);
             if (toMethod == null) {
                 continue;
@@ -136,7 +142,7 @@ public final class EntityUtils {
      * @param name name
      * @return Method
      */
-    public static Method findMethodByName(Method[] methods, String name) {
+    private static Method findMethodByName(Method[] methods, String name) {
         for (Method method : methods) {
             if (method.getName().equals(name)) {
                 return method;
