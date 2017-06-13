@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 import com.camnter.annotation.processor.annotation.Save;
+import com.camnter.annotation.processor.annotation.SaveActivity;
+import com.camnter.annotation.processor.annotation.SaveView;
 import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
@@ -52,12 +54,15 @@ import com.camnter.newlife.ui.databinding.view.RatingRankActivity;
 import java.util.ArrayList;
 
 @Save
+@SaveActivity
 public class MainActivity extends BaseAppCompatActivity {
 
     protected ArrayList<Class> classes;
     protected boolean showTag = true;
-    private EasyRecyclerView menuList;
     private MenuRecyclerViewAdapter adapter;
+
+    @SaveView(R.id.menu_list)
+    public EasyRecyclerView menuRecyclerView;
 
 
     /**
@@ -76,8 +81,10 @@ public class MainActivity extends BaseAppCompatActivity {
      * @param savedInstanceState savedInstanceState
      */
     @Override protected void initViews(Bundle savedInstanceState) {
-        this.menuList = this.findView(R.id.menu_list);
-        this.menuList.addItemDecoration(
+        // SaveView
+        MainActivitySave.saveView(this);
+        this.menuRecyclerView = this.findView(R.id.menu_list);
+        this.menuRecyclerView.addItemDecoration(
             new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST));
     }
 
@@ -101,7 +108,7 @@ public class MainActivity extends BaseAppCompatActivity {
         this.setListData();
         this.adapter = new MenuRecyclerViewAdapter();
         this.adapter.setList(classes);
-        this.menuList.setAdapter(adapter);
+        this.menuRecyclerView.setAdapter(adapter);
         this.replaceAppIcon();
     }
 
@@ -113,7 +120,7 @@ public class MainActivity extends BaseAppCompatActivity {
         final PackageManager packageManager = this.getApplicationContext().getPackageManager();
 
         // this.disableComponent(packageManager,defaultComponentName);
-        this.enableComponent(packageManager,newComponentName);
+        this.enableComponent(packageManager, newComponentName);
     }
 
 

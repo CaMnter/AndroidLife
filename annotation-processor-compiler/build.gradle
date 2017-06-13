@@ -9,5 +9,5 @@ dependencies {
     compile project(':annotation-processor-annotation')
 }
 
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
