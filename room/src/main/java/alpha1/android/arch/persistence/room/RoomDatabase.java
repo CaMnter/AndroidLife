@@ -35,13 +35,13 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Base class for all Room databases. All classes that are annotated with {@link Database} must
+ * Base class for all Room databases. All classes that are annotated with {link Database} must
  * extend this class.
  * <p>
  * RoomDatabase provides direct access to the underlying database implementation but you should
- * prefer using {@link Dao} classes.
+ * prefer using {link Dao} classes.
  *
- * @see Database
+ * see Database
  */
 @SuppressWarnings({ "unused", "WeakerAccess" })
 public abstract class RoomDatabase {
