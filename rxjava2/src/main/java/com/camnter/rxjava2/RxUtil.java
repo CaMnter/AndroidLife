@@ -26,8 +26,44 @@ public class RxUtil {
     }
 
 
+    private static <T> FlowableTransformer<T, T> createMainToMainThreadScheduler() {
+        return new FlowableTransformer<T, T>() {
+            @Override
+            public Publisher<T> apply(@NonNull Flowable<T> upstream) {
+                return upstream.subscribeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(
+                        Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread());
+            }
+        };
+    }
+
+
+    private static <T> FlowableTransformer<T, T> createIOToIOThreadScheduler() {
+        return new FlowableTransformer<T, T>() {
+            @Override
+            public Publisher<T> apply(@NonNull Flowable<T> upstream) {
+                return upstream.subscribeOn(Schedulers.io())
+                    .unsubscribeOn(
+                        Schedulers.computation())
+                    .observeOn(Schedulers.io());
+            }
+        };
+    }
+
+
     public static <T> FlowableTransformer<T, T> applyIOToMainThreadSchedulers() {
         return createIOToMainThreadScheduler();
+    }
+
+
+    public static <T> FlowableTransformer<T, T> applyMainToMainThreadSchedulers() {
+        return createMainToMainThreadScheduler();
+    }
+
+
+    public static <T> FlowableTransformer<T, T> applyIOToIOThreadSchedulers() {
+        return createIOToIOThreadScheduler();
     }
 
 }
