@@ -35,6 +35,7 @@ dependencies {
     provided rootProject.ext.denpendencies["support-v7"]
     provided rootProject.ext.denpendencies["rxjava2"]
     provided rootProject.ext.denpendencies["rxandroid2"]
+    testProvided rootProject.ext.denpendencies["junit"]
     provided project(':databinding')
     provided project(':rxjava2')
     provided project(':widget')
