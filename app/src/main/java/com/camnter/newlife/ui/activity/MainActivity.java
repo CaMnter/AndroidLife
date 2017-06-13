@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
+import com.camnter.annotation.processor.annotation.Save;
 import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
@@ -34,10 +35,10 @@ import com.camnter.newlife.ui.activity.easyrecyclerviewsidebar.CircleImageSectio
 import com.camnter.newlife.ui.activity.easyrecyclerviewsidebar.LetterSectionActivity;
 import com.camnter.newlife.ui.activity.easyrecyclerviewsidebar.RoundImageSectionActivity;
 import com.camnter.newlife.ui.activity.hotfix.HotFixActivity;
+import com.camnter.newlife.ui.activity.ipc.AIDLActivity;
 import com.camnter.newlife.ui.activity.ipc.MessengerActivity;
 import com.camnter.newlife.ui.activity.jsbridge.JsBridgeActivity;
 import com.camnter.newlife.ui.activity.lrucache.LruCacheActivity;
-import com.camnter.newlife.ui.activity.ipc.AIDLActivity;
 import com.camnter.newlife.ui.activity.rxjava.RxJavaAsyncActivity;
 import com.camnter.newlife.ui.activity.rxjava.RxJavaMapActivity;
 import com.camnter.newlife.ui.activity.singletask.LaunchModeActivity;
@@ -50,6 +51,7 @@ import com.camnter.newlife.ui.activity.xfermode.XfermodesActivity;
 import com.camnter.newlife.ui.databinding.view.RatingRankActivity;
 import java.util.ArrayList;
 
+@Save
 public class MainActivity extends BaseAppCompatActivity {
 
     protected ArrayList<Class> classes;

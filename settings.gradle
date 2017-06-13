@@ -1,4 +1,8 @@
 include ':app',
+
+        ':annotation-processor-annotation',
+        ':annotation-processor-compiler',
+
         ':room',
         ':rxjava2',
 

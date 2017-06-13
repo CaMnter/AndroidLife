@@ -168,6 +168,11 @@ dependencies {
     compile project(':databinding-rxjava')
     compile project(':widget')
     compile project(':utils')
+    testCompile project(':utils')
+    compile project(':annotation-processor-annotation')
+
+    // annotation-processor-compiler
+    annotationProcessor project(':annotation-processor-compiler')
 }
 
 task nativeLibsToJar(type: Zip, description: 'create a jar archive of the native libs') {

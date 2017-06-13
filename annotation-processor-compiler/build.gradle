@@ -1,0 +1,13 @@
+apply plugin: 'java'
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    // AutoService 主要的作用是注解 processor 类，并对其生成 META-INF 的配置信息
+    compile 'com.google.auto.service:auto-service:1.0-rc2'
+    // JavaPoet 主要作用就是帮助我们通过类调用的形式来生成代码
+    compile 'com.squareup:javapoet:1.7.0'
+    compile project(':annotation-processor-annotation')
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
