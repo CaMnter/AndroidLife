@@ -1,4 +1,4 @@
-package com.camnter.newlife.utils;
+package com.camnter.utils;
 
 import org.junit.Test;
 

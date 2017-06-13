@@ -1,11 +1,11 @@
-package com.camnter.newlife;
+package com.camnter.utils;
 
-import com.camnter.newlife.bean.Contacts;
-import com.camnter.newlife.bean.Tag;
+import android.text.TextUtils;
 import java.util.LinkedList;
 import java.util.List;
 import junit.framework.TestCase;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -14,7 +14,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.doReturn;
@@ -34,6 +33,65 @@ import static org.mockito.Mockito.when;
  */
 
 public class MockitoTest extends TestCase {
+
+    public class Contacts {
+
+        public int resId;
+        public String name;
+        String pinyin;
+        String header;
+        public boolean top = false;
+
+
+        void setHeader(String header) {
+            this.header = header;
+        }
+
+
+        public String getHeader() {
+            if (this.header != null) return this.header;
+            if (TextUtils.isEmpty(this.pinyin) || Character.isDigit(this.pinyin.charAt(0))) {
+                this.header = null;
+            } else {
+                this.header = this.pinyin.substring(0, 1).toUpperCase();
+                char temp = this.header.charAt(0);
+                if (temp < 'A' || temp > 'Z') {
+                    this.header = "#";
+                }
+            }
+            return this.header;
+        }
+
+    }
+
+
+    private class Tag {
+
+        private Long id;
+        private String content;
+
+
+        public Long getId() {
+            return id;
+        }
+
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+
+        String getContent() {
+            return content;
+        }
+
+
+        void setContent(String content) {
+            this.content = content;
+        }
+
+    }
+
 
     private static final String MOCK_TEXT = "CaMnter";
 
@@ -110,7 +168,7 @@ public class MockitoTest extends TestCase {
         LinkedList mockedList = mock(LinkedList.class);
 
         //使用内建anyInt()参数匹配器
-        when(mockedList.get(anyInt())).thenReturn("element");
+        when(mockedList.get(ArgumentMatchers.anyInt())).thenReturn("element");
 
         //使用自定义匹配器( 这里的 isValid() 返回自己的匹配器实现 )
         when(mockedList.contains(argThat(null))).thenReturn(false);
@@ -119,7 +177,7 @@ public class MockitoTest extends TestCase {
         System.out.println(mockedList.get(999));
 
         // 同样可以用参数匹配器做验证
-        verify(mockedList).get(anyInt());
+        verify(mockedList).get(ArgumentMatchers.anyInt());
     }
 
 
