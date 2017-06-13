@@ -11,7 +11,7 @@ import org.reactivestreams.Publisher;
 /**
  * @author CaMnter
  */
-public class RxUtil {
+public final class RxUtil {
 
     private static <T> FlowableTransformer<T, T> createIOToMainThreadScheduler() {
         return new FlowableTransformer<T, T>() {
