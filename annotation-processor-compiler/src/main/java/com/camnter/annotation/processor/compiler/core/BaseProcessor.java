@@ -34,17 +34,17 @@ public abstract class BaseProcessor extends AbstractProcessor {
     }
 
 
-    protected void e(String messageFormat, Object... args) {
+    public void e(String messageFormat, Object... args) {
         this.messager.printMessage(Diagnostic.Kind.ERROR, String.format(messageFormat, args));
     }
 
 
-    protected void i(String messageFormat, Object... args) {
+    public void i(String messageFormat, Object... args) {
         this.messager.printMessage(Diagnostic.Kind.NOTE, String.format(messageFormat, args));
     }
 
 
-    protected void w(String messageFormat, Object... args) {
+    public void w(String messageFormat, Object... args) {
         this.messager.printMessage(Diagnostic.Kind.WARNING, String.format(messageFormat, args));
     }
 

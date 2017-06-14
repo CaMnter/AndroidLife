@@ -1,6 +1,7 @@
 package com.camnter.annotation.processor.compiler.simple;
 
 import com.camnter.annotation.processor.annotation.SaveView;
+import com.camnter.annotation.processor.compiler.core.BaseProcessor;
 import com.camnter.annotation.processor.compiler.core.MethodCompiler;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
@@ -16,18 +17,21 @@ import javax.lang.model.element.TypeElement;
 
 class SaveViewCompiler implements MethodCompiler {
 
+    private final BaseProcessor baseProcessor;
     private final TypeElement annotationElement;
     private final List<? extends Element> memberList;
 
 
-    SaveViewCompiler(TypeElement annotationElement,
+    SaveViewCompiler(BaseProcessor baseProcessor, TypeElement annotationElement,
                      List<? extends Element> memberList) {
+        this.baseProcessor = baseProcessor;
         this.annotationElement = annotationElement;
         this.memberList = memberList;
     }
 
 
-    @Override public MethodSpec.Builder compile() {
+    @Override
+    public MethodSpec.Builder compile() {
         MethodSpec.Builder saveViewMethodBuilder = MethodSpec
             .methodBuilder("saveView")
             .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
@@ -39,6 +43,11 @@ class SaveViewCompiler implements MethodCompiler {
             if (saveView == null) {
                 continue;
             }
+            this.baseProcessor.i(
+                ">>>>>>>> >>>>>>> [annotationElement] = [%1$s]    [ClassName.get(member.asType()).toString()] = [%2$s]\n\n",
+                annotationElement.getQualifiedName(),
+                ClassName.get(member.asType()).toString()
+            );
             saveViewMethodBuilder.addStatement(
                 String.format("activity.%s = (%s) activity.findViewById(%s)",
                         /* Simple view name */

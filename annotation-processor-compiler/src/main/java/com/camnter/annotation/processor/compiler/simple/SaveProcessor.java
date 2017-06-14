@@ -48,17 +48,18 @@ public class SaveProcessor extends BaseProcessor {
      */
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        this.i(">>>>>>>> [SaveProcessor]   [process] :");
         Set<? extends Element> elementSet = roundEnv.getElementsAnnotatedWith(SaveActivity.class);
         for (Element element : elementSet) {
             // SaveActivity 注解的类
             TypeElement annotationElement = (TypeElement) element;
             List<? extends Element> memberList = this.elements.getAllMembers(annotationElement);
-            this.i(">>>>>>>> [annotationElement] = [%1$s]",
-                annotationElement.getQualifiedName());
             TypeSpec classType = new SaveClassCompiler(
                 annotationElement,
-                new SaveViewCompiler(annotationElement, memberList).compile()
+                new SaveViewCompiler(
+                    this,
+                    annotationElement,
+                    memberList
+                ).compile()
             ).compile();
             JavaFile javaFile = JavaFile
                 .builder(this.getPackageName(annotationElement), classType)
