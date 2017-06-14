@@ -1,4 +1,4 @@
-package com.camnter.annotation.processor.compiler;
+package com.camnter.annotation.processor.compiler.core;
 
 import com.squareup.javapoet.MethodSpec;
 
@@ -6,7 +6,7 @@ import com.squareup.javapoet.MethodSpec;
  * @author CaMnter
  */
 
-interface MethodCompiler {
+public interface MethodCompiler {
 
     MethodSpec.Builder compile();
 

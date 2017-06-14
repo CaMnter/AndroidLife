@@ -1,4 +1,4 @@
-package com.camnter.annotation.processor.compiler;
+package com.camnter.annotation.processor.compiler.core;
 
 import com.squareup.javapoet.TypeSpec;
 

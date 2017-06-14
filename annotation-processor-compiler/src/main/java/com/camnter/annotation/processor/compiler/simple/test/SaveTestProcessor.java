@@ -1,4 +1,4 @@
-package com.camnter.annotation.processor.compiler;
+package com.camnter.annotation.processor.compiler.simple.test;
 
 import com.camnter.annotation.processor.annotation.Save;
 import com.google.auto.service.AutoService;
@@ -27,10 +27,12 @@ public class SaveTestProcessor extends AbstractProcessor {
         return Collections.singleton(Save.class.getCanonicalName());
     }
 
+
     @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.RELEASE_8;
     }
+
 
     /**
      * {@inheritDoc}
@@ -55,7 +57,7 @@ public class SaveTestProcessor extends AbstractProcessor {
         try {
             javaFile.writeTo(this.processingEnv.getFiler());
         } catch (IOException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
         return false;
     }
