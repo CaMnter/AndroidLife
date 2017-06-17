@@ -1,5 +1,6 @@
 package com.camnter.newlife.widget.listener;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -10,6 +11,8 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -95,10 +98,10 @@ public class ScreenShotListener {
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
 
-    private ScreenShotListener(Context context) {
+    private ScreenShotListener(@Nullable final Context context) {
         if (context == null) {
             throw new IllegalArgumentException(
-                "[" + TAG + "]   [ScreenShotListener]   [Context] = " + context);
+                "[" + TAG + "]   [ScreenShotListener]   [Context] = null");
         }
         this.context = context;
 
@@ -115,7 +118,7 @@ public class ScreenShotListener {
     }
 
 
-    public static ScreenShotListener newInstance(Context context) {
+    public static ScreenShotListener newInstance(@NonNull final Context context) {
         assertInMainThread();
         return new ScreenShotListener(context);
     }
@@ -170,7 +173,7 @@ public class ScreenShotListener {
     }
 
 
-    private void handleMediaContentChange(Uri contentUri) {
+    private void handleMediaContentChange(@NonNull final Uri contentUri) {
         Cursor cursor = null;
         try {
             // 数据改变时查询数据库中最后加入的一条数据
@@ -221,7 +224,6 @@ public class ScreenShotListener {
 
         } catch (Exception e) {
             e.printStackTrace();
-
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -260,10 +262,31 @@ public class ScreenShotListener {
     }
 
 
+    private boolean isScreenShotRunning(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(
+            Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> runningServiceInfos
+            = activityManager.getRunningServices(200);
+        for (ActivityManager.RunningServiceInfo runningServiceInfo : runningServiceInfos) {
+            if (runningServiceInfo.process.equals("com.android.systemui:screenshot")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     /**
      * 判断指定的数据行是否符合截屏条件
      */
     private boolean checkScreenShot(String data, long dateTaken, int width, int height) {
+
+        // 截图进程判断
+        if (isScreenShotRunning(this.context)) {
+            Log.e(TAG, "[isScreenShotRunning] = false");
+            return false;
+        }
+
         /*
          * 时间判断
          */
@@ -302,6 +325,8 @@ public class ScreenShotListener {
             }
         }
         Log.e(TAG, "[checkScreenShot]   data (path) invalid");
+
+        // TODO 轮询 + 延迟策略
         return false;
     }
 
@@ -315,7 +340,7 @@ public class ScreenShotListener {
             Log.e(TAG, "[checkCallback]   imagePath invalid");
             return true;
         }
-        // 大概缓存 15~20 条记录
+        // 大概缓存 不超过 20 条
         if (this.hasCallbackPaths.size() >= 20) {
             for (int i = 0; i < 5; i++) {
                 this.hasCallbackPaths.remove(0);
@@ -367,7 +392,7 @@ public class ScreenShotListener {
 
 
     public interface OnScreenShotListener {
-        void onShot(String imagePath);
+        void onShot(@NonNull final String imagePath);
     }
 
 
@@ -398,6 +423,8 @@ public class ScreenShotListener {
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
+            Log.e(TAG,
+                "[MediaContentObserver]   [onChange]   [contentUri] = " + contentUri.toString());
             handleMediaContentChange(contentUri);
         }
     }
