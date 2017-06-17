@@ -1,5 +1,6 @@
 package com.camnter.newlife.ui.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.camnter.annotation.processor.annotation.Save;
 import com.camnter.annotation.processor.annotation.SaveActivity;
 import com.camnter.annotation.processor.annotation.SaveView;
@@ -51,18 +53,26 @@ import com.camnter.newlife.ui.activity.util.ReflectionUtilActivity;
 import com.camnter.newlife.ui.activity.util.ResourcesUtilActivity;
 import com.camnter.newlife.ui.activity.xfermode.XfermodesActivity;
 import com.camnter.newlife.ui.databinding.view.RatingRankActivity;
+import com.camnter.newlife.utils.permissions.AppSettingsDialog;
+import com.camnter.newlife.utils.permissions.EasyPermissions;
+import com.camnter.newlife.widget.autoresizetextview.Log;
+import com.camnter.newlife.widget.listener.ScreenShotListener;
 import java.util.ArrayList;
+import java.util.List;
 
 @Save
 @SaveActivity
-public class MainActivity extends BaseAppCompatActivity {
+public class MainActivity extends BaseAppCompatActivity
+    implements EasyPermissions.PermissionCallbacks {
 
+    private static final int RC_STORAGE_PERM = 2331;
     protected ArrayList<Class> classes;
     protected boolean showTag = true;
     private MenuRecyclerViewAdapter adapter;
 
     @SaveView(R.id.menu_list)
     public EasyRecyclerView menuRecyclerView;
+    private ScreenShotListener screenShotListener;
 
 
     /**
@@ -86,6 +96,16 @@ public class MainActivity extends BaseAppCompatActivity {
         this.menuRecyclerView = this.findView(R.id.menu_list);
         this.menuRecyclerView.addItemDecoration(
             new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST));
+
+        this.storagePermissions();
+        this.screenShotListener = ScreenShotListener.newInstance(this);
+        this.screenShotListener.start();
+
+        this.screenShotListener.setListener((imagePath) -> {
+                Log.d("[imagePath] = " + imagePath);
+                this.showToast(imagePath, Toast.LENGTH_LONG);
+            }
+        );
     }
 
 
@@ -245,6 +265,50 @@ public class MainActivity extends BaseAppCompatActivity {
 
         @Override public int getRecycleViewItemType(int i) {
             return 0;
+        }
+    }
+
+
+    public void storagePermissions() {
+        String[] perms = { Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE };
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            // Have permissions, do the thing!
+            Toast.makeText(this, "TODO: Location and Contacts things", Toast.LENGTH_LONG).show();
+        } else {
+            // Ask for both permissions
+            EasyPermissions.requestPermissions(this,
+                " SD 卡权限",
+                RC_STORAGE_PERM, perms);
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+
+    @Override protected void onDestroy() {
+        this.screenShotListener.stop();
+        super.onDestroy();
+    }
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        this.showToast("onPermissionsGranted:" + requestCode + ":" + perms.size());
+    }
+
+
+    @Override public void onPermissionsDenied(int requestCode, List<String> perms) {
+        this.showToast("onPermissionsDenied:" + requestCode + ":" + perms.size());
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this).build().show();
         }
     }
 

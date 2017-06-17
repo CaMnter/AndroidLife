@@ -249,14 +249,6 @@
             android:name=".ui.activity.tabalphaview.TabAlphaViewActivity"
             android:label="TabAlphaViewActivity"/>
 
-        <activity
-            android:name="me.drakeet.newlife.RxBusActivity"
-            android:label="RxBusActivity"/>
-
-        <activity
-            android:name="me.drakeet.newlife.RxBusConsumerActivity"
-            android:label="RxBusConsumerActivity"/>
-
         <service android:name=".component.service.DownloadService"/>
         <service android:name=".component.service.DownloadIntentService"/>
 
