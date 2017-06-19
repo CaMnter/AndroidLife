@@ -1,6 +1,5 @@
 package com.camnter.newlife.widget.listener;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -13,6 +12,8 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
+import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -20,6 +21,10 @@ import android.view.WindowManager;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static android.R.attr.y;
 
 /**
  * // Requires Permission: android.permission.READ_EXTERNAL_STORAGE
@@ -40,9 +45,18 @@ import java.util.List;
  *
  * @author CaMnter
  */
-public class ScreenShotListener {
+public class ScreenshotsListener {
 
     private static final String TAG = "ScreenShotListener";
+
+    /**
+     * 最大轮询时间
+     */
+    private static final int MAX_POLLING_DECODE_TIME = 500;
+    /**
+     * 轮询间隔
+     */
+    private static final int MAX_POLLING_DECODE_STEP = 100;
 
     /**
      * 读取媒体数据库时需要读取的列
@@ -96,9 +110,12 @@ public class ScreenShotListener {
     private MediaContentObserver externalObserver;
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final ExecutorService processExecutor = Executors.newCachedThreadPool();
 
 
-    private ScreenShotListener(@Nullable final Context context) {
+    @UiThread
+    private ScreenshotsListener(@Nullable final Context context) {
+        this.assertInMainThread();
         if (context == null) {
             throw new IllegalArgumentException(
                 "[" + TAG + "]   [ScreenShotListener]   [Context] = null");
@@ -118,17 +135,17 @@ public class ScreenShotListener {
     }
 
 
-    public static ScreenShotListener newInstance(@NonNull final Context context) {
-        assertInMainThread();
-        return new ScreenShotListener(context);
+    public static ScreenshotsListener newInstance(@NonNull final Context context) {
+        return new ScreenshotsListener(context);
     }
 
 
     /**
      * 启动监听
      */
+    @UiThread
     public void start() {
-        assertInMainThread();
+        this.assertInMainThread();
         this.hasCallbackPaths.clear();
         this.startListenTime = System.currentTimeMillis();
         this.internalObserver = new MediaContentObserver(
@@ -150,6 +167,7 @@ public class ScreenShotListener {
     }
 
 
+    @UiThread
     public void stop() {
         assertInMainThread();
         if (this.internalObserver != null) {
@@ -173,6 +191,7 @@ public class ScreenShotListener {
     }
 
 
+    @WorkerThread
     private void handleMediaContentChange(@NonNull final Uri contentUri) {
         Cursor cursor = null;
         try {
@@ -197,31 +216,12 @@ public class ScreenShotListener {
             // 获取各列的索引
             int dataIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
             int dateTakenIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN);
-            int widthIndex = -1;
-            int heightIndex = -1;
-            if (Build.VERSION.SDK_INT >= 16) {
-                widthIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.WIDTH);
-                heightIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.HEIGHT);
-            }
 
             // 获取行数据
             String data = cursor.getString(dataIndex);
             long dateTaken = cursor.getLong(dateTakenIndex);
-            int width;
-            int height;
-            if (widthIndex >= 0 && heightIndex >= 0) {
-                width = cursor.getInt(widthIndex);
-                height = cursor.getInt(heightIndex);
-            } else {
-                // API 16 之前, 宽高要手动获取
-                Point size = getImageSize(data);
-                width = size.x;
-                height = size.y;
-            }
-
             // 处理获取到的第一行数据
-            this.handleMediaRowData(data, dateTaken, width, height);
-
+            this.handleMediaRowData(data, dateTaken, cursor);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -232,60 +232,56 @@ public class ScreenShotListener {
     }
 
 
-    private Point getImageSize(String imagePath) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(imagePath, options);
-        return new Point(options.outWidth, options.outHeight);
-    }
-
-
     /**
      * 处理获取到的一行数据
      */
-    private void handleMediaRowData(String data, long dateTaken, int width, int height) {
-        if (checkScreenShot(data, dateTaken, width, height)) {
-            Log.d(TAG, "[handleMediaRowData]   \n[path] = " + data + "   \n[width] = " + width +
-                "   \n[height] = " + height
-                + "   \n[date] = " + dateTaken);
-            if (this.listener != null && !checkCallback(data)) {
-                this.listener.onShot(data);
+    @WorkerThread
+    private void handleMediaRowData(@NonNull final String data,
+                                    final long dateTaken,
+                                    @NonNull final Cursor cursor) {
+        if (checkScreenShot(data, dateTaken, cursor)) {
+            if (!checkCallback(data)) {
+                // 切换到主线程
+                this.mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (listener != null) {
+                            listener.onShot(data);
+                        }
+                    }
+                });
             }
         } else {
-            // 如果在观察区间媒体数据库有数据改变，又不符合截屏规则，则输出到 log 待分析
+            // 如果在观察区间媒体数据库有数据改变，又不符合截屏规则
+            int[] widthHeight = this.getWidthHeightByCursor(cursor);
             Log.w(TAG,
                 "[handleMediaRowData]   Media content changed, but not screenshot:   \n[path] = " +
                     data
-                    + "   \n[width] = " + width + "   \n[height] = " + height + "   \n[date] = " +
+                    + "   \n[width] = " + widthHeight[0] + "   \n[height] = " + widthHeight[1] +
+                    "   \n[date] = " +
                     dateTaken);
         }
     }
 
 
-    private boolean isScreenShotRunning(Context context) {
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(
-            Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningServiceInfo> runningServiceInfos
-            = activityManager.getRunningServices(200);
-        for (ActivityManager.RunningServiceInfo runningServiceInfo : runningServiceInfos) {
-            if (runningServiceInfo.process.equals("com.android.systemui:screenshot")) {
-                return true;
-            }
+    private int[] getWidthHeightByCursor(@NonNull final Cursor cursor) {
+        int widthIndex = -1;
+        int heightIndex = -1;
+        if (Build.VERSION.SDK_INT >= 16) {
+            widthIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.WIDTH);
+            heightIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.HEIGHT);
         }
-        return false;
+        return new int[] { widthIndex, heightIndex };
     }
 
 
     /**
      * 判断指定的数据行是否符合截屏条件
      */
-    private boolean checkScreenShot(String data, long dateTaken, int width, int height) {
-
-        // 截图进程判断
-        if (isScreenShotRunning(this.context)) {
-            Log.e(TAG, "[isScreenShotRunning] = false");
-            return false;
-        }
+    @WorkerThread
+    private boolean checkScreenShot(@NonNull String data,
+                                    final long dateTaken,
+                                    @NonNull final Cursor cursor) {
 
         /*
          * 时间判断
@@ -298,8 +294,51 @@ public class ScreenShotListener {
         }
 
         /*
+         * 路径判断
+         */
+        if (TextUtils.isEmpty(data)) {
+            Log.e(TAG, "[checkScreenShot]   data (path) = null");
+            return false;
+        }
+
+        // 文件夹判断
+        final String tempData = data.toLowerCase();
+        boolean exists = false;
+        for (String keyword : KEYWORDS) {
+            if (tempData.contains(keyword)) {
+                exists = true;
+            }
+        }
+        if (!exists) {
+            Log.e(TAG, "[checkScreenShot]   data (path) invalid");
+            return false;
+        }
+
+        //  轮询 + 延迟策略 等待文件写入完成，才视为截屏事件
+        this.pollingDecode(data, 0L);
+
+
+        /*
+         * 轮询 + 延迟 后，如果 文件生成了
          * 尺寸判断
          */
+        int widthIndex = -1;
+        int heightIndex = -1;
+        if (Build.VERSION.SDK_INT >= 16) {
+            widthIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.WIDTH);
+            heightIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.HEIGHT);
+        }
+        int width;
+        int height;
+        if (widthIndex >= 0 && heightIndex >= 0) {
+            width = cursor.getInt(widthIndex);
+            height = cursor.getInt(heightIndex);
+        } else {
+            // API 16 之前, 宽高要手动获取
+            final Point size = this.getImageSize(data);
+            width = size.x;
+            height = size.y;
+        }
         if (this.screenRealSize != null) {
             // 如果图片尺寸超出屏幕, 则认为当前没有截屏
             if (!((width <= this.screenRealSize.x && height <= this.screenRealSize.y) ||
@@ -309,25 +348,56 @@ public class ScreenShotListener {
             }
         }
 
-        /*
-         * 路径判断
-         */
-        if (TextUtils.isEmpty(data)) {
-            Log.e(TAG, "[checkScreenShot]   data (path) = null");
-            return false;
-        }
-        data = data.toLowerCase();
+        Log.d(TAG, "[checkScreenShot]   \n[path] = " + data + "   \n[width] = " + width +
+            "   \n[height] = " + height
+            + "   \n[date] = " + dateTaken);
+        return true;
+    }
 
-        // 截屏判断
-        for (String keyword : KEYWORDS) {
-            if (data.contains(keyword)) {
-                return true;
+
+    /**
+     * 轮询 + 延迟 500ms
+     *
+     * @param data path
+     */
+    @WorkerThread
+    private void pollingDecode(@NonNull final String data, long duration) {
+        Log.d(TAG, "[pollingDecode]   [duration] = " + duration + "   [threadId] = " +
+            Thread.currentThread().getId());
+        while (!this.isFileAvailable(data) &&
+            duration <= MAX_POLLING_DECODE_TIME) {
+            try {
+                Log.d(TAG,
+                    "[isFileAvailable] = false   [data] = " + data + "   [duration] = " + duration);
+                duration += MAX_POLLING_DECODE_STEP;
+                Thread.sleep(MAX_POLLING_DECODE_STEP);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-        Log.e(TAG, "[checkScreenShot]   data (path) invalid");
+    }
 
-        // TODO 轮询 + 延迟策略
+
+    /**
+     * 判断文件是否存在
+     *
+     * @param data path
+     * @return 文件是否存在
+     */
+    private boolean isFileAvailable(@NonNull final String data) {
+        final Point point = this.getImageSize(data);
+        if (point.x > 0 && point.y > y) {
+            return true;
+        }
         return false;
+    }
+
+
+    private Point getImageSize(@NonNull final String imagePath) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(imagePath, options);
+        return new Point(options.outWidth, options.outHeight);
     }
 
 
@@ -396,7 +466,7 @@ public class ScreenShotListener {
     }
 
 
-    private static void assertInMainThread() {
+    private void assertInMainThread() {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             StackTraceElement[] elements = Thread.currentThread().getStackTrace();
             String methodMessage = null;
@@ -425,7 +495,12 @@ public class ScreenShotListener {
             super.onChange(selfChange);
             Log.e(TAG,
                 "[MediaContentObserver]   [onChange]   [contentUri] = " + contentUri.toString());
-            handleMediaContentChange(contentUri);
+            processExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    handleMediaContentChange(contentUri);
+                }
+            });
         }
     }
 
