@@ -32,4 +32,5 @@ dependencies {
     testCompile rootProject.ext.denpendencies["junit"]
     provided rootProject.ext.denpendencies["recyclerview-v7"]
     provided rootProject.ext.denpendencies["support-v7"]
+    provided project(':utils')
 }

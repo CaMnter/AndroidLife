@@ -1,4 +1,4 @@
-package com.camnter.newlife.widget.listener;
+package com.camnter.newlife.widget.screenshots;
 
 import android.content.Context;
 import android.database.ContentObserver;
@@ -83,33 +83,24 @@ public class ScreenshotsListener {
         "screencapture", "screen_capture", "screen-capture", "screen capture",
         "screencap", "screen_cap", "screen-cap", "screen cap"
     };
-
-    private Point screenRealSize;
-
     /**
      * 已回调过的路径
      */
     private final List<String> hasCallbackPaths = new ArrayList<>();
-
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final ExecutorService processExecutor;
+    private Point screenRealSize;
     private Context context;
-
     private OnScreenShotListener listener;
-
     private long startListenTime;
-
     /**
      * 内部存储器内容观察者
      */
     private MediaContentObserver internalObserver;
-
     /**
      * 外部存储器内容观察者
      */
     private MediaContentObserver externalObserver;
-
-    private final Handler mainHandler = new Handler(Looper.getMainLooper());
-    private final ExecutorService processExecutor;
-
     private boolean isListen = true;
 
 
@@ -468,11 +459,6 @@ public class ScreenshotsListener {
     }
 
 
-    public interface OnScreenShotListener {
-        void onShot(@NonNull final String imagePath);
-    }
-
-
     private void assertInMainThread() {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             StackTraceElement[] elements = Thread.currentThread().getStackTrace();
@@ -483,6 +469,11 @@ public class ScreenshotsListener {
             throw new IllegalArgumentException(
                 "[" + TAG + "]  Call the method must be in main thread: " + methodMessage);
         }
+    }
+
+
+    public interface OnScreenShotListener {
+        void onShot(@NonNull final String imagePath);
     }
 
 
