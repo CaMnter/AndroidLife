@@ -54,7 +54,7 @@ public class ScreenshotsListener {
     /**
      * 轮询间隔
      */
-    private static final int MAX_POLLING_DECODE_STEP = 100;
+    private static final int POLLING_DECODE_STEP = 100;
 
     /**
      * 读取媒体数据库时需要读取的列
@@ -108,7 +108,9 @@ public class ScreenshotsListener {
     private MediaContentObserver externalObserver;
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
-    private final ExecutorService processExecutor = Executors.newCachedThreadPool();
+    private final ExecutorService processExecutor;
+
+    private boolean isListen = true;
 
 
     @UiThread
@@ -119,7 +121,7 @@ public class ScreenshotsListener {
                 "[" + TAG + "]   [ScreenShotListener]   [Context] = null");
         }
         this.context = context;
-
+        this.processExecutor = Executors.newCachedThreadPool();
         // 获取屏幕真实的分辨率
         if (screenRealSize == null) {
             screenRealSize = getRealScreenSize();
@@ -135,6 +137,11 @@ public class ScreenshotsListener {
 
     public static ScreenshotsListener newInstance(@NonNull final Context context) {
         return new ScreenshotsListener(context);
+    }
+
+
+    public void setListen(final boolean listen) {
+        this.isListen = listen;
     }
 
 
@@ -367,8 +374,8 @@ public class ScreenshotsListener {
             try {
                 Log.d(TAG,
                     "[isFileAvailable] = false   [data] = " + data + "   [duration] = " + duration);
-                duration += MAX_POLLING_DECODE_STEP;
-                Thread.sleep(MAX_POLLING_DECODE_STEP);
+                duration += POLLING_DECODE_STEP;
+                Thread.sleep(POLLING_DECODE_STEP);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -385,6 +392,8 @@ public class ScreenshotsListener {
     private boolean isFileAvailable(@NonNull final String data) {
         final Point point = this.getImageSize(data);
         if (point.x > 0 && point.y > 0) {
+            Log.d(TAG,
+                "[isFileAvailable] = true   [data] = " + data);
             return true;
         }
         return false;
@@ -433,11 +442,11 @@ public class ScreenshotsListener {
                 defaultDisplay.getRealSize(screenSize);
             } else {
                 try {
-                    Method mGetRawW = Display.class.getMethod("getRawWidth");
-                    Method mGetRawH = Display.class.getMethod("getRawHeight");
+                    Method getRawWidth = Display.class.getMethod("getRawWidth");
+                    Method getRawHeight = Display.class.getMethod("getRawHeight");
                     screenSize.set(
-                        (Integer) mGetRawW.invoke(defaultDisplay),
-                        (Integer) mGetRawH.invoke(defaultDisplay)
+                        (Integer) getRawWidth.invoke(defaultDisplay),
+                        (Integer) getRawHeight.invoke(defaultDisplay)
                     );
                 } catch (Exception e) {
                     screenSize.set(defaultDisplay.getWidth(), defaultDisplay.getHeight());
@@ -493,12 +502,14 @@ public class ScreenshotsListener {
             super.onChange(selfChange);
             Log.e(TAG,
                 "[MediaContentObserver]   [onChange]   [contentUri] = " + contentUri.toString());
-            processExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    handleMediaContentChange(contentUri);
-                }
-            });
+            if (isListen) {
+                processExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        handleMediaContentChange(contentUri);
+                    }
+                });
+            }
         }
     }
 
