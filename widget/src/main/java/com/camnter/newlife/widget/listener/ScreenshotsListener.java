@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static android.R.attr.y;
-
 /**
  * // Requires Permission: android.permission.READ_EXTERNAL_STORAGE
  *
@@ -386,7 +384,7 @@ public class ScreenshotsListener {
      */
     private boolean isFileAvailable(@NonNull final String data) {
         final Point point = this.getImageSize(data);
-        if (point.x > 0 && point.y > y) {
+        if (point.x > 0 && point.y > 0) {
             return true;
         }
         return false;
