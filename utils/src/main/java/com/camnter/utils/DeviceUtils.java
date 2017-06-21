@@ -17,9 +17,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
@@ -355,4 +360,43 @@ public class DeviceUtils {
             Context.CLIPBOARD_SERVICE);
         clipboardManager.setPrimaryClip(clipData);
     }
+
+
+    /**
+     * @param context context
+     * @return 屏幕高度，无 navigation
+     */
+    public static int getHeightWithoutNavigation(@NonNull final Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(
+            Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        display.getMetrics(displayMetrics);
+        return displayMetrics.heightPixels;
+    }
+
+
+    /**
+     * @param context context
+     * @return 屏幕高度，有 navigation
+     */
+    public static int getHeightWithNavigation(@NonNull final Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(
+            Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        DisplayMetrics realDisplayMetrics = new DisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            display.getRealMetrics(realDisplayMetrics);
+        } else {
+            try {
+                Method getRealMetrics = display.getClass().getDeclaredMethod("getRealMetrics");
+                getRealMetrics.setAccessible(true);
+                getRealMetrics.invoke(display, realDisplayMetrics);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return realDisplayMetrics.heightPixels;
+    }
+
 }
