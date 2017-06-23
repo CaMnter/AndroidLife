@@ -230,8 +230,8 @@ public class BitmapUtils {
      * @param expectWidth 期望宽度
      * @return 期望 Bitmap
      */
-    private Bitmap decodeBitmapAndCompressedByWidth(@NonNull final String imagePath,
-                                                    final int expectWidth) {
+    public static Bitmap decodeBitmapAndCompressedByWidth(@NonNull final String imagePath,
+                                                           final int expectWidth) {
         int originalWidth;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -257,9 +257,9 @@ public class BitmapUtils {
      * @param expectWidth 期望宽度
      * @return 期望 Bitmap
      */
-    private Bitmap decodeBitmapAndCompressedByWidth(@NonNull final Context context,
-                                                    @DrawableRes final int drawableRes,
-                                                    final int expectWidth) {
+    public static Bitmap decodeBitmapAndCompressedByWidth(@NonNull final Context context,
+                                                           @DrawableRes final int drawableRes,
+                                                           final int expectWidth) {
         int originalWidth;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
