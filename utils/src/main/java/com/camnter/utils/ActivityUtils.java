@@ -1,3 +1,5 @@
+package com.camnter.utils;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;

@@ -33,7 +33,7 @@ import java.util.concurrent.Executors;
  * -  new OnScreenShotListener() {
  * -      public void onShot(String imagePath) {
  * -          // do something
- * }
+ * -      }
  * -  }
  * );
  *
@@ -83,25 +83,32 @@ public class ScreenshotsListener {
         "screencapture", "screen_capture", "screen-capture", "screen capture",
         "screencap", "screen_cap", "screen-cap", "screen cap"
     };
+
+    private Point screenRealSize;
+
     /**
      * 已回调过的路径
      */
     private final List<String> hasCallbackPaths = new ArrayList<>();
-    private final Handler mainHandler = new Handler(Looper.getMainLooper());
-    private final ExecutorService processExecutor;
-    private Point screenRealSize;
+
     private Context context;
+
     private OnScreenShotListener listener;
+
     private long startListenTime;
+
     /**
      * 内部存储器内容观察者
      */
     private MediaContentObserver internalObserver;
+
     /**
      * 外部存储器内容观察者
      */
     private MediaContentObserver externalObserver;
-    private boolean isListen = true;
+
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final ExecutorService processExecutor;
 
 
     @UiThread
@@ -128,11 +135,6 @@ public class ScreenshotsListener {
 
     public static ScreenshotsListener newInstance(@NonNull final Context context) {
         return new ScreenshotsListener(context);
-    }
-
-
-    public void setListen(final boolean listen) {
-        this.isListen = listen;
     }
 
 
@@ -165,7 +167,7 @@ public class ScreenshotsListener {
 
     @UiThread
     public void stop() {
-        assertInMainThread();
+        this.assertInMainThread();
         if (this.internalObserver != null) {
             try {
                 this.context.getContentResolver().unregisterContentObserver(internalObserver);
@@ -459,6 +461,32 @@ public class ScreenshotsListener {
     }
 
 
+    /**
+     * 检查过滤类
+     *
+     * @param contentUri contentUri
+     */
+    @UiThread
+    private void checkRules(@NonNull final Uri contentUri) {
+        this.processExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                processExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        handleMediaContentChange(contentUri);
+                    }
+                });
+            }
+        });
+    }
+
+
+    public interface OnScreenShotListener {
+        void onShot(@NonNull final String imagePath);
+    }
+
+
     private void assertInMainThread() {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             StackTraceElement[] elements = Thread.currentThread().getStackTrace();
@@ -469,11 +497,6 @@ public class ScreenshotsListener {
             throw new IllegalArgumentException(
                 "[" + TAG + "]  Call the method must be in main thread: " + methodMessage);
         }
-    }
-
-
-    public interface OnScreenShotListener {
-        void onShot(@NonNull final String imagePath);
     }
 
 
@@ -492,16 +515,11 @@ public class ScreenshotsListener {
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
             Log.e(TAG,
-                "[MediaContentObserver]   [onChange]   [contentUri] = " + contentUri.toString());
-            if (isListen) {
-                processExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        handleMediaContentChange(contentUri);
-                    }
-                });
-            }
+                "[MediaContentObserver]   [onChange]   [contentUri] = " +
+                    this.contentUri.toString());
+            checkRules(this.contentUri);
         }
+
     }
 
 }
