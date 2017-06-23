@@ -1,5 +1,6 @@
 package com.camnter.utils;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,6 +8,8 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import java.io.BufferedOutputStream;
@@ -219,6 +222,67 @@ public class BitmapUtils {
             }
         }
         return savedSuccessfully;
+    }
+
+
+    /**
+     * @param imagePath 图片路径
+     * @param expectWidth 期望宽度
+     * @return 期望 Bitmap
+     */
+    private Bitmap decodeBitmapAndCompressedByWidth(@NonNull final String imagePath,
+                                                    final int expectWidth) {
+        int originalWidth;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(imagePath, options);
+        originalWidth = options.outWidth;
+
+        // 加载宽度接近一张小图
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = (originalWidth / expectWidth) + 1;
+        Bitmap smallBitmap = BitmapFactory.decodeFile(imagePath, options);
+
+        // 再一次缩放到准确的小图
+        Bitmap accurateBitmap = BitmapUtils.getBitmapCompressedByWidth(smallBitmap, expectWidth);
+        // 回收上一张无用的 bitmap
+        smallBitmap.recycle();
+        return accurateBitmap;
+    }
+
+
+    /**
+     * @param context context
+     * @param drawableRes 图片资源
+     * @param expectWidth 期望宽度
+     * @return 期望 Bitmap
+     */
+    private Bitmap decodeBitmapAndCompressedByWidth(@NonNull final Context context,
+                                                    @DrawableRes final int drawableRes,
+                                                    final int expectWidth) {
+        int originalWidth;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(context.getResources(), drawableRes);
+        originalWidth = options.outWidth;
+
+        Bitmap accurateBitmap;
+        if (originalWidth > expectWidth) {
+            // 加载宽度接近一张小图
+            options.inJustDecodeBounds = false;
+            options.inSampleSize = (originalWidth / expectWidth) + 1;
+            Bitmap smallBitmap = BitmapFactory.decodeResource(context.getResources(), drawableRes,
+                options);
+
+            // 再一次缩放到准确的小图
+            accurateBitmap = BitmapUtils.getBitmapCompressedByWidth(smallBitmap, expectWidth);
+            // 回收上一张无用的 bitmap
+            smallBitmap.recycle();
+        } else {
+            // 加载原图
+            accurateBitmap = BitmapFactory.decodeResource(context.getResources(), drawableRes);
+        }
+        return accurateBitmap;
     }
 
 }
