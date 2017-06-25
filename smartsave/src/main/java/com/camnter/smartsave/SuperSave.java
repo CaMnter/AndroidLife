@@ -5,9 +5,7 @@ import android.view.View;
 import com.camnter.smartsave.adapter.ActivityAdapter;
 import com.camnter.smartsave.adapter.Adapter;
 import com.camnter.smartsave.adapter.ViewAdapter;
-import com.camnter.smartsave.save.ActivitySave;
 import com.camnter.smartsave.save.Save;
-import com.camnter.smartsave.save.ViewSave;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +31,7 @@ public final class SuperSave {
     }
 
 
+    @SuppressWarnings("unchecked")
     private static void save(final Object view, final Adapter adapter) {
         final String targetFullName = view.getClass().getName();
         try {
@@ -43,14 +42,7 @@ public final class SuperSave {
                 SAVE_MAP.put(targetFullName, save);
                 saveClass.getDeclaredMethod("save");
             }
-            if (save instanceof ViewSave) {
-                ViewSave viewSave = (ViewSave) save;
-                viewSave.save((View) view, adapter);
-            }
-            if (save instanceof ActivitySave) {
-                ActivitySave activitySave = (ActivitySave) save;
-                activitySave.save((Activity) view, adapter);
-            }
+            save.save(view, adapter);
         } catch (Exception e) {
             throw new RuntimeException("Unable to save for " + targetFullName, e);
         }
