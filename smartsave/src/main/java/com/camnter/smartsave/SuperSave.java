@@ -32,19 +32,18 @@ public final class SuperSave {
 
 
     @SuppressWarnings("unchecked")
-    private static void save(final Object view, final Adapter adapter) {
-        final String targetFullName = view.getClass().getName();
+    private static void save(final Object target, final Adapter adapter) {
+        final String targetFullName = target.getClass().getName();
         try {
             Save save = SAVE_MAP.get(targetFullName);
             if (save == null) {
-                Class<?> saveClass = Class.forName(targetFullName + "$$Save");
+                Class<?> saveClass = Class.forName(targetFullName + "_Save");
                 save = (Save) saveClass.newInstance();
                 SAVE_MAP.put(targetFullName, save);
-                saveClass.getDeclaredMethod("save");
             }
-            save.save(view, adapter);
+            save.save(target, adapter);
         } catch (Exception e) {
-            throw new RuntimeException("Unable to save for " + targetFullName, e);
+            throw new RuntimeException("[SuperSave]   [save]   " + targetFullName, e);
         }
     }
 
