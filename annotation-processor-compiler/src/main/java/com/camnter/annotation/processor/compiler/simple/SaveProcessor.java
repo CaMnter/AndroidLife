@@ -1,8 +1,10 @@
 package com.camnter.annotation.processor.compiler.simple;
 
+import com.camnter.annotation.processor.annotation.SaveOnClick;
 import com.camnter.annotation.processor.annotation.SaveView;
 import com.camnter.annotation.processor.compiler.core.BaseProcessor;
 import com.camnter.annotation.processor.compiler.simple.annotation.AnnotatedClass;
+import com.camnter.annotation.processor.compiler.simple.annotation.SaveOnClickMethod;
 import com.camnter.annotation.processor.compiler.simple.annotation.SaveViewField;
 import com.google.auto.service.AutoService;
 import java.io.IOException;
@@ -40,6 +42,7 @@ public class SaveProcessor extends BaseProcessor {
         return new HashSet<String>() {
             {
                 this.add(SaveView.class.getCanonicalName());
+                this.add(SaveOnClick.class.getCanonicalName());
             }
         };
     }
@@ -59,6 +62,7 @@ public class SaveProcessor extends BaseProcessor {
         this.annotatedClassHashMap.clear();
         try {
             this.processSaveView(roundEnv);
+            this.processSaveOnClick(roundEnv);
         } catch (Exception e) {
             this.e(e.getMessage());
             e.printStackTrace();
@@ -88,12 +92,21 @@ public class SaveProcessor extends BaseProcessor {
     }
 
 
+    private void processSaveOnClick(RoundEnvironment roundEnv) throws IllegalArgumentException {
+        for (Element element : roundEnv.getElementsAnnotatedWith(SaveOnClick.class)) {
+            AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
+            SaveOnClickMethod saveOnClickMethod = new SaveOnClickMethod(element);
+            annotatedClass.addSaveOnClickMethod(saveOnClickMethod);
+        }
+    }
+
+
     private AnnotatedClass getAnnotatedClass(Element element) {
         TypeElement classElement = (TypeElement) element.getEnclosingElement();
         String fullClassName = classElement.getQualifiedName().toString();
         AnnotatedClass annotatedClass = this.annotatedClassHashMap.get(fullClassName);
         if (annotatedClass == null) {
-            annotatedClass = new AnnotatedClass(classElement, this.elements);
+            annotatedClass = new AnnotatedClass(classElement, this.elements, this.messager);
             annotatedClassHashMap.put(fullClassName, annotatedClass);
         }
         return annotatedClass;

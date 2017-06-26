@@ -20,7 +20,7 @@ public class SaveViewField {
     public SaveViewField(Element element) {
         if (element.getKind() != ElementKind.FIELD) {
             throw new IllegalArgumentException(
-                String.format("Only fields can be annotated with [@%s]",
+                String.format("Only fields can be annotated with [@%1$s]",
                     SaveView.class.getSimpleName()));
         }
         this.variableElement = (VariableElement) element;
