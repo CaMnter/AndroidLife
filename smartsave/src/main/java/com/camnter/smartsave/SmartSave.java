@@ -13,7 +13,7 @@ import java.util.Map;
  * @author CaMnter
  */
 
-public final class SuperSave {
+public final class SmartSave {
 
     private static final ActivityAdapter ACTIVITY_ADAPTER = new ActivityAdapter();
     private static final ViewAdapter VIEW_ADAPTER = new ViewAdapter();

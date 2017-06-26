@@ -168,6 +168,7 @@ dependencies {
     compile project(':databinding-rxjava')
     compile project(':widget')
     compile project(':utils')
+    compile project(':smartsave')
     testCompile project(':utils')
     compile project(':annotation-processor-annotation')
 

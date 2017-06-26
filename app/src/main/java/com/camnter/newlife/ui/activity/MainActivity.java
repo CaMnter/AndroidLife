@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.camnter.annotation.processor.annotation.Save;
-import com.camnter.annotation.processor.annotation.SaveActivity;
 import com.camnter.annotation.processor.annotation.SaveView;
 import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
@@ -56,12 +55,12 @@ import com.camnter.newlife.ui.databinding.view.RatingRankActivity;
 import com.camnter.newlife.utils.permissions.AppSettingsDialog;
 import com.camnter.newlife.utils.permissions.EasyPermissions;
 import com.camnter.newlife.widget.autoresizetextview.Log;
-import com.camnter.newlife.widget.listener.ScreenShotListener;
+import com.camnter.newlife.widget.screenshots.ScreenshotsListener;
+import com.camnter.smartsave.SmartSave;
 import java.util.ArrayList;
 import java.util.List;
 
 @Save
-@SaveActivity
 public class MainActivity extends BaseAppCompatActivity
     implements EasyPermissions.PermissionCallbacks {
 
@@ -72,7 +71,7 @@ public class MainActivity extends BaseAppCompatActivity
 
     @SaveView(R.id.menu_list)
     public EasyRecyclerView menuRecyclerView;
-    private ScreenShotListener screenShotListener;
+    private ScreenshotsListener screenshotsListener;
 
 
     /**
@@ -91,17 +90,17 @@ public class MainActivity extends BaseAppCompatActivity
      * @param savedInstanceState savedInstanceState
      */
     @Override protected void initViews(Bundle savedInstanceState) {
-        // SaveView
-        MainActivitySave.saveView(this);
+        // SmartSave
+        SmartSave.save(this);
         this.menuRecyclerView = this.findView(R.id.menu_list);
         this.menuRecyclerView.addItemDecoration(
             new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST));
 
         this.storagePermissions();
-        this.screenShotListener = ScreenShotListener.newInstance(this);
-        this.screenShotListener.start();
+        this.screenshotsListener = ScreenshotsListener.newInstance(this);
+        this.screenshotsListener.start();
 
-        this.screenShotListener.setListener((imagePath) -> {
+        this.screenshotsListener.setListener((imagePath) -> {
                 Log.d("[imagePath] = " + imagePath);
                 this.showToast(imagePath, Toast.LENGTH_LONG);
             }
@@ -294,7 +293,7 @@ public class MainActivity extends BaseAppCompatActivity
 
 
     @Override protected void onDestroy() {
-        this.screenShotListener.stop();
+        this.screenshotsListener.stop();
         super.onDestroy();
     }
 
