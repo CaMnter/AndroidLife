@@ -12,6 +12,6 @@ public interface SaveType {
         "Adapter");
 
     ClassName SAVE = ClassName.get("com.camnter.smartsave.save",
-        "SAVE");
+        "Save");
 
 }

@@ -53,13 +53,13 @@ public class AnnotatedClass {
             .addParameter(SaveType.ADAPTER, "adapter", Modifier.FINAL);
 
         for (SaveViewField saveViewField : this.saveViewFields) {
-            saveMethod.addStatement("target.$N = ($T)(adapter.findViewById(source, $L))",
+            saveMethod.addStatement("target.$N = ($T) (adapter.findViewById(target, $L))",
                 saveViewField.getFieldName(),
                 ClassName.get(saveViewField.getFieldType()), saveViewField.getResId());
         }
 
-        TypeSpec finderClass = TypeSpec.classBuilder(
-            this.annotatedElement.getSimpleName() + "$$Save")
+        TypeSpec saveClass = TypeSpec.classBuilder(
+            this.annotatedElement.getSimpleName() + "_Save")
             .addModifiers(Modifier.PUBLIC)
             .addSuperinterface(ParameterizedTypeName.get(SaveType.SAVE,
                 TypeName.get(this.annotatedElement.asType())))
@@ -69,7 +69,7 @@ public class AnnotatedClass {
         String packageName = this.elements
             .getPackageOf(this.annotatedElement).getQualifiedName().toString();
 
-        return JavaFile.builder(packageName, finderClass).build();
+        return JavaFile.builder(packageName, saveClass).build();
 
     }
 

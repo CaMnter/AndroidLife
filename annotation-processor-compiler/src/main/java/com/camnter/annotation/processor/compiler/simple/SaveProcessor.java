@@ -1,14 +1,13 @@
 package com.camnter.annotation.processor.compiler.simple;
 
-import com.camnter.annotation.processor.annotation.SaveActivity;
 import com.camnter.annotation.processor.annotation.SaveView;
 import com.camnter.annotation.processor.compiler.core.BaseProcessor;
 import com.camnter.annotation.processor.compiler.simple.annotation.AnnotatedClass;
 import com.camnter.annotation.processor.compiler.simple.annotation.SaveViewField;
 import com.google.auto.service.AutoService;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.processing.Processor;
@@ -38,7 +37,11 @@ public class SaveProcessor extends BaseProcessor {
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         // 规定需要处理的注解
-        return Collections.singleton(SaveActivity.class.getCanonicalName());
+        return new HashSet<String>() {
+            {
+                this.add(SaveView.class.getCanonicalName());
+            }
+        };
     }
 
 
@@ -53,7 +56,7 @@ public class SaveProcessor extends BaseProcessor {
      */
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-
+        this.annotatedClassHashMap.clear();
         try {
             this.processSaveView(roundEnv);
         } catch (Exception e) {
@@ -61,17 +64,17 @@ public class SaveProcessor extends BaseProcessor {
             e.printStackTrace();
             return true;
         }
-
         for (AnnotatedClass annotatedClass : this.annotatedClassHashMap.values()) {
             try {
-                this.i("Generating file for %s", annotatedClass.getFullClassName());
+                this.i("[SaveProcessor]   [process]   [annotatedClass] = %1$s",
+                    annotatedClass.getFullClassName());
                 annotatedClass.getJavaFile().writeTo(this.filer);
             } catch (IOException e) {
-                this.e("Generate file failed, reason: %s", e.getMessage());
+                this.i("[SaveProcessor]   [process]   [IOException] = %1$s",
+                    e.getMessage());
                 return true;
             }
         }
-
         return true;
     }
 
