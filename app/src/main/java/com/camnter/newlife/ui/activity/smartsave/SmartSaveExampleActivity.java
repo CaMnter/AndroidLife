@@ -1,12 +1,16 @@
 package com.camnter.newlife.ui.activity.smartsave;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.smartsave.SmartSave;
+import com.camnter.smartsave.annotation.SaveDrawable;
 import com.camnter.smartsave.annotation.SaveOnClick;
 import com.camnter.smartsave.annotation.SaveString;
 import com.camnter.smartsave.annotation.SaveView;
@@ -27,6 +31,8 @@ public class SmartSaveExampleActivity extends BaseAppCompatActivity {
     TextView secondText;
     @SaveView(R.id.third_text)
     TextView thirdText;
+    @SaveView(R.id.extra_image)
+    ImageView extraImage;
 
     @SaveString(R.string.app_label)
     String appLabel;
@@ -35,6 +41,9 @@ public class SmartSaveExampleActivity extends BaseAppCompatActivity {
     private int firstCount = 0;
     private int secondCount = 0;
     private int thirdCount = 0;
+
+    @SaveDrawable(R.drawable.img_extra)
+    Drawable extraDrawable;
 
 
     /**
@@ -62,6 +71,7 @@ public class SmartSaveExampleActivity extends BaseAppCompatActivity {
                 return Toast.makeText(SmartSaveExampleActivity.this, "", Toast.LENGTH_LONG);
             }
         };
+        ViewCompat.setBackground(this.extraImage, this.extraDrawable);
     }
 
 
