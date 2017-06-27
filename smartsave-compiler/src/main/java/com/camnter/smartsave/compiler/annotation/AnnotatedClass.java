@@ -24,6 +24,7 @@ public class AnnotatedClass {
     private final TypeElement annotatedElement;
     private final List<SaveViewField> saveViewFields;
     private final List<SaveStringField> saveStringFields;
+    private final List<SaveDrawableField> saveDrawableFields;
     private final List<SaveOnClickMethod> saveOnClickMethods;
 
 
@@ -33,6 +34,7 @@ public class AnnotatedClass {
         this.annotatedElement = annotatedElement;
         this.saveViewFields = new ArrayList<>();
         this.saveStringFields = new ArrayList<>();
+        this.saveDrawableFields = new ArrayList<>();
         this.saveOnClickMethods = new ArrayList<>();
     }
 
@@ -54,6 +56,11 @@ public class AnnotatedClass {
 
     public void addSaveStringField(SaveStringField saveStringField) {
         this.saveStringFields.add(saveStringField);
+    }
+
+
+    public void addSaveStringField(SaveDrawableField saveDrawableField) {
+        this.saveDrawableFields.add(saveDrawableField);
     }
 
 
@@ -92,7 +99,7 @@ public class AnnotatedClass {
                                 .addAnnotation(Override.class)
                                 .addModifiers(Modifier.PUBLIC)
                                 .returns(TypeName.VOID)
-                                .addParameter(SaveType.ANDROID_VIEW, "view")
+                                .addParameter(SaveType.ANDROID_VIEW, "view", Modifier.FINAL)
                                 // onClick(View view) or onClick()
                                 .addStatement(
                                     firstParameterViewExist ? "target.$N(view)" : "target.$N()",
@@ -110,6 +117,15 @@ public class AnnotatedClass {
                 "target.$N = adapter.getString(target, $L)",
                 saveStringField.getFieldName(),
                 saveStringField.getResId()
+            );
+        }
+
+        // getDrawable
+        for (SaveDrawableField saveDrawableField : this.saveDrawableFields) {
+            saveMethod.addStatement(
+                "target.$N = adapter.getDrawable(target, $L)",
+                saveDrawableField.getFieldName(),
+                saveDrawableField.getResId()
             );
         }
 

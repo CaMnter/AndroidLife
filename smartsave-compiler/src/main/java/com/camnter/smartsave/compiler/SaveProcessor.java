@@ -1,9 +1,11 @@
 package com.camnter.smartsave.compiler;
 
+import com.camnter.smartsave.annotation.SaveDrawable;
 import com.camnter.smartsave.annotation.SaveOnClick;
 import com.camnter.smartsave.annotation.SaveString;
 import com.camnter.smartsave.annotation.SaveView;
 import com.camnter.smartsave.compiler.annotation.AnnotatedClass;
+import com.camnter.smartsave.compiler.annotation.SaveDrawableField;
 import com.camnter.smartsave.compiler.annotation.SaveOnClickMethod;
 import com.camnter.smartsave.compiler.annotation.SaveStringField;
 import com.camnter.smartsave.compiler.annotation.SaveViewField;
@@ -50,6 +52,7 @@ public class SaveProcessor extends BaseProcessor {
                 this.add(SaveView.class.getCanonicalName());
                 this.add(SaveOnClick.class.getCanonicalName());
                 this.add(SaveString.class.getCanonicalName());
+                this.add(SaveDrawable.class.getCanonicalName());
             }
         };
     }
@@ -71,6 +74,7 @@ public class SaveProcessor extends BaseProcessor {
             this.processSaveView(roundEnv);
             this.processSaveOnClick(roundEnv);
             this.processSaveString(roundEnv);
+            this.processSaveDrawable(roundEnv);
         } catch (Exception e) {
             this.e(e.getMessage());
             e.printStackTrace();
@@ -113,6 +117,15 @@ public class SaveProcessor extends BaseProcessor {
         for (Element element : roundEnv.getElementsAnnotatedWith(SaveString.class)) {
             AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
             SaveStringField saveStringField = new SaveStringField(element);
+            annotatedClass.addSaveStringField(saveStringField);
+        }
+    }
+
+
+    private void processSaveDrawable(RoundEnvironment roundEnv) throws IllegalArgumentException {
+        for (Element element : roundEnv.getElementsAnnotatedWith(SaveDrawable.class)) {
+            AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
+            SaveDrawableField saveStringField = new SaveDrawableField(element);
             annotatedClass.addSaveStringField(saveStringField);
         }
     }
