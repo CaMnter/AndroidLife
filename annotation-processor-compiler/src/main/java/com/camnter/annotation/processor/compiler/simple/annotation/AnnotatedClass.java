@@ -20,18 +20,20 @@ import javax.lang.model.util.Elements;
 
 public class AnnotatedClass {
 
+    private final Elements elements;
     private final TypeElement annotatedElement;
     private final List<SaveViewField> saveViewFields;
+    private final List<SaveStringField> saveStringFields;
     private final List<SaveOnClickMethod> saveOnClickMethods;
-    private final Elements elements;
 
 
     public AnnotatedClass(TypeElement annotatedElement,
                           Elements elements) {
+        this.elements = elements;
         this.annotatedElement = annotatedElement;
         this.saveViewFields = new ArrayList<>();
+        this.saveStringFields = new ArrayList<>();
         this.saveOnClickMethods = new ArrayList<>();
-        this.elements = elements;
     }
 
 
@@ -50,6 +52,11 @@ public class AnnotatedClass {
     }
 
 
+    public void addSaveStringField(SaveStringField saveStringField) {
+        this.saveStringFields.add(saveStringField);
+    }
+
+
     public JavaFile getJavaFile() {
 
         // void save(T target, Adapter adapter)
@@ -62,17 +69,22 @@ public class AnnotatedClass {
 
         // findViewById
         for (SaveViewField saveViewField : this.saveViewFields) {
-            saveMethod.addStatement("target.$N = ($T) (adapter.findViewById(target, $L))",
+            saveMethod.addStatement(
+                "target.$N = ($T) (adapter.findViewById(target, $L))",
                 saveViewField.getFieldName(),
-                ClassName.get(saveViewField.getFieldType()), saveViewField.getResId());
+                ClassName.get(saveViewField.getFieldType()),
+                saveViewField.getResId()
+            );
         }
 
         // setOnClickListener
         for (SaveOnClickMethod saveOnClickMethod : this.saveOnClickMethods) {
             final boolean firstParameterViewExist = saveOnClickMethod.isFirstParameterViewExist();
             for (final int id : saveOnClickMethod.getIds()) {
-                saveMethod.addStatement("adapter.findViewById(target, $L).setOnClickListener($L)",
-                    id, TypeSpec.anonymousClassBuilder("")
+                saveMethod.addStatement(
+                    "adapter.findViewById(target, $L).setOnClickListener($L)",
+                    id,
+                    TypeSpec.anonymousClassBuilder("")
                         .addSuperinterface(SaveType.ANDROID_ON_CLICK_LISTENER)
                         .addMethod(
                             MethodSpec
@@ -90,6 +102,15 @@ public class AnnotatedClass {
                         .build()
                 );
             }
+        }
+
+        // getString
+        for (SaveStringField saveStringField : this.saveStringFields) {
+            saveMethod.addStatement(
+                "target.$N = adapter.getString(target, $L)",
+                saveStringField.getFieldName(),
+                saveStringField.getResId()
+            );
         }
 
         // _Save

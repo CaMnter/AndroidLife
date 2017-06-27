@@ -14,4 +14,10 @@ public class ActivityAdapter implements Adapter<Activity> {
         return target.findViewById(resId);
     }
 
+
+    @Override
+    public String getString(Activity target, int resId) {
+        return target.getString(resId);
+    }
+
 }

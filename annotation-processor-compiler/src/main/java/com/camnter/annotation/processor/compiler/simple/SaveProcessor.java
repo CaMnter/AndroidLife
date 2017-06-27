@@ -1,10 +1,12 @@
 package com.camnter.annotation.processor.compiler.simple;
 
 import com.camnter.annotation.processor.annotation.SaveOnClick;
+import com.camnter.annotation.processor.annotation.SaveString;
 import com.camnter.annotation.processor.annotation.SaveView;
 import com.camnter.annotation.processor.compiler.core.BaseProcessor;
 import com.camnter.annotation.processor.compiler.simple.annotation.AnnotatedClass;
 import com.camnter.annotation.processor.compiler.simple.annotation.SaveOnClickMethod;
+import com.camnter.annotation.processor.compiler.simple.annotation.SaveStringField;
 import com.camnter.annotation.processor.compiler.simple.annotation.SaveViewField;
 import com.google.auto.service.AutoService;
 import java.io.IOException;
@@ -36,13 +38,18 @@ public class SaveProcessor extends BaseProcessor {
     }
 
 
+    /**
+     * 规定需要处理的注解
+     *
+     * @return Set
+     */
     @Override
     public Set<String> getSupportedAnnotationTypes() {
-        // 规定需要处理的注解
         return new HashSet<String>() {
             {
                 this.add(SaveView.class.getCanonicalName());
                 this.add(SaveOnClick.class.getCanonicalName());
+                this.add(SaveString.class.getCanonicalName());
             }
         };
     }
@@ -63,6 +70,7 @@ public class SaveProcessor extends BaseProcessor {
         try {
             this.processSaveView(roundEnv);
             this.processSaveOnClick(roundEnv);
+            this.processSaveString(roundEnv);
         } catch (Exception e) {
             this.e(e.getMessage());
             e.printStackTrace();
@@ -97,6 +105,15 @@ public class SaveProcessor extends BaseProcessor {
             AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
             SaveOnClickMethod saveOnClickMethod = new SaveOnClickMethod(element);
             annotatedClass.addSaveOnClickMethod(saveOnClickMethod);
+        }
+    }
+
+
+    private void processSaveString(RoundEnvironment roundEnv) throws IllegalArgumentException {
+        for (Element element : roundEnv.getElementsAnnotatedWith(SaveString.class)) {
+            AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
+            SaveStringField saveStringField = new SaveStringField(element);
+            annotatedClass.addSaveStringField(saveStringField);
         }
     }
 
