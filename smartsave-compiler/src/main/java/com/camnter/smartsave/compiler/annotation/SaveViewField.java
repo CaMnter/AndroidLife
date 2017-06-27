@@ -1,7 +1,6 @@
-package com.camnter.annotation.processor.compiler.simple.annotation;
+package com.camnter.smartsave.compiler.annotation;
 
-import com.camnter.annotation.processor.annotation.SaveView;
-import com.camnter.annotation.processor.compiler.simple.ValueIllegalArgumentException;
+import com.camnter.smartsave.annotation.SaveView;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Name;
@@ -20,14 +19,24 @@ public class SaveViewField {
 
     public SaveViewField(Element element) {
         if (element.getKind() != ElementKind.FIELD) {
-            throw new ValueIllegalArgumentException(SaveView.class);
+            throw new IllegalArgumentException(
+                String.format(
+                    "Only fields can be annotated with [@%1$s]",
+                    SaveView.class.getSimpleName()
+                )
+            );
         }
         this.variableElement = (VariableElement) element;
         SaveView saveView = this.variableElement.getAnnotation(SaveView.class);
         this.resId = saveView.value();
 
         if (this.resId < 0) {
-            throw new ValueIllegalArgumentException(SaveView.class, this.variableElement);
+            throw new IllegalArgumentException(
+                String.format(
+                    "value() in [%1$s] for field [%2$s] is not valid",
+                    SaveView.class.getSimpleName(),
+                    element.getSimpleName())
+            );
         }
     }
 

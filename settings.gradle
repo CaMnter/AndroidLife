@@ -1,4 +1,8 @@
-include ':app', ':smartsave',
+include ':app',
+
+        ':smartsave',
+        ':smartsave-compiler',
+        ':smartsave-annotation',
 
         ':annotation-processor-annotation',
         ':annotation-processor-compiler',

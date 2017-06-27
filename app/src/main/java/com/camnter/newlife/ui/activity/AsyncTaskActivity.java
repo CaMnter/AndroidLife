@@ -5,12 +5,12 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.camnter.annotation.processor.annotation.SaveOnClick;
-import com.camnter.annotation.processor.annotation.SaveView;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.utils.asynctask.ProgressBarAsyncTask;
 import com.camnter.smartsave.SmartSave;
+import com.camnter.smartsave.annotation.SaveOnClick;
+import com.camnter.smartsave.annotation.SaveView;
 import com.camnter.utils.wrapper.SmartToastWrapper;
 
 /**

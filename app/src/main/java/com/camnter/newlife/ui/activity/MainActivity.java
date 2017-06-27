@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.camnter.annotation.processor.annotation.Save;
-import com.camnter.annotation.processor.annotation.SaveView;
 import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
@@ -57,6 +56,7 @@ import com.camnter.newlife.utils.permissions.EasyPermissions;
 import com.camnter.newlife.widget.autoresizetextview.Log;
 import com.camnter.newlife.widget.screenshots.ScreenshotsListener;
 import com.camnter.smartsave.SmartSave;
+import com.camnter.smartsave.annotation.SaveView;
 import java.util.ArrayList;
 import java.util.List;
 

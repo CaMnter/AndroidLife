@@ -169,11 +169,14 @@ dependencies {
     compile project(':widget')
     compile project(':utils')
     compile project(':smartsave')
-    testCompile project(':utils')
     compile project(':annotation-processor-annotation')
+
+    testCompile project(':utils')
 
     // annotation-processor-compiler
     annotationProcessor project(':annotation-processor-compiler')
+    // smartsave-compiler
+    annotationProcessor project(':smartsave-compiler')
 }
 
 task nativeLibsToJar(type: Zip, description: 'create a jar archive of the native libs') {

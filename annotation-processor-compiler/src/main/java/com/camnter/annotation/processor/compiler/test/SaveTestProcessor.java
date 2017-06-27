@@ -1,4 +1,4 @@
-package com.camnter.annotation.processor.compiler.simple.test;
+package com.camnter.annotation.processor.compiler.test;
 
 import com.camnter.annotation.processor.annotation.Save;
 import com.google.auto.service.AutoService;

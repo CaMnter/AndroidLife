@@ -1,13 +1,13 @@
-package com.camnter.annotation.processor.compiler.simple;
+package com.camnter.smartsave.compiler;
 
-import com.camnter.annotation.processor.annotation.SaveOnClick;
-import com.camnter.annotation.processor.annotation.SaveString;
-import com.camnter.annotation.processor.annotation.SaveView;
-import com.camnter.annotation.processor.compiler.core.BaseProcessor;
-import com.camnter.annotation.processor.compiler.simple.annotation.AnnotatedClass;
-import com.camnter.annotation.processor.compiler.simple.annotation.SaveOnClickMethod;
-import com.camnter.annotation.processor.compiler.simple.annotation.SaveStringField;
-import com.camnter.annotation.processor.compiler.simple.annotation.SaveViewField;
+import com.camnter.smartsave.annotation.SaveOnClick;
+import com.camnter.smartsave.annotation.SaveString;
+import com.camnter.smartsave.annotation.SaveView;
+import com.camnter.smartsave.compiler.annotation.AnnotatedClass;
+import com.camnter.smartsave.compiler.annotation.SaveOnClickMethod;
+import com.camnter.smartsave.compiler.annotation.SaveStringField;
+import com.camnter.smartsave.compiler.annotation.SaveViewField;
+import com.camnter.smartsave.compiler.core.BaseProcessor;
 import com.google.auto.service.AutoService;
 import java.io.IOException;
 import java.util.HashMap;

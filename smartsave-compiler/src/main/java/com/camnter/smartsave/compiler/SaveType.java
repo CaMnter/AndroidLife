@@ -1,4 +1,4 @@
-package com.camnter.annotation.processor.compiler.simple;
+package com.camnter.smartsave.compiler;
 
 import com.squareup.javapoet.ClassName;
 

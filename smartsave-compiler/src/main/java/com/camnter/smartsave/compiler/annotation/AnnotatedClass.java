@@ -1,6 +1,6 @@
-package com.camnter.annotation.processor.compiler.simple.annotation;
+package com.camnter.smartsave.compiler.annotation;
 
-import com.camnter.annotation.processor.compiler.simple.SaveType;
+import com.camnter.smartsave.compiler.SaveType;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;

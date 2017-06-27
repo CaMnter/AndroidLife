@@ -1,4 +1,4 @@
-package com.camnter.annotation.processor.annotation;
+package com.camnter.smartsave.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,7 +9,8 @@ import java.lang.annotation.Target;
  * @author CaMnter
  */
 
-@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.CLASS)
-public @interface SaveActivity {
+@Target(ElementType.FIELD)
+public @interface SaveString {
+    int value() default 0;
 }

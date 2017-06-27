@@ -1,7 +1,7 @@
-package com.camnter.annotation.processor.compiler.simple.annotation;
+package com.camnter.smartsave.compiler.annotation;
 
-import com.camnter.annotation.processor.annotation.SaveOnClick;
-import com.camnter.annotation.processor.compiler.simple.SaveType;
+import com.camnter.smartsave.annotation.SaveOnClick;
+import com.camnter.smartsave.compiler.SaveType;
 import com.squareup.javapoet.ClassName;
 import java.util.List;
 import javax.lang.model.element.Element;
@@ -17,7 +17,6 @@ import javax.lang.model.element.VariableElement;
 public class SaveOnClickMethod {
 
     private int[] ids;
-    private List<? extends VariableElement> parameters;
     private Name methodName;
     private boolean firstParameterViewExist = false;
 
@@ -32,7 +31,6 @@ public class SaveOnClickMethod {
         final ExecutableElement methodElement = (ExecutableElement) element;
         this.methodName = methodElement.getSimpleName();
         this.ids = methodElement.getAnnotation(SaveOnClick.class).value();
-        this.parameters = methodElement.getParameters();
 
         for (int id : ids) {
             if (id < 0) {
@@ -41,15 +39,16 @@ public class SaveOnClickMethod {
                         SaveOnClick.class.getSimpleName()));
             }
         }
-        if (this.parameters.size() == 0) return;
+        final List<? extends VariableElement> parameters = methodElement.getParameters();
+        if (parameters.size() == 0) return;
         VariableElement parameter;
-        if (this.parameters.size() > 1) {
+        if (parameters.size() > 1) {
             throw new IllegalArgumentException(
                 String.format(
                     "The method annotated with [@%1$s] must have only one parameters (View view)",
                     SaveOnClick.class.getSimpleName()));
         }
-        if (this.parameters.size() == 1 && (parameter = this.parameters.get(0)) != null &&
+        if (parameters.size() == 1 && (parameter = parameters.get(0)) != null &&
             !SaveType.ANDROID_VIEW.toString()
                 .equals(ClassName.get(parameter.asType()).toString())) {
             throw new IllegalArgumentException(
@@ -71,7 +70,7 @@ public class SaveOnClickMethod {
     }
 
 
-    public boolean isFirstParameterViewExist() {
+    boolean isFirstParameterViewExist() {
         return this.firstParameterViewExist;
     }
 
