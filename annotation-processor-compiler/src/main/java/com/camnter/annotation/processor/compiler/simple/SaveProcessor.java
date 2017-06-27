@@ -106,7 +106,7 @@ public class SaveProcessor extends BaseProcessor {
         String fullClassName = classElement.getQualifiedName().toString();
         AnnotatedClass annotatedClass = this.annotatedClassHashMap.get(fullClassName);
         if (annotatedClass == null) {
-            annotatedClass = new AnnotatedClass(classElement, this.elements, this.messager);
+            annotatedClass = new AnnotatedClass(classElement, this.elements);
             annotatedClassHashMap.put(fullClassName, annotatedClass);
         }
         return annotatedClass;

@@ -19,7 +19,7 @@ public class SaveOnClickMethod {
     private int[] ids;
     private List<? extends VariableElement> parameters;
     private Name methodName;
-    private boolean firstParamterViewExist = false;
+    private boolean firstParameterViewExist = false;
 
 
     public SaveOnClickMethod(Element element) throws IllegalArgumentException {
@@ -57,7 +57,7 @@ public class SaveOnClickMethod {
                     "The method annotated with [@%1$s] must have only one parameters (View view)",
                     SaveOnClick.class.getSimpleName()));
         }
-        this.firstParamterViewExist = true;
+        this.firstParameterViewExist = true;
     }
 
 
@@ -71,8 +71,8 @@ public class SaveOnClickMethod {
     }
 
 
-    public boolean isFirstParamterViewExist() {
-        return this.firstParamterViewExist;
+    public boolean isFirstParameterViewExist() {
+        return this.firstParameterViewExist;
     }
 
 }

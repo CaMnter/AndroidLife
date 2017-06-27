@@ -7,9 +7,9 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.TypeVariableName;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.processing.Messager;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
@@ -24,14 +24,11 @@ public class AnnotatedClass {
     private final List<SaveViewField> saveViewFields;
     private final List<SaveOnClickMethod> saveOnClickMethods;
     private final Elements elements;
-    private final Messager messager;
 
 
     public AnnotatedClass(TypeElement annotatedElement,
-                          Elements elements,
-                          Messager messager) {
+                          Elements elements) {
         this.annotatedElement = annotatedElement;
-        this.messager = messager;
         this.saveViewFields = new ArrayList<>();
         this.saveOnClickMethods = new ArrayList<>();
         this.elements = elements;
@@ -60,7 +57,7 @@ public class AnnotatedClass {
             .methodBuilder("save")
             .addModifiers(Modifier.PUBLIC)
             .addAnnotation(Override.class)
-            .addParameter(TypeName.get(this.annotatedElement.asType()), "target", Modifier.FINAL)
+            .addParameter(TypeVariableName.get("T"), "target", Modifier.FINAL)
             .addParameter(SaveType.ADAPTER, "adapter", Modifier.FINAL);
 
         // findViewById
@@ -72,7 +69,7 @@ public class AnnotatedClass {
 
         // setOnClickListener
         for (SaveOnClickMethod saveOnClickMethod : this.saveOnClickMethods) {
-            final boolean firstParamterViewExist = saveOnClickMethod.isFirstParamterViewExist();
+            final boolean firstParameterViewExist = saveOnClickMethod.isFirstParameterViewExist();
             for (final int id : saveOnClickMethod.getIds()) {
                 saveMethod.addStatement("adapter.findViewById(target, $L).setOnClickListener($L)",
                     id, TypeSpec.anonymousClassBuilder("")
@@ -84,9 +81,9 @@ public class AnnotatedClass {
                                 .addModifiers(Modifier.PUBLIC)
                                 .returns(TypeName.VOID)
                                 .addParameter(SaveType.ANDROID_VIEW, "view")
-                                // onClick(View) or onClick()
+                                // onClick(View view) or onClick()
                                 .addStatement(
-                                    firstParamterViewExist ? "target.$N(view)" : "target.$N()",
+                                    firstParameterViewExist ? "target.$N(view)" : "target.$N()",
                                     saveOnClickMethod.getMethodName())
                                 .build()
                         )
@@ -99,8 +96,10 @@ public class AnnotatedClass {
         TypeSpec saveClass = TypeSpec.classBuilder(
             this.annotatedElement.getSimpleName() + "_Save")
             .addModifiers(Modifier.PUBLIC)
+            .addTypeVariable(
+                TypeVariableName.get("T", TypeName.get(this.annotatedElement.asType())))
             .addSuperinterface(ParameterizedTypeName.get(SaveType.SAVE,
-                TypeName.get(this.annotatedElement.asType())))
+                TypeVariableName.get("T")))
             .addMethod(saveMethod.build())
             .build();
 
