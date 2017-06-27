@@ -44,6 +44,7 @@ import com.camnter.newlife.ui.activity.lrucache.LruCacheActivity;
 import com.camnter.newlife.ui.activity.rxjava.RxJavaAsyncActivity;
 import com.camnter.newlife.ui.activity.rxjava.RxJavaMapActivity;
 import com.camnter.newlife.ui.activity.singletask.LaunchModeActivity;
+import com.camnter.newlife.ui.activity.smartsave.SmartSaveExampleActivity;
 import com.camnter.newlife.ui.activity.tabalphaview.TabAlphaViewActivity;
 import com.camnter.newlife.ui.activity.util.DateUtilActivity;
 import com.camnter.newlife.ui.activity.util.DeviceUtilActivity;
@@ -222,6 +223,7 @@ public class MainActivity extends BaseAppCompatActivity
         this.classes.add(JsBridgeActivity.class);
         this.classes.add(RatingRankActivity.class);
         this.classes.add(TabAlphaViewActivity.class);
+        this.classes.add(SmartSaveExampleActivity.class);
     }
 
 

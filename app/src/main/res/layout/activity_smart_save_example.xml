@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/TextButton"
+        android:id="@+id/first_text"
+        android:text="firstText"/>
+
+    <TextView
+        style="@style/TextButton"
+        android:id="@+id/second_text"
+        android:text="secondText"/>
+
+    <TextView
+        style="@style/TextButton"
+        android:id="@+id/third_text"
+        android:text="thirdText"/>
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.camnter.newlife">
 
@@ -248,6 +249,9 @@
         <activity
             android:name=".ui.activity.tabalphaview.TabAlphaViewActivity"
             android:label="TabAlphaViewActivity"/>
+        <activity
+            android:name=".ui.activity.smartsave.SmartSaveExampleActivity"
+            android:label="SmartSaveExampleActivity"/>
 
         <service android:name=".component.service.DownloadService"/>
         <service android:name=".component.service.DownloadIntentService"/>
