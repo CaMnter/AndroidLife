@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
  * @author CaMnter
  */
 
+@Retention(RetentionPolicy.CLASS)
 @Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
 public @interface SaveView {
 
     int value() default 0;
