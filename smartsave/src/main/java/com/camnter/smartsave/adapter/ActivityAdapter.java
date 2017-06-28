@@ -28,4 +28,10 @@ public class ActivityAdapter implements Adapter<Activity> {
         return ContextCompat.getDrawable(target, resId);
     }
 
+
+    @Override
+    public int getColor(Activity target, int resId) {
+        return ContextCompat.getColor(target, resId);
+    }
+
 }

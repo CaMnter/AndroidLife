@@ -32,4 +32,12 @@ public class ViewAdapter implements Adapter<View> {
         return ContextCompat.getDrawable(context, resId);
     }
 
+
+    @Override
+    public int getColor(View target, int resId) {
+        Context context = target.getContext();
+        if (context == null) return 0;
+        return ContextCompat.getColor(context, resId);
+    }
+
 }

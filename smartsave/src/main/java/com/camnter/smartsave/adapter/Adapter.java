@@ -15,4 +15,6 @@ public interface Adapter<T> {
 
     Drawable getDrawable(T target, int resId);
 
+    int getColor(T target, int resId);
+
 }
