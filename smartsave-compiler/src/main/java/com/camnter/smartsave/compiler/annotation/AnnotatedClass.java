@@ -25,6 +25,7 @@ public class AnnotatedClass {
     private final Elements elements;
     private final TypeElement annotatedElement;
     private final List<SaveField> saveFields;
+    private final List<SaveColorField> saveColorFields;
     private final List<SaveOnClickMethod> saveOnClickMethods;
 
     private final TypeMirror annotatedElementType;
@@ -38,12 +39,18 @@ public class AnnotatedClass {
         this.annotatedElementType = this.annotatedElement.asType();
         this.annotatedElementSimpleName = this.annotatedElement.getSimpleName().toString();
         this.saveFields = new ArrayList<>();
+        this.saveColorFields = new ArrayList<>();
         this.saveOnClickMethods = new ArrayList<>();
     }
 
 
     public void addSaveField(SaveField saveField) {
         this.saveFields.add(saveField);
+    }
+
+
+    public void addSaveColorField(SaveColorField saveColorField) {
+        this.saveColorFields.add(saveColorField);
     }
 
 
@@ -90,6 +97,15 @@ public class AnnotatedClass {
                     saveField.getResId()
                 );
             }
+        }
+
+        // getColor
+        for (SaveColorField saveColorField : this.saveColorFields) {
+            saveMethod.addStatement(
+                "target.$N = adapter.getColor(target, $L)",
+                saveColorField.getFieldName(),
+                saveColorField.getResId()
+            );
         }
 
         // setOnClickListener

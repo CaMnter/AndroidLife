@@ -1,8 +1,10 @@
 package com.camnter.smartsave.compiler;
 
 import com.camnter.smartsave.annotation.Save;
+import com.camnter.smartsave.annotation.SaveColor;
 import com.camnter.smartsave.annotation.SaveOnClick;
 import com.camnter.smartsave.compiler.annotation.AnnotatedClass;
+import com.camnter.smartsave.compiler.annotation.SaveColorField;
 import com.camnter.smartsave.compiler.annotation.SaveField;
 import com.camnter.smartsave.compiler.annotation.SaveOnClickMethod;
 import com.camnter.smartsave.compiler.core.BaseProcessor;
@@ -46,6 +48,7 @@ public class SaveProcessor extends BaseProcessor {
         return new HashSet<String>() {
             {
                 this.add(Save.class.getCanonicalName());
+                this.add(SaveColor.class.getCanonicalName());
                 this.add(SaveOnClick.class.getCanonicalName());
             }
         };
@@ -66,6 +69,7 @@ public class SaveProcessor extends BaseProcessor {
         this.annotatedClassHashMap.clear();
         try {
             this.processSave(roundEnv);
+            this.processSaveColor(roundEnv);
             this.processSaveOnClick(roundEnv);
         } catch (Exception e) {
             this.e(e.getMessage());
@@ -92,6 +96,15 @@ public class SaveProcessor extends BaseProcessor {
             AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
             SaveField saveField = new SaveField(element, Save.class);
             annotatedClass.addSaveField(saveField);
+        }
+    }
+
+
+    private void processSaveColor(RoundEnvironment roundEnv) throws IllegalArgumentException {
+        for (Element element : roundEnv.getElementsAnnotatedWith(SaveColor.class)) {
+            AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
+            SaveColorField saveColorField = new SaveColorField(element, SaveColor.class);
+            annotatedClass.addSaveColorField(saveColorField);
         }
     }
 

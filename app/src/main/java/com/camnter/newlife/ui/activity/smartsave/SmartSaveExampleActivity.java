@@ -11,6 +11,7 @@ import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.smartsave.SmartSave;
 import com.camnter.smartsave.annotation.Save;
+import com.camnter.smartsave.annotation.SaveColor;
 import com.camnter.smartsave.annotation.SaveOnClick;
 import com.camnter.utils.wrapper.SmartToastWrapper;
 import java.util.Locale;
@@ -43,6 +44,11 @@ public class SmartSaveExampleActivity extends BaseAppCompatActivity {
     @Save(R.drawable.img_extra)
     Drawable extraDrawable;
 
+    @SaveColor(R.color.green)
+    int green;
+    @SaveColor(R.color.yellow)
+    int yellow;
+
 
     /**
      * Fill in layout id
@@ -70,6 +76,8 @@ public class SmartSaveExampleActivity extends BaseAppCompatActivity {
             }
         };
         ViewCompat.setBackground(this.extraImage, this.extraDrawable);
+        this.secondText.setTextColor(this.green);
+        this.thirdText.setTextColor(this.yellow);
     }
 
 
