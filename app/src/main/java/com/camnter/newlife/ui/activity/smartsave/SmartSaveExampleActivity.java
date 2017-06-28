@@ -10,10 +10,8 @@ import android.widget.Toast;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.smartsave.SmartSave;
-import com.camnter.smartsave.annotation.SaveDrawable;
+import com.camnter.smartsave.annotation.Save;
 import com.camnter.smartsave.annotation.SaveOnClick;
-import com.camnter.smartsave.annotation.SaveString;
-import com.camnter.smartsave.annotation.SaveView;
 import com.camnter.utils.wrapper.SmartToastWrapper;
 import java.util.Locale;
 
@@ -25,16 +23,16 @@ public class SmartSaveExampleActivity extends BaseAppCompatActivity {
 
     private static final String FORMAT_TEXT = "%1$s - %2$s";
 
-    @SaveView(R.id.first_text)
+    @Save(R.id.first_text)
     TextView firstText;
-    @SaveView(R.id.second_text)
+    @Save(R.id.second_text)
     TextView secondText;
-    @SaveView(R.id.third_text)
+    @Save(R.id.third_text)
     TextView thirdText;
-    @SaveView(R.id.extra_image)
+    @Save(R.id.extra_image)
     ImageView extraImage;
 
-    @SaveString(R.string.app_label)
+    @Save(R.string.app_label)
     String appLabel;
 
     private SmartToastWrapper smartToastWrapper;
@@ -42,7 +40,7 @@ public class SmartSaveExampleActivity extends BaseAppCompatActivity {
     private int secondCount = 0;
     private int thirdCount = 0;
 
-    @SaveDrawable(R.drawable.img_extra)
+    @Save(R.drawable.img_extra)
     Drawable extraDrawable;
 
 

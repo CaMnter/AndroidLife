@@ -1,42 +1,47 @@
 package com.camnter.smartsave.compiler.annotation;
 
-import com.camnter.smartsave.annotation.SaveString;
+import com.camnter.smartsave.annotation.Save;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 
 /**
  * @author CaMnter
  */
 
-public class SaveStringField {
+public class SaveField {
 
     private final int resId;
     private final VariableElement variableElement;
 
 
-    public SaveStringField(Element element) {
+    public SaveField(Element element) {
         if (element.getKind() != ElementKind.FIELD) {
             throw new IllegalArgumentException(
                 String.format(
                     "Only fields can be annotated with [@%1$s]",
-                    SaveString.class.getSimpleName()
+                    Save.class.getSimpleName()
                 )
             );
         }
         this.variableElement = (VariableElement) element;
-        SaveString saveString = this.variableElement.getAnnotation(SaveString.class);
-        this.resId = saveString.value();
-
+        Save save = this.variableElement.getAnnotation(Save.class);
+        this.resId = save.value();
         if (this.resId < 0) {
             throw new IllegalArgumentException(
                 String.format(
                     "value() in [%1$s] for field [%2$s] is not valid",
-                    SaveString.class.getSimpleName(),
+                    Save.class.getSimpleName(),
                     element.getSimpleName())
             );
         }
+    }
+
+
+    TypeMirror getFieldType() {
+        return this.variableElement.asType();
     }
 
 

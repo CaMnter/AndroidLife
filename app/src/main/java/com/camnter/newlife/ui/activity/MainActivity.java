@@ -57,7 +57,7 @@ import com.camnter.newlife.utils.permissions.EasyPermissions;
 import com.camnter.newlife.widget.autoresizetextview.Log;
 import com.camnter.newlife.widget.screenshots.ScreenshotsListener;
 import com.camnter.smartsave.SmartSave;
-import com.camnter.smartsave.annotation.SaveView;
+import com.camnter.smartsave.annotation.Save;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +70,7 @@ public class MainActivity extends BaseAppCompatActivity
     protected boolean showTag = true;
     private MenuRecyclerViewAdapter adapter;
 
-    @SaveView(R.id.menu_list)
+    @Save(R.id.menu_list)
     public EasyRecyclerView menuRecyclerView;
     private ScreenshotsListener screenshotsListener;
 

@@ -1,14 +1,10 @@
 package com.camnter.smartsave.compiler;
 
-import com.camnter.smartsave.annotation.SaveDrawable;
+import com.camnter.smartsave.annotation.Save;
 import com.camnter.smartsave.annotation.SaveOnClick;
-import com.camnter.smartsave.annotation.SaveString;
-import com.camnter.smartsave.annotation.SaveView;
 import com.camnter.smartsave.compiler.annotation.AnnotatedClass;
-import com.camnter.smartsave.compiler.annotation.SaveDrawableField;
+import com.camnter.smartsave.compiler.annotation.SaveField;
 import com.camnter.smartsave.compiler.annotation.SaveOnClickMethod;
-import com.camnter.smartsave.compiler.annotation.SaveStringField;
-import com.camnter.smartsave.compiler.annotation.SaveViewField;
 import com.camnter.smartsave.compiler.core.BaseProcessor;
 import com.google.auto.service.AutoService;
 import java.io.IOException;
@@ -49,10 +45,8 @@ public class SaveProcessor extends BaseProcessor {
     public Set<String> getSupportedAnnotationTypes() {
         return new HashSet<String>() {
             {
-                this.add(SaveView.class.getCanonicalName());
+                this.add(Save.class.getCanonicalName());
                 this.add(SaveOnClick.class.getCanonicalName());
-                this.add(SaveString.class.getCanonicalName());
-                this.add(SaveDrawable.class.getCanonicalName());
             }
         };
     }
@@ -71,10 +65,8 @@ public class SaveProcessor extends BaseProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         this.annotatedClassHashMap.clear();
         try {
-            this.processSaveView(roundEnv);
+            this.processSave(roundEnv);
             this.processSaveOnClick(roundEnv);
-            this.processSaveString(roundEnv);
-            this.processSaveDrawable(roundEnv);
         } catch (Exception e) {
             this.e(e.getMessage());
             e.printStackTrace();
@@ -95,11 +87,11 @@ public class SaveProcessor extends BaseProcessor {
     }
 
 
-    private void processSaveView(RoundEnvironment roundEnv) throws IllegalArgumentException {
-        for (Element element : roundEnv.getElementsAnnotatedWith(SaveView.class)) {
+    private void processSave(RoundEnvironment roundEnv) throws IllegalArgumentException {
+        for (Element element : roundEnv.getElementsAnnotatedWith(Save.class)) {
             AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
-            SaveViewField saveViewField = new SaveViewField(element);
-            annotatedClass.addSaveViewField(saveViewField);
+            SaveField saveField = new SaveField(element);
+            annotatedClass.addSaveField(saveField);
         }
     }
 
@@ -109,24 +101,6 @@ public class SaveProcessor extends BaseProcessor {
             AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
             SaveOnClickMethod saveOnClickMethod = new SaveOnClickMethod(element);
             annotatedClass.addSaveOnClickMethod(saveOnClickMethod);
-        }
-    }
-
-
-    private void processSaveString(RoundEnvironment roundEnv) throws IllegalArgumentException {
-        for (Element element : roundEnv.getElementsAnnotatedWith(SaveString.class)) {
-            AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
-            SaveStringField saveStringField = new SaveStringField(element);
-            annotatedClass.addSaveStringField(saveStringField);
-        }
-    }
-
-
-    private void processSaveDrawable(RoundEnvironment roundEnv) throws IllegalArgumentException {
-        for (Element element : roundEnv.getElementsAnnotatedWith(SaveDrawable.class)) {
-            AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
-            SaveDrawableField saveStringField = new SaveDrawableField(element);
-            annotatedClass.addSaveStringField(saveStringField);
         }
     }
 

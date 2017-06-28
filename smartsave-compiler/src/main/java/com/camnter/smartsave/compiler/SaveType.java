@@ -18,4 +18,8 @@ public interface SaveType {
 
     ClassName ANDROID_VIEW = ClassName.get("android.view", "View");
 
+    ClassName STRING = ClassName.get("java.lang", "String");
+
+    ClassName ANDROID_DRAWABLE = ClassName.get("android.graphics.drawable", "Drawable");
+
 }

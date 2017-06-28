@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.FIELD)
-public @interface SaveString {
+public @interface Save {
 
     int value() default 0;
 

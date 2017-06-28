@@ -9,8 +9,8 @@ import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.utils.asynctask.ProgressBarAsyncTask;
 import com.camnter.smartsave.SmartSave;
+import com.camnter.smartsave.annotation.Save;
 import com.camnter.smartsave.annotation.SaveOnClick;
-import com.camnter.smartsave.annotation.SaveView;
 import com.camnter.utils.wrapper.SmartToastWrapper;
 
 /**
@@ -20,9 +20,9 @@ import com.camnter.utils.wrapper.SmartToastWrapper;
  */
 public class AsyncTaskActivity extends BaseAppCompatActivity {
 
-    @SaveView(R.id.textview)
+    @Save(R.id.textview)
     TextView textview;
-    @SaveView(R.id.progressBar)
+    @Save(R.id.progressBar)
     ProgressBar progressBar;
 
     private SmartToastWrapper smartToastWrapper;

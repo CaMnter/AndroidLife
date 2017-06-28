@@ -1,5 +1,6 @@
 package com.camnter.smartsave.compiler.annotation;
 
+import com.camnter.smartsave.compiler.SaveHelper;
 import com.camnter.smartsave.compiler.SaveType;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 
 /**
@@ -22,45 +24,31 @@ public class AnnotatedClass {
 
     private final Elements elements;
     private final TypeElement annotatedElement;
-    private final List<SaveViewField> saveViewFields;
-    private final List<SaveStringField> saveStringFields;
-    private final List<SaveDrawableField> saveDrawableFields;
+    private final List<SaveField> saveFields;
     private final List<SaveOnClickMethod> saveOnClickMethods;
+
+    private final TypeMirror annotatedElementType;
+    private final String annotatedElementSimpleName;
 
 
     public AnnotatedClass(TypeElement annotatedElement,
                           Elements elements) {
         this.elements = elements;
         this.annotatedElement = annotatedElement;
-        this.saveViewFields = new ArrayList<>();
-        this.saveStringFields = new ArrayList<>();
-        this.saveDrawableFields = new ArrayList<>();
+        this.annotatedElementType = this.annotatedElement.asType();
+        this.annotatedElementSimpleName = this.annotatedElement.getSimpleName().toString();
+        this.saveFields = new ArrayList<>();
         this.saveOnClickMethods = new ArrayList<>();
     }
 
 
-    public String getQualifiedName() {
-        return this.annotatedElement.getQualifiedName().toString();
-    }
-
-
-    public void addSaveViewField(SaveViewField saveViewField) {
-        this.saveViewFields.add(saveViewField);
+    public void addSaveField(SaveField saveField) {
+        this.saveFields.add(saveField);
     }
 
 
     public void addSaveOnClickMethod(SaveOnClickMethod saveOnClickMethod) {
         this.saveOnClickMethods.add(saveOnClickMethod);
-    }
-
-
-    public void addSaveStringField(SaveStringField saveStringField) {
-        this.saveStringFields.add(saveStringField);
-    }
-
-
-    public void addSaveStringField(SaveDrawableField saveDrawableField) {
-        this.saveDrawableFields.add(saveDrawableField);
     }
 
 
@@ -74,14 +62,34 @@ public class AnnotatedClass {
             .addParameter(TypeVariableName.get("T"), "target", Modifier.FINAL)
             .addParameter(SaveType.ADAPTER, "adapter", Modifier.FINAL);
 
-        // findViewById
-        for (SaveViewField saveViewField : this.saveViewFields) {
-            saveMethod.addStatement(
-                "target.$N = ($T) (adapter.findViewById(target, $L))",
-                saveViewField.getFieldName(),
-                ClassName.get(saveViewField.getFieldType()),
-                saveViewField.getResId()
-            );
+        // findViewById, getString, getDrawable
+        for (SaveField saveField : this.saveFields) {
+            final TypeMirror fieldType = saveField.getFieldType();
+            final String fieldTypeString;
+            if (SaveHelper.isSubtypeOfType(fieldType, SaveType.ANDROID_VIEW.toString())) {
+                // findViewById
+                saveMethod.addStatement(
+                    "target.$N = ($T) (adapter.findViewById(target, $L))",
+                    saveField.getFieldName(),
+                    ClassName.get(fieldType),
+                    saveField.getResId()
+                );
+            } else if ((SaveType.STRING.toString()).equals(
+                (fieldTypeString = fieldType.toString()))) {
+                // getString
+                saveMethod.addStatement(
+                    "target.$N = adapter.getString(target, $L)",
+                    saveField.getFieldName(),
+                    saveField.getResId()
+                );
+            } else if ((SaveType.ANDROID_DRAWABLE.toString()).equals(fieldTypeString)) {
+                // getDrawable
+                saveMethod.addStatement(
+                    "target.$N = adapter.getDrawable(target, $L)",
+                    saveField.getFieldName(),
+                    saveField.getResId()
+                );
+            }
         }
 
         // setOnClickListener
@@ -111,36 +119,18 @@ public class AnnotatedClass {
             }
         }
 
-        // getString
-        for (SaveStringField saveStringField : this.saveStringFields) {
-            saveMethod.addStatement(
-                "target.$N = adapter.getString(target, $L)",
-                saveStringField.getFieldName(),
-                saveStringField.getResId()
-            );
-        }
-
-        // getDrawable
-        for (SaveDrawableField saveDrawableField : this.saveDrawableFields) {
-            saveMethod.addStatement(
-                "target.$N = adapter.getDrawable(target, $L)",
-                saveDrawableField.getFieldName(),
-                saveDrawableField.getResId()
-            );
-        }
-
         // _Save
         TypeSpec saveClass = TypeSpec.classBuilder(
-            this.annotatedElement.getSimpleName() + "_Save")
+            this.annotatedElementSimpleName + "_Save")
             .addModifiers(Modifier.PUBLIC)
             .addTypeVariable(
-                TypeVariableName.get("T", TypeName.get(this.annotatedElement.asType())))
+                TypeVariableName.get("T", TypeName.get(this.annotatedElementType)))
             .addSuperinterface(ParameterizedTypeName.get(SaveType.SAVE,
                 TypeVariableName.get("T")))
             .addMethod(saveMethod.build())
             .build();
 
-        String packageName = this.elements
+        final String packageName = this.elements
             .getPackageOf(this.annotatedElement).getQualifiedName().toString();
 
         return JavaFile.builder(packageName, saveClass).build();
