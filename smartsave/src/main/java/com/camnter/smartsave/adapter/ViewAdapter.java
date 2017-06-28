@@ -40,4 +40,20 @@ public class ViewAdapter implements Adapter<View> {
         return ContextCompat.getColor(context, resId);
     }
 
+
+    @Override
+    public float getDimension(View target, int resId) {
+        Context context = target.getContext();
+        if (context == null) return 0;
+        return context.getResources().getDimension(resId);
+    }
+
+
+    @Override
+    public int getDimensionPixelSize(View target, int resId) {
+        Context context = target.getContext();
+        if (context == null) return 0;
+        return context.getResources().getDimensionPixelSize(resId);
+    }
+
 }

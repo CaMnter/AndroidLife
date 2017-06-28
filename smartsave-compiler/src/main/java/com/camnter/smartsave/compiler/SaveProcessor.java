@@ -2,9 +2,11 @@ package com.camnter.smartsave.compiler;
 
 import com.camnter.smartsave.annotation.Save;
 import com.camnter.smartsave.annotation.SaveColor;
+import com.camnter.smartsave.annotation.SaveDimension;
 import com.camnter.smartsave.annotation.SaveOnClick;
 import com.camnter.smartsave.compiler.annotation.AnnotatedClass;
 import com.camnter.smartsave.compiler.annotation.SaveColorField;
+import com.camnter.smartsave.compiler.annotation.SaveDimensionField;
 import com.camnter.smartsave.compiler.annotation.SaveField;
 import com.camnter.smartsave.compiler.annotation.SaveOnClickMethod;
 import com.camnter.smartsave.compiler.core.BaseProcessor;
@@ -50,6 +52,7 @@ public class SaveProcessor extends BaseProcessor {
                 this.add(Save.class.getCanonicalName());
                 this.add(SaveColor.class.getCanonicalName());
                 this.add(SaveOnClick.class.getCanonicalName());
+                this.add(SaveDimension.class.getCanonicalName());
             }
         };
     }
@@ -71,6 +74,7 @@ public class SaveProcessor extends BaseProcessor {
             this.processSave(roundEnv);
             this.processSaveColor(roundEnv);
             this.processSaveOnClick(roundEnv);
+            this.processSaveDimension(roundEnv);
         } catch (Exception e) {
             this.e(e.getMessage());
             e.printStackTrace();
@@ -114,6 +118,16 @@ public class SaveProcessor extends BaseProcessor {
             AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
             SaveOnClickMethod saveOnClickMethod = new SaveOnClickMethod(element);
             annotatedClass.addSaveOnClickMethod(saveOnClickMethod);
+        }
+    }
+
+
+    private void processSaveDimension(RoundEnvironment roundEnv) throws IllegalArgumentException {
+        for (Element element : roundEnv.getElementsAnnotatedWith(SaveDimension.class)) {
+            AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
+            SaveDimensionField saveDimensionField = new SaveDimensionField(element,
+                SaveDimension.class);
+            annotatedClass.addSaveDimensionField(saveDimensionField);
         }
     }
 

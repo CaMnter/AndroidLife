@@ -3,6 +3,7 @@ package com.camnter.newlife.ui.activity.smartsave;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.smartsave.SmartSave;
 import com.camnter.smartsave.annotation.Save;
 import com.camnter.smartsave.annotation.SaveColor;
+import com.camnter.smartsave.annotation.SaveDimension;
 import com.camnter.smartsave.annotation.SaveOnClick;
 import com.camnter.utils.wrapper.SmartToastWrapper;
 import java.util.Locale;
@@ -49,6 +51,11 @@ public class SmartSaveExampleActivity extends BaseAppCompatActivity {
     @SaveColor(R.color.yellow)
     int yellow;
 
+    @SaveDimension(R.dimen.smart_save_second_text)
+    int secondDimension;
+    @SaveDimension(R.dimen.smart_save_third_text)
+    float thirdDimension;
+
 
     /**
      * Fill in layout id
@@ -77,7 +84,9 @@ public class SmartSaveExampleActivity extends BaseAppCompatActivity {
         };
         ViewCompat.setBackground(this.extraImage, this.extraDrawable);
         this.secondText.setTextColor(this.green);
+        this.secondText.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.secondDimension);
         this.thirdText.setTextColor(this.yellow);
+        this.thirdText.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.thirdDimension);
     }
 
 

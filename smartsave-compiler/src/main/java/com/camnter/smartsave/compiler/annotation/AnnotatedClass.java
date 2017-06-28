@@ -27,6 +27,7 @@ public class AnnotatedClass {
     private final List<SaveField> saveFields;
     private final List<SaveColorField> saveColorFields;
     private final List<SaveOnClickMethod> saveOnClickMethods;
+    private final List<SaveDimensionField> saveDimensionFields;
 
     private final TypeMirror annotatedElementType;
     private final String annotatedElementSimpleName;
@@ -41,6 +42,7 @@ public class AnnotatedClass {
         this.saveFields = new ArrayList<>();
         this.saveColorFields = new ArrayList<>();
         this.saveOnClickMethods = new ArrayList<>();
+        this.saveDimensionFields = new ArrayList<>();
     }
 
 
@@ -56,6 +58,11 @@ public class AnnotatedClass {
 
     public void addSaveOnClickMethod(SaveOnClickMethod saveOnClickMethod) {
         this.saveOnClickMethods.add(saveOnClickMethod);
+    }
+
+
+    public void addSaveDimensionField(SaveDimensionField saveDimensionField) {
+        this.saveDimensionFields.add(saveDimensionField);
     }
 
 
@@ -106,6 +113,27 @@ public class AnnotatedClass {
                 saveColorField.getFieldName(),
                 saveColorField.getResId()
             );
+        }
+
+        // getDimension, getDimensionPixelSize
+        TypeName typeName;
+        for (SaveDimensionField saveDimensionField : this.saveDimensionFields) {
+            if ((typeName = TypeName.get(saveDimensionField.getFieldType())).equals(
+                TypeName.FLOAT)) {
+                // getDimension
+                saveMethod.addStatement(
+                    "target.$N = adapter.getDimension(target, $L)",
+                    saveDimensionField.getFieldName(),
+                    saveDimensionField.getResId()
+                );
+            } else if (typeName.equals(TypeName.INT)) {
+                // getDimensionPixelSize
+                saveMethod.addStatement(
+                    "target.$N = adapter.getDimensionPixelSize(target, $L)",
+                    saveDimensionField.getFieldName(),
+                    saveDimensionField.getResId()
+                );
+            }
         }
 
         // setOnClickListener

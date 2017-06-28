@@ -34,4 +34,16 @@ public class ActivityAdapter implements Adapter<Activity> {
         return ContextCompat.getColor(target, resId);
     }
 
+
+    @Override
+    public float getDimension(Activity target, int resId) {
+        return target.getResources().getDimension(resId);
+    }
+
+
+    @Override
+    public int getDimensionPixelSize(Activity target, int resId) {
+        return target.getResources().getDimensionPixelSize(resId);
+    }
+
 }

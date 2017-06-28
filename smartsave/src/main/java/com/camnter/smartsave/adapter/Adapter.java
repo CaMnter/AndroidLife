@@ -17,4 +17,8 @@ public interface Adapter<T> {
 
     int getColor(T target, int resId);
 
+    float getDimension(T target, int resId);
+
+    int getDimensionPixelSize(T target, int resId);
+
 }
