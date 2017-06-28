@@ -1,6 +1,6 @@
 package com.camnter.annotation.processor.compiler.test;
 
-import com.camnter.annotation.processor.annotation.Save;
+import com.camnter.annotation.processor.annotation.SaveTest;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -24,7 +24,7 @@ public class SaveTestProcessor extends AbstractProcessor {
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
-        return Collections.singleton(Save.class.getCanonicalName());
+        return Collections.singleton(SaveTest.class.getCanonicalName());
     }
 
 
