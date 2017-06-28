@@ -90,7 +90,7 @@ public class SaveProcessor extends BaseProcessor {
     private void processSave(RoundEnvironment roundEnv) throws IllegalArgumentException {
         for (Element element : roundEnv.getElementsAnnotatedWith(Save.class)) {
             AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
-            SaveField saveField = new SaveField(element);
+            SaveField saveField = new SaveField(element, Save.class);
             annotatedClass.addSaveField(saveField);
         }
     }
