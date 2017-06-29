@@ -1,8 +1,10 @@
 package com.camnter.newlife.widget.screenshots;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.net.Uri;
@@ -18,6 +20,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
+import com.camnter.utils.ActivityUtils;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +36,7 @@ import java.util.concurrent.Executors;
  * -  new OnScreenShotListener() {
  * -      public void onShot(String imagePath) {
  * -          // do something
- * -      }
+ * }
  * -  }
  * );
  *
@@ -50,7 +53,7 @@ public class ScreenshotsListener {
     /**
      * 最大轮询时间
      */
-    private static final int MAX_POLLING_DECODE_TIME = 500;
+    private static final int MAX_POLLING_DECODE_TIME = 600;
     /**
      * 轮询间隔
      */
@@ -84,17 +87,15 @@ public class ScreenshotsListener {
         "screencap", "screen_cap", "screen-cap", "screen cap"
     };
 
-    private Point screenRealSize;
-
     /**
      * 已回调过的路径
      */
     private final List<String> hasCallbackPaths = new ArrayList<>();
-
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final ExecutorService processExecutor;
+    private Point screenRealSize;
     private Context context;
-
     private OnScreenShotListener listener;
-
     private long startListenTime;
 
     /**
@@ -106,9 +107,6 @@ public class ScreenshotsListener {
      * 外部存储器内容观察者
      */
     private MediaContentObserver externalObserver;
-
-    private final Handler mainHandler = new Handler(Looper.getMainLooper());
-    private final ExecutorService processExecutor;
 
 
     @UiThread
@@ -312,8 +310,12 @@ public class ScreenshotsListener {
             return false;
         }
 
-        //  轮询 + 延迟策略 等待文件写入完成，才视为截屏事件
-        this.pollingDecode(data, 0L);
+        //  轮询 + 延迟策略 等待文件 decode 成功，才视为截屏事件
+        Bitmap bitmap;
+        if ((bitmap = this.pollingDecode(data, 0L)) == null) {
+            return false;
+        }
+        bitmap.recycle();
 
 
         /*
@@ -353,43 +355,68 @@ public class ScreenshotsListener {
     }
 
 
-    /**
-     * 轮询 + 延迟 500ms
-     *
-     * @param data path
-     */
-    @WorkerThread
-    private void pollingDecode(@NonNull final String data, long duration) {
+    private Bitmap pollingDecode(@NonNull final String data,
+                                 long duration) {
         Log.d(TAG, "[pollingDecode]   [duration] = " + duration + "   [threadId] = " +
             Thread.currentThread().getId());
-        while (!this.isFileAvailable(data) &&
+        /*
+         * 轮询 + 延迟 600ms 获取 宽高
+         */
+        Point point;
+        while ((point = this.getSizePoint(data)) == null &&
             duration <= MAX_POLLING_DECODE_TIME) {
             try {
                 Log.d(TAG,
-                    "[isFileAvailable] = false   [data] = " + data + "   [duration] = " + duration);
+                    "[getSizePoint] = null   [getSizePoint]   [imagePath] = " + data +
+                        "   [duration] = " + duration);
                 duration += POLLING_DECODE_STEP;
                 Thread.sleep(POLLING_DECODE_STEP);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        if (point == null) return null;
+
+        /*
+         * 轮询 + 延迟 600ms 获取 一张很小的缩略图 （ 高度 16 px 左右 ）
+         * 某些机型上，有宽高还还不能 decode bitmap
+         */
+        int expectSampleSizeRatio = point.y / 16;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = expectSampleSizeRatio;
+
+        Bitmap bitmap;
+        while ((bitmap = BitmapFactory.decodeFile(data, options)) == null &&
+            duration <= MAX_POLLING_DECODE_TIME) {
+            try {
+                Log.d(TAG,
+                    "[pollingDecode]  = false   [decodeBitmap]   [imagePath] = " + data +
+                        "   [duration] = " + duration);
+                duration += POLLING_DECODE_STEP;
+                Thread.sleep(POLLING_DECODE_STEP);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return bitmap;
     }
 
 
     /**
      * 判断文件是否存在
      *
-     * @param data path
-     * @return 文件是否存在
+     * @param data data
+     * @return point
      */
-    private boolean isFileAvailable(@NonNull final String data) {
+    private Point getSizePoint(@NonNull final String data) {
         final Point point = this.getImageSize(data);
         if (point.x > 0 && point.y > 0) {
             Log.d(TAG,
-                "[isFileAvailable] = true   [data] = " + data);
-            return true;
+                "[getSizePoint] = true   [data] = " + data);
+            return point;
         }
-        return false;
+        return null;
     }
 
 
@@ -471,6 +498,16 @@ public class ScreenshotsListener {
         this.processExecutor.execute(new Runnable() {
             @Override
             public void run() {
+                Activity activity = ActivityUtils.getForegroundActivity(context);
+                Class activityClass;
+                String activityName = null;
+                if (activity != null) {
+                    activityClass = activity.getClass();
+                    activityName = activityClass.getName();
+                }
+                Log.d(TAG,
+                    "[checkRules]   [activityName] = " + activityName);
+                if (activityName == null) return;
                 processExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
@@ -479,11 +516,6 @@ public class ScreenshotsListener {
                 });
             }
         });
-    }
-
-
-    public interface OnScreenShotListener {
-        void onShot(@NonNull final String imagePath);
     }
 
 
@@ -497,6 +529,11 @@ public class ScreenshotsListener {
             throw new IllegalArgumentException(
                 "[" + TAG + "]  Call the method must be in main thread: " + methodMessage);
         }
+    }
+
+
+    public interface OnScreenShotListener {
+        void onShot(@NonNull final String imagePath);
     }
 
 
@@ -519,7 +556,6 @@ public class ScreenshotsListener {
                     this.contentUri.toString());
             checkRules(this.contentUri);
         }
-
     }
 
 }
