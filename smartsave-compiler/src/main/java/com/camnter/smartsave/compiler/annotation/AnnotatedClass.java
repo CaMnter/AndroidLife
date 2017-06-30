@@ -69,7 +69,35 @@ public class AnnotatedClass {
     public JavaFile getJavaFile() {
 
         // void save(T target, Adapter adapter)
-        MethodSpec.Builder saveMethod = MethodSpec
+        MethodSpec.Builder saveMethodBuilder = this.saveMethodBuilder();
+        // void unSave(T target, Adapter adapter)
+        MethodSpec.Builder unSaveMethodBuilder = this.unSaveMethodBuilder();
+
+        // _Save
+        TypeSpec saveClass = TypeSpec.classBuilder(
+            this.annotatedElementSimpleName + "_Save")
+            .addModifiers(Modifier.PUBLIC)
+            .addTypeVariable(
+                TypeVariableName.get("T", TypeName.get(this.annotatedElementType)))
+            .addSuperinterface(ParameterizedTypeName.get(SaveType.SAVE,
+                TypeVariableName.get("T")))
+            .addMethod(saveMethodBuilder.build())
+            .addMethod(unSaveMethodBuilder.build())
+            .build();
+
+        final String packageName = this.elements
+            .getPackageOf(this.annotatedElement).getQualifiedName().toString();
+
+        return JavaFile.builder(packageName, saveClass).build();
+
+    }
+
+
+    /**
+     * void save(T target, Adapter adapter)
+     */
+    private MethodSpec.Builder saveMethodBuilder() {
+        MethodSpec.Builder saveMethodBuilder = MethodSpec
             .methodBuilder("save")
             .addModifiers(Modifier.PUBLIC)
             .addAnnotation(Override.class)
@@ -82,7 +110,7 @@ public class AnnotatedClass {
             final String fieldTypeString;
             if (SaveHelper.isSubtypeOfType(fieldType, SaveType.ANDROID_VIEW.toString())) {
                 // findViewById
-                saveMethod.addStatement(
+                saveMethodBuilder.addStatement(
                     "target.$N = ($T) (adapter.findViewById(target, $L))",
                     saveField.getFieldName(),
                     ClassName.get(fieldType),
@@ -91,14 +119,14 @@ public class AnnotatedClass {
             } else if ((SaveType.STRING.toString()).equals(
                 (fieldTypeString = fieldType.toString()))) {
                 // getString
-                saveMethod.addStatement(
+                saveMethodBuilder.addStatement(
                     "target.$N = adapter.getString(target, $L)",
                     saveField.getFieldName(),
                     saveField.getResId()
                 );
             } else if ((SaveType.ANDROID_DRAWABLE.toString()).equals(fieldTypeString)) {
                 // getDrawable
-                saveMethod.addStatement(
+                saveMethodBuilder.addStatement(
                     "target.$N = adapter.getDrawable(target, $L)",
                     saveField.getFieldName(),
                     saveField.getResId()
@@ -108,7 +136,7 @@ public class AnnotatedClass {
 
         // getColor
         for (SaveColorField saveColorField : this.saveColorFields) {
-            saveMethod.addStatement(
+            saveMethodBuilder.addStatement(
                 "target.$N = adapter.getColor(target, $L)",
                 saveColorField.getFieldName(),
                 saveColorField.getResId()
@@ -121,14 +149,14 @@ public class AnnotatedClass {
             if ((typeName = TypeName.get(saveDimensionField.getFieldType())).equals(
                 TypeName.FLOAT)) {
                 // getDimension
-                saveMethod.addStatement(
+                saveMethodBuilder.addStatement(
                     "target.$N = adapter.getDimension(target, $L)",
                     saveDimensionField.getFieldName(),
                     saveDimensionField.getResId()
                 );
             } else if (typeName.equals(TypeName.INT)) {
                 // getDimensionPixelSize
-                saveMethod.addStatement(
+                saveMethodBuilder.addStatement(
                     "target.$N = adapter.getDimensionPixelSize(target, $L)",
                     saveDimensionField.getFieldName(),
                     saveDimensionField.getResId()
@@ -140,7 +168,7 @@ public class AnnotatedClass {
         for (SaveOnClickMethod saveOnClickMethod : this.saveOnClickMethods) {
             final boolean firstParameterViewExist = saveOnClickMethod.isFirstParameterViewExist();
             for (final int id : saveOnClickMethod.getIds()) {
-                saveMethod.addStatement(
+                saveMethodBuilder.addStatement(
                     "adapter.findViewById(target, $L).setOnClickListener($L)",
                     id,
                     TypeSpec.anonymousClassBuilder("")
@@ -163,22 +191,64 @@ public class AnnotatedClass {
             }
         }
 
-        // _Save
-        TypeSpec saveClass = TypeSpec.classBuilder(
-            this.annotatedElementSimpleName + "_Save")
+        return saveMethodBuilder;
+    }
+
+
+    private MethodSpec.Builder unSaveMethodBuilder() {
+        MethodSpec.Builder unSaveMethodBuilder = MethodSpec
+            .methodBuilder("unSave")
             .addModifiers(Modifier.PUBLIC)
-            .addTypeVariable(
-                TypeVariableName.get("T", TypeName.get(this.annotatedElementType)))
-            .addSuperinterface(ParameterizedTypeName.get(SaveType.SAVE,
-                TypeVariableName.get("T")))
-            .addMethod(saveMethod.build())
-            .build();
+            .addAnnotation(Override.class)
+            .addParameter(TypeVariableName.get("T"), "target", Modifier.FINAL)
+            .addParameter(SaveType.ADAPTER, "adapter", Modifier.FINAL);
 
-        final String packageName = this.elements
-            .getPackageOf(this.annotatedElement).getQualifiedName().toString();
+        // findViewById, getString, getDrawable
+        for (SaveField saveField : this.saveFields) {
+            unSaveMethodBuilder.addStatement(
+                "target.$N = null",
+                saveField.getFieldName()
+            );
+        }
 
-        return JavaFile.builder(packageName, saveClass).build();
+        // getColor
+        for (SaveColorField saveColorField : this.saveColorFields) {
+            unSaveMethodBuilder.addStatement(
+                "target.$N = 0",
+                saveColorField.getFieldName()
+            );
+        }
 
+        // getDimension, getDimensionPixelSize
+        TypeName typeName;
+        for (SaveDimensionField saveDimensionField : this.saveDimensionFields) {
+            if ((typeName = TypeName.get(saveDimensionField.getFieldType())).equals(
+                TypeName.FLOAT)) {
+                // getDimension
+                unSaveMethodBuilder.addStatement(
+                    "target.$N = 0.0f",
+                    saveDimensionField.getFieldName()
+                );
+            } else if (typeName.equals(TypeName.INT)) {
+                // getDimensionPixelSize
+                unSaveMethodBuilder.addStatement(
+                    "target.$N = 0",
+                    saveDimensionField.getFieldName()
+                );
+            }
+        }
+
+        // setOnClickListener
+        for (SaveOnClickMethod saveOnClickMethod : this.saveOnClickMethods) {
+            for (final int id : saveOnClickMethod.getIds()) {
+                unSaveMethodBuilder.addStatement(
+                    "adapter.findViewById(target, $L).setOnClickListener(null)",
+                    id
+                );
+            }
+        }
+
+        return unSaveMethodBuilder;
     }
 
 

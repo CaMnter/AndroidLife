@@ -31,6 +31,16 @@ public final class SmartSave {
     }
 
 
+    public static void unSave(final Activity activity) {
+        unSave(activity, ACTIVITY_ADAPTER);
+    }
+
+
+    public static void unSave(final View view) {
+        unSave(view, VIEW_ADAPTER);
+    }
+
+
     @SuppressWarnings("unchecked")
     private static void save(final Object target, final Adapter adapter) {
         final String targetFullName = target.getClass().getName();
@@ -43,7 +53,24 @@ public final class SmartSave {
             }
             save.save(target, adapter);
         } catch (Exception e) {
-            throw new RuntimeException("[SuperSave]   [save]   " + targetFullName, e);
+            throw new RuntimeException("[SmartSave]   [save]   " + targetFullName, e);
+        }
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private static void unSave(final Object target, final Adapter adapter) {
+        final String targetFullName = target.getClass().getName();
+        try {
+            Save save = SAVE_MAP.get(targetFullName);
+            if (save == null) {
+                Class<?> saveClass = Class.forName(targetFullName + "_Save");
+                save = (Save) saveClass.newInstance();
+                SAVE_MAP.put(targetFullName, save);
+            }
+            save.unSave(target, adapter);
+        } catch (Exception e) {
+            throw new RuntimeException("[SmartSave]   [unSave]   " + targetFullName, e);
         }
     }
 

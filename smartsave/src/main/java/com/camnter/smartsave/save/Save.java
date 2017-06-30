@@ -10,4 +10,6 @@ public interface Save<T> {
 
     void save(T target, Adapter adapter);
 
+    void unSave(T target, Adapter adapter);
+
 }
