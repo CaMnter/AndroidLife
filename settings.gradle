@@ -1,5 +1,9 @@
 include ':app',
 
+        ':butterknife-8.6.0:butterknife',
+        ':butterknife-8.6.0:butterknife-annotations',
+        ':butterknife-8.6.0:butterknife-compiler',
+
         ':smartsave',
         ':smartsave-compiler',
         ':smartsave-annotation',

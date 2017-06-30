@@ -1,0 +1,33 @@
+apply plugin: 'java'
+//apply plugin: 'checkstyle'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+//def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
+//def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)
+//for (File file : sdkHandler.sdkLoader.repositories) {
+//  repositories.maven {
+//    url = file.toURI()
+//  }
+//}
+
+dependencies {
+    compile project(':butterknife-8.6.0:butterknife-annotations')
+    compile 'com.google.auto:auto-common:0.8'
+    compile 'com.squareup:javapoet:1.9.0'
+    compile 'com.google.auto.service:auto-service:1.0-rc3'
+    compileOnly files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
+
+//    testCompile 'junit:junit:4.12'
+//    testCompile 'com.google.truth:truth:0.34'
+}
+
+//checkstyle {
+//    configFile rootProject.file('checkstyle.xml')
+//    showViolations true
+//    //Remove this when tests are less verbose, i.e. using JavaPoet
+//    sourceSets = [sourceSets.main]
+//}
+
+//apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
