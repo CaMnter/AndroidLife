@@ -30,6 +30,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * </code></pre>
  *
  * @see TextWatcher
+ *
+ * 给 View 添加 addTextChangedListener or removeTextChangedListener
  */
 @Target(METHOD)
 @Retention(CLASS)

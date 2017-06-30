@@ -14,6 +14,10 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * {@literal @}BindDimen(R.dimen.horizontal_gap) int gapPx;
  * {@literal @}BindDimen(R.dimen.horizontal_gap) float gap;
  * </code></pre>
+ *
+ * 处理资源 R.dimen
+ * int
+ * float
  */
 @Retention(CLASS)
 @Target(FIELD)

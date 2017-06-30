@@ -23,6 +23,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * method.
  *
  * @see OnClickListener
+ *
+ * 给 View 添加 OnClickListener
  */
 @Target(METHOD)
 @Retention(CLASS)

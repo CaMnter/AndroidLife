@@ -32,6 +32,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * </code></pre>
  *
  * @see OnItemSelectedListener
+ *
+ * 给 View 添加 OnItemSelectedListener
  */
 @Target(METHOD)
 @Retention(CLASS)

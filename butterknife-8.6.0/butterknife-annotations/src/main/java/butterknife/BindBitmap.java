@@ -13,6 +13,9 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * <pre><code>
  * {@literal @}BindBitmap(R.drawable.logo) Bitmap logo;
  * </code></pre>
+ *
+ * 处理资源 R.drawable
+ * Bitmap
  */
 @Retention(CLASS)
 @Target(FIELD)

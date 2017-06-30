@@ -12,6 +12,9 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * <pre><code>
  * {@literal @}BindBool(R.bool.is_tablet) boolean isTablet;
  * </code></pre>
+ *
+ * 处理资源 R.bool
+ * boolean
  */
 @Retention(CLASS)
 @Target(FIELD)

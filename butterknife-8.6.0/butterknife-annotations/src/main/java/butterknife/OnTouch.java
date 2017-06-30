@@ -24,6 +24,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * on the method.
  *
  * @see OnTouchListener
+ *
+ * 给 View 添加 OnTouchListener
  */
 @Target(METHOD)
 @Retention(CLASS)

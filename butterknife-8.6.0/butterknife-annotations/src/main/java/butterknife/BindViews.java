@@ -14,6 +14,9 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * {@literal @}BindViews({ R.id.title, R.id.subtitle })
  * List&lt;TextView&gt; titles;
  * </code></pre>
+ *
+ * 处理资源 { R.int.x1, R.int.x2, R.int.x3 }
+ * { T extends View, T extends View, T extends View }
  */
 @Retention(CLASS)
 @Target(FIELD)

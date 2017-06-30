@@ -26,6 +26,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  *   Toast.makeText(this, "State changed: " + state + "!", Toast.LENGTH_SHORT).show();
  * }
  * </code></pre>
+ *
+ * 给 View 添加 OnPageChangeListener
  */
 @Target(METHOD)
 @Retention(CLASS)

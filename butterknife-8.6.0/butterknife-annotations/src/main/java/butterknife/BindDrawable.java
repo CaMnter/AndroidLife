@@ -16,6 +16,9 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * {@literal @}BindDrawable(value = R.drawable.placeholder, tint = R.attr.colorAccent)
  * Drawable tintedPlaceholder;
  * </code></pre>
+ *
+ * 处理资源 R.drawable
+ * Drawable
  */
 @Retention(CLASS)
 @Target(FIELD)

@@ -24,6 +24,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * onCheckedChanged} may be used on the method.
  *
  * @see OnCheckedChangeListener
+ *
+ * 给 View 添加 OnCheckedChangeListener
  */
 @Target(METHOD)
 @Retention(CLASS)

@@ -23,6 +23,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * android.view.View, int, long) onItemClick} may be used on the method.
  *
  * @see OnItemClickListener
+ *
+ * 给 View 添加 OnItemClickListener
  */
 @Target(METHOD)
 @Retention(CLASS)

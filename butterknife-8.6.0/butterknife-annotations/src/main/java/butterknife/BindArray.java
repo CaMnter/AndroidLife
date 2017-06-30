@@ -30,6 +30,11 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * <pre><code>
  * {@literal @}BindArray(R.array.icons) TypedArray icons;
  * </code></pre>
+ *
+ * 处理资源 R.array
+ * String[]
+ * int[]
+ * CharSequence[]
  */
 @Retention(CLASS)
 @Target(FIELD)

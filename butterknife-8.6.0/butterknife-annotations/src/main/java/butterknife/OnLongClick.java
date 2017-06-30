@@ -24,6 +24,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * used on the method.
  *
  * @see OnLongClickListener
+ *
+ * 给 View 添加 OnLongClickListener
  */
 @Retention(CLASS)
 @Target(METHOD)

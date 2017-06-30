@@ -14,6 +14,9 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * {@literal @}BindColor(R.color.background_green) int green;
  * {@literal @}BindColor(R.color.background_green_selector) ColorStateList greenSelector;
  * </code></pre>
+ *
+ * 处理资源 R.color
+ * int
  */
 @Retention(CLASS)
 @Target(FIELD)

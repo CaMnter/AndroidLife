@@ -11,6 +11,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * <pre><code>
  * {@literal @}Optional @OnClick(R.id.subtitle) void onSubtitleClick() {}
  * </code></pre>
+ *
+ * 给 View 添加 OnTouchListener
  */
 @Retention(CLASS)
 @Target(METHOD)

@@ -25,6 +25,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * int, long) onItemLongClick} may be used on the method.
  *
  * @see OnItemLongClickListener
+ *
+ * 给 View 添加 OnItemLongClickListener
  */
 @Target(METHOD)
 @Retention(CLASS)

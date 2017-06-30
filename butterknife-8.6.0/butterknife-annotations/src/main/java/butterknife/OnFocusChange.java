@@ -23,6 +23,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * boolean) onFocusChange} may be used on the method.
  *
  * @see OnFocusChangeListener
+ *
+ * 给 View 添加 OnFocusChangeListener
  */
 @Target(METHOD)
 @Retention(CLASS)

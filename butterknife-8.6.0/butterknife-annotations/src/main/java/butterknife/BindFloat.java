@@ -16,6 +16,9 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * <pre><code>
  * {@literal @}BindFloat(R.dimen.image_ratio) float imageRatio;
  * </code></pre>
+ *
+ * 处理资源 R.dimen
+ * float
  */
 @Retention(CLASS)
 @Target(FIELD)

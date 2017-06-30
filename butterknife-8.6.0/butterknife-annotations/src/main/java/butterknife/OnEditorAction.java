@@ -25,6 +25,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * onEditorAction} may be used on the method.
  *
  * @see OnEditorActionListener
+ *
+ * 给 View 添加 OnEditorActionListener
  */
 @Target(METHOD)
 @Retention(CLASS)

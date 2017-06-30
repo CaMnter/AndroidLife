@@ -12,6 +12,9 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * <pre><code>
  * {@literal @}BindString(R.string.username_error) String usernameErrorText;
  * </code></pre>
+ *
+ * 处理资源 R.string
+ * String
  */
 @Retention(CLASS)
 @Target(FIELD)

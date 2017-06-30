@@ -12,6 +12,9 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * <pre><code>
  * {@literal @}BindInt(R.int.columns) int columns;
  * </code></pre>
+ *
+ * 处理资源 R.int
+ * int
  */
 @Retention(CLASS)
 @Target(FIELD)
