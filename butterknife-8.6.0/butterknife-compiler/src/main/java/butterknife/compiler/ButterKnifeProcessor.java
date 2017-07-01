@@ -243,6 +243,13 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 初始化
+     * 1. 获取 sdk 版本
+     * 2. 初始化一些工具类
+     *
+     * @param env ProcessingEnvironment
+     */
     @Override
     public synchronized void init(ProcessingEnvironment env) {
         super.init(env);
@@ -269,12 +276,22 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 设置 sdk 版本
+     *
+     * @return 版本集合
+     */
     @Override
     public Set<String> getSupportedOptions() {
         return Collections.singleton(OPTION_SDK_INT);
     }
 
 
+    /**
+     * 设置需要处理的注解
+     *
+     * @return 注解集合
+     */
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         Set<String> types = new LinkedHashSet<>();
@@ -285,6 +302,22 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 规定需要处理的注解
+     * BindArray
+     * BindBitmap
+     * BindBool
+     * BindColor
+     * BindDimen
+     * BindDrawable
+     * BindFloat
+     * BindInt
+     * BindString
+     * BindView
+     * BindViews
+     *
+     * @return 注解集合
+     */
     private Set<Class<? extends Annotation>> getSupportedAnnotations() {
         Set<Class<? extends Annotation>> annotations = new LinkedHashSet<>();
 
@@ -1308,11 +1341,22 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 扫描 R class
+     * 解析 R class
+     *
+     * @param env RoundEnvironment
+     */
     private void scanForRClasses(RoundEnvironment env) {
         if (trees == null) return;
 
         RClassScanner scanner = new RClassScanner();
 
+        /*
+         * 每个注解类型 与 被注解的元素，生成一棵树
+         * 然后设置 R class 扫描这个元素的 package name
+         * 最后让这棵树 会自动调用扫描类中的方法去，扫描 R class
+         */
         for (Class<? extends Annotation> annotation : getSupportedAnnotations()) {
             for (Element element : env.getElementsAnnotatedWith(annotation)) {
                 JCTree tree = (JCTree) trees.getTree(element, getMirror(element, annotation));
@@ -1326,6 +1370,10 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             }
         }
 
+        /*
+         * 拿到全部 R classes
+         * 然后 parseRClass(...) 解析 R class
+         */
         for (Map.Entry<String, Set<String>> packageNameToRClassSet : scanner.getRClasses()
             .entrySet()) {
             String respectivePackageName = packageNameToRClassSet.getKey();
@@ -1336,6 +1384,16 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 获取 该 R class 在 scanForRClasses(...) 时，生辰生成的那棵树
+     * 如果存在树，就解析编译好的 R class
+     *
+     * 不存在的话，创建一个 Id 扫描类，扫描 R class 内的所有 Id
+     * Id 扫描类，内还会让树调用 Var 扫描类，扫描全部 int 变量
+     *
+     * @param respectivePackageName R class package name
+     * @param rClass R class
+     */
     private void parseRClass(String respectivePackageName, String rClass) {
         Element element;
 
@@ -1356,6 +1414,12 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 解析编译过的 R class
+     *
+     * @param respectivePackageName package name
+     * @param rClass R class
+     */
     private void parseCompiledR(String respectivePackageName, TypeElement rClass) {
         for (Element element : rClass.getEnclosedElements()) {
             String innerClassName = element.getSimpleName().toString();
@@ -1382,6 +1446,11 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * R class 扫描
+     *
+     * 因为每个 package name 都会有一个 R
+     */
     private static class RClassScanner extends TreeScanner {
         // Maps the currently evaulated rPackageName to R Classes
         private final Map<String, Set<String>> rClasses = new LinkedHashMap<>();
@@ -1417,6 +1486,10 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * R class Id 扫描
+     * 会保存在一个 Map 内
+     */
     private static class IdScanner extends TreeScanner {
         private final Map<QualifiedId, Id> ids;
         private final String rPackageName;
@@ -1447,6 +1520,10 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * R class 变量 扫描
+     * 会保存在一个 Map 内
+     */
     private static class VarScanner extends TreeScanner {
         private final Map<QualifiedId, Id> ids;
         private final ClassName className;
