@@ -123,6 +123,15 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
 
     /**
+     * 根据 @BindArray 元素
+     * 获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 只可能是
+     * obtainTypedArray
+     * getStringArray
+     * getIntArray
+     * getTextArray
+     * null
+     *
      * Returns a method name from the {@link android.content.res.Resources} class for array resource
      * binding, null if the element type is not supported.
      */
@@ -359,12 +368,20 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 扫描 R class，并解析
+     * SuperficialValidation.validateElement(...) google auto 验证 javax Element
+     *
+     * @param env RoundEnvironment
+     * @return Map
+     */
     private Map<TypeElement, BindingSet> findAndParseTargets(RoundEnvironment env) {
         Map<TypeElement, BindingSet.Builder> builderMap = new LinkedHashMap<>();
         Set<TypeElement> erasedTargetNames = new LinkedHashSet<>();
 
         scanForRClasses(env);
 
+        // 处理 @BindArray
         // Process each @BindArray element.
         for (Element element : env.getElementsAnnotatedWith(BindArray.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
@@ -375,6 +392,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             }
         }
 
+        // 处理 @BindBitmap
         // Process each @BindBitmap element.
         for (Element element : env.getElementsAnnotatedWith(BindBitmap.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
@@ -385,6 +403,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             }
         }
 
+        // 处理 @BindBool
         // Process each @BindBool element.
         for (Element element : env.getElementsAnnotatedWith(BindBool.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
@@ -395,6 +414,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             }
         }
 
+        // 处理 @BindColor
         // Process each @BindColor element.
         for (Element element : env.getElementsAnnotatedWith(BindColor.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
@@ -405,6 +425,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             }
         }
 
+        // 处理 @BindDimen
         // Process each @BindDimen element.
         for (Element element : env.getElementsAnnotatedWith(BindDimen.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
@@ -415,6 +436,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             }
         }
 
+        // 处理 @BindDrawable
         // Process each @BindDrawable element.
         for (Element element : env.getElementsAnnotatedWith(BindDrawable.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
@@ -425,6 +447,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             }
         }
 
+        // 处理 @BindFloat
         // Process each @BindFloat element.
         for (Element element : env.getElementsAnnotatedWith(BindFloat.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
@@ -435,6 +458,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             }
         }
 
+        // 处理 @BindInt
         // Process each @BindInt element.
         for (Element element : env.getElementsAnnotatedWith(BindInt.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
@@ -445,6 +469,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             }
         }
 
+        // 处理 @BindString
         // Process each @BindString element.
         for (Element element : env.getElementsAnnotatedWith(BindString.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
@@ -455,6 +480,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             }
         }
 
+        // 处理 @BindView
         // Process each @BindView element.
         for (Element element : env.getElementsAnnotatedWith(BindView.class)) {
             // we don't SuperficialValidation.validateElement(element)
@@ -466,6 +492,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             }
         }
 
+        // 处理 @BindViews
         // Process each @BindViews element.
         for (Element element : env.getElementsAnnotatedWith(BindViews.class)) {
             // we don't SuperficialValidation.validateElement(element)
@@ -477,6 +504,20 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             }
         }
 
+        /*
+         * 处理
+         * @OnCheckedChanged
+         * @OnClick
+         * @OnEditorAction
+         * @OnFocusChange
+         * @OnItemClick
+         * @OnItemLongClick
+         * @OnItemSelected
+         * @OnLongClick
+         * @OnPageChange
+         * @OnTextChanged
+         * @OnTouch
+         */
         // Process each annotation that corresponds to a listener.
         for (Class<? extends Annotation> listener : LISTENERS) {
             findAndParseListener(env, listener, builderMap, erasedTargetNames);
@@ -512,6 +553,13 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 根据注解类型解析错误
+     *
+     * @param element 注解元素
+     * @param annotation 注解 class 类型
+     * @param e 错误信息
+     */
     private void logParsingError(Element element, Class<? extends Annotation> annotation,
                                  Exception e) {
         StringWriter stackTrace = new StringWriter();
@@ -521,6 +569,17 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 1.获取注解元素的所在 .java 元素
+     * 2.检查 private or static 修饰符，并报错
+     * 3.检查 注解是否写在 类上，并报错
+     * 4.检查 该元素所在的 .java 是不是 private
+     *
+     * @param annotationClass 注解的 class 类型
+     * @param targetThing field or method
+     * @param element 注解元素
+     * @return 是否错误
+     */
     private boolean isInaccessibleViaGeneratedCode(Class<? extends Annotation> annotationClass,
                                                    String targetThing, Element element) {
         boolean hasError = false;
@@ -555,6 +614,15 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 1.获取注解元素的所在 .java 元素
+     * 2.从中获取 .java 的 name
+     * 3.检查 name 是不是 android or java 开头的，防止原生 android or java 类有重复的注解被解析
+     *
+     * @param annotationClass 注解的 class 类型
+     * @param element 注解元素
+     * @return 是否错误
+     */
     private boolean isBindingInWrongPackage(Class<? extends Annotation> annotationClass,
                                             Element element) {
         TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
@@ -736,6 +804,21 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 解析 BindBool
+     *
+     * 1.拿到 BindBool 注解元素 的 .java 类元素
+     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
+     * - 有错误就 return
+     * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
+     * 5.然后 将 QualifiedId 包装成 FieldResourceBinding 添加到 BindingSet.Builder 中
+     * 6.记录 .java 元素 为要删除的目录
+     *
+     * @param element BindBool 注解元素
+     * @param builderMap BindingSet.Builder 缓存 Map
+     * @param erasedTargetNames 要删除元素的目录，存在的是 .java 的元素
+     */
     private void parseResourceBool(Element element,
                                    Map<TypeElement, BindingSet.Builder> builderMap, Set<TypeElement> erasedTargetNames) {
         boolean hasError = false;
@@ -769,6 +852,21 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 解析 BindColor
+     *
+     * 1.拿到 BindColor 注解元素 的 .java 类元素
+     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
+     * - 有错误就 return
+     * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
+     * 5.然后 将 QualifiedId 包装成 FieldResourceBinding 添加到 BindingSet.Builder 中
+     * 6.记录 .java 元素 为要删除的目录
+     *
+     * @param element BindColor 注解元素
+     * @param builderMap BindingSet.Builder 缓存 Map
+     * @param erasedTargetNames 要删除元素的目录，存在的是 .java 的元素
+     */
     private void parseResourceColor(Element element,
                                     Map<TypeElement, BindingSet.Builder> builderMap, Set<TypeElement> erasedTargetNames) {
         boolean hasError = false;
@@ -807,6 +905,21 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 解析 BindDimen
+     *
+     * 1.拿到 BindDimen 注解元素 的 .java 类元素
+     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
+     * - 有错误就 return
+     * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
+     * 5.然后 将 QualifiedId 包装成 FieldResourceBinding 添加到 BindingSet.Builder 中
+     * 6.记录 .java 元素 为要删除的目录
+     *
+     * @param element BindDimen 注解元素
+     * @param builderMap BindingSet.Builder 缓存 Map
+     * @param erasedTargetNames 要删除元素的目录，存在的是 .java 的元素
+     */
     private void parseResourceDimen(Element element,
                                     Map<TypeElement, BindingSet.Builder> builderMap, Set<TypeElement> erasedTargetNames) {
         boolean hasError = false;
@@ -846,6 +959,21 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 解析 BindBitmap
+     *
+     * 1.拿到 BindArray 注解元素 的 .java 类元素
+     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
+     * - 有错误就 return
+     * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
+     * 5.然后 将 QualifiedId 包装成 FieldResourceBinding 添加到 BindingSet.Builder 中
+     * 6.记录 .java 元素 为要删除的目录
+     *
+     * @param element BindBitmap 注解元素
+     * @param builderMap BindingSet.Builder 缓存 Map
+     * @param erasedTargetNames 要删除元素的目录，存在的是 .java 的元素
+     */
     private void parseResourceBitmap(Element element,
                                      Map<TypeElement, BindingSet.Builder> builderMap, Set<TypeElement> erasedTargetNames) {
         boolean hasError = false;
@@ -914,6 +1042,21 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 解析 BindFloat
+     *
+     * 1.拿到 BindFloat 注解元素 的 .java 类元素
+     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
+     * - 有错误就 return
+     * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
+     * 5.然后 将 QualifiedId 包装成 FieldResourceBinding 添加到 BindingSet.Builder 中
+     * 6.记录 .java 元素 为要删除的目录
+     *
+     * @param element BindFloat 注解元素
+     * @param builderMap BindingSet.Builder 缓存 Map
+     * @param erasedTargetNames 要删除元素的目录，存在的是 .java 的元素
+     */
     private void parseResourceFloat(Element element,
                                     Map<TypeElement, BindingSet.Builder> builderMap, Set<TypeElement> erasedTargetNames) {
         boolean hasError = false;
@@ -947,6 +1090,21 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 解析 BindInt
+     *
+     * 1.拿到 BindInt 注解元素 的 .java 类元素
+     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
+     * - 有错误就 return
+     * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
+     * 5.然后 将 QualifiedId 包装成 FieldResourceBinding 添加到 BindingSet.Builder 中
+     * 6.记录 .java 元素 为要删除的目录
+     *
+     * @param element BindInt 注解元素
+     * @param builderMap BindingSet.Builder 缓存 Map
+     * @param erasedTargetNames 要删除元素的目录，存在的是 .java 的元素
+     */
     private void parseResourceInt(Element element,
                                   Map<TypeElement, BindingSet.Builder> builderMap, Set<TypeElement> erasedTargetNames) {
         boolean hasError = false;
@@ -979,6 +1137,21 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 解析 BindString
+     *
+     * 1.拿到 BindString 注解元素 的 .java 类元素
+     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
+     * - 有错误就 return
+     * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
+     * 5.然后 将 QualifiedId 包装成 FieldResourceBinding 添加到 BindingSet.Builder 中
+     * 6.记录 .java 元素 为要删除的目录
+     *
+     * @param element BindString 注解元素
+     * @param builderMap BindingSet.Builder 缓存 Map
+     * @param erasedTargetNames 要删除元素的目录，存在的是 .java 的元素
+     */
     private void parseResourceString(Element element,
                                      Map<TypeElement, BindingSet.Builder> builderMap, Set<TypeElement> erasedTargetNames) {
         boolean hasError = false;
@@ -1012,6 +1185,20 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 解析 BindArray
+     *
+     * 1.拿到 BindArray 注解元素 的 .java 类元素
+     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
+     * - 有错误就 return
+     * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
+     * 5.然后 将 QualifiedId 包装成 FieldResourceBinding 添加到 BindingSet.Builder 中
+     * 6.记录 .java 元素 为要删除的目录
+     *
+     * @param element BindArray 注解元素
+     * @param builderMap BindingSet.Builder 缓存 Map
+     */
     private void parseResourceArray(Element element,
                                     Map<TypeElement, BindingSet.Builder> builderMap, Set<TypeElement> erasedTargetNames) {
         boolean hasError = false;
@@ -1385,11 +1572,10 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
 
     /**
-     * 获取 该 R class 在 scanForRClasses(...) 时，生辰生成的那棵树
-     * 如果存在树，就解析编译好的 R class
-     *
-     * 不存在的话，创建一个 Id 扫描类，扫描 R class 内的所有 Id
-     * Id 扫描类，内还会让树调用 Var 扫描类，扫描全部 int 变量
+     * 1.获取 该 R class 在 scanForRClasses(...) 时，生辰生成的那棵树
+     * - 如果存在树，就解析编译好的 R class
+     * - 不存在的话，创建一个 Id 扫描类，扫描 R class 内的所有 Id
+     * 2.Id 扫描类，内还会让树调用 Var 扫描类，扫描全部 int 变量
      *
      * @param respectivePackageName R class package name
      * @param rClass R class
