@@ -155,7 +155,14 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
-    /** Returns the first duplicate element inside an array, null if there are no duplicates. */
+    /**
+     * Returns the first duplicate element inside an array, null if there are no duplicates.
+     *
+     * 返回数组中第一个重复的元素，如果没有重复，则返回 null
+     *
+     * @param array array
+     * @return int
+     */
     private static Integer findDuplicate(int[] array) {
         Set<Integer> seenElements = new LinkedHashSet<>();
 
@@ -169,6 +176,25 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 校验是否是 接口
+     *
+     * @param typeMirror 被校验的元素类型
+     * @return 是否
+     */
+    private boolean isInterface(TypeMirror typeMirror) {
+        return typeMirror instanceof DeclaredType
+            && ((DeclaredType) typeMirror).asElement().getKind() == INTERFACE;
+    }
+
+
+    /**
+     * 校验是否是 otherType 的子类
+     *
+     * @param typeMirror 被校验的元素类型
+     * @param otherType super class or interface
+     * @return 是否
+     */
     static boolean isSubtypeOfType(TypeMirror typeMirror, String otherType) {
         if (isTypeEqual(typeMirror, otherType)) {
             return true;
@@ -210,11 +236,25 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 校验是否是 otherType 类型
+     *
+     * @param typeMirror 被校验的元素类型
+     * @param otherType super class or interface
+     * @return 是否
+     */
     private static boolean isTypeEqual(TypeMirror typeMirror, String otherType) {
         return otherType.equals(typeMirror.toString());
     }
 
 
+    /**
+     * 校验元素是否有 指定 的注解
+     *
+     * @param element 被校验的元素
+     * @param simpleName 注解名
+     * @return 是否
+     */
     private static boolean hasAnnotationWithName(Element element, String simpleName) {
         for (AnnotationMirror mirror : element.getAnnotationMirrors()) {
             String annotationName = mirror.getAnnotationType()
@@ -229,16 +269,36 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 不存在 Nullable
+     *
+     * @param element 注解元素
+     * @return 不存在 Nullable ?
+     */
     private static boolean isFieldRequired(Element element) {
         return !hasAnnotationWithName(element, NULLABLE_ANNOTATION_NAME);
     }
 
 
+    /**
+     * 校验元素是否有 @Optional 注解
+     *
+     * @param element 被校验的元素
+     * @return 是否
+     */
     private static boolean isListenerRequired(ExecutableElement element) {
         return element.getAnnotation(Optional.class) == null;
     }
 
 
+    /**
+     * 获取 注解 在元素上对应的 AnnotationMirror
+     * 目前仅为了生成 JCTree
+     *
+     * @param element 注解元素
+     * @param annotation 注解 class 类型
+     * @return AnnotationMirror
+     */
     private static AnnotationMirror getMirror(Element element,
                                               Class<? extends Annotation> annotation) {
         for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
@@ -254,8 +314,8 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
     /**
      * 初始化
-     * 1. 获取 sdk 版本
-     * 2. 初始化一些工具类
+     * 1.获取 sdk 版本
+     * 2.初始化一些工具类
      *
      * @param env ProcessingEnvironment
      */
@@ -643,6 +703,24 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 解析 BindView
+     *
+     * 1.拿到 BindArray 注解元素 的 .java 类元素
+     * 2.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
+     * - 有错误就 return
+     * 3.获取元素的类型
+     * 4.校验元素类型（ 不是 View 的子类，并且不是接口类型 ），报错返回
+     * 5.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
+     * 6.检查 QualifiedId 包装成的 FieldResourceBinding 是否存在 BindingSet.Builder
+     * - 是，报错。防止生成重复代码
+     * - 不是，添加进去
+     * 7.记录 .java 元素 为要删除的目录
+     *
+     * @param element BindBitmap 注解元素
+     * @param builderMap BindingSet.Builder 缓存 Map
+     * @param erasedTargetNames 要删除元素的目录，存在的是 .java 的元素
+     */
     private void parseBindView(Element element, Map<TypeElement, BindingSet.Builder> builderMap,
                                Set<TypeElement> erasedTargetNames) {
         TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
@@ -709,6 +787,24 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 解析 BindViews
+     *
+     * 1.拿到 BindArray 注解元素 的 .java 类元素
+     * 2.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
+     * - 有错误就 return
+     * 3.获取元素的类型
+     * 4.校验是否是 Array 或者 List，不是则报错返回
+     * 5.校验元素类型（ 不是 View 的子类，并且不是接口类型 ），报错返回
+     * 6.获取该 .java 元素对应的 BindingSet.Builder，没有则创建
+     * 7.注解中抽出一组 Id，校验是否有重复 id
+     * 8.包装成  FieldCollectionViewBinding 添加到 BindingSet.Builder
+     * 9.记录 .java 元素 为要删除的目录
+     *
+     * @param element BindBitmap 注解元素
+     * @param builderMap BindingSet.Builder 缓存 Map
+     * @param erasedTargetNames 要删除元素的目录，存在的是 .java 的元素
+     */
     private void parseBindViews(Element element, Map<TypeElement, BindingSet.Builder> builderMap,
                                 Set<TypeElement> erasedTargetNames) {
         TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
@@ -1245,6 +1341,25 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 校验 注解，后调用 parseListenerAnnotation(...) 进行解析
+     * OnCheckedChanged
+     * OnClick
+     * OnEditorAction
+     * OnFocusChange
+     * OnItemClick
+     * OnItemLongClick
+     * OnItemSelected
+     * OnLongClick
+     * OnPageChange
+     * OnTextChanged
+     * OnTouch
+     *
+     * @param env RoundEnvironment
+     * @param annotationClass 注解 class 类型
+     * @param builderMap BindingSet.Builder 缓存 Map
+     * @param erasedTargetNames 要删除元素的目录，存在的是 .java 的元素
+     */
     private void findAndParseListener(RoundEnvironment env,
                                       Class<? extends Annotation> annotationClass,
                                       Map<TypeElement, BindingSet.Builder> builderMap, Set<TypeElement> erasedTargetNames) {
@@ -1263,6 +1378,40 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 解析 注解
+     * OnCheckedChanged
+     * OnClick
+     * OnEditorAction
+     * OnFocusChange
+     * OnItemClick
+     * OnItemLongClick
+     * OnItemSelected
+     * OnLongClick
+     * OnPageChange
+     * OnTextChanged
+     * OnTouch
+     *
+     * 1.校验元素符合 可执行元素 或者 方法。不符合 throw 异常
+     * 2.拿到 可执行元素；获取注解元素的所在 .java 元素
+     * 3.反射获取注解类的 value 方法，并校验返回参数是不是 int[]。不是，则返回
+     * 4.反射调用 value 方法，并且获取返回值 int[]
+     * 5.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
+     * - 有错误就 return
+     * 6.校验 int[] 是否存在重复的 值
+     * 7.拿到 ListenerClass 和  ListenerMethod 分别校验 id 和 方法，否则抛出异常
+     * 8.反射校验注解 class 的 callback 方法
+     * 9.校验 可执行元素 的返回值类型
+     * 10.获取 拿到 可执行元素 的参数，并进行校验
+     * 11.将参数包装成 MethodViewBinding 添加到 BindingSet.Builder 中
+     * 12.记录 .java 元素 为要删除的目录
+     *
+     * @param annotationClass 注解 class 类型
+     * @param element 注解元素
+     * @param builderMap BindingSet.Builder 缓存 Map
+     * @param erasedTargetNames 要删除元素的目录，存在的是 .java 的元素
+     * @throws Exception exception
+     */
     private void parseListenerAnnotation(Class<? extends Annotation> annotationClass, Element element,
                                          Map<TypeElement, BindingSet.Builder> builderMap, Set<TypeElement> erasedTargetNames)
         throws Exception {
@@ -1462,12 +1611,14 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
-    private boolean isInterface(TypeMirror typeMirror) {
-        return typeMirror instanceof DeclaredType
-            && ((DeclaredType) typeMirror).asElement().getKind() == INTERFACE;
-    }
-
-
+    /**
+     * 获取指定元素的 BindingSet.Builder
+     * 没有则创建一个添加到缓存中
+     *
+     * @param builderMap BindingSet.Builder 缓存 Map
+     * @param enclosingElement 要删除元素的目录，存在的是 .java 的元素
+     * @return BindingSet.Builder
+     */
     private BindingSet.Builder getOrCreateBindingBuilder(
         Map<TypeElement, BindingSet.Builder> builderMap, TypeElement enclosingElement) {
         BindingSet.Builder builder = builderMap.get(enclosingElement);
