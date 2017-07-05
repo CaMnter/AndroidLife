@@ -373,17 +373,18 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
     /**
      * 规定需要处理的注解
-     * BindArray
-     * BindBitmap
-     * BindBool
-     * BindColor
-     * BindDimen
-     * BindDrawable
-     * BindFloat
-     * BindInt
-     * BindString
-     * BindView
-     * BindViews
+     *
+     * 1.@BindArray
+     * 2.@BindBitmap
+     * 3.@BindBool
+     * 4.@BindColor
+     * 5.@BindDimen
+     * 6.@BindDrawable
+     * 7.@BindFloat
+     * 8.@BindInt
+     * 9.@BindString
+     * 10.@BindView
+     * 11.@BindViews
      *
      * @return 注解集合
      */
@@ -407,6 +408,17 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 1.扫描 R class，并解析
+     * 2.处理注解，生成对应 BindingSet.Builder Map 缓存
+     * 3.处理 BindingSet.Builder Map 缓存，转化为 BindingSet Map 缓存
+     * 4.从 BindingSet Map 缓存中拿到每一个 BindingSet，生成 JavaFile
+     * 5.生成 class 文件
+     *
+     * @param elements elements
+     * @param env RoundEnvironment
+     * @return 是否退出
+     */
     @Override
     public boolean process(Set<? extends TypeElement> elements, RoundEnvironment env) {
         Map<TypeElement, BindingSet> bindingMap = findAndParseTargets(env);
@@ -429,8 +441,21 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
 
     /**
-     * 扫描 R class，并解析
-     * SuperficialValidation.validateElement(...) google auto 验证 javax Element
+     * 1.扫描 R class，并解析
+     * 2.SuperficialValidation.validateElement(...) google auto 验证 javax Element
+     * 3.处理 @BindArray
+     * 4.处理 @BindBitmap
+     * 5.处理 @BindBool
+     * 6.处理 @BindColor
+     * 7.处理 @BindDimen
+     * 8.处理 @BindDrawable
+     * 9.处理 @BindFloat
+     * 10.处理 @BindInt
+     * 11.处理 @BindString
+     * 12.处理 @BindView
+     * 13.处理 @BindViews
+     * 14.处理事件（ @OnCheckedChanged, @OnClick, @OnEditorAction, @OnFocusChange, @OnItemClick 等）
+     * 15.BindingSet.Builder Map 缓存生成 BindingSet Map 缓存
      *
      * @param env RoundEnvironment
      * @return Map
@@ -583,6 +608,14 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             findAndParseListener(env, listener, builderMap, erasedTargetNames);
         }
 
+        /*
+         * 1.遍历 BindingSet.Builder Map 缓存
+         * 2.拿到每个 .java 元素 和其对应的 BindingSet.Builder 缓存
+         * 3.寻找 .java 元素的父类型元素
+         * - 不存在的话，就直接构建
+         * - 存在的话，查看父类型的 Builder 缓存。有的话，设置 Parent，开始构建。没有的话，放入 BindingSet.Builder 缓存 的末尾
+         * 4.构建后的数据，会生成 BindingSet Map 缓存
+         */
         // Associate superclass binders with their subclass binders. This is a queue-based tree walk
         // which starts at the roots (superclasses) and walks to the leafs (subclasses).
         Deque<Map.Entry<TypeElement, BindingSet.Builder>> entries =
@@ -781,6 +814,14 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 元素 和 id 转换为 QualifiedId
+     * 实质就是用 元素的 package name + id 生成一个 QualifiedId
+     *
+     * @param element 被注解元素
+     * @param id id
+     * @return QualifiedId
+     */
     private QualifiedId elementToQualifiedId(Element element, int id) {
         return new QualifiedId(elementUtils.getPackageOf(element).getQualifiedName().toString(),
             id);
@@ -904,7 +945,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
      * 解析 BindBool
      *
      * 1.拿到 BindBool 注解元素 的 .java 类元素
-     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 2.校验元素的类型
      * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
      * - 有错误就 return
      * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
@@ -952,7 +993,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
      * 解析 BindColor
      *
      * 1.拿到 BindColor 注解元素 的 .java 类元素
-     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 2.校验元素的类型
      * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
      * - 有错误就 return
      * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
@@ -1005,7 +1046,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
      * 解析 BindDimen
      *
      * 1.拿到 BindDimen 注解元素 的 .java 类元素
-     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 2.校验元素的类型
      * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
      * - 有错误就 return
      * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
@@ -1059,7 +1100,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
      * 解析 BindBitmap
      *
      * 1.拿到 BindArray 注解元素 的 .java 类元素
-     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 2.校验元素的类型
      * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
      * - 有错误就 return
      * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
@@ -1103,6 +1144,21 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 解析 BindDrawable
+     *
+     * 1.拿到 BindDrawable 注解元素 的 .java 类元素
+     * 2.校验元素的类型
+     * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
+     * - 有错误就 return
+     * 4.获取 id 构造一个 QualifiedId；获取 tint 构造一个 QualifiedId
+     * 5.将两个 QualifiedId 包装成一个 FieldDrawableBinding 添加到 BindingSet.Builder 中
+     * 6.记录 .java 元素 为要删除的目录
+     *
+     * @param element BindDimen 注解元素
+     * @param builderMap BindingSet.Builder 缓存 Map
+     * @param erasedTargetNames 要删除元素的目录，存在的是 .java 的元素
+     */
     private void parseResourceDrawable(Element element,
                                        Map<TypeElement, BindingSet.Builder> builderMap, Set<TypeElement> erasedTargetNames) {
         boolean hasError = false;
@@ -1142,7 +1198,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
      * 解析 BindFloat
      *
      * 1.拿到 BindFloat 注解元素 的 .java 类元素
-     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 2.校验元素的类型
      * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
      * - 有错误就 return
      * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
@@ -1190,7 +1246,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
      * 解析 BindInt
      *
      * 1.拿到 BindInt 注解元素 的 .java 类元素
-     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 2.校验元素的类型
      * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
      * - 有错误就 return
      * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
@@ -1237,7 +1293,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
      * 解析 BindString
      *
      * 1.拿到 BindString 注解元素 的 .java 类元素
-     * 2.获取元素类型对应的 FieldResourceBinding.Type，是一个获取改资源的 方法名
+     * 2.校验元素的类型
      * 3.检查注解使用错误，或者注解所在的环境问题（ 比如 private or static，所在的 .java 是 private 等 ）
      * - 有错误就 return
      * 4.获取 id 构造一个 QualifiedId；获取该 .java 元素对应的 BindingSet.Builder，没有则创建
@@ -1330,7 +1386,16 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
-    /** Uses both {@link Types#erasure} and string manipulation to strip any generic types. */
+    /**
+     * Uses both {@link Types#erasure} and string manipulation to strip any generic types.
+     *
+     * 获取类型擦除后的类型
+     * 比如 List<String>，在 javac 过程中，会类型擦除为 List
+     * 所以，返回 List
+     *
+     * @param elementType 元素类型 TypeMirror
+     * @return 擦除类型
+     */
     private String doubleErasure(TypeMirror elementType) {
         String name = typeUtils.erasure(elementType).toString();
         int typeParamStart = name.indexOf('<');
@@ -1343,17 +1408,17 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
     /**
      * 校验 注解，后调用 parseListenerAnnotation(...) 进行解析
-     * OnCheckedChanged
-     * OnClick
-     * OnEditorAction
-     * OnFocusChange
-     * OnItemClick
-     * OnItemLongClick
-     * OnItemSelected
-     * OnLongClick
-     * OnPageChange
-     * OnTextChanged
-     * OnTouch
+     * 1.@OnCheckedChanged
+     * 2.@OnClick
+     * 3.@OnEditorAction
+     * 4.@OnFocusChange
+     * 5.@OnItemClick
+     * 6.@OnItemLongClick
+     * 7.@OnItemSelected
+     * 8.@OnLongClick
+     * 9.@OnPageChange
+     * 10.@OnTextChanged
+     * 11.@OnTouch
      *
      * @param env RoundEnvironment
      * @param annotationClass 注解 class 类型
@@ -1380,17 +1445,17 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
 
     /**
      * 解析 注解
-     * OnCheckedChanged
-     * OnClick
-     * OnEditorAction
-     * OnFocusChange
-     * OnItemClick
-     * OnItemLongClick
-     * OnItemSelected
-     * OnLongClick
-     * OnPageChange
-     * OnTextChanged
-     * OnTouch
+     * 1.@OnCheckedChanged
+     * 2.@OnClick
+     * 3.@OnEditorAction
+     * 4.@OnFocusChange
+     * 5.@OnItemClick
+     * 6.@OnItemLongClick
+     * 7.@OnItemSelected
+     * 8.@OnLongClick
+     * 9.@OnPageChange
+     * 10.@OnTextChanged
+     * 11.@OnTouch
      *
      * 1.校验元素符合 可执行元素 或者 方法。不符合 throw 异常
      * 2.拿到 可执行元素；获取注解元素的所在 .java 元素
@@ -1630,7 +1695,16 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
-    /** Finds the parent binder type in the supplied set, if any. */
+    /**
+     * Finds the parent binder type in the supplied set, if any.
+     *
+     * 寻找 目标元素 的父类
+     * 是否在 目标集合 内
+     *
+     * @param typeElement 目标元素
+     * @param parents 目标集合
+     * @return 是否
+     */
     private TypeElement findParentType(TypeElement typeElement, Set<TypeElement> parents) {
         TypeMirror type;
         while (true) {
@@ -1671,6 +1745,12 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 通过 QualifiedId，从缓存中获取 Id
+     *
+     * @param qualifiedId qualifiedId
+     * @return Id
+     */
     private Id getId(QualifiedId qualifiedId) {
         if (symbols.get(qualifiedId) == null) {
             symbols.put(qualifiedId, new Id(qualifiedId.id));
@@ -1885,4 +1965,5 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             }
         }
     }
+
 }
