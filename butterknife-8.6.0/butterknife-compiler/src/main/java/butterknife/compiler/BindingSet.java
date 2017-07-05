@@ -81,6 +81,12 @@ final class BindingSet {
     }
 
 
+    /**
+     * 从 @ListenerClass 注解中 拿到每个 回调方法 上对应的 ListenerMethod
+     *
+     * @param listener ListenerClass
+     * @return ListenerMethod 集合
+     */
     private static List<ListenerMethod> getListenerMethods(ListenerClass listener) {
         if (listener.method().length == 1) {
             return Arrays.asList(listener.method());
@@ -108,6 +114,12 @@ final class BindingSet {
     }
 
 
+    /**
+     * 汇总拼凑所有 MemberViewBinding 的描述信息
+     *
+     * @param bindings MemberViewBinding 集合
+     * @return 汇总描述信息
+     */
     static String asHumanDescription(Collection<? extends MemberViewBinding> bindings) {
         Iterator<? extends MemberViewBinding> iterator = bindings.iterator();
         switch (bindings.size()) {
@@ -132,6 +144,12 @@ final class BindingSet {
     }
 
 
+    /**
+     * 元素类型 String 转换为 TypeName
+     *
+     * @param type 类型
+     * @return 类型 TypeName
+     */
     private static TypeName bestGuess(String type) {
         switch (type) {
             case "void":
@@ -169,11 +187,28 @@ final class BindingSet {
     }
 
 
+    /**
+     * 判断一个类型是不是要 强转
+     * 根据这个类型是不是 View 类型来判断
+     *
+     * @param type TypeName
+     * @return 是否
+     */
     static boolean requiresCast(TypeName type) {
         return !VIEW_TYPE.equals(type.toString());
     }
 
 
+    /**
+     * 1.获取 .java 元素的类型
+     * 2.判断是否是 View, Activity 或者 Dialog
+     * 3.获取其 TypeName
+     * 4.获取其 packageName 和 className
+     * 5.构建一个 BindingSet.Builder
+     *
+     * @param enclosingElement .java 元素
+     * @return BindingSet.Builder
+     */
     static Builder newBuilder(TypeElement enclosingElement) {
         TypeMirror typeMirror = enclosingElement.asType();
 
@@ -196,6 +231,12 @@ final class BindingSet {
     }
 
 
+    /**
+     * 根据 SDK 版本生成 JavaFile
+     *
+     * @param sdk sdk 版本
+     * @return JavaFile
+     */
     JavaFile brewJava(int sdk) {
         return JavaFile.builder(bindingClassName.packageName(), createType(sdk))
             .addFileComment("Generated code from Butter Knife. Do not modify!")
@@ -203,6 +244,20 @@ final class BindingSet {
     }
 
 
+    /**
+     * 构造 .java 类代码
+     *
+     * 1.添加类修饰符
+     * 2.判断是否父类。是，则添加
+     * 3.添加一个自身的引用 Field target
+     * 4.判断是否是 View, Activity 或者 Dialog。创建不同的 MethodSpec，添加到 TypeSpec
+     * 5.判断是否是 Activity，老版本的 Activity ViewBinding  要添加 现在版本被弃用的 构造方法
+     * 6.添加构造方法
+     * 7.添加 unbind 方法
+     *
+     * @param sdk sdk 版本
+     * @return TypeSpec
+     */
     private TypeSpec createType(int sdk) {
         TypeSpec.Builder result = TypeSpec.classBuilder(bindingClassName.simpleName())
             .addModifiers(PUBLIC);
@@ -241,6 +296,17 @@ final class BindingSet {
     }
 
 
+    /**
+     * 被弃用的构造方法
+     *
+     * - @Deprecated
+     * - @UiThread
+     * - public Xxx_ViewBinding(T<Activity, View 或 Dialog> target, android.View source){
+     * -    this(target, source.getContext());
+     * - }
+     *
+     * @return MethodSpec
+     */
     private MethodSpec createBindingViewDelegateConstructor() {
         return MethodSpec.constructorBuilder()
             .addJavadoc("@deprecated Use {@link #$T($T, $T)} for direct creation.\n    "
@@ -256,6 +322,21 @@ final class BindingSet {
     }
 
 
+    /**
+     * 创建 View ViewBinding 的构造方法
+     *
+     * - @UiThread
+     * - public Xxx_ViewBinding(View target){
+     * -    this(target, target);
+     * - }
+     *
+     * - @UiThread
+     * - public Xxx_ViewBinding(View target){
+     * -    this(target, target.getContext());
+     * - }
+     *
+     * @return MethodSpec
+     */
     private MethodSpec createBindingConstructorForView() {
         MethodSpec.Builder builder = MethodSpec.constructorBuilder()
             .addAnnotation(UI_THREAD)
@@ -270,6 +351,21 @@ final class BindingSet {
     }
 
 
+    /**
+     * 创建 Activity ViewBinding 的构造方法
+     *
+     * - @UiThread
+     * - public Xxx_ViewBinding(Activity target){
+     * -    this(target, target.getWindow().getDecorView());
+     * - }
+     *
+     * - @UiThread
+     * - public Xxx_ViewBinding(Activity target){
+     * -    this(target, target);
+     * - }
+     *
+     * @return MethodSpec
+     */
     private MethodSpec createBindingConstructorForActivity() {
         MethodSpec.Builder builder = MethodSpec.constructorBuilder()
             .addAnnotation(UI_THREAD)
@@ -284,6 +380,21 @@ final class BindingSet {
     }
 
 
+    /**
+     * 创建 Dialog ViewBinding 的构造方法
+     *
+     * - @UiThread
+     * - public Xxx_ViewBinding(Dialog target){
+     * -    this(target, target.getWindow().getDecorView());
+     * - }
+     *
+     * - @UiThread
+     * - public Xxx_ViewBinding(Dialog target){
+     * -    this(target, target.getContext());
+     * - }
+     *
+     * @return MethodSpec
+     */
     private MethodSpec createBindingConstructorForDialog() {
         MethodSpec.Builder builder = MethodSpec.constructorBuilder()
             .addAnnotation(UI_THREAD)
@@ -706,7 +817,15 @@ final class BindingSet {
     }
 
 
-    /** True if this binding requires a view. Otherwise only a context is needed. */
+    /**
+     * True if this binding requires a view. Otherwise only a context is needed.
+     *
+     * 判断是不是 View，是的话。得手动获取 Context
+     * Activity 和 View, Dialog 的 binding 就不一样
+     * Activity 直接就是 Context，另外两个需要手动获取
+     *
+     * @return 是否
+     */
     private boolean constructorNeedsView() {
         return hasViewBindings() //
             || parentBinding != null && parentBinding.constructorNeedsView();
