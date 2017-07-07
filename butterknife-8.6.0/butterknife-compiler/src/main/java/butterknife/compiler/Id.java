@@ -5,6 +5,11 @@ import com.squareup.javapoet.CodeBlock;
 
 /**
  * Represents an ID of an Android resource.
+ *
+ * 封装的 Id，可以识别是不是 android 资源 id
+ *
+ * 根据 ClassName.get("android", "R") 来判断传入进来的 id
+ * 是 android.R 还是 int
  */
 final class Id {
     private static final ClassName ANDROID_R = ClassName.get("android", "R");

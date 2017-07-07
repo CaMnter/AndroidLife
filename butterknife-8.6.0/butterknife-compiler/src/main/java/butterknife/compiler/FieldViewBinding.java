@@ -4,6 +4,9 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
+/**
+ * 为 @BindView 准备的 ViewBinding
+ */
 final class FieldViewBinding implements MemberViewBinding {
     private final String name;
     private final TypeName type;

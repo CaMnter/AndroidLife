@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 为 .java 元素准备的 ViewBinding
+ * 同时具有 Id, MethodViewBinding, FieldViewBinding
+ */
 final class ViewBinding {
     private final Id id;
     private final Map<ListenerClass, Map<ListenerMethod, Set<MethodViewBinding>>> methodBindings;
@@ -38,6 +42,11 @@ final class ViewBinding {
     }
 
 
+    /**
+     * 过滤出 元素不为 Nullable 的 method or field 的 ViewBinding
+     *
+     * @return ViewBinding 集合
+     */
     public List<MemberViewBinding> getRequiredBindings() {
         List<MemberViewBinding> requiredBindings = new ArrayList<>();
         if (fieldBinding != null && fieldBinding.isRequired()) {
@@ -56,11 +65,22 @@ final class ViewBinding {
     }
 
 
+    /**
+     * 校验是否存在 Field 的 ViewBinding
+     *
+     * @return 是否
+     */
     public boolean isSingleFieldBinding() {
         return methodBindings.isEmpty() && fieldBinding != null;
     }
 
 
+    /**
+     * 1.校验 Id 是否合法
+     * 2.校验是否存在 Field 的 ViewBinding
+     *
+     * @return 同时都不是
+     */
     public boolean requiresLocal() {
         if (isBoundToRoot()) {
             return false;
@@ -72,6 +92,11 @@ final class ViewBinding {
     }
 
 
+    /**
+     * 校验 Id 是否合法
+     *
+     * @return 是否
+     */
     public boolean isBoundToRoot() {
         return ButterKnifeProcessor.NO_ID.equals(id);
     }
@@ -126,5 +151,7 @@ final class ViewBinding {
         public ViewBinding build() {
             return new ViewBinding(id, methodBindings, fieldBinding);
         }
+
     }
+
 }

@@ -5,6 +5,9 @@ import com.squareup.javapoet.CodeBlock;
 import static butterknife.compiler.BindingSet.CONTEXT_COMPAT;
 import static butterknife.compiler.BindingSet.UTILS;
 
+/**
+ * 为 @BindDrawable 准备的 ViewBinding
+ */
 final class FieldDrawableBinding implements ResourceBinding {
     private final Id id;
     private final String name;
@@ -30,6 +33,12 @@ final class FieldDrawableBinding implements ResourceBinding {
     }
 
 
+    /**
+     * * 为 @BindDrawable 生成代码块
+     *
+     * @param sdk sdk 版本
+     * @return CodeBlock
+     */
     @Override
     public CodeBlock render(int sdk) {
         if (tintAttributeId.value != 0) {

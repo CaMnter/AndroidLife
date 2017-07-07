@@ -9,6 +9,11 @@ import java.util.List;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.unmodifiableList;
 
+/**
+ * 资源相关的 ViewBinding
+ * 涉及到的有：@BindArray, ,@BindBool, @BindColor, @BindDimen, @BindFloat, @BindInt
+ * - @BindString
+ */
 final class FieldResourceBinding implements ResourceBinding {
     private final Id id;
     private final String name;
@@ -32,6 +37,12 @@ final class FieldResourceBinding implements ResourceBinding {
     }
 
 
+    /**
+     * 资源相关的 代码块
+     *
+     * @param sdk sdk 版本
+     * @return CodeBlock
+     */
     @Override
     public CodeBlock render(int sdk) {
         ResourceMethod method = type.methodForSdk(sdk);
@@ -50,6 +61,9 @@ final class FieldResourceBinding implements ResourceBinding {
     }
 
 
+    /**
+     * 为资源，所指定的 方法名
+     */
     enum Type {
         BITMAP(new ResourceMethod(BindingSet.BITMAP_FACTORY, "decodeResource", true, 1)),
         BOOL("getBoolean"),
@@ -116,4 +130,5 @@ final class FieldResourceBinding implements ResourceBinding {
             return Integer.compare(sdk, other.sdk);
         }
     }
+
 }

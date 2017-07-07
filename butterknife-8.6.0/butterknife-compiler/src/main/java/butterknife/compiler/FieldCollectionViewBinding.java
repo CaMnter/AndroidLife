@@ -8,12 +8,17 @@ import java.util.List;
 import static butterknife.compiler.BindingSet.UTILS;
 import static butterknife.compiler.BindingSet.requiresCast;
 
+/**
+ * 为 @BindViews 准备的 ViewBinding
+ */
 final class FieldCollectionViewBinding {
     final String name;
     private final TypeName type;
     private final Kind kind;
     private final boolean required;
     private final List<Id> ids;
+
+
     FieldCollectionViewBinding(String name, TypeName type, Kind kind, List<Id> ids,
                                boolean required) {
         this.name = name;
@@ -24,6 +29,11 @@ final class FieldCollectionViewBinding {
     }
 
 
+    /**
+     * 为 @BindViews 生成代码块
+     *
+     * @return CodeBlock
+     */
     CodeBlock render() {
         CodeBlock.Builder builder = CodeBlock.builder()
             .add("target.$L = $T.$L(", name, UTILS, kind.factoryName);

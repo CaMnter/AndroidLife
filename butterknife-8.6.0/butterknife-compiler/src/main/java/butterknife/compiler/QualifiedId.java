@@ -1,5 +1,8 @@
 package butterknife.compiler;
 
+/**
+ * 封装一个具有 PackageName 的 Id
+ */
 final class QualifiedId {
     final String packageName;
     final int id;

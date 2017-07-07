@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 方法相关注解的 ViewBinding
+ */
 final class MethodViewBinding implements MemberViewBinding {
     private final String name;
     private final List<Parameter> parameters;
