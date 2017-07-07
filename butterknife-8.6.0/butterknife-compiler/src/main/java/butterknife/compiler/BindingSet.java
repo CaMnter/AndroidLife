@@ -409,6 +409,26 @@ final class BindingSet {
     }
 
 
+    /**
+     * ViewBinding 构造方法
+     *
+     * 1.添加 public @UiThread
+     * 2.判断是否有 method 有相关的方法注解
+     * - 是的话，final <Activity, View 或 Dialog> target
+     * - 不是则，<Activity, View 或 Dialog> target
+     * 3.判断是否要手动获取 Context
+     * - 是的话，添加构造方法的参数 android.view.View source
+     * - 不食则，添加构造方法的参数 android.context.context context
+     * 4.判断是否有 id 不合格（ 就是不是 R.id.xxx，而是普通 int 值 ）。是的话，添加注解 @SuppressWarnings("ResourceType")
+     * 5.判断是否 @onTouch 上是否有 @ListenerClass。添加上 @SuppressLint("ClickableViewAccessibility")
+     * 6.判断是否有父类。有的话，调用父类构造方法
+     * 7.赋值 this.target = target
+     * 8.View 的赋值语句
+     * 9.资源 Resources 获取语句
+     *
+     * @param sdk sdk 版本
+     * @return MethodSpec
+     */
     private MethodSpec createBindingConstructor(int sdk) {
         MethodSpec.Builder constructor = MethodSpec.constructorBuilder()
             .addAnnotation(UI_THREAD)
@@ -487,6 +507,18 @@ final class BindingSet {
     }
 
 
+    /**
+     * unbind 方法
+     *
+     * 1.创建 unbind 方法，添注解 @Override 和 修饰符 public
+     * 2.判断 ViewBinding 类是否 不是 final && 没有父类。是的话，添加 @CallSuper
+     * 3.view 相关 field 的置空
+     * 4.method 相关置空
+     * 5.调用父类的 unbind
+     *
+     * @param bindingClass TypeSpec.Builder
+     * @return MethodSpec
+     */
     private MethodSpec createBindingUnbindMethod(TypeSpec.Builder bindingClass) {
         MethodSpec.Builder result = MethodSpec.methodBuilder("unbind")
             .addAnnotation(Override.class)
@@ -528,6 +560,13 @@ final class BindingSet {
     }
 
 
+    /**
+     * unbind 部分 - method 相关置空
+     *
+     * @param result TypeSpec.Builder
+     * @param unbindMethod MethodSpec.Builder
+     * @param bindings ViewBinding
+     */
     private void addFieldAndUnbindStatement(TypeSpec.Builder result, MethodSpec.Builder unbindMethod,
                                             ViewBinding bindings) {
         // Only add fields to the binding if there are method bindings.
@@ -580,6 +619,14 @@ final class BindingSet {
     }
 
 
+    /**
+     * 获取删除 Listener 的方法名
+     * 是以 removeXxx 还是以 setXxx 的形式去清空 listener
+     *
+     * @param listenerClass ListenerClass
+     * @param requiresRemoval 是否存在 removeXxx 方法
+     * @return 是否
+     */
     private String removerOrSetter(ListenerClass listenerClass, boolean requiresRemoval) {
         return requiresRemoval
                ? listenerClass.remover()
@@ -587,6 +634,12 @@ final class BindingSet {
     }
 
 
+    /**
+     * 构造方法部分 - View 赋值段
+     *
+     * @param result MethodSpec.Builder
+     * @param binding ViewBinding
+     */
     private void addViewBinding(MethodSpec.Builder result, ViewBinding binding) {
         if (binding.isSingleFieldBinding()) {
             // Optimize the common case where there's a single binding directly to a field.
@@ -629,6 +682,12 @@ final class BindingSet {
     }
 
 
+    /**
+     * 构造方法部分 = View 强转段
+     *
+     * @param result MethodSpec.Builder
+     * @param binding ViewBinding
+     */
     private void addFieldBinding(MethodSpec.Builder result, ViewBinding binding) {
         FieldViewBinding fieldBinding = binding.getFieldBinding();
         if (fieldBinding != null) {
@@ -643,6 +702,12 @@ final class BindingSet {
     }
 
 
+    /**
+     * 给 View 添加 listener
+     *
+     * @param result MethodSpec.Builder
+     * @param binding ViewBinding
+     */
     private void addMethodBindings(MethodSpec.Builder result, ViewBinding binding) {
         Map<ListenerClass, Map<ListenerMethod, Set<MethodViewBinding>>> classMethodBindings =
             binding.getMethodBindings();
@@ -743,13 +808,27 @@ final class BindingSet {
     }
 
 
-    /** True when this type's bindings require a view hierarchy. */
+    /**
+     * True when this type's bindings require a view hierarchy.
+     *
+     * 校验是否有 ViewBinding。规则是判断是否有 method 或者 field 的相关注解
+     *
+     * @return 是否
+     */
     private boolean hasViewBindings() {
         return !viewBindings.isEmpty() || !collectionBindings.isEmpty();
     }
 
 
-    /** True when this type's bindings use raw integer values instead of {@code R} references. */
+    /**
+     * True when this type's bindings use raw integer values instead of {@code R} references.
+     *
+     * 校验 ResourceBinding 的资源 id 是否是 R.id.xxx
+     * 是的话，视为合格 id
+     * 不是的话，即为普通 int 值，不合格 id
+     *
+     * @return 是否
+     */
     private boolean hasUnqualifiedResourceBindings() {
         for (ResourceBinding binding : resourceBindings) {
             if (!binding.id().qualifed) {
@@ -760,7 +839,15 @@ final class BindingSet {
     }
 
 
-    /** True when this type's bindings use Resource directly instead of Context. */
+    /**
+     * True when this type's bindings use Resource directly instead of Context.
+     *
+     * 判断是否需要 Resource 代替 Context 去取资源
+     * 因为有些资源只能通过 Resource 去获取
+     *
+     * @param sdk sdk 版本
+     * @return 是否
+     */
     private boolean hasResourceBindingsNeedingResource(int sdk) {
         for (ResourceBinding binding : resourceBindings) {
             if (binding.requiresResources(sdk)) {
@@ -771,6 +858,11 @@ final class BindingSet {
     }
 
 
+    /**
+     * 校验该 ViewBinding 是否有 method 相关的注解
+     *
+     * @return 是否
+     */
     private boolean hasMethodBindings() {
         for (ViewBinding bindings : viewBindings) {
             if (!bindings.getMethodBindings().isEmpty()) {
@@ -781,6 +873,11 @@ final class BindingSet {
     }
 
 
+    /**
+     * 校验该 ViewBinding @OnTouch 是否有 @ListenerClass 注解
+     *
+     * @return 是否
+     */
     private boolean hasOnTouchMethodBindings() {
         for (ViewBinding bindings : viewBindings) {
             if (bindings.getMethodBindings()
@@ -792,6 +889,11 @@ final class BindingSet {
     }
 
 
+    /**
+     * 校验该 ViewBinding 是否有 field 相关的注解
+     *
+     * @return 是否
+     */
     private boolean hasFieldBindings() {
         for (ViewBinding bindings : viewBindings) {
             if (bindings.getFieldBinding() != null) {
@@ -802,11 +904,21 @@ final class BindingSet {
     }
 
 
+    /**
+     * 校验该 ViewBinding 是否有 method 或者 field 相关的注解
+     *
+     * @return 是否
+     */
     private boolean hasTargetField() {
         return hasFieldBindings() || hasMethodBindings();
     }
 
 
+    /**
+     * 校验是否生成 Local variable
+     *
+     * @return 是否
+     */
     private boolean hasViewLocal() {
         for (ViewBinding bindings : viewBindings) {
             if (bindings.requiresLocal()) {
@@ -820,7 +932,7 @@ final class BindingSet {
     /**
      * True if this binding requires a view. Otherwise only a context is needed.
      *
-     * 判断是不是 View，是的话。得手动获取 Context
+     * 判断是否需要 View。是的话，得手动获取 Context
      * Activity 和 View, Dialog 的 binding 就不一样
      * Activity 直接就是 Context，另外两个需要手动获取
      *
@@ -932,5 +1044,7 @@ final class BindingSet {
                 viewBindings.build(), collectionBindings.build(), resourceBindings.build(),
                 parentBinding);
         }
+
     }
+
 }
