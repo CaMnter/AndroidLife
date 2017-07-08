@@ -7,6 +7,7 @@ dependencies {
     // JavaPoet 主要作用就是帮助我们通过类调用的形式来生成代码
     compile 'com.squareup:javapoet:1.7.0'
     compile project(':smartsave-annotation')
+    compileOnly files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 }
 
 sourceCompatibility = "1.8"
