@@ -60,7 +60,7 @@ public class SaveProcessor extends BaseProcessor {
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.RELEASE_8;
+        return SourceVersion.latestSupported();
     }
 
 
