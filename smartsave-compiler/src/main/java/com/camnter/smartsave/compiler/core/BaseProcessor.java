@@ -14,17 +14,20 @@ import javax.tools.Diagnostic;
 
 public abstract class BaseProcessor extends AbstractProcessor {
 
+    protected ProcessingEnvironment processingEnvironment;
+
     protected Filer filer;
     protected Elements elements;
     protected Messager messager;
 
 
     @Override
-    public synchronized void init(ProcessingEnvironment processingEnv) {
-        super.init(processingEnv);
-        this.filer = processingEnv.getFiler();
-        this.elements = processingEnv.getElementUtils();
-        this.messager = processingEnv.getMessager();
+    public synchronized void init(ProcessingEnvironment processingEnvironment) {
+        super.init(processingEnvironment);
+        this.processingEnvironment = processingEnvironment;
+        this.filer = processingEnvironment.getFiler();
+        this.elements = processingEnvironment.getElementUtils();
+        this.messager = processingEnvironment.getMessager();
     }
 
 

@@ -10,10 +10,13 @@ import com.camnter.smartsave.compiler.annotation.SaveDimensionField;
 import com.camnter.smartsave.compiler.annotation.SaveField;
 import com.camnter.smartsave.compiler.annotation.SaveOnClickMethod;
 import com.camnter.smartsave.compiler.core.BaseProcessor;
+import com.camnter.smartsave.compiler.scanner.ScannerManager;
 import com.google.auto.service.AutoService;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.processing.Processor;
@@ -58,6 +61,18 @@ public class SaveProcessor extends BaseProcessor {
     }
 
 
+    private Set<Class<? extends Annotation>> getSupportedAnnotations() {
+        return new LinkedHashSet<Class<? extends Annotation>>() {
+            {
+                this.add(Save.class);
+                this.add(SaveColor.class);
+                this.add(SaveOnClick.class);
+                this.add(SaveDimension.class);
+            }
+        };
+    }
+
+
     @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
@@ -71,6 +86,10 @@ public class SaveProcessor extends BaseProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         this.annotatedClassHashMap.clear();
         try {
+            ScannerManager scannerManager = ScannerManager.get(this.processingEnvironment,
+                this.getSupportedAnnotations());
+            scannerManager.scanForRClasses(roundEnv);
+
             this.processSave(roundEnv);
             this.processSaveColor(roundEnv);
             this.processSaveOnClick(roundEnv);
