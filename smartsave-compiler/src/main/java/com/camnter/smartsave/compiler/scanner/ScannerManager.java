@@ -24,9 +24,9 @@ import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 
 /**
- * @author CaMnter
- *
  * 编译阶段扫描指定注解所在 packageName 所属的的 资源 id（ R class 内的 ）
+ *
+ * @author CaMnter
  */
 
 public final class ScannerManager {
@@ -38,15 +38,13 @@ public final class ScannerManager {
     private final ProcessingEnvironment processingEnvironment;
     private final Elements elementUtils;
     private final Types typeUtils;
-    private final Set<Class<? extends Annotation>> supportedAnnotations;
 
     private final Map<QualifiedId, Id> symbols = new LinkedHashMap<>();
     private final Messager messager;
     private Trees trees;
 
 
-    private ScannerManager(ProcessingEnvironment processingEnvironment,
-                           Set<Class<? extends Annotation>> supportedAnnotations) {
+    private ScannerManager(ProcessingEnvironment processingEnvironment) {
         this.processingEnvironment = processingEnvironment;
         this.elementUtils = this.processingEnvironment.getElementUtils();
         this.typeUtils = this.processingEnvironment.getTypeUtils();
@@ -55,13 +53,11 @@ public final class ScannerManager {
             this.trees = Trees.instance(this.processingEnvironment);
         } catch (IllegalArgumentException ignored) {
         }
-        this.supportedAnnotations = supportedAnnotations;
     }
 
 
-    public static ScannerManager get(ProcessingEnvironment processingEnvironment,
-                                     Set<Class<? extends Annotation>> supportedAnnotations) {
-        return new ScannerManager(processingEnvironment, supportedAnnotations);
+    public static ScannerManager get(ProcessingEnvironment processingEnvironment) {
+        return new ScannerManager(processingEnvironment);
     }
 
 
@@ -91,8 +87,10 @@ public final class ScannerManager {
      * 解析 R class
      *
      * @param env RoundEnvironment
+     * @param supportedAnnotations 注解集合
      */
-    public void scanForRClasses(RoundEnvironment env) {
+    public void scanForRClasses(RoundEnvironment env,
+                                Set<Class<? extends Annotation>> supportedAnnotations) {
         if (trees == null) return;
 
         RClassScanner scanner = new RClassScanner();
@@ -102,11 +100,11 @@ public final class ScannerManager {
          * 然后设置 R class 扫描这个元素的 package name
          * 最后让这棵树 会自动调用扫描类中的方法去，扫描 R class
          */
-        for (Class<? extends Annotation> annotation : this.supportedAnnotations) {
+        for (Class<? extends Annotation> annotation : supportedAnnotations) {
             for (Element element : env.getElementsAnnotatedWith(annotation)) {
                 JCTree tree = (JCTree) this.trees.getTree(element, getMirror(element, annotation));
-                if (tree !=
-                    null) { // tree can be null if the references are compiled types and not source
+                // tree can be null if the references are compiled types and not source
+                if (tree != null) {
                     String respectivePackageName =
                         this.elementUtils.getPackageOf(element).getQualifiedName().toString();
                     scanner.setCurrentPackageName(respectivePackageName);
@@ -141,6 +139,7 @@ public final class ScannerManager {
                     "\n  [id] = " + qualifiedId.id
             );
         }
+
     }
 
 

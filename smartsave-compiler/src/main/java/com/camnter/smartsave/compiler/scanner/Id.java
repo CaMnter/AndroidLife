@@ -9,9 +9,10 @@ import com.squareup.javapoet.CodeBlock;
  * 根据 ClassName.get("android", "R") 来判断传入进来的 id
  * 是 android.R 还是 int
  *
+ * 最主要的，提供了该 id 对应的 Javapoet CodeBlock
+ *
  * @author CaMnter
  */
-
 final class Id {
 
     private static final ClassName ANDROID_R = ClassName.get("android", "R");

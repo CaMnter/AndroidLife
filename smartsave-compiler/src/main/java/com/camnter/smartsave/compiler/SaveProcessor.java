@@ -86,9 +86,8 @@ public class SaveProcessor extends BaseProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         this.annotatedClassHashMap.clear();
         try {
-            ScannerManager scannerManager = ScannerManager.get(this.processingEnvironment,
-                this.getSupportedAnnotations());
-            scannerManager.scanForRClasses(roundEnv);
+            ScannerManager scannerManager = ScannerManager.get(this.processingEnvironment);
+            scannerManager.scanForRClasses(roundEnv, this.getSupportedAnnotations());
 
             this.processSave(roundEnv);
             this.processSaveColor(roundEnv);
