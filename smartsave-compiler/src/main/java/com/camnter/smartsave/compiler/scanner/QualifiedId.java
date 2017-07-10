@@ -9,11 +9,15 @@ package com.camnter.smartsave.compiler.scanner;
 final class QualifiedId {
 
     final String packageName;
+    final String enclosingElementName;
+    final String elementSimpleName;
     final int id;
 
 
-    QualifiedId(String packageName, int id) {
+    QualifiedId(String packageName, String enclosingElementName, String elementSimpleName, int id) {
         this.packageName = packageName;
+        this.enclosingElementName = enclosingElementName;
+        this.elementSimpleName = elementSimpleName;
         this.id = id;
     }
 

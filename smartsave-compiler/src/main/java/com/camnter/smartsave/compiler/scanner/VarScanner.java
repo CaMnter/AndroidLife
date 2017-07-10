@@ -32,7 +32,12 @@ class VarScanner extends TreeScanner {
         if ("int".equals(jcVariableDecl.getType().toString())) {
             int id = Integer.valueOf(jcVariableDecl.getInitializer().toString());
             String resourceName = jcVariableDecl.getName().toString();
-            QualifiedId qualifiedId = new QualifiedId(this.respectivePackageName, id);
+            QualifiedId qualifiedId = new QualifiedId(
+                this.respectivePackageName,
+                this.className.toString(),
+                jcVariableDecl.getName().toString(),
+                id
+            );
             this.ids.put(qualifiedId, new Id(id, this.className, resourceName));
         }
     }

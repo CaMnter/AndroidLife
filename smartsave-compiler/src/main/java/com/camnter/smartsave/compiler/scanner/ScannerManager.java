@@ -4,11 +4,14 @@ import com.squareup.javapoet.ClassName;
 import com.sun.source.util.Trees;
 import com.sun.tools.javac.tree.JCTree;
 import java.lang.annotation.Annotation;
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.AnnotationMirror;
@@ -18,9 +21,12 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import javax.tools.Diagnostic;
 
 /**
  * @author CaMnter
+ *
+ * 编译阶段扫描指定注解所在 packageName 所属的的 资源 id（ R class 内的 ）
  */
 
 public final class ScannerManager {
@@ -29,31 +35,33 @@ public final class ScannerManager {
         "array", "attr", "bool", "color", "dimen", "drawable", "id", "integer", "string"
     );
 
-    private final ProcessingEnvironment env;
+    private final ProcessingEnvironment processingEnvironment;
     private final Elements elementUtils;
     private final Types typeUtils;
     private final Set<Class<? extends Annotation>> supportedAnnotations;
 
     private final Map<QualifiedId, Id> symbols = new LinkedHashMap<>();
+    private final Messager messager;
     private Trees trees;
 
 
-    private ScannerManager(ProcessingEnvironment env,
+    private ScannerManager(ProcessingEnvironment processingEnvironment,
                            Set<Class<? extends Annotation>> supportedAnnotations) {
-        this.env = env;
-        this.elementUtils = this.env.getElementUtils();
-        this.typeUtils = this.env.getTypeUtils();
+        this.processingEnvironment = processingEnvironment;
+        this.elementUtils = this.processingEnvironment.getElementUtils();
+        this.typeUtils = this.processingEnvironment.getTypeUtils();
+        this.messager = processingEnvironment.getMessager();
         try {
-            this.trees = Trees.instance(this.env);
+            this.trees = Trees.instance(this.processingEnvironment);
         } catch (IllegalArgumentException ignored) {
         }
         this.supportedAnnotations = supportedAnnotations;
     }
 
 
-    public static ScannerManager get(ProcessingEnvironment env,
+    public static ScannerManager get(ProcessingEnvironment processingEnvironment,
                                      Set<Class<? extends Annotation>> supportedAnnotations) {
-        return new ScannerManager(env, supportedAnnotations);
+        return new ScannerManager(processingEnvironment, supportedAnnotations);
     }
 
 
@@ -96,11 +104,11 @@ public final class ScannerManager {
          */
         for (Class<? extends Annotation> annotation : this.supportedAnnotations) {
             for (Element element : env.getElementsAnnotatedWith(annotation)) {
-                JCTree tree = (JCTree) trees.getTree(element, getMirror(element, annotation));
+                JCTree tree = (JCTree) this.trees.getTree(element, getMirror(element, annotation));
                 if (tree !=
                     null) { // tree can be null if the references are compiled types and not source
                     String respectivePackageName =
-                        elementUtils.getPackageOf(element).getQualifiedName().toString();
+                        this.elementUtils.getPackageOf(element).getQualifiedName().toString();
                     scanner.setCurrentPackageName(respectivePackageName);
                     tree.accept(scanner);
                 }
@@ -117,6 +125,21 @@ public final class ScannerManager {
             for (String rClass : packageNameToRClassSet.getValue()) {
                 parseRClass(respectivePackageName, rClass);
             }
+        }
+
+        // print id
+        Deque<Map.Entry<QualifiedId, Id>> entries = new ArrayDeque<>(this.symbols.entrySet());
+        while (!entries.isEmpty()) {
+            Map.Entry<QualifiedId, Id> entry = entries.removeFirst();
+            QualifiedId qualifiedId = entry.getKey();
+            this.messager.printMessage(
+                Diagnostic.Kind.NOTE,
+                "[packageName] = " + qualifiedId.packageName +
+                    "   [fullName] = " + qualifiedId.enclosingElementName + "." +
+                    qualifiedId.elementSimpleName +
+                    "   [simpleName] = " + qualifiedId.elementSimpleName +
+                    "\n  [id] = " + qualifiedId.id
+            );
         }
     }
 
@@ -141,8 +164,9 @@ public final class ScannerManager {
 
         JCTree tree = (JCTree) trees.getTree(element);
         if (tree != null) { // tree can be null if the references are compiled types and not source
-            IdScanner idScanner = new IdScanner(symbols, elementUtils.getPackageOf(element)
-                .getQualifiedName().toString(), respectivePackageName);
+            IdScanner idScanner = new IdScanner(this.symbols,
+                this.elementUtils.getPackageOf(element)
+                    .getQualifiedName().toString(), respectivePackageName);
             tree.accept(idScanner);
         } else {
             parseCompiledR(respectivePackageName, (TypeElement) element);
@@ -168,12 +192,18 @@ public final class ScannerManager {
                         if (value instanceof Integer) {
                             int id = (Integer) value;
                             ClassName rClassName =
-                                ClassName.get(elementUtils.getPackageOf(variableElement).toString(),
+                                ClassName.get(
+                                    this.elementUtils.getPackageOf(variableElement).toString(),
                                     "R",
                                     innerClassName);
                             String resourceName = variableElement.getSimpleName().toString();
-                            QualifiedId qualifiedId = new QualifiedId(respectivePackageName, id);
-                            symbols.put(qualifiedId, new Id(id, rClassName, resourceName));
+                            QualifiedId qualifiedId = new QualifiedId(
+                                respectivePackageName,
+                                element.getSimpleName().toString(),
+                                enclosedElement.getSimpleName().toString(),
+                                id
+                            );
+                            this.symbols.put(qualifiedId, new Id(id, rClassName, resourceName));
                         }
                     }
                 }
