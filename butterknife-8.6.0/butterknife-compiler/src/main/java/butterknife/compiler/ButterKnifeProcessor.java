@@ -116,10 +116,18 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     );
 
     /**
-     * 编译阶段扫描指定注解所在 packageName 所属的的 资源 id（ R class 内的 ）
-     * 缓存下来的 QualifiedId 和 Id
-     * 可以通过 QualifiedId 获取到 Id
-     * Id 可以拿到代码段，用于自动生成代码
+     * 1.预编译阶段扫描 butterknife 相关注解所在 packageName 所属的的 资源 id（ R class 内的 ），这里就是黑魔法代码运用了 JCTree +
+     * Scanner。
+     *
+     * 2.缓存下来的 QualifiedId 和 Id 的 Map 缓存。QualifiedId 是一个拥有 packageName 的 id，Id 是一个拥有 Javapoet
+     * CodeBlock 的 id。都是资源 id 的形象化封装产物
+     *
+     * 在解析那些 butterknife 的注解时：
+     *
+     * 3.butterknife 会通过 Element + id 转换为 QualifiedId，因为 Element 可以通过 Elements 拿到 packageName
+     *
+     * 4.在解析注解中，就能拿到一个 QualifiedId，通过上述的扫描结果缓存，可以根据 QualifiedId 取到一个 Id。从而拿到了 Javapoet
+     * CodeBlock，用于自动生成代码时，进行代码拼凑
      */
     private final Map<QualifiedId, Id> symbols = new LinkedHashMap<>();
     private Elements elementUtils;
