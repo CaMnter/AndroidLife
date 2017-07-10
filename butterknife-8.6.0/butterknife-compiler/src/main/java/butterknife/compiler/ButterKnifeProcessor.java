@@ -114,6 +114,13 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     private static final List<String> SUPPORTED_TYPES = Arrays.asList(
         "array", "attr", "bool", "color", "dimen", "drawable", "id", "integer", "string"
     );
+
+    /**
+     * 编译阶段扫描指定注解所在 packageName 所属的的 资源 id（ R class 内的 ）
+     * 缓存下来的 QualifiedId 和 Id
+     * 可以通过 QualifiedId 获取到 Id
+     * Id 可以拿到代码段，用于自动生成代码
+     */
     private final Map<QualifiedId, Id> symbols = new LinkedHashMap<>();
     private Elements elementUtils;
     private Types typeUtils;
@@ -464,6 +471,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
         Map<TypeElement, BindingSet.Builder> builderMap = new LinkedHashMap<>();
         Set<TypeElement> erasedTargetNames = new LinkedHashSet<>();
 
+        // TODO Mark 1
         scanForRClasses(env);
 
         // 处理 @BindArray
@@ -609,6 +617,8 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
         }
 
         /*
+         * TODO Mark 2
+         *
          * 1.遍历 BindingSet.Builder Map 缓存
          * 2.拿到每个 .java 元素 和其对应的 BindingSet.Builder 缓存
          * 3.寻找 .java 元素的父类型元素
