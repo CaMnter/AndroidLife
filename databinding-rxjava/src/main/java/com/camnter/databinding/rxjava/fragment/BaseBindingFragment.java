@@ -32,11 +32,11 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
  * Created by：CaMnter
  */
 
-public abstract class BaseBindingFragment extends BindingFragment {
+public abstract class BaseBindingFragment<VB extends ViewDataBinding> extends BindingFragment {
 
     private static final String EMPTY_LENGTH_STRING = "";
 
-    private ViewDataBinding contentBinding;
+    protected VB contentBinding;
     private FragmentBaseBinding castedRootBinding;
 
     private RelativeLayout contentLayout;

@@ -14,10 +14,8 @@ import java.lang.ref.WeakReference;
 public abstract class BaseActivityCollaborator<A extends Activity>
     implements CollaboratorLifeCycle {
 
-    protected final CompositeDisposable disposable;
-
     public static final String EMPTY_TEXT = "";
-
+    protected final CompositeDisposable disposable;
     @NonNull
     private final WeakReference<A> activityReference;
 

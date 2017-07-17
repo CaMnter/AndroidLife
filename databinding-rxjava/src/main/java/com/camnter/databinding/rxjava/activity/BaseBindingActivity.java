@@ -34,13 +34,12 @@ import java.lang.reflect.Method;
  * @author CaMnter
  */
 
-public abstract class BaseBindingActivity extends BindingActivity {
+public abstract class BaseBindingActivity<VB extends ViewDataBinding> extends BindingActivity {
 
     private static final String EMPTY_LENGTH_STRING = "";
     protected Activity activity;
+    protected VB contentBinding;
     private ActivityBaseBinding castedRootBinding;
-    private ViewDataBinding contentBinding;
-
     private TitleBar titleBar;
     private RelativeLayout contentLayout;
     private LayoutInflater inflater;
@@ -51,7 +50,8 @@ public abstract class BaseBindingActivity extends BindingActivity {
      *
      * @return auto ?
      */
-    @Override protected boolean autoSetContentView() {
+    @Override
+    protected boolean autoSetContentView() {
         return false;
     }
 
@@ -61,19 +61,20 @@ public abstract class BaseBindingActivity extends BindingActivity {
      *
      * @param rootBinding rootBinding
      */
-    @Override protected void onCastingRootBinding(
+    @Override
+    protected void onCastingRootBinding(
         @Nullable ViewDataBinding rootBinding) {
         if (rootBinding != null) {
-            this.castToBaseMVVMBinding(rootBinding);
+            this.castToBaseDataBinding(rootBinding);
         } else {
             // reset content view, because auto == false
             this.rootBinding = DataBindingUtil.setContentView(this, R.layout.activity_base);
-            this.castToBaseMVVMBinding(this.rootBinding);
+            this.castToBaseDataBinding(this.rootBinding);
         }
     }
 
 
-    private void castToBaseMVVMBinding(@NonNull ViewDataBinding rootBinding) {
+    private void castToBaseDataBinding(@NonNull ViewDataBinding rootBinding) {
         if (rootBinding instanceof ActivityBaseBinding) {
             this.castedRootBinding = (ActivityBaseBinding) rootBinding;
         }
@@ -127,14 +128,11 @@ public abstract class BaseBindingActivity extends BindingActivity {
             this.contentBinding = DataBindingUtil.inflate(this.inflater, layoutId,
                 this.contentLayout, true);
             this.contentLayout = (RelativeLayout) this.contentBinding.getRoot();
-            this.onCastingContentBinding(this.contentBinding);
         } else {
             throw new IllegalArgumentException("Layout id <= 0");
         }
     }
 
-
-    protected abstract void onCastingContentBinding(@NonNull final ViewDataBinding contentBinding);
 
     protected abstract boolean getTitleBar(TitleBar titleBar);
 

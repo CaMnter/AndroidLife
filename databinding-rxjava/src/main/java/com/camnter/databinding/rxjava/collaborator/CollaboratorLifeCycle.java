@@ -6,6 +6,6 @@ package com.camnter.databinding.rxjava.collaborator;
 
 interface CollaboratorLifeCycle {
 
-  void onDestroy();
+    void onDestroy();
 
 }

@@ -1,5 +1,6 @@
 package com.camnter.databinding.rxjava.fragment;
 
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -7,9 +8,8 @@ import android.support.annotation.Nullable;
  * Created by：CaMnter
  */
 
-public abstract class BaseBindingLazyPagerFragment extends BaseBindingPagerFragment {
-
-    private static final String EMPTY_VIEW_TEXT_NULL_DATA = "暂无数据";
+public abstract class BaseBindingLazyPagerFragment<VB extends ViewDataBinding>
+    extends BaseBindingPagerFragment<VB> {
 
     private boolean hasLoaded = false;
     private boolean isCreateView = false;
