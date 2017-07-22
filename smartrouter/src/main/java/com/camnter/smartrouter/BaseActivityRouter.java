@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import com.camnter.smartrouter.core.Core;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.Map;
  * @author CaMnter
  */
 
-public class BaseActivityRouter {
+public class BaseActivityRouter implements Core {
 
     private final String host;
     private final Map<String, String> params;
@@ -26,7 +27,7 @@ public class BaseActivityRouter {
     }
 
 
-    protected String createUrl() {
+    private String createUrl() {
         final StringBuilder builder = new StringBuilder();
         builder
             .append(Routers.getScheme())
@@ -60,29 +61,31 @@ public class BaseActivityRouter {
         return builder.toString();
     }
 
-
-    protected void start(@NonNull final Context context) {
+    @Override
+    public void start(@NonNull final Context context) {
         Routers.start(context, this.createUrl());
     }
 
 
-    protected void startForResult(@NonNull final Activity activity,
-                                  final int requestCode) {
+    @Override
+    public void startForResult(@NonNull final Activity activity,
+                               final int requestCode) {
         Routers.startForResult(activity, this.createUrl(), requestCode);
     }
 
 
-    protected void startForResult(@NonNull final Fragment fragment,
-                                  final int requestCode) {
+    @Override
+    public void startForResult(@NonNull final Fragment fragment,
+                               final int requestCode) {
         Routers.startForResult(fragment, this.createUrl(), requestCode);
     }
 
 
-    protected void startForResult(@NonNull final android.support.v4.app.Fragment fragment,
-                                  final int requestCode) {
+    @Override
+    public void startForResult(@NonNull final android.support.v4.app.Fragment fragment,
+                               final int requestCode) {
         Routers.startForResult(fragment, this.createUrl(), requestCode);
     }
-
 
     protected String put(@NonNull final String key, @NonNull final String value) {
         return params.put(key, value);
