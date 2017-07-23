@@ -61,31 +61,33 @@ public class BaseActivityRouter implements Core {
         return builder.toString();
     }
 
+
     @Override
-    public void start(@NonNull final Context context) {
-        SmartRouters.start(context, this.createUrl());
+    public boolean start(@NonNull final Context context) {
+        return SmartRouters.start(context, this.createUrl());
     }
 
 
     @Override
-    public void startForResult(@NonNull final Activity activity,
-                               final int requestCode) {
-        SmartRouters.startForResult(activity, this.createUrl(), requestCode);
+    public boolean startForResult(@NonNull final Activity activity,
+                                  final int requestCode) {
+        return SmartRouters.startForResult(activity, this.createUrl(), requestCode);
     }
 
 
     @Override
-    public void startForResult(@NonNull final Fragment fragment,
-                               final int requestCode) {
-        SmartRouters.startForResult(fragment, this.createUrl(), requestCode);
+    public boolean startForResult(@NonNull final Fragment fragment,
+                                  final int requestCode) {
+        return SmartRouters.startForResult(fragment, this.createUrl(), requestCode);
     }
 
 
     @Override
-    public void startForResult(@NonNull final android.support.v4.app.Fragment fragment,
-                               final int requestCode) {
-        SmartRouters.startForResult(fragment, this.createUrl(), requestCode);
+    public boolean startForResult(@NonNull final android.support.v4.app.Fragment fragment,
+                                  final int requestCode) {
+        return SmartRouters.startForResult(fragment, this.createUrl(), requestCode);
     }
+
 
     protected String put(@NonNull final String key, @NonNull final String value) {
         return params.put(key, value);

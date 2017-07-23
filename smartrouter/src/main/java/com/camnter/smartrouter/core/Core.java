@@ -11,15 +11,15 @@ import android.support.annotation.NonNull;
 
 public interface Core {
 
-    void start(@NonNull final Context context);
+    boolean start(@NonNull final Context context);
 
-    void startForResult(@NonNull final Activity activity,
-                        final int requestCode);
+    boolean startForResult(@NonNull final Activity activity,
+                           final int requestCode);
 
-    void startForResult(@NonNull final Fragment fragment,
-                        final int requestCode);
+    boolean startForResult(@NonNull final Fragment fragment,
+                           final int requestCode);
 
-    void startForResult(@NonNull final android.support.v4.app.Fragment fragment,
-                        final int requestCode);
+    boolean startForResult(@NonNull final android.support.v4.app.Fragment fragment,
+                           final int requestCode);
 
 }
