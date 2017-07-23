@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
  * @author CaMnter
  */
 
-public final class Routers {
+public final class SmartRouters {
 
     private static final String scheme = "routers";
 

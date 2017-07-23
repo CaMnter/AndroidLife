@@ -30,7 +30,7 @@ public class BaseActivityRouter implements Core {
     private String createUrl() {
         final StringBuilder builder = new StringBuilder();
         builder
-            .append(Routers.getScheme())
+            .append(SmartRouters.getScheme())
             .append("://")
             .append(this.host);
 
@@ -63,28 +63,28 @@ public class BaseActivityRouter implements Core {
 
     @Override
     public void start(@NonNull final Context context) {
-        Routers.start(context, this.createUrl());
+        SmartRouters.start(context, this.createUrl());
     }
 
 
     @Override
     public void startForResult(@NonNull final Activity activity,
                                final int requestCode) {
-        Routers.startForResult(activity, this.createUrl(), requestCode);
+        SmartRouters.startForResult(activity, this.createUrl(), requestCode);
     }
 
 
     @Override
     public void startForResult(@NonNull final Fragment fragment,
                                final int requestCode) {
-        Routers.startForResult(fragment, this.createUrl(), requestCode);
+        SmartRouters.startForResult(fragment, this.createUrl(), requestCode);
     }
 
 
     @Override
     public void startForResult(@NonNull final android.support.v4.app.Fragment fragment,
                                final int requestCode) {
-        Routers.startForResult(fragment, this.createUrl(), requestCode);
+        SmartRouters.startForResult(fragment, this.createUrl(), requestCode);
     }
 
     protected String put(@NonNull final String key, @NonNull final String value) {
