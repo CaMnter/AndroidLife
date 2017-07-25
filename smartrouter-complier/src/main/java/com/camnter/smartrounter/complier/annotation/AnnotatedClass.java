@@ -17,6 +17,7 @@ public class AnnotatedClass {
     private final Elements elements;
     private final TypeElement annotatedElement;
     private final List<RouterHostAnnotation> routerHostAnnotationList;
+    private final List<RouterFieldAnnotation> routerFieldAnnotationList;
 
     private final TypeMirror annotatedElementType;
     private final String annotatedElementSimpleName;
@@ -29,11 +30,17 @@ public class AnnotatedClass {
         this.annotatedElementType = this.annotatedElement.asType();
         this.annotatedElementSimpleName = this.annotatedElement.getSimpleName().toString();
         this.routerHostAnnotationList = new ArrayList<>();
+        this.routerFieldAnnotationList = new ArrayList<>();
     }
 
 
     public void addRouterHostAnnotation(RouterHostAnnotation routerHostAnnotation) {
         this.routerHostAnnotationList.add(routerHostAnnotation);
+    }
+
+
+    public void addRouterFieldAnnotation(RouterFieldAnnotation routerFieldAnnotation) {
+        this.routerFieldAnnotationList.add(routerFieldAnnotation);
     }
 
 

@@ -1,5 +1,6 @@
 package com.camnter.smartrounter.complier.annotation;
 
+import com.camnter.smartrouter.annotation.RouterField;
 import com.camnter.smartrouter.annotation.RouterHost;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -11,25 +12,25 @@ import javax.lang.model.type.TypeMirror;
  * @author CaMnter
  */
 
-public class RouterHostAnnotation {
+public class RouterFieldAnnotation {
 
-    private String[] host;
+    private String fieldValue;
     private VariableElement variableElement;
 
 
-    public RouterHostAnnotation(Element element) {
-        if (element.getKind() != ElementKind.CLASS) {
+    public RouterFieldAnnotation(Element element) {
+        if (element.getKind() != ElementKind.FIELD) {
             throw new IllegalArgumentException(
                 String.format(
-                    "Only class can be annotated with [@%1$s]",
-                    RouterHost.class.getSimpleName()
+                    "Only field can be annotated with [@%1$s]",
+                    RouterField.class.getSimpleName()
                 )
             );
         }
         this.variableElement = (VariableElement) element;
-        RouterHost routerHost = this.variableElement.getAnnotation(RouterHost.class);
-        this.host = routerHost.value();
-        if (this.host.length == 0) {
+        RouterField routerField = this.variableElement.getAnnotation(RouterField.class);
+        this.fieldValue = routerField.value();
+        if (this.fieldValue == null || "".equals(this.fieldValue)) {
             throw new IllegalArgumentException(
                 String.format(
                     "value() in [%1$s] for field [%2$s] is not valid",
@@ -45,8 +46,8 @@ public class RouterHostAnnotation {
     }
 
 
-    String[] getHost() {
-        return this.host;
+    String getFieldValue() {
+        return this.fieldValue;
     }
 
 
