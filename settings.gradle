@@ -2,7 +2,7 @@ include ':app',
 
         ':smartrouter',
         ':smartrouter-complier',
-        ':smartrounter-annotation',
+        ':smartrouter-annotation',
 
         ':butterknife-8.6.0:butterknife',
         ':butterknife-8.6.0:butterknife-annotations',

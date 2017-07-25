@@ -1,4 +1,4 @@
-package com.camnter.smartrounter.annotation;
+package com.camnter.smartrouter.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -15,6 +15,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.SOURCE)
 public @interface RouterField {
 
-    String[] value();
+    String value();
 
 }
