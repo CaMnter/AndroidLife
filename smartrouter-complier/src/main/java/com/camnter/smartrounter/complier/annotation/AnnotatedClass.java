@@ -8,6 +8,8 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.TypeVariableName;
 import com.squareup.javapoet.WildcardTypeName;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,8 +74,40 @@ public class AnnotatedClass {
 
 
     public JavaFile getJavaFile() {
-        // TODO
-        return null;
+
+        // .addTypeVariable(
+        // TypeVariableName.get("T", TypeName.get(this.annotatedElementType)))
+
+        /*
+         * SmartRouter(@NonNull final String host)
+         * SmartRouter # register(@NonNull final Map<String, Class<? extends Activity>> routerMapping)
+         * SmartRouter # setFieldValue(@NonNull final Activity activity)
+         */
+        MethodSpec.Builder smartRouterConstructorBuilder = this.smartRouterConstructorBuilder();
+        MethodSpec.Builder registerMethodBuilder = this.registerMethodBuilder();
+        MethodSpec.Builder setFieldValueMethodBuilder = this.setFieldValueMethodBuilder();
+
+        /*
+         * _SmartRouter
+         * public class ???ActivitySmartRouter extends BaseActivityRouter implements Router<???Activity>
+         */
+        TypeSpec smartRouterClass = TypeSpec
+            .classBuilder(this.annotatedElementSimpleName + "_SmartRouter")
+            .addModifiers(Modifier.PUBLIC)
+            .superclass(RouterType.BASE_ACTIVITY_ROUTER)
+            .addSuperinterface(
+                ParameterizedTypeName.get(
+                    RouterType.ROUTER,
+                    TypeVariableName.get(this.annotatedElementSimpleName)
+                )
+            )
+            .addMethod(smartRouterConstructorBuilder.build())
+            .addMethod(registerMethodBuilder.build())
+            .addMethod(setFieldValueMethodBuilder.build())
+            .build();
+
+        final String packageName = this.getPackageName();
+        return JavaFile.builder(packageName, smartRouterClass).build();
     }
 
 
@@ -221,7 +255,17 @@ public class AnnotatedClass {
 
 
     public String getFullClassName() {
-        return this.annotatedElement.getQualifiedName().toString();
+        return this.annotatedElement
+            .getQualifiedName()
+            .toString();
+    }
+
+
+    public String getPackageName() {
+        return this.elements
+            .getPackageOf(this.annotatedElement)
+            .getQualifiedName()
+            .toString();
     }
 
 }

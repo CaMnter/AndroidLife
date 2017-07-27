@@ -8,8 +8,10 @@ import com.squareup.javapoet.ClassName;
 
 public interface RouterType {
 
-    ClassName ANDROID_ACTIVITY = ClassName.get("android.app", "Activity");
+    ClassName ROUTER = ClassName.get("com.camnter.smartrouter.core", "Router");
+    ClassName BASE_ACTIVITY_ROUTER = ClassName.get("com.camnter.smartrouter", "BaseActivityRouter");
 
+    ClassName ANDROID_ACTIVITY = ClassName.get("android.app", "Activity");
     ClassName ANDROID_SUPPORT_ANNOTATION_NONNULL = ClassName.get("android.support.annotation",
         "NonNull");
 
