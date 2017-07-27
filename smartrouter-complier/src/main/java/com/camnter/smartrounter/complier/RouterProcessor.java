@@ -1,11 +1,13 @@
 package com.camnter.smartrounter.complier;
 
-import com.camnter.smartrounter.annotation.RouterField;
-import com.camnter.smartrounter.annotation.RouterHost;
 import com.camnter.smartrounter.complier.annotation.AnnotatedClass;
+import com.camnter.smartrounter.complier.annotation.RouterFieldAnnotation;
 import com.camnter.smartrounter.complier.annotation.RouterHostAnnotation;
 import com.camnter.smartrounter.complier.core.BaseProcessor;
+import com.camnter.smartrouter.annotation.RouterField;
+import com.camnter.smartrouter.annotation.RouterHost;
 import com.google.auto.service.AutoService;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -73,7 +75,27 @@ public class RouterProcessor extends BaseProcessor {
      */
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        return false;
+        this.annotatedClassHashMap.clear();
+        try {
+            this.processRouterHost(roundEnv);
+            this.processRouterField(roundEnv);
+        } catch (Exception e) {
+            this.e(e.getMessage());
+            e.printStackTrace();
+            return true;
+        }
+        for (AnnotatedClass annotatedClass : this.annotatedClassHashMap.values()) {
+            try {
+                this.i("[RouterProcessor]   [process]   [annotatedClass] = %1$s",
+                    annotatedClass.getFullClassName());
+                annotatedClass.getJavaFile().writeTo(this.filer);
+            } catch (IOException e) {
+                this.i("[RouterProcessor]   [process]   [IOException] = %1$s",
+                    e.getMessage());
+                return true;
+            }
+        }
+        return true;
     }
 
 
@@ -82,6 +104,15 @@ public class RouterProcessor extends BaseProcessor {
             AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
             RouterHostAnnotation routerHostAnnotation = new RouterHostAnnotation(element);
             annotatedClass.addRouterHostAnnotation(routerHostAnnotation);
+        }
+    }
+
+
+    private void processRouterField(RoundEnvironment roundEnv) throws IllegalArgumentException {
+        for (Element element : roundEnv.getElementsAnnotatedWith(RouterField.class)) {
+            AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
+            RouterFieldAnnotation routerFieldAnnotation = new RouterFieldAnnotation(element);
+            annotatedClass.addRouterFieldAnnotation(routerFieldAnnotation);
         }
     }
 

@@ -30,5 +30,5 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
     })
     provided rootProject.ext.denpendencies["support-v4"]
-    compile project(':smartrounter-annotation')
+    compile project(':smartrouter-annotation')
 }

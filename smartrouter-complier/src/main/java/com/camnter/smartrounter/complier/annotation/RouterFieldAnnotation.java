@@ -30,7 +30,7 @@ public class RouterFieldAnnotation {
         this.variableElement = (VariableElement) element;
         RouterField routerField = this.variableElement.getAnnotation(RouterField.class);
         this.fieldValue = routerField.value();
-        if (this.fieldValue == null || "".equals(this.fieldValue)) {
+        if ("".equals(this.fieldValue)) {
             throw new IllegalArgumentException(
                 String.format(
                     "value() in [%1$s] for field [%2$s] is not valid",
