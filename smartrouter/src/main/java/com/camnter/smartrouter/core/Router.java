@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface Router {
 
-    void register(Map<String, Class<? extends Activity>> routerMapping);
+    void register(@NonNull final Map<String, Class<? extends Activity>> routerMapping);
 
     void setFieldValue(@NonNull final Activity activity);
 
