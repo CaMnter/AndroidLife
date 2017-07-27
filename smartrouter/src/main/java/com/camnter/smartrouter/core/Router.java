@@ -8,10 +8,10 @@ import java.util.Map;
  * @author CaMnter
  */
 
-public interface Router {
+public interface Router<A extends Activity> {
 
     void register(@NonNull final Map<String, Class<? extends Activity>> routerMapping);
 
-    void setFieldValue(@NonNull final Activity activity);
+    void setFieldValue(@NonNull final A activity);
 
 }
