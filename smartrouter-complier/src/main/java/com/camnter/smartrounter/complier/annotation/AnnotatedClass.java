@@ -219,38 +219,38 @@ public class AnnotatedClass extends BaseAnnotatedClass {
             switch (fieldTypeString) {
                 case CHAR:
                 case BOXED_CHAR:
-                    codeBlock = CodeBlock.of("intent.getCharExtra(\"$L\", (char) 0)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getCharExtra($S, (char) 0)", fieldName);
                     break;
                 case BYTE:
                 case BOXED_BYTE:
-                    codeBlock = CodeBlock.of("intent.getCharExtra(\"$L\", (byte) 0)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getCharExtra($S, (byte) 0)", fieldName);
                     break;
                 case SHORT:
                 case BOXED_SHORT:
-                    codeBlock = CodeBlock.of("intent.getCharExtra(\"$L\", (short) 0)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getCharExtra($S, (short) 0)", fieldName);
                     break;
                 case INT:
                 case BOXED_INT:
-                    codeBlock = CodeBlock.of("intent.getCharExtra(\"$L\"L, 0)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getCharExtra($S, 0)", fieldName);
                     break;
                 case FLOAT:
                 case BOXED_FLOAT:
-                    codeBlock = CodeBlock.of("intent.getCharExtra(\"$L\", 0f)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getCharExtra($S, 0f)", fieldName);
                     break;
                 case DOUBLE:
                 case BOXED_DOUBLE:
-                    codeBlock = CodeBlock.of("intent.getCharExtra(\"$L\", 0d)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getCharExtra($S, 0d)", fieldName);
                     break;
                 case LONG:
                 case BOXED_LONG:
-                    codeBlock = CodeBlock.of("intent.getCharExtra(\"$L\", 0L)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getCharExtra($S, 0L)", fieldName);
                     break;
                 case BOOLEAN:
                 case BOXED_BOOLEAN:
-                    codeBlock = CodeBlock.of("intent.getCharExtra(\"$L\", false)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getCharExtra($S, false)", fieldName);
                     break;
                 case STRING:
-                    codeBlock = CodeBlock.of("intent.getCharExtra(\"$L\")", fieldName);
+                    codeBlock = CodeBlock.of("intent.getCharExtra($S)", fieldName);
                     break;
             }
             if (codeBlock == null) {
