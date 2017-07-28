@@ -6,7 +6,6 @@ import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeName;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 
@@ -23,6 +22,7 @@ public abstract class BaseAnnotatedClass {
 
     private final Elements elements;
     private final Element annotatedElement;
+    private final String fullClassName;
 
     protected final TypeMirror annotatedElementType;
     protected final TypeName annotatedElementTypeName;
@@ -31,9 +31,11 @@ public abstract class BaseAnnotatedClass {
 
 
     public BaseAnnotatedClass(Element annotatedElement,
-                              Elements elements) {
+                              Elements elements,
+                              String fullClassName) {
         this.elements = elements;
         this.annotatedElement = annotatedElement;
+        this.fullClassName = fullClassName;
         this.annotatedElementType = this.annotatedElement.asType();
         this.annotatedElementTypeName = TypeName.get(this.annotatedElementType);
         this.annotatedElementSimpleName = this.annotatedElement.getSimpleName().toString();
@@ -64,11 +66,7 @@ public abstract class BaseAnnotatedClass {
 
 
     public String getFullClassName() {
-        if (this.annotatedElement instanceof TypeElement) {
-            return ((TypeElement) this.annotatedElement).getQualifiedName().toString();
-        } else {
-            return this.getPackageName() + "." + this.annotatedElement.getSimpleName();
-        }
+        return this.fullClassName;
     }
 
 

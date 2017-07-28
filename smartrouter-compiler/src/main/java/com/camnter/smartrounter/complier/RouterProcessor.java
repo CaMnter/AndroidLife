@@ -121,7 +121,7 @@ public class RouterProcessor extends BaseProcessor {
         final String fullClassName = this.getAnnotatedClassFullName(element);
         AnnotatedClass annotatedClass = this.annotatedClassHashMap.get(fullClassName);
         if (annotatedClass == null) {
-            annotatedClass = new AnnotatedClass(element, this.elements);
+            annotatedClass = new AnnotatedClass(element, this.elements, fullClassName);
             annotatedClassHashMap.put(fullClassName, annotatedClass);
         }
         return annotatedClass;

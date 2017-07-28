@@ -48,8 +48,9 @@ public class AnnotatedClass extends BaseAnnotatedClass {
 
 
     public AnnotatedClass(Element annotatedElement,
-                          Elements elements) {
-        super(annotatedElement, elements);
+                          Elements elements,
+                          String fullClassName) {
+        super(annotatedElement, elements, fullClassName);
         this.routerHostAnnotationList = new ArrayList<>();
         this.routerFieldAnnotationList = new ArrayList<>();
     }
