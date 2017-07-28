@@ -10,9 +10,11 @@ public interface RouterType {
 
     // SmartRouter
     ClassName ROUTER = ClassName.get("com.camnter.smartrouter.core", "Router");
+    ClassName SMART_ROUTERS = ClassName.get("com.camnter.smartrouter", "SmartRouters");
     ClassName BASE_ACTIVITY_ROUTER = ClassName.get("com.camnter.smartrouter", "BaseActivityRouter");
 
     // Android
+    ClassName ANDROID_INTENT = ClassName.get("android.content", "Intent");
     ClassName ANDROID_ACTIVITY = ClassName.get("android.app", "Activity");
 
     String CHAR = "char";

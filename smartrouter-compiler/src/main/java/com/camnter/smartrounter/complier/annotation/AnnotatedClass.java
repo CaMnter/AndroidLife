@@ -19,6 +19,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.util.Elements;
 
+import static com.camnter.smartrounter.complier.RouterType.ANDROID_INTENT;
 import static com.camnter.smartrounter.complier.RouterType.BOOLEAN;
 import static com.camnter.smartrounter.complier.RouterType.BOXED_BOOLEAN;
 import static com.camnter.smartrounter.complier.RouterType.BOXED_BYTE;
@@ -35,6 +36,7 @@ import static com.camnter.smartrounter.complier.RouterType.FLOAT;
 import static com.camnter.smartrounter.complier.RouterType.INT;
 import static com.camnter.smartrounter.complier.RouterType.LONG;
 import static com.camnter.smartrounter.complier.RouterType.SHORT;
+import static com.camnter.smartrounter.complier.RouterType.SMART_ROUTERS;
 import static com.camnter.smartrounter.complier.RouterType.STRING;
 
 /**
@@ -73,12 +75,15 @@ public class AnnotatedClass extends BaseAnnotatedClass {
      */
     @Override
     public JavaFile javaFile() {
+
+        final String className = this.annotatedElementSimpleName + "_SmartRouter";
+
         /*
          * _SmartRouter
          * public class ???ActivitySmartRouter extends BaseActivityRouter implements Router<???Activity>
          */
         TypeSpec smartRouterClass = TypeSpec
-            .classBuilder(this.annotatedElementSimpleName + "_SmartRouter")
+            .classBuilder(className)
             .addModifiers(Modifier.PUBLIC)
             .superclass(RouterType.BASE_ACTIVITY_ROUTER)
             .addSuperinterface(
@@ -93,7 +98,7 @@ public class AnnotatedClass extends BaseAnnotatedClass {
              * -   SmartRouters.register(REGISTER_INSTANCE);
              * }
              */
-            .addField(this.staticFieldBuilder().build())
+            .addField(this.staticFieldBuilder(className).build())
             .addStaticBlock(this.staticBlockBuilder().build())
             /*
              * SmartRouter(@NonNull final String host)
@@ -114,11 +119,12 @@ public class AnnotatedClass extends BaseAnnotatedClass {
      *
      * @return FieldSpec.Builder
      */
-    private FieldSpec.Builder staticFieldBuilder() {
+    private FieldSpec.Builder staticFieldBuilder(String className) {
+        final ClassName fieldClassName = ClassName.get(this.getPackageName(), className);
         return
-            FieldSpec.builder(this.annotatedElementTypeName, "REGISTER_INSTANCE")
+            FieldSpec.builder(fieldClassName, "REGISTER_INSTANCE")
                 .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
-                .initializer("new $T(\"\")", this.annotatedElementTypeName);
+                .initializer("new $T(\"\")", fieldClassName);
     }
 
 
@@ -130,7 +136,7 @@ public class AnnotatedClass extends BaseAnnotatedClass {
      * @return CodeBlock.Builder
      */
     private CodeBlock.Builder staticBlockBuilder() {
-        return CodeBlock.builder().add("SmartRouters.register(REGISTER_INSTANCE)");
+        return CodeBlock.builder().add("$T.register(REGISTER_INSTANCE);\n", SMART_ROUTERS);
     }
 
 
@@ -149,7 +155,7 @@ public class AnnotatedClass extends BaseAnnotatedClass {
                         Modifier.FINAL
                     )
                 )
-                .addCode("super(host)");
+                .addCode("super(host);\n");
     }
 
 
@@ -168,9 +174,14 @@ public class AnnotatedClass extends BaseAnnotatedClass {
             .returns(TypeName.VOID)
             .addParameter(
                 this.createNonNullParameter(
-                    ParameterizedTypeName.get(ClassName.get(Map.class),
+                    ParameterizedTypeName.get(
+                        ClassName.get(Map.class),
                         ClassName.get(String.class),
-                        WildcardTypeName.subtypeOf(RouterType.ANDROID_ACTIVITY)),
+                        ParameterizedTypeName.get(
+                            ClassName.get(Class.class),
+                            WildcardTypeName.subtypeOf(RouterType.ANDROID_ACTIVITY)
+                        )
+                    ),
                     "routerMapping",
                     Modifier.FINAL
                 )
@@ -182,7 +193,7 @@ public class AnnotatedClass extends BaseAnnotatedClass {
                 .getSimpleName()
                 .toString();
             for (String host : routerHostAnnotation.getHost()) {
-                registerMethodBuilder.addCode("routerMapping.put($1L, $2L.class)", host,
+                registerMethodBuilder.addCode("routerMapping.put($S, $L.class);\n", host,
                     activitySimpleName);
             }
         }
@@ -212,6 +223,12 @@ public class AnnotatedClass extends BaseAnnotatedClass {
                 )
             );
 
+        // final Intent intent = activity.getIntent()
+        if (!this.routerFieldAnnotationList.isEmpty()) {
+            setFieldValueMethodBuilder.addCode(
+                CodeBlock.of("final $T intent = activity.getIntent();\n", ANDROID_INTENT)
+            );
+        }
         for (RouterFieldAnnotation routerFieldAnnotation : this.routerFieldAnnotationList) {
             final String fieldTypeString = routerFieldAnnotation.getFieldType().toString();
             final String fieldName = routerFieldAnnotation.getFieldName().toString();
@@ -219,38 +236,38 @@ public class AnnotatedClass extends BaseAnnotatedClass {
             switch (fieldTypeString) {
                 case CHAR:
                 case BOXED_CHAR:
-                    codeBlock = CodeBlock.of("intent.getCharExtra($S, (char) 0)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getCharExtra($S, (char) 0);\n", fieldName);
                     break;
                 case BYTE:
                 case BOXED_BYTE:
-                    codeBlock = CodeBlock.of("intent.getCharExtra($S, (byte) 0)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getByteExtra($S, (byte) 0);\n", fieldName);
                     break;
                 case SHORT:
                 case BOXED_SHORT:
-                    codeBlock = CodeBlock.of("intent.getCharExtra($S, (short) 0)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getShortExtra($S, (short) 0);\n", fieldName);
                     break;
                 case INT:
                 case BOXED_INT:
-                    codeBlock = CodeBlock.of("intent.getCharExtra($S, 0)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getIntExtra($S, 0);\n", fieldName);
                     break;
                 case FLOAT:
                 case BOXED_FLOAT:
-                    codeBlock = CodeBlock.of("intent.getCharExtra($S, 0f)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getFloatExtra($S, 0f);\n", fieldName);
                     break;
                 case DOUBLE:
                 case BOXED_DOUBLE:
-                    codeBlock = CodeBlock.of("intent.getCharExtra($S, 0d)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getDoubleExtra($S, 0d);\n", fieldName);
                     break;
                 case LONG:
                 case BOXED_LONG:
-                    codeBlock = CodeBlock.of("intent.getCharExtra($S, 0L)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getLongExtra($S, 0L);\n", fieldName);
                     break;
                 case BOOLEAN:
                 case BOXED_BOOLEAN:
-                    codeBlock = CodeBlock.of("intent.getCharExtra($S, false)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getBooleanExtra($S, false);\n", fieldName);
                     break;
                 case STRING:
-                    codeBlock = CodeBlock.of("intent.getCharExtra($S)", fieldName);
+                    codeBlock = CodeBlock.of("intent.getStringExtra($S);\n", fieldName);
                     break;
             }
             if (codeBlock == null) {

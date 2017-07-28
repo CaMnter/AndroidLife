@@ -70,7 +70,7 @@ public abstract class BaseAnnotatedClass {
     }
 
 
-    private String getPackageName() {
+    protected String getPackageName() {
         return
             this.elements
                 .getPackageOf(this.annotatedElement)
