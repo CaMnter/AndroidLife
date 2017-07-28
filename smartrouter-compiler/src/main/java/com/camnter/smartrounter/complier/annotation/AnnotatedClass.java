@@ -92,6 +92,8 @@ public class AnnotatedClass extends BaseAnnotatedClass {
                     TypeVariableName.get(this.annotatedElementSimpleName)
                 )
             )
+            .addJavadoc("Generated code from SmartRouter. Do not modify !\n\n")
+            .addJavadoc("@author CaMnter\n")
             /*
              * private static final SmartRouter REGISTER_INSTANCE = new SmartRouter("");
              * static {
