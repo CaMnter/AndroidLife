@@ -15,8 +15,8 @@ import com.squareup.javapoet.WildcardTypeName;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 
 import static com.camnter.smartrounter.complier.RouterType.BOOLEAN;
@@ -47,7 +47,7 @@ public class AnnotatedClass extends BaseAnnotatedClass {
     private final List<RouterFieldAnnotation> routerFieldAnnotationList;
 
 
-    public AnnotatedClass(TypeElement annotatedElement,
+    public AnnotatedClass(Element annotatedElement,
                           Elements elements) {
         super(annotatedElement, elements);
         this.routerHostAnnotationList = new ArrayList<>();
@@ -104,8 +104,7 @@ public class AnnotatedClass extends BaseAnnotatedClass {
             .addMethod(this.setFieldValueMethodBuilder().build())
             .build();
 
-        final String packageName = this.getPackageName();
-        return JavaFile.builder(packageName, smartRouterClass).build();
+        return JavaFile.builder(this.annotatedElementPackageName, smartRouterClass).build();
     }
 
 
@@ -178,7 +177,7 @@ public class AnnotatedClass extends BaseAnnotatedClass {
 
         // routerMapping.put($1L, $2L.class)
         for (RouterHostAnnotation routerHostAnnotation : this.routerHostAnnotationList) {
-            final String activitySimpleName = routerHostAnnotation.getVariableElement()
+            final String activitySimpleName = routerHostAnnotation.getElement()
                 .getSimpleName()
                 .toString();
             for (String host : routerHostAnnotation.getHost()) {

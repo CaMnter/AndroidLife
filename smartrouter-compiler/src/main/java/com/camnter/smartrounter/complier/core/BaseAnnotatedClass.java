@@ -4,6 +4,7 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeName;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
@@ -21,20 +22,22 @@ public abstract class BaseAnnotatedClass {
     );
 
     private final Elements elements;
-    private final TypeElement annotatedElement;
+    private final Element annotatedElement;
 
     protected final TypeMirror annotatedElementType;
     protected final TypeName annotatedElementTypeName;
     protected final String annotatedElementSimpleName;
+    protected final String annotatedElementPackageName;
 
 
-    public BaseAnnotatedClass(TypeElement annotatedElement,
+    public BaseAnnotatedClass(Element annotatedElement,
                               Elements elements) {
         this.elements = elements;
         this.annotatedElement = annotatedElement;
         this.annotatedElementType = this.annotatedElement.asType();
         this.annotatedElementTypeName = TypeName.get(this.annotatedElementType);
         this.annotatedElementSimpleName = this.annotatedElement.getSimpleName().toString();
+        this.annotatedElementPackageName = this.getPackageName();
     }
 
 
@@ -61,17 +64,20 @@ public abstract class BaseAnnotatedClass {
 
 
     public String getFullClassName() {
-        return this.annotatedElement
-            .getQualifiedName()
-            .toString();
+        if (this.annotatedElement instanceof TypeElement) {
+            return ((TypeElement) this.annotatedElement).getQualifiedName().toString();
+        } else {
+            return this.getPackageName() + "." + this.annotatedElement.getSimpleName();
+        }
     }
 
 
-    protected String getPackageName() {
-        return this.elements
-            .getPackageOf(this.annotatedElement)
-            .getQualifiedName()
-            .toString();
+    private String getPackageName() {
+        return
+            this.elements
+                .getPackageOf(this.annotatedElement)
+                .getQualifiedName()
+                .toString();
     }
 
 }

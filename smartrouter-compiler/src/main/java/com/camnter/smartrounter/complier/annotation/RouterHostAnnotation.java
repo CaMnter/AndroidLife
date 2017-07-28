@@ -4,7 +4,6 @@ import com.camnter.smartrouter.annotation.RouterHost;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Name;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
 /**
@@ -14,7 +13,7 @@ import javax.lang.model.type.TypeMirror;
 public class RouterHostAnnotation {
 
     private String[] host;
-    private VariableElement variableElement;
+    private Element element;
 
 
     public RouterHostAnnotation(Element element) {
@@ -26,8 +25,8 @@ public class RouterHostAnnotation {
                 )
             );
         }
-        this.variableElement = (VariableElement) element;
-        RouterHost routerHost = this.variableElement.getAnnotation(RouterHost.class);
+        this.element = element;
+        RouterHost routerHost = this.element.getAnnotation(RouterHost.class);
         this.host = routerHost.value();
         if (this.host.length == 0) {
             throw new IllegalArgumentException(
@@ -41,7 +40,7 @@ public class RouterHostAnnotation {
 
 
     TypeMirror getFieldType() {
-        return this.variableElement.asType();
+        return this.element.asType();
     }
 
 
@@ -51,12 +50,12 @@ public class RouterHostAnnotation {
 
 
     Name getFieldName() {
-        return this.variableElement.getSimpleName();
+        return this.element.getSimpleName();
     }
 
 
-    public VariableElement getVariableElement() {
-        return this.variableElement;
+    public Element getElement() {
+        return this.element;
     }
 
 }

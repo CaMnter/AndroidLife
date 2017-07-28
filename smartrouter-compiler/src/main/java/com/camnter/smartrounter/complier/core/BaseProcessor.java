@@ -5,6 +5,9 @@ import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 
@@ -49,6 +52,43 @@ public abstract class BaseProcessor extends AbstractProcessor {
 
     public void w(String messageFormat, Object... args) {
         this.messager.printMessage(Diagnostic.Kind.WARNING, String.format(messageFormat, args));
+    }
+
+
+    protected String getAnnotatedClassFullName(Element element) {
+        final ElementKind elementKind = element.getKind();
+        switch (elementKind) {
+            case CLASS:
+            case INTERFACE:
+                return this.getPackageName(element) + "." + element.getSimpleName();
+            case PACKAGE:
+                return this.getPackageName(element);
+            case ANNOTATION_TYPE:
+                final Element annotationTypeEnclosingElement = element.getEnclosingElement();
+                switch (annotationTypeEnclosingElement.getKind()) {
+                    case CLASS:
+                    case INTERFACE:
+                    case ANNOTATION_TYPE:
+                        return this.getPackageName(element) + "." + element.getSimpleName();
+                    case PACKAGE:
+                        return this.getPackageName(element);
+                    default:
+                    case FIELD:
+                        return ((TypeElement) element.getEnclosingElement()).getQualifiedName()
+                            .toString();
+                }
+            default:
+            case FIELD:
+                return ((TypeElement) element.getEnclosingElement()).getQualifiedName().toString();
+        }
+    }
+
+
+    private String getPackageName(Element element) {
+        return this.elements
+            .getPackageOf(element)
+            .getQualifiedName()
+            .toString();
     }
 
 }
