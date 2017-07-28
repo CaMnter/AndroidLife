@@ -17,7 +17,10 @@ import java.util.Map;
 
 public class BaseActivityRouter implements Core {
 
+    @NonNull
     private final String host;
+
+    @NonNull
     private final Map<String, String> params;
 
 

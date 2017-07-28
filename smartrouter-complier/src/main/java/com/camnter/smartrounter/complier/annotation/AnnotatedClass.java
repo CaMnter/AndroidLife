@@ -3,6 +3,7 @@ package com.camnter.smartrounter.complier.annotation;
 import com.camnter.smartrounter.complier.RouterType;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
@@ -75,17 +76,6 @@ public class AnnotatedClass {
 
     public JavaFile getJavaFile() {
 
-        // .addTypeVariable(
-        // TypeVariableName.get("T", TypeName.get(this.annotatedElementType)))
-
-        /*
-         * SmartRouter(@NonNull final String host)
-         * SmartRouter # register(@NonNull final Map<String, Class<? extends Activity>> routerMapping)
-         * SmartRouter # setFieldValue(@NonNull final Activity activity)
-         */
-        MethodSpec.Builder smartRouterConstructorBuilder = this.smartRouterConstructorBuilder();
-        MethodSpec.Builder registerMethodBuilder = this.registerMethodBuilder();
-        MethodSpec.Builder setFieldValueMethodBuilder = this.setFieldValueMethodBuilder();
 
         /*
          * _SmartRouter
@@ -101,9 +91,22 @@ public class AnnotatedClass {
                     TypeVariableName.get(this.annotatedElementSimpleName)
                 )
             )
-            .addMethod(smartRouterConstructorBuilder.build())
-            .addMethod(registerMethodBuilder.build())
-            .addMethod(setFieldValueMethodBuilder.build())
+            /*
+             * private static final SmartRouter REGISTER_INSTANCE = new SmartRouter("");
+             * static {
+             * -   SmartRouters.register(REGISTER_INSTANCE);
+             * }
+             */
+            .addField(this.staticFieldBuilder().build())
+            .addStaticBlock(this.staticBlockBuilder().build())
+            /*
+             * SmartRouter(@NonNull final String host)
+             * SmartRouter # register(@NonNull final Map<String, Class<? extends Activity>> routerMapping)
+             * SmartRouter # setFieldValue(@NonNull final Activity activity)
+             */
+            .addMethod(this.constructorBuilder().build())
+            .addMethod(this.registerMethodBuilder().build())
+            .addMethod(this.setFieldValueMethodBuilder().build())
             .build();
 
         final String packageName = this.getPackageName();
@@ -112,11 +115,37 @@ public class AnnotatedClass {
 
 
     /**
+     * private static final SmartRouter REGISTER_INSTANCE = new SmartRouter("");
+     *
+     * @return FieldSpec.Builder
+     */
+    private FieldSpec.Builder staticFieldBuilder() {
+        TypeName typeName = TypeName.get(this.annotatedElementType);
+        return
+            FieldSpec.builder(typeName, "REGISTER_INSTANCE")
+                .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
+                .initializer("new $T(\"\")", typeName);
+    }
+
+
+    /**
+     * static {
+     * -   SmartRouters.register(REGISTER_INSTANCE);
+     * }
+     *
+     * @return CodeBlock.Builder
+     */
+    private CodeBlock.Builder staticBlockBuilder() {
+        return CodeBlock.builder().add("SmartRouters.register(REGISTER_INSTANCE)");
+    }
+
+
+    /**
      * SmartRouter(@NonNull final String host)
      *
      * @return MethodSpec.Builder
      */
-    private MethodSpec.Builder smartRouterConstructorBuilder() {
+    private MethodSpec.Builder constructorBuilder() {
         return
             MethodSpec.constructorBuilder()
                 .addParameter(
