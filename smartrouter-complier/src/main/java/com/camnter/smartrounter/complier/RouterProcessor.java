@@ -88,7 +88,7 @@ public class RouterProcessor extends BaseProcessor {
             try {
                 this.i("[RouterProcessor]   [process]   [annotatedClass] = %1$s",
                     annotatedClass.getFullClassName());
-                annotatedClass.getJavaFile().writeTo(this.filer);
+                annotatedClass.javaFile().writeTo(this.filer);
             } catch (IOException e) {
                 this.i("[RouterProcessor]   [process]   [IOException] = %1$s",
                     e.getMessage());

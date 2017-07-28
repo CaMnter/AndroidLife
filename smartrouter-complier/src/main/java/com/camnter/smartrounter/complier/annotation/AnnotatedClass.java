@@ -1,12 +1,12 @@
 package com.camnter.smartrounter.complier.annotation;
 
 import com.camnter.smartrounter.complier.RouterType;
+import com.camnter.smartrounter.complier.core.BaseAnnotatedClass;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 
 import static com.camnter.smartrounter.complier.RouterType.BOOLEAN;
@@ -42,23 +41,15 @@ import static com.camnter.smartrounter.complier.RouterType.STRING;
  * @author CaMnter
  */
 
-public class AnnotatedClass {
+public class AnnotatedClass extends BaseAnnotatedClass {
 
-    private final Elements elements;
-    private final TypeElement annotatedElement;
     private final List<RouterHostAnnotation> routerHostAnnotationList;
     private final List<RouterFieldAnnotation> routerFieldAnnotationList;
-
-    private final TypeMirror annotatedElementType;
-    private final String annotatedElementSimpleName;
 
 
     public AnnotatedClass(TypeElement annotatedElement,
                           Elements elements) {
-        this.elements = elements;
-        this.annotatedElement = annotatedElement;
-        this.annotatedElementType = this.annotatedElement.asType();
-        this.annotatedElementSimpleName = this.annotatedElement.getSimpleName().toString();
+        super(annotatedElement, elements);
         this.routerHostAnnotationList = new ArrayList<>();
         this.routerFieldAnnotationList = new ArrayList<>();
     }
@@ -74,9 +65,13 @@ public class AnnotatedClass {
     }
 
 
-    public JavaFile getJavaFile() {
-
-
+    /**
+     * get the JavaFile
+     *
+     * @return JavaFile
+     */
+    @Override
+    public JavaFile javaFile() {
         /*
          * _SmartRouter
          * public class ???ActivitySmartRouter extends BaseActivityRouter implements Router<???Activity>
@@ -120,11 +115,10 @@ public class AnnotatedClass {
      * @return FieldSpec.Builder
      */
     private FieldSpec.Builder staticFieldBuilder() {
-        TypeName typeName = TypeName.get(this.annotatedElementType);
         return
-            FieldSpec.builder(typeName, "REGISTER_INSTANCE")
+            FieldSpec.builder(this.annotatedElementTypeName, "REGISTER_INSTANCE")
                 .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
-                .initializer("new $T(\"\")", typeName);
+                .initializer("new $T(\"\")", this.annotatedElementTypeName);
     }
 
 
@@ -212,7 +206,7 @@ public class AnnotatedClass {
             .returns(TypeName.VOID)
             .addParameter(
                 this.createNonNullParameter(
-                    TypeName.get(this.annotatedElementType),
+                    this.annotatedElementTypeName,
                     "activity",
                     Modifier.FINAL
                 )
@@ -266,35 +260,6 @@ public class AnnotatedClass {
         }
 
         return setFieldValueMethodBuilder;
-    }
-
-
-    /**
-     * android.support.annotation.NonNull parameter
-     *
-     * @param type TypeName
-     * @param name String
-     * @param modifiers Modifier...
-     */
-    private ParameterSpec createNonNullParameter(TypeName type, String name, Modifier... modifiers) {
-        return ParameterSpec.builder(type, name, modifiers)
-            .addAnnotation(RouterType.ANDROID_SUPPORT_ANNOTATION_NONNULL)
-            .build();
-    }
-
-
-    public String getFullClassName() {
-        return this.annotatedElement
-            .getQualifiedName()
-            .toString();
-    }
-
-
-    public String getPackageName() {
-        return this.elements
-            .getPackageOf(this.annotatedElement)
-            .getQualifiedName()
-            .toString();
     }
 
 }
