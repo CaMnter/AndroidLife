@@ -92,17 +92,12 @@ public class BaseActivityRouter implements Core {
     }
 
 
-    protected String put(@NonNull final String key, @NonNull final String value) {
-        return params.put(key, value);
-    }
-
-
-    protected String put(@NonNull final String key, final double value) {
+    protected String put(@NonNull final String key, final char value) {
         return params.put(key, String.valueOf(value));
     }
 
 
-    protected String put(@NonNull final String key, final float value) {
+    protected String put(@NonNull final String key, @NonNull final Character value) {
         return params.put(key, String.valueOf(value));
     }
 
@@ -112,8 +107,53 @@ public class BaseActivityRouter implements Core {
     }
 
 
+    protected String put(@NonNull final String key, @NonNull final Integer value) {
+        return params.put(key, String.valueOf(value));
+    }
+
+
+    protected String put(@NonNull final String key, final float value) {
+        return params.put(key, String.valueOf(value));
+    }
+
+
+    protected String put(@NonNull final String key, @NonNull final Float value) {
+        return params.put(key, String.valueOf(value));
+    }
+
+
+    protected String put(@NonNull final String key, final double value) {
+        return params.put(key, String.valueOf(value));
+    }
+
+
+    protected String put(@NonNull final String key, @NonNull final Double value) {
+        return params.put(key, String.valueOf(value));
+    }
+
+
+    protected String put(@NonNull final String key, final long value) {
+        return params.put(key, String.valueOf(value));
+    }
+
+
+    protected String put(@NonNull final String key, @NonNull final Long value) {
+        return params.put(key, String.valueOf(value));
+    }
+
+
     protected String put(@NonNull final String key, final boolean value) {
         return params.put(key, String.valueOf(value));
+    }
+
+
+    protected String put(@NonNull final String key, @NonNull final Boolean value) {
+        return params.put(key, String.valueOf(value));
+    }
+
+
+    protected String put(@NonNull final String key, @NonNull final String value) {
+        return params.put(key, value);
     }
 
 }

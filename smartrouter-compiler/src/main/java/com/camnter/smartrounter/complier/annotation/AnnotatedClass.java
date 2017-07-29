@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 
 import static com.camnter.smartrounter.complier.RouterType.ANDROID_INTENT;
@@ -106,10 +107,12 @@ public class AnnotatedClass extends BaseAnnotatedClass {
              * SmartRouter(@NonNull final String host)
              * SmartRouter # register(@NonNull final Map<String, Class<? extends Activity>> routerMapping)
              * SmartRouter # setFieldValue(@NonNull final Activity activity)
+             * SmartRouter # putValue(final int value)
              */
             .addMethod(this.constructorBuilder().build())
             .addMethod(this.registerMethodBuilder().build())
             .addMethod(this.setFieldValueMethodBuilder().build())
+            .addMethods(this.putFieldMethodBuilder())
             .build();
 
         return JavaFile.builder(this.annotatedElementPackageName, smartRouterClass).build();
@@ -279,6 +282,67 @@ public class AnnotatedClass extends BaseAnnotatedClass {
         }
 
         return setFieldValueMethodBuilder;
+    }
+
+
+    /**
+     * SmartRouter # putValue(final int value)
+     * SmartRouter # putValue(@NonNull final Integer value)
+     *
+     * @return List<MethodSpec>
+     */
+    private List<MethodSpec> putFieldMethodBuilder() {
+
+        final List<MethodSpec> putMethods = new ArrayList<>();
+
+        for (RouterFieldAnnotation routerFieldAnnotation : this.routerFieldAnnotationList) {
+            final TypeMirror fieldTypeMirror = routerFieldAnnotation.getFieldType();
+            final TypeName fieldTypeName = TypeName.get(fieldTypeMirror);
+            final String fieldTypeString = fieldTypeMirror.toString();
+            final String fieldName = routerFieldAnnotation.getFieldName().toString();
+
+            final String expectName = "put" + fieldName.substring(0, 1).toUpperCase() +
+                fieldName.substring(1);
+
+            final MethodSpec.Builder putMethodBuilder = MethodSpec
+                .methodBuilder(expectName)
+                .addModifiers(Modifier.PUBLIC)
+                .returns(TypeName.VOID)
+                .addCode(CodeBlock.of("this.put($S, value);\n", fieldName));
+
+            switch (fieldTypeString) {
+                case CHAR:
+                case BYTE:
+                case SHORT:
+                case INT:
+                case FLOAT:
+                case DOUBLE:
+                case LONG:
+                case BOOLEAN:
+                    putMethodBuilder.addParameter(fieldTypeName, "value", Modifier.FINAL);
+                    putMethods.add(putMethodBuilder.build());
+                    break;
+                case BOXED_CHAR:
+                case BOXED_BYTE:
+                case BOXED_SHORT:
+                case BOXED_INT:
+                case BOXED_FLOAT:
+                case BOXED_DOUBLE:
+                case BOXED_LONG:
+                case BOXED_BOOLEAN:
+                case STRING:
+                    putMethodBuilder.addParameter(
+                        this.createNonNullParameter(
+                            fieldTypeName,
+                            "value",
+                            Modifier.FINAL
+                        )
+                    );
+                    putMethods.add(putMethodBuilder.build());
+                    break;
+            }
+        }
+        return putMethods;
     }
 
 }
