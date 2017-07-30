@@ -56,12 +56,13 @@ public final class SmartRouters {
     }
 
 
-    private static void running(@NonNull final Activity activity) {
+    @SuppressWarnings("unchecked")
+    public static void running(@NonNull final Activity activity) {
         final String targetFullName = activity.getClass().getName();
         try {
             Router router = ROUTER_MAP.get(targetFullName);
             if (router == null) {
-                Class<?> routerClass = Class.forName(targetFullName + "_Router");
+                Class<?> routerClass = Class.forName(targetFullName + "_SmartRouter");
                 router = (Router) routerClass.newInstance();
                 ROUTER_MAP.put(targetFullName, router);
             }
