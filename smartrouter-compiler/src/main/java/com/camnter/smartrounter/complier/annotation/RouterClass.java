@@ -44,15 +44,15 @@ import static com.camnter.smartrounter.complier.RouterType.STRING;
  * @author CaMnter
  */
 
-public class AnnotatedClass extends BaseAnnotatedClass {
+public class RouterClass extends BaseAnnotatedClass {
 
     private final List<RouterHostAnnotation> routerHostAnnotationList;
     private final List<RouterFieldAnnotation> routerFieldAnnotationList;
 
 
-    public AnnotatedClass(Element annotatedElement,
-                          Elements elements,
-                          String fullClassName) {
+    public RouterClass(Element annotatedElement,
+                       Elements elements,
+                       String fullClassName) {
         super(annotatedElement, elements, fullClassName);
         this.routerHostAnnotationList = new ArrayList<>();
         this.routerFieldAnnotationList = new ArrayList<>();
@@ -198,8 +198,12 @@ public class AnnotatedClass extends BaseAnnotatedClass {
                 .getSimpleName()
                 .toString();
             for (String host : routerHostAnnotation.getHost()) {
-                registerMethodBuilder.addCode("routerMapping.put($S, $L.class);\n", host,
-                    activitySimpleName);
+                registerMethodBuilder.addCode(
+                    "routerMapping.put($T.getScheme() + $S, $L.class);\n",
+                    SMART_ROUTERS,
+                    host,
+                    activitySimpleName
+                );
             }
         }
 
