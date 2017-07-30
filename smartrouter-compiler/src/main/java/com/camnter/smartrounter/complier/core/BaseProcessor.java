@@ -1,5 +1,7 @@
 package com.camnter.smartrounter.complier.core;
 
+import java.util.Map;
+import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -22,6 +24,7 @@ public abstract class BaseProcessor extends AbstractProcessor {
     protected Filer filer;
     protected Elements elements;
     protected Messager messager;
+    protected String targetModuleName;
 
 
     @Override
@@ -31,6 +34,14 @@ public abstract class BaseProcessor extends AbstractProcessor {
         this.filer = processingEnvironment.getFiler();
         this.elements = processingEnvironment.getElementUtils();
         this.messager = processingEnvironment.getMessager();
+
+        final Map<String, String> optionsMap = this.processingEnv.getOptions();
+        final Set<String> keySet = optionsMap.keySet();
+        for (String key : keySet) {
+            if ("targetModuleName".equals(key)) {
+                this.targetModuleName = optionsMap.get(key);
+            }
+        }
     }
 
 

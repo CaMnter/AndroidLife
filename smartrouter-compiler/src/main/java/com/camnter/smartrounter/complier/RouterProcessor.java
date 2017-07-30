@@ -1,8 +1,9 @@
 package com.camnter.smartrounter.complier;
 
-import com.camnter.smartrounter.complier.annotation.AnnotatedClass;
+import com.camnter.smartrounter.complier.annotation.RouterClass;
 import com.camnter.smartrounter.complier.annotation.RouterFieldAnnotation;
 import com.camnter.smartrounter.complier.annotation.RouterHostAnnotation;
+import com.camnter.smartrounter.complier.annotation.RouterManagerClass;
 import com.camnter.smartrounter.complier.core.BaseProcessor;
 import com.camnter.smartrouter.annotation.RouterField;
 import com.camnter.smartrouter.annotation.RouterHost;
@@ -27,7 +28,7 @@ import javax.lang.model.element.TypeElement;
 @AutoService(Processor.class)
 public class RouterProcessor extends BaseProcessor {
 
-    private Map<String, AnnotatedClass> annotatedClassHashMap = new HashMap<>();
+    private Map<String, RouterClass> routerClassHashMap = new HashMap<>();
 
 
     private String getPackageName(final TypeElement type) {
@@ -75,7 +76,7 @@ public class RouterProcessor extends BaseProcessor {
      */
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        this.annotatedClassHashMap.clear();
+        this.routerClassHashMap.clear();
         try {
             this.processRouterHost(roundEnv);
             this.processRouterField(roundEnv);
@@ -84,16 +85,26 @@ public class RouterProcessor extends BaseProcessor {
             e.printStackTrace();
             return true;
         }
-        for (AnnotatedClass annotatedClass : this.annotatedClassHashMap.values()) {
+        for (RouterClass routerClass : this.routerClassHashMap.values()) {
             try {
-                this.i("[RouterProcessor]   [process]   [annotatedClass] = %1$s",
-                    annotatedClass.getFullClassName());
-                annotatedClass.javaFile().writeTo(this.filer);
+                this.i("[RouterProcessor]   [RouterClass]   [process]   [annotatedClass] = %1$s",
+                    routerClass.getFullClassName());
+                routerClass.javaFile().writeTo(this.filer);
             } catch (IOException e) {
-                this.i("[RouterProcessor]   [process]   [IOException] = %1$s",
+                this.i("[RouterProcessor]   [RouterClass]   [process]   [IOException] = %1$s",
                     e.getMessage());
                 return true;
             }
+        }
+        // RouterManagerClass
+        try {
+            new RouterManagerClass(this.targetModuleName, this.routerClassHashMap)
+                .javaFile()
+                .writeTo(this.filer);
+        } catch (IOException e) {
+            this.i("[RouterProcessor]   [RouterManagerClass]   [process]   [IOException] = %1$s",
+                e.getMessage());
+            return true;
         }
         return true;
     }
@@ -101,30 +112,30 @@ public class RouterProcessor extends BaseProcessor {
 
     private void processRouterHost(RoundEnvironment roundEnv) throws IllegalArgumentException {
         for (Element element : roundEnv.getElementsAnnotatedWith(RouterHost.class)) {
-            AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
+            RouterClass routerClass = this.getAnnotatedClass(element);
             RouterHostAnnotation routerHostAnnotation = new RouterHostAnnotation(element);
-            annotatedClass.addRouterHostAnnotation(routerHostAnnotation);
+            routerClass.addRouterHostAnnotation(routerHostAnnotation);
         }
     }
 
 
     private void processRouterField(RoundEnvironment roundEnv) throws IllegalArgumentException {
         for (Element element : roundEnv.getElementsAnnotatedWith(RouterField.class)) {
-            AnnotatedClass annotatedClass = this.getAnnotatedClass(element);
+            RouterClass routerClass = this.getAnnotatedClass(element);
             RouterFieldAnnotation routerFieldAnnotation = new RouterFieldAnnotation(element);
-            annotatedClass.addRouterFieldAnnotation(routerFieldAnnotation);
+            routerClass.addRouterFieldAnnotation(routerFieldAnnotation);
         }
     }
 
 
-    private AnnotatedClass getAnnotatedClass(Element element) {
+    private RouterClass getAnnotatedClass(Element element) {
         final String fullClassName = this.getAnnotatedClassFullName(element);
-        AnnotatedClass annotatedClass = this.annotatedClassHashMap.get(fullClassName);
-        if (annotatedClass == null) {
-            annotatedClass = new AnnotatedClass(element, this.elements, fullClassName);
-            annotatedClassHashMap.put(fullClassName, annotatedClass);
+        RouterClass routerClass = this.routerClassHashMap.get(fullClassName);
+        if (routerClass == null) {
+            routerClass = new RouterClass(element, this.elements, fullClassName);
+            this.routerClassHashMap.put(fullClassName, routerClass);
         }
-        return annotatedClass;
+        return routerClass;
     }
 
 }

@@ -1,7 +1,6 @@
 package com.camnter.smartrounter.complier.core;
 
 import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeName;
 import javax.lang.model.element.Element;
@@ -13,7 +12,7 @@ import javax.lang.model.util.Elements;
  * @author CaMnter
  */
 
-public abstract class BaseAnnotatedClass {
+public abstract class BaseAnnotatedClass implements BaseAnnotatedInterface {
 
     private static final ClassName ANDROID_SUPPORT_ANNOTATION_NONNULL = ClassName.get(
         "android.support.annotation",
@@ -23,6 +22,7 @@ public abstract class BaseAnnotatedClass {
     private final Elements elements;
     private final Element annotatedElement;
     private final String fullClassName;
+    private final String simpleName;
 
     protected final TypeMirror annotatedElementType;
     protected final TypeName annotatedElementTypeName;
@@ -36,19 +36,12 @@ public abstract class BaseAnnotatedClass {
         this.elements = elements;
         this.annotatedElement = annotatedElement;
         this.fullClassName = fullClassName;
+        this.simpleName = this.annotatedElement.getSimpleName().toString();
         this.annotatedElementType = this.annotatedElement.asType();
         this.annotatedElementTypeName = TypeName.get(this.annotatedElementType);
         this.annotatedElementSimpleName = this.annotatedElement.getSimpleName().toString();
         this.annotatedElementPackageName = this.getPackageName();
     }
-
-
-    /**
-     * get the JavaFile
-     *
-     * @return JavaFile
-     */
-    public abstract JavaFile javaFile();
 
 
     /**
@@ -62,6 +55,11 @@ public abstract class BaseAnnotatedClass {
         return ParameterSpec.builder(type, name, modifiers)
             .addAnnotation(ANDROID_SUPPORT_ANNOTATION_NONNULL)
             .build();
+    }
+
+
+    public String getSimpleName() {
+        return this.simpleName;
     }
 
 
