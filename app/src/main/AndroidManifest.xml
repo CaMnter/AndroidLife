@@ -252,6 +252,12 @@
         <activity
             android:name=".ui.activity.smartsave.SmartSaveExampleActivity"
             android:label="SmartSaveExampleActivity"/>
+        <activity
+            android:name=".ui.activity.smartrouter.SmartRouterActivity"
+            android:label="SmartRouterActivity"/>
+        <activity
+            android:name=".ui.activity.smartrouter.SmartRouterSimpleActivity"
+            android:label="SmartRouterActivity"/>
 
         <service android:name=".component.service.DownloadService"/>
         <service android:name=".component.service.DownloadIntentService"/>

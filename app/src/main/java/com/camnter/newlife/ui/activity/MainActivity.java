@@ -44,6 +44,7 @@ import com.camnter.newlife.ui.activity.lrucache.LruCacheActivity;
 import com.camnter.newlife.ui.activity.rxjava.RxJavaAsyncActivity;
 import com.camnter.newlife.ui.activity.rxjava.RxJavaMapActivity;
 import com.camnter.newlife.ui.activity.singletask.LaunchModeActivity;
+import com.camnter.newlife.ui.activity.smartrouter.SmartRouterActivity;
 import com.camnter.newlife.ui.activity.smartsave.SmartSaveExampleActivity;
 import com.camnter.newlife.ui.activity.tabalphaview.TabAlphaViewActivity;
 import com.camnter.newlife.ui.activity.util.DateUtilActivity;
@@ -80,7 +81,8 @@ public class MainActivity extends BaseAppCompatActivity
      *
      * @return layout id
      */
-    @Override protected int getLayoutId() {
+    @Override
+    protected int getLayoutId() {
         return R.layout.activity_main;
     }
 
@@ -90,7 +92,8 @@ public class MainActivity extends BaseAppCompatActivity
      *
      * @param savedInstanceState savedInstanceState
      */
-    @Override protected void initViews(Bundle savedInstanceState) {
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
         // SmartSave
         SmartSave.save(this);
         this.menuRecyclerView = this.findView(R.id.menu_list);
@@ -112,7 +115,8 @@ public class MainActivity extends BaseAppCompatActivity
     /**
      * Initialize the View of the listener
      */
-    @Override protected void initListeners() {
+    @Override
+    protected void initListeners() {
         this.adapter.setOnItemClickListener((view, i) -> {
             Class c = MainActivity.this.classes.get(i);
             MainActivity.this.startActivity(new Intent(MainActivity.this, c));
@@ -123,7 +127,8 @@ public class MainActivity extends BaseAppCompatActivity
     /**
      * Initialize the Activity data
      */
-    @Override protected void initData() {
+    @Override
+    protected void initData() {
         this.classes = new ArrayList<>();
         this.setListData();
         this.adapter = new MenuRecyclerViewAdapter();
@@ -224,6 +229,7 @@ public class MainActivity extends BaseAppCompatActivity
         this.classes.add(RatingRankActivity.class);
         this.classes.add(TabAlphaViewActivity.class);
         this.classes.add(SmartSaveExampleActivity.class);
+        this.classes.add(SmartRouterActivity.class);
     }
 
 
@@ -233,12 +239,14 @@ public class MainActivity extends BaseAppCompatActivity
         final int drakeetColor = 0xff5B64AF;
 
 
-        @Override public int[] getItemLayouts() {
+        @Override
+        public int[] getItemLayouts() {
             return new int[] { R.layout.item_main };
         }
 
 
-        @SuppressLint("SetTextI18n") @Override
+        @SuppressLint("SetTextI18n")
+        @Override
         public void onBindRecycleViewHolder(EasyRecyclerViewHolder easyRecyclerViewHolder, int i) {
             Class c = (Class) this.getList().get(i);
             if (c == null) return;
@@ -264,7 +272,8 @@ public class MainActivity extends BaseAppCompatActivity
         }
 
 
-        @Override public int getRecycleViewItemType(int i) {
+        @Override
+        public int getRecycleViewItemType(int i) {
             return 0;
         }
     }
@@ -294,7 +303,8 @@ public class MainActivity extends BaseAppCompatActivity
     }
 
 
-    @Override protected void onDestroy() {
+    @Override
+    protected void onDestroy() {
         this.screenshotsListener.stop();
         super.onDestroy();
     }
@@ -306,7 +316,8 @@ public class MainActivity extends BaseAppCompatActivity
     }
 
 
-    @Override public void onPermissionsDenied(int requestCode, List<String> perms) {
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
         this.showToast("onPermissionsDenied:" + requestCode + ":" + perms.size());
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             new AppSettingsDialog.Builder(this).build().show();
