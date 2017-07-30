@@ -72,7 +72,7 @@ public class SmartRouterSimpleActivity extends BaseAppCompatActivity {
     protected void initViews(Bundle savedInstanceState) {
         SmartRouters.running(this);
         ((TextView) this.findViewById(R.id.smart_router_simple_example_char_text)).setText(
-            this.exampleChar);
+            String.valueOf(this.exampleChar));
     }
 
 

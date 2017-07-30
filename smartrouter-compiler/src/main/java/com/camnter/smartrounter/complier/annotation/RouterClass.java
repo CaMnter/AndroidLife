@@ -199,7 +199,7 @@ public class RouterClass extends BaseAnnotatedClass {
                 .toString();
             for (String host : routerHostAnnotation.getHost()) {
                 registerMethodBuilder.addCode(
-                    "routerMapping.put($T.getScheme() + $S, $L.class);\n",
+                    "routerMapping.put($T.getScheme() + \"://\" + $S, $L.class);\n",
                     SMART_ROUTERS,
                     host,
                     activitySimpleName

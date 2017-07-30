@@ -21,6 +21,8 @@ public final class SmartRouters {
     private static final Map<String, Router> ROUTER_MAP = new HashMap<>();
     private static final Map<String, Class<? extends Activity>> ACTIVITY_CLASS_MAP
         = new HashMap<>();
+    private static boolean LOADING_HISTORY_MARK = false;
+    private static Class MANAGER_CLASS;
     private static String SCHEME = "routers";
     private static String HOST = "";
     private static Filter FILTER;
@@ -78,12 +80,26 @@ public final class SmartRouters {
     }
 
 
+    @SuppressWarnings("unchecked")
     private static Class<? extends Activity> getActivityClass(@NonNull final String url,
                                                               @NonNull final Uri uri) {
         final int index = url.indexOf('?');
         // scheme:host?
         final String schemeAndHost = index > 0 ? url.substring(0, index) : url;
-        Class<? extends Activity> clazz = ACTIVITY_CLASS_MAP.get(schemeAndHost);
+
+        // check loading history
+        if (!LOADING_HISTORY_MARK) {
+            if (MANAGER_CLASS == null) {
+                try {
+                    MANAGER_CLASS = Class.forName(
+                        "com.camnter.smartrouter.MainRouterManagerClass");
+                    LOADING_HISTORY_MARK = true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        final Class<? extends Activity> clazz = ACTIVITY_CLASS_MAP.get(schemeAndHost);
         if (clazz != null) {
             return clazz;
         }
@@ -111,7 +127,7 @@ public final class SmartRouters {
         final Uri uri = Uri.parse(url);
         Class clazz = getActivityClass(url, uri);
         if (clazz == null) {
-            new Throwable(url + "can't start").printStackTrace();
+            new Throwable(url + " can't start").printStackTrace();
             return false;
         }
 

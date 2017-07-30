@@ -1,6 +1,7 @@
 package com.camnter.smartrounter.complier.annotation;
 
 import com.camnter.smartrounter.complier.core.BaseAnnotatedInterface;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -42,6 +43,13 @@ public class RouterManagerClass implements BaseAnnotatedInterface {
             .addModifiers(Modifier.PUBLIC)
             .addJavadoc("Generated code from SmartRouter. Do not modify !\n\n")
             .addJavadoc("@author CaMnter\n")
+            /*
+             * static {
+             * -   loadingClass;
+             * -   ...
+             * }
+             */
+            .addStaticBlock(this.staticBlockBuilder().build())
             // public void loadingClass()
             .addMethods(this.loadingClassMethod())
             .build();
@@ -51,29 +59,44 @@ public class RouterManagerClass implements BaseAnnotatedInterface {
 
 
     /**
+     * static {
+     * -   loadingClass;
+     * -   ...
+     * }
+     *
+     * @return CodeBlock.Builder
+     */
+    private CodeBlock.Builder staticBlockBuilder() {
+        CodeBlock.Builder staticBlockBuilder = CodeBlock.builder();
+        for (RouterClass routerClass : this.routerClassHashMap.values()) {
+            staticBlockBuilder.add(
+                "loading" + routerClass.getSimpleName() + "SmartRouter" + "();\n");
+        }
+        return staticBlockBuilder;
+    }
+
+
+    /**
      * public void loadingClass()
      *
      * @return List<MethodSpec>
      */
     private List<MethodSpec> loadingClassMethod() {
-
         final List<MethodSpec> loadingClassMethods = new ArrayList<>();
-
         for (RouterClass routerClass : this.routerClassHashMap.values()) {
             final MethodSpec.Builder loadingClassMethodBuilder = MethodSpec
-                .methodBuilder("loading" + routerClass.getSimpleName())
-                .addModifiers(Modifier.PUBLIC)
+                .methodBuilder("loading" + routerClass.getSimpleName() + "SmartRouter")
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .returns(TypeName.VOID)
                 .addCode("try {\n")
-                .addCode("    Class.forName($S);\n", routerClass.getFullClassName())
+                .addCode("    Class.forName($S);\n",
+                    routerClass.getFullClassName() + "_SmartRouter")
                 .addCode("} catch (ClassNotFoundException e) {\n")
-                .addCode("    // Nothing to do\n")
+                .addCode("    e.printStackTrace();\n")
                 .addCode("}\n");
             loadingClassMethods.add(loadingClassMethodBuilder.build());
         }
-
         return loadingClassMethods;
-
     }
 
 }
