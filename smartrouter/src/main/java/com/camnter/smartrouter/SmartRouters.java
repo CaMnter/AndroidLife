@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.camnter.smartrouter.core.Filter;
 import com.camnter.smartrouter.core.Router;
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,7 +66,9 @@ public final class SmartRouters {
             Router router = ROUTER_MAP.get(targetFullName);
             if (router == null) {
                 Class<?> routerClass = Class.forName(targetFullName + "_SmartRouter");
-                router = (Router) routerClass.newInstance();
+                Constructor constructor = routerClass.getDeclaredConstructor(String.class);
+                constructor.setAccessible(true);
+                router = (Router) constructor.newInstance("");
                 ROUTER_MAP.put(targetFullName, router);
             }
             router.setFieldValue(activity);
