@@ -21,6 +21,8 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 
 import static com.camnter.smartrounter.complier.RouterType.ANDROID_INTENT;
+import static com.camnter.smartrounter.complier.RouterType.ANDROID_TEXT_UTILS;
+import static com.camnter.smartrounter.complier.RouterType.ANDROID_URI;
 import static com.camnter.smartrounter.complier.RouterType.BOOLEAN;
 import static com.camnter.smartrounter.complier.RouterType.BOXED_BOOLEAN;
 import static com.camnter.smartrounter.complier.RouterType.BOXED_BYTE;
@@ -35,6 +37,13 @@ import static com.camnter.smartrounter.complier.RouterType.CHAR;
 import static com.camnter.smartrounter.complier.RouterType.DOUBLE;
 import static com.camnter.smartrounter.complier.RouterType.FLOAT;
 import static com.camnter.smartrounter.complier.RouterType.INT;
+import static com.camnter.smartrounter.complier.RouterType.JAVA_BOXED_BOOLEAN;
+import static com.camnter.smartrounter.complier.RouterType.JAVA_BOXED_BYTE;
+import static com.camnter.smartrounter.complier.RouterType.JAVA_BOXED_DOUBLE;
+import static com.camnter.smartrounter.complier.RouterType.JAVA_BOXED_FLOAT;
+import static com.camnter.smartrounter.complier.RouterType.JAVA_BOXED_INT;
+import static com.camnter.smartrounter.complier.RouterType.JAVA_BOXED_LONG;
+import static com.camnter.smartrounter.complier.RouterType.JAVA_BOXED_SHORT;
 import static com.camnter.smartrounter.complier.RouterType.LONG;
 import static com.camnter.smartrounter.complier.RouterType.SHORT;
 import static com.camnter.smartrounter.complier.RouterType.SMART_ROUTERS;
@@ -237,55 +246,133 @@ public class RouterClass extends BaseAnnotatedClass {
             setFieldValueMethodBuilder.addCode(
                 CodeBlock.of("final $T intent = activity.getIntent();\n", ANDROID_INTENT)
             );
+            setFieldValueMethodBuilder.addCode(
+                CodeBlock.of("final $T uri = intent.getData();\n", ANDROID_URI)
+            );
+            setFieldValueMethodBuilder.addCode(
+                CodeBlock.of("if (uri == null) return;\n\n")
+            );
         }
+
+        final List<CodeBlock> codeBlocks = new ArrayList<>();
         for (RouterFieldAnnotation routerFieldAnnotation : this.routerFieldAnnotationList) {
             final String fieldTypeString = routerFieldAnnotation.getFieldType().toString();
             final String fieldName = routerFieldAnnotation.getFieldName().toString();
-            CodeBlock codeBlock = null;
+            final String fieldValue = routerFieldAnnotation.getFieldValue();
+            codeBlocks.clear();
             switch (fieldTypeString) {
                 case CHAR:
                 case BOXED_CHAR:
-                    codeBlock = CodeBlock.of("intent.getCharExtra($S, (char) 0);\n", fieldName);
+                    final String uriParameterName = "uri" +
+                        fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                    codeBlocks.add(CodeBlock.of(
+                        "final String $L = uri.getQueryParameter($S);\n",
+                        uriParameterName,
+                        fieldValue
+                    ));
+                    codeBlocks.add(CodeBlock.of(
+                        "if (!$T.isEmpty($L)) {\n",
+                        ANDROID_TEXT_UTILS,
+                        uriParameterName
+                    ));
+                    codeBlocks.add(CodeBlock.of(
+                        "    activity.$1L = $2L.charAt(0);\n",
+                        fieldName,
+                        uriParameterName
+                    ));
+                    codeBlocks.add(CodeBlock.of("}\n"));
                     break;
                 case BYTE:
                 case BOXED_BYTE:
-                    codeBlock = CodeBlock.of("intent.getByteExtra($S, (byte) 0);\n", fieldName);
+                    codeBlocks.addAll(
+                        this.getFieldValueCodeBlock(JAVA_BOXED_BYTE, fieldName, fieldValue)
+                    );
                     break;
                 case SHORT:
                 case BOXED_SHORT:
-                    codeBlock = CodeBlock.of("intent.getShortExtra($S, (short) 0);\n", fieldName);
+                    codeBlocks.addAll(
+                        this.getFieldValueCodeBlock(JAVA_BOXED_SHORT, fieldName, fieldValue)
+                    );
                     break;
                 case INT:
                 case BOXED_INT:
-                    codeBlock = CodeBlock.of("intent.getIntExtra($S, 0);\n", fieldName);
+                    codeBlocks.addAll(
+                        this.getFieldValueCodeBlock(JAVA_BOXED_INT, fieldName, fieldValue)
+                    );
                     break;
                 case FLOAT:
                 case BOXED_FLOAT:
-                    codeBlock = CodeBlock.of("intent.getFloatExtra($S, 0f);\n", fieldName);
+                    codeBlocks.addAll(
+                        this.getFieldValueCodeBlock(JAVA_BOXED_FLOAT, fieldName, fieldValue)
+                    );
                     break;
                 case DOUBLE:
                 case BOXED_DOUBLE:
-                    codeBlock = CodeBlock.of("intent.getDoubleExtra($S, 0d);\n", fieldName);
+                    codeBlocks.addAll(
+                        this.getFieldValueCodeBlock(JAVA_BOXED_DOUBLE, fieldName, fieldValue)
+                    );
                     break;
                 case LONG:
                 case BOXED_LONG:
-                    codeBlock = CodeBlock.of("intent.getLongExtra($S, 0L);\n", fieldName);
+                    codeBlocks.addAll(
+                        this.getFieldValueCodeBlock(JAVA_BOXED_LONG, fieldName, fieldValue)
+                    );
                     break;
                 case BOOLEAN:
                 case BOXED_BOOLEAN:
-                    codeBlock = CodeBlock.of("intent.getBooleanExtra($S, false);\n", fieldName);
+                    codeBlocks.addAll(
+                        this.getFieldValueCodeBlock(JAVA_BOXED_BOOLEAN, fieldName, fieldValue)
+                    );
                     break;
                 case STRING:
-                    codeBlock = CodeBlock.of("intent.getStringExtra($S);\n", fieldName);
+                    codeBlocks.add(CodeBlock.of(
+                        "activity.$L = uri.getQueryParameter($S);\n",
+                        fieldName,
+                        fieldValue
+                    ));
                     break;
             }
-            if (codeBlock == null) {
+            if (codeBlocks.isEmpty()) {
                 continue;
             }
-            setFieldValueMethodBuilder.addCode(codeBlock);
+            for (CodeBlock block : codeBlocks) {
+                setFieldValueMethodBuilder.addCode(block);
+            }
         }
 
         return setFieldValueMethodBuilder;
+    }
+
+
+    /**
+     * Byte，Short, Integer, Float, Double, Long, Boolean
+     *
+     * try {
+     * -   activity.fieldName = $T.valueOf(uri.getQueryParameter("fieldValue"));
+     * } catch (Exception e) {
+     * -   // ignore
+     * }
+     *
+     * @param className className
+     * @param fieldName fieldName
+     * @param fieldValue fieldValue
+     * @return List<CodeBlock>
+     */
+    private List<CodeBlock> getFieldValueCodeBlock(ClassName className,
+                                                   String fieldName,
+                                                   String fieldValue) {
+        final List<CodeBlock> codeBlocks = new ArrayList<>();
+        codeBlocks.add(CodeBlock.of("try {\n"));
+        codeBlocks.add(CodeBlock.of(
+            "    activity.$L = $T.valueOf(uri.getQueryParameter($S));\n",
+            fieldName,
+            className,
+            fieldValue
+        ));
+        codeBlocks.add(CodeBlock.of("} catch (Exception e) {\n"));
+        codeBlocks.add(CodeBlock.of("    // ignore\n"));
+        codeBlocks.add(CodeBlock.of("}\n"));
+        return codeBlocks;
     }
 
 

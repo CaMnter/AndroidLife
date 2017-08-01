@@ -14,8 +14,19 @@ public interface RouterType {
     ClassName BASE_ACTIVITY_ROUTER = ClassName.get("com.camnter.smartrouter", "BaseActivityRouter");
 
     // Android
+    ClassName ANDROID_URI = ClassName.get("android.net", "Uri");
     ClassName ANDROID_INTENT = ClassName.get("android.content", "Intent");
     ClassName ANDROID_ACTIVITY = ClassName.get("android.app", "Activity");
+    ClassName ANDROID_TEXT_UTILS = ClassName.get("android.text", "TextUtils");
+
+    // Java
+    ClassName JAVA_BOXED_BYTE = ClassName.get("java.lang", "Byte");
+    ClassName JAVA_BOXED_SHORT = ClassName.get("java.lang", "Short");
+    ClassName JAVA_BOXED_INT = ClassName.get("java.lang", "Integer");
+    ClassName JAVA_BOXED_FLOAT = ClassName.get("java.lang", "Float");
+    ClassName JAVA_BOXED_DOUBLE = ClassName.get("java.lang", "Double");
+    ClassName JAVA_BOXED_LONG = ClassName.get("java.lang", "Long");
+    ClassName JAVA_BOXED_BOOLEAN = ClassName.get("java.lang", "Boolean");
 
     String CHAR = "char";
     String BYTE = "byte";
