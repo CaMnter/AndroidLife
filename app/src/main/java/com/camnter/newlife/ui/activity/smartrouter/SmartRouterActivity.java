@@ -61,7 +61,27 @@ public class SmartRouterActivity extends BaseAppCompatActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.smart_router_simple:
-                SmartRouters.start(this,"routers://router-0x01");
+                SmartRouters.start(this,
+                    "routers://" +
+                        "router-0x01?" +
+                        "char=z&" +
+                        "byte=x&" +
+                        "short=2&" +
+                        "int=233&" +
+                        "float=233.233&" +
+                        "double=2333.2333&" +
+                        "long=2333&" +
+                        "boolean=true&" +
+                        "boxedCharacter=Z&" +
+                        "boxedByte=u&" +
+                        "boxedShort=3&" +
+                        "boxedInteger=1233&" +
+                        "boxedFloat=1233.233&" +
+                        "boxedDouble=12333.2333&" +
+                        "boxedLong=12333&" +
+                        "boxedBoolean=true&" +
+                        "boxedString=CaMnter"
+                );
                 break;
         }
     }

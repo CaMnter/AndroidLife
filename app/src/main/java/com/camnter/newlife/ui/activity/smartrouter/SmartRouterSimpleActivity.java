@@ -15,40 +15,40 @@ import com.camnter.smartrouter.annotation.RouterHost;
 @RouterHost("router-0x01")
 public class SmartRouterSimpleActivity extends BaseAppCompatActivity {
 
-    @RouterField("1")
+    @RouterField("char")
     char exampleChar;
-    @RouterField("2")
+    @RouterField("byte")
     byte exampleByte;
-    @RouterField("3")
+    @RouterField("short")
     short exampleShort;
-    @RouterField("2233")
+    @RouterField("int")
     int exampleInt;
-    @RouterField("22.331")
+    @RouterField("float")
     float exampleFloat;
-    @RouterField("22.332")
+    @RouterField("double")
     double exampleDouble;
-    @RouterField("2333")
+    @RouterField("long")
     long exampleLong;
-    @RouterField("true")
+    @RouterField("boolean")
     boolean exampleBoolean;
 
-    @RouterField("4")
+    @RouterField("boxedCharacter")
     Character exampleBoxedCharacter;
-    @RouterField("5")
+    @RouterField("boxedByte")
     Byte exampleBoxedByte;
-    @RouterField("6")
+    @RouterField("boxedShort")
     Short exampleBoxedShort;
-    @RouterField("12233")
+    @RouterField("boxedInteger")
     Integer exampleBoxedInteger;
-    @RouterField("122.331")
+    @RouterField("boxedFloat")
     Float exampleBoxedFloat;
-    @RouterField("122.332")
+    @RouterField("boxedDouble")
     Double exampleBoxedDouble;
-    @RouterField("12333")
+    @RouterField("boxedLong")
     Long exampleBoxedLong;
-    @RouterField("true")
+    @RouterField("boxedBoolean")
     Boolean exampleBoxedBoolean;
-    @RouterField("CaMnter")
+    @RouterField("boxedString")
     String exampleBoxedString;
 
 
@@ -71,8 +71,58 @@ public class SmartRouterSimpleActivity extends BaseAppCompatActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         SmartRouters.running(this);
-        ((TextView) this.findViewById(R.id.smart_router_simple_example_char_text)).setText(
-            String.valueOf(this.exampleChar));
+        String stringBuilder = "exampleChar = " +
+            String.valueOf(this.exampleChar) +
+            "\n" +
+            "exampleByte = " +
+            String.valueOf(this.exampleByte) +
+            "\n" +
+            "exampleShort = " +
+            String.valueOf(this.exampleShort) +
+            "\n" +
+            "exampleInt = " +
+            String.valueOf(this.exampleInt) +
+            "\n" +
+            "exampleFloat = " +
+            String.valueOf(this.exampleFloat) +
+            "\n" +
+            "exampleDouble = " +
+            String.valueOf(this.exampleDouble) +
+            "\n" +
+            "exampleLong = " +
+            String.valueOf(this.exampleLong) +
+            "\n" +
+            "exampleBoolean = " +
+            String.valueOf(this.exampleBoolean) +
+            "\n" +
+            "exampleBoxedCharacter = " +
+            String.valueOf(this.exampleBoxedCharacter) +
+            "\n" +
+            "exampleBoxedByte = " +
+            String.valueOf(this.exampleBoxedByte) +
+            "\n" +
+            "exampleBoxedShort = " +
+            String.valueOf(this.exampleBoxedShort) +
+            "\n" +
+            "exampleBoxedInteger = " +
+            String.valueOf(this.exampleBoxedInteger) +
+            "\n" +
+            "exampleBoxedFloat = " +
+            String.valueOf(this.exampleBoxedFloat) +
+            "\n" +
+            "exampleBoxedDouble = " +
+            String.valueOf(this.exampleBoxedDouble) +
+            "\n" +
+            "exampleBoxedLong = " +
+            String.valueOf(this.exampleBoxedLong) +
+            "\n" +
+            "exampleBoxedBoolean = " +
+            String.valueOf(this.exampleBoxedBoolean) +
+            "\n" +
+            "exampleBoxedString = " +
+            String.valueOf(this.exampleBoxedString);
+        ((TextView) this.findViewById(R.id.smart_router_simple_example_char_text))
+            .setText(stringBuilder);
     }
 
 
