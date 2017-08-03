@@ -162,8 +162,9 @@ public class RouterClass extends BaseAnnotatedClass {
     private MethodSpec.Builder constructorBuilder() {
         return
             MethodSpec.constructorBuilder()
+                .addModifiers(Modifier.PUBLIC)
                 .addParameter(
-                    this.createNonNullParameter(
+                    createNonNullParameter(
                         TypeName.get(String.class),
                         "host",
                         Modifier.FINAL
@@ -187,7 +188,7 @@ public class RouterClass extends BaseAnnotatedClass {
             .addModifiers(Modifier.PUBLIC)
             .returns(TypeName.VOID)
             .addParameter(
-                this.createNonNullParameter(
+                createNonNullParameter(
                     ParameterizedTypeName.get(
                         ClassName.get(Map.class),
                         ClassName.get(String.class),
@@ -234,7 +235,7 @@ public class RouterClass extends BaseAnnotatedClass {
             .addModifiers(Modifier.PUBLIC)
             .returns(TypeName.VOID)
             .addParameter(
-                this.createNonNullParameter(
+                createNonNullParameter(
                     this.annotatedElementTypeName,
                     "activity",
                     Modifier.FINAL
@@ -423,7 +424,7 @@ public class RouterClass extends BaseAnnotatedClass {
                 case BOXED_BOOLEAN:
                 case STRING:
                     putMethodBuilder.addParameter(
-                        this.createNonNullParameter(
+                        createNonNullParameter(
                             fieldTypeName,
                             "value",
                             Modifier.FINAL

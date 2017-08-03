@@ -51,7 +51,7 @@ public abstract class BaseAnnotatedClass implements BaseAnnotatedInterface {
      * @param name String
      * @param modifiers Modifier...
      */
-    protected ParameterSpec createNonNullParameter(TypeName type, String name, Modifier... modifiers) {
+    public static ParameterSpec createNonNullParameter(TypeName type, String name, Modifier... modifiers) {
         return ParameterSpec.builder(type, name, modifiers)
             .addAnnotation(ANDROID_SUPPORT_ANNOTATION_NONNULL)
             .build();
@@ -68,7 +68,7 @@ public abstract class BaseAnnotatedClass implements BaseAnnotatedInterface {
     }
 
 
-    protected String getPackageName() {
+    public String getPackageName() {
         return
             this.elements
                 .getPackageOf(this.annotatedElement)

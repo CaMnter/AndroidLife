@@ -1,6 +1,7 @@
 package com.camnter.smartrounter.complier.annotation;
 
 import com.camnter.smartrounter.complier.core.BaseAnnotatedInterface;
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.lang.model.element.Modifier;
+
+import static com.camnter.smartrounter.complier.core.BaseAnnotatedClass.createNonNullParameter;
 
 /**
  * @author CaMnter
@@ -50,7 +53,9 @@ public class RouterManagerClass implements BaseAnnotatedInterface {
              * }
              */
             .addStaticBlock(this.staticBlockBuilder().build())
-            // public void loadingClass()
+            // public static SmartRouter getSmartRouter(@NonNull final String host)
+            .addMethods(this.getSmartRouterMethod())
+            // public static void loadingClass()
             .addMethods(this.loadingClassMethod())
             .build();
 
@@ -77,7 +82,37 @@ public class RouterManagerClass implements BaseAnnotatedInterface {
 
 
     /**
-     * public void loadingClass()
+     * public static SmartRouter getSmartRouter(@NonNull final String host) {
+     * -   return new SmartRouter(host);
+     * }
+     *
+     * @return List<MethodSpec>
+     */
+    public List<MethodSpec> getSmartRouterMethod() {
+        final List<MethodSpec> getSmartRouterMethods = new ArrayList<>();
+        for (RouterClass routerClass : this.routerClassHashMap.values()) {
+            final TypeName routerTypeName = ClassName.get(routerClass.getPackageName(),
+                routerClass.getSimpleName() + "_SmartRouter");
+            final MethodSpec.Builder getSmartRouterMethodBuilder = MethodSpec
+                .methodBuilder("get" + routerClass.getSimpleName() + "SmartRouter")
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                .returns(routerTypeName)
+                .addParameter(
+                    createNonNullParameter(
+                        ClassName.get(String.class),
+                        "host",
+                        Modifier.FINAL
+                    )
+                )
+                .addCode("    return new $T(host);\n", routerTypeName);
+            getSmartRouterMethods.add(getSmartRouterMethodBuilder.build());
+        }
+        return getSmartRouterMethods;
+    }
+
+
+    /**
+     * public static void loadingClass()
      *
      * @return List<MethodSpec>
      */
