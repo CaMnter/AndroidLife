@@ -258,6 +258,9 @@
         <activity
             android:name=".ui.activity.smartrouter.SmartRouterSampleActivity"
             android:label="SmartRouterActivity"/>
+        <activity
+            android:name=".ui.activity.smartrouter.CustomRouterActivity"
+            android:label="CustomRouterActivity"/>
 
         <service android:name=".component.service.DownloadService"/>
         <service android:name=".component.service.DownloadIntentService"/>

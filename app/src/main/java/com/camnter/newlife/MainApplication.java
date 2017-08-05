@@ -1,11 +1,18 @@
 package com.camnter.newlife;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import com.camnter.newlife.ui.activity.smartrouter.CustomRouterActivity;
 import com.camnter.smartrouter.SmartRouters;
+import com.camnter.smartrouter.core.Router;
 import com.camnter.utils.AssetsUtils;
 import dodola.hotfix.HotFix;
 import java.io.File;
+import java.util.Map;
 
 /**
  * Description：MainApplication
@@ -33,8 +40,28 @@ public class MainApplication extends Application {
         this.insertPatch();
     }
 
-    private void initRouter(){
+
+    private void initRouter() {
         SmartRouters.running(SCHEME);
+        SmartRouters.register(new Router<CustomRouterActivity>() {
+
+            @Override
+            public void register(@NonNull Map<String, Class<? extends Activity>> routerMapping) {
+                routerMapping.put(SmartRouters.getScheme() + "://" + "router-0x02",
+                    CustomRouterActivity.class);
+            }
+
+
+            @Override
+            public void setFieldValue(@NonNull CustomRouterActivity activity) {
+                final Intent intent = activity.getIntent();
+                final Uri uri = intent.getData();
+                if (uri == null) return;
+
+                activity.exampleBoxedString = uri.getQueryParameter("boxedString");
+            }
+
+        });
     }
 
 

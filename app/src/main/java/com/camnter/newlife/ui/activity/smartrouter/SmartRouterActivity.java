@@ -80,6 +80,35 @@ public class SmartRouterActivity extends BaseAppCompatActivity {
                         "boxedBoolean=true&" +
                         "boxedString=CaMnter"
                 );
+            } else if (CustomRouterActivity.class.getSimpleName().equals(className)) {
+                /*
+                 * In Application:
+                 *
+                 * SmartRouters.register(new Router<CustomRouterActivity>() {
+                 *
+                 *   @Override
+                 *   public void register(@NonNull Map<String, Class<? extends Activity>> routerMapping) {
+                 *       routerMapping.put(SmartRouters.getScheme() + "://" + "router-0x02",
+                 *           CustomRouterActivity.class);
+                 *   }
+                 *
+                 *
+                 *   @Override
+                 *   public void setFieldValue(@NonNull CustomRouterActivity activity) {
+                 *       final Intent intent = activity.getIntent();
+                 *       final Uri uri = intent.getData();
+                 *       if (uri == null) return;
+                 *
+                 *       activity.exampleBoxedString = uri.getQueryParameter("boxedString");
+                 *   }
+                 *
+                 * });
+                 */
+                SmartRouters.start(this,
+                    MainApplication.getScheme() + "://" +
+                        "router-0x02?" +
+                        "boxedString=CaMnter"
+                );
             }
         });
     }
@@ -92,6 +121,7 @@ public class SmartRouterActivity extends BaseAppCompatActivity {
     protected void initData() {
         this.classes = new ArrayList<>();
         this.classes.add(SmartRouterSampleActivity.class);
+        this.classes.add(CustomRouterActivity.class);
         this.adapter = new MenuRecyclerViewAdapter();
         this.adapter.setList(classes);
         this.recyclerView.setAdapter(adapter);
