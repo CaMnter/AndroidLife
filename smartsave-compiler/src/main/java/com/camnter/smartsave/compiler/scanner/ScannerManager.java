@@ -21,7 +21,6 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-import javax.tools.Diagnostic;
 
 /**
  * 编译阶段扫描指定注解所在 packageName 所属的的 资源 id（ R class 内的 ）
@@ -130,14 +129,14 @@ public final class ScannerManager {
         while (!entries.isEmpty()) {
             Map.Entry<QualifiedId, Id> entry = entries.removeFirst();
             QualifiedId qualifiedId = entry.getKey();
-            this.messager.printMessage(
-                Diagnostic.Kind.NOTE,
-                "[packageName] = " + qualifiedId.packageName +
-                    "   [fullName] = " + qualifiedId.enclosingElementName + "." +
-                    qualifiedId.elementSimpleName +
-                    "   [simpleName] = " + qualifiedId.elementSimpleName +
-                    "\n  [id] = " + qualifiedId.id
-            );
+            // this.messager.printMessage(
+            //     Diagnostic.Kind.NOTE,
+            //     "[packageName] = " + qualifiedId.packageName +
+            //         "   [fullName] = " + qualifiedId.enclosingElementName + "." +
+            //         qualifiedId.elementSimpleName +
+            //         "   [simpleName] = " + qualifiedId.elementSimpleName +
+            //         "\n  [id] = " + qualifiedId.id
+            // );
         }
 
     }
