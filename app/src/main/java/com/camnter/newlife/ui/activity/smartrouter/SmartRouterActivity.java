@@ -1,17 +1,30 @@
 package com.camnter.newlife.ui.activity.smartrouter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
+import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
+import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
+import com.camnter.easyrecyclerview.widget.decorator.EasyDividerItemDecoration;
 import com.camnter.newlife.MainApplication;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.smartrouter.SmartRouters;
+import java.util.ArrayList;
 
 /**
  * @author CaMnter
  */
 
-public class SmartRouterActivity extends BaseAppCompatActivity implements View.OnClickListener {
+public class SmartRouterActivity extends BaseAppCompatActivity {
+
+    protected ArrayList<Class> classes;
+    private MenuRecyclerViewAdapter adapter;
+
+    private EasyRecyclerView recyclerView;
+
 
     /**
      * Fill in layout id
@@ -31,7 +44,10 @@ public class SmartRouterActivity extends BaseAppCompatActivity implements View.O
      */
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        this.findViewById(R.id.smart_router_simple).setOnClickListener(this);
+        this.recyclerView = this.findView(R.id.recycler_view);
+        this.recyclerView.addItemDecoration(
+            new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST));
+
     }
 
 
@@ -40,28 +56,9 @@ public class SmartRouterActivity extends BaseAppCompatActivity implements View.O
      */
     @Override
     protected void initListeners() {
-
-    }
-
-
-    /**
-     * Initialize the Activity data
-     */
-    @Override
-    protected void initData() {
-
-    }
-
-
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.smart_router_simple:
+        this.adapter.setOnItemClickListener((view, i) -> {
+            final String className = classes.get(i).getSimpleName();
+            if (SmartRouterSampleActivity.class.getSimpleName().equals(className)) {
                 SmartRouters.start(this,
                     MainApplication.getScheme() + "://" +
                         "router-0x01?" +
@@ -83,7 +80,48 @@ public class SmartRouterActivity extends BaseAppCompatActivity implements View.O
                         "boxedBoolean=true&" +
                         "boxedString=CaMnter"
                 );
-                break;
+            }
+        });
+    }
+
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
+        this.classes = new ArrayList<>();
+        this.classes.add(SmartRouterSampleActivity.class);
+        this.adapter = new MenuRecyclerViewAdapter();
+        this.adapter.setList(classes);
+        this.recyclerView.setAdapter(adapter);
+    }
+
+
+    private class MenuRecyclerViewAdapter extends EasyRecyclerViewAdapter {
+
+        @Override
+        public int[] getItemLayouts() {
+            return new int[] { R.layout.item_main };
+        }
+
+
+        @SuppressLint("SetTextI18n")
+        @Override
+        public void onBindRecycleViewHolder(EasyRecyclerViewHolder easyRecyclerViewHolder, int i) {
+            Class c = (Class) this.getList().get(i);
+            if (c == null) return;
+            TextView content = easyRecyclerViewHolder.findViewById(R.id.main_item_tv);
+            TextView type = easyRecyclerViewHolder.findViewById(R.id.main_item_type);
+
+            content.setText(c.getSimpleName());
+            type.setVisibility(View.INVISIBLE);
+        }
+
+
+        @Override
+        public int getRecycleViewItemType(int i) {
+            return 0;
         }
     }
 

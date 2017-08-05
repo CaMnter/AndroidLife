@@ -13,7 +13,7 @@ import com.camnter.smartrouter.annotation.RouterHost;
  */
 
 @RouterHost("router-0x01")
-public class SmartRouterSimpleActivity extends BaseAppCompatActivity {
+public class SmartRouterSampleActivity extends BaseAppCompatActivity {
 
     @RouterField("char")
     char exampleChar;
@@ -59,7 +59,7 @@ public class SmartRouterSimpleActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_smart_router_simple;
+        return R.layout.activity_smart_router_sample;
     }
 
 
@@ -121,7 +121,7 @@ public class SmartRouterSimpleActivity extends BaseAppCompatActivity {
             "\n" +
             "exampleBoxedString = " +
             String.valueOf(this.exampleBoxedString);
-        ((TextView) this.findViewById(R.id.smart_router_simple_example_char_text))
+        ((TextView) this.findViewById(R.id.smart_router_sample_example_text))
             .setText(stringBuilder);
     }
 
