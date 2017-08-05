@@ -70,7 +70,7 @@ public class SmartRouterSimpleActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        SmartRouters.running(this);
+        SmartRouters.setFieldValue(this);
         String stringBuilder = "exampleChar = " +
             String.valueOf(this.exampleChar) +
             "\n" +

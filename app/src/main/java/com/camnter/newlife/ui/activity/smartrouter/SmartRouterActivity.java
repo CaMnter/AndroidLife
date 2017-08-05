@@ -2,6 +2,7 @@ package com.camnter.newlife.ui.activity.smartrouter;
 
 import android.os.Bundle;
 import android.view.View;
+import com.camnter.newlife.MainApplication;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.smartrouter.SmartRouters;
@@ -62,7 +63,7 @@ public class SmartRouterActivity extends BaseAppCompatActivity implements View.O
         switch (v.getId()) {
             case R.id.smart_router_simple:
                 SmartRouters.start(this,
-                    "routers://" +
+                    MainApplication.getScheme() + "://" +
                         "router-0x01?" +
                         "char=z&" +
                         "byte=x&" +

@@ -2,6 +2,7 @@ package com.camnter.newlife;
 
 import android.app.Application;
 import android.content.Context;
+import com.camnter.smartrouter.SmartRouters;
 import com.camnter.utils.AssetsUtils;
 import dodola.hotfix.HotFix;
 import java.io.File;
@@ -13,6 +14,8 @@ import java.io.File;
  */
 public class MainApplication extends Application {
 
+    private static final String SCHEME = "smart-routers";
+
     public static MainApplication instance;
 
 
@@ -21,11 +24,22 @@ public class MainApplication extends Application {
     }
 
 
-    @Override public void onCreate() {
+    @Override
+    public void onCreate() {
         instance = this;
         super.onCreate();
+        this.initRouter();
         this.insertPile();
         this.insertPatch();
+    }
+
+    private void initRouter(){
+        SmartRouters.running(SCHEME);
+    }
+
+
+    public static String getScheme() {
+        return SCHEME;
     }
 
 

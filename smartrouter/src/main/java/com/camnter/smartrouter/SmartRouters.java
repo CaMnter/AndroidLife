@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import com.camnter.smartrouter.core.Filter;
 import com.camnter.smartrouter.core.Router;
@@ -54,13 +55,27 @@ public final class SmartRouters {
     }
 
 
-    public static void setgetFilter(Filter getFilter) {
+    public static void setFilter(Filter getFilter) {
         FILTER = getFilter;
     }
 
 
+    public static void running(@Nullable final String scheme) {
+        SCHEME = scheme;
+        if (MANAGER_CLASS == null) {
+            try {
+                MANAGER_CLASS = Class.forName(
+                    "com.camnter.smartrouter.MainRouterManagerClass");
+                LOADING_HISTORY_MARK = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     @SuppressWarnings("unchecked")
-    public static void running(@NonNull final Activity activity) {
+    public static void setFieldValue(@NonNull final Activity activity) {
         final String targetFullName = activity.getClass().getName();
         try {
             Router router = ROUTER_MAP.get(targetFullName);
@@ -92,15 +107,7 @@ public final class SmartRouters {
 
         // check loading history
         if (!LOADING_HISTORY_MARK) {
-            if (MANAGER_CLASS == null) {
-                try {
-                    MANAGER_CLASS = Class.forName(
-                        "com.camnter.smartrouter.MainRouterManagerClass");
-                    LOADING_HISTORY_MARK = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            running(SCHEME);
         }
         final Class<? extends Activity> clazz = ACTIVITY_CLASS_MAP.get(schemeAndHost);
         if (clazz != null) {
