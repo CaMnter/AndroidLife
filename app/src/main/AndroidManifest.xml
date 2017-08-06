@@ -261,6 +261,36 @@
         <activity
             android:name=".ui.activity.smartrouter.CustomRouterActivity"
             android:label="CustomRouterActivity"/>
+        <activity
+            android:name="com.camnter.smartrouter.RouterCenterActivity"
+            android:label="RouterCenterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="router"
+                    android:scheme="smart-routers"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="smart-routers"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="smart-router"/>
+            </intent-filter>
+        </activity>
 
         <service android:name=".component.service.DownloadService"/>
         <service android:name=".component.service.DownloadIntentService"/>

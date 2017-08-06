@@ -21,6 +21,7 @@ import java.util.Map;
 public final class SmartRouters {
 
     private static final Map<String, Router> ROUTER_MAP = new HashMap<>();
+    private static final Map<Class<? extends Activity>, Router> REGISTER_MAP = new HashMap<>();
     private static final Map<String, Class<? extends Activity>> ACTIVITY_CLASS_MAP
         = new HashMap<>();
     private static boolean LOADING_HISTORY_MARK = false;

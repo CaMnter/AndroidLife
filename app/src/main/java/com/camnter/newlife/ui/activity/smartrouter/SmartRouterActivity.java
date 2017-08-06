@@ -1,6 +1,8 @@
 package com.camnter.newlife.ui.activity.smartrouter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -11,6 +13,7 @@ import com.camnter.easyrecyclerview.widget.decorator.EasyDividerItemDecoration;
 import com.camnter.newlife.MainApplication;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
+import com.camnter.smartrouter.RouterCenterActivity;
 import com.camnter.smartrouter.SmartRouters;
 import java.util.ArrayList;
 
@@ -109,6 +112,9 @@ public class SmartRouterActivity extends BaseAppCompatActivity {
                         "router-0x02?" +
                         "boxedString=CaMnter"
                 );
+            } else if (RouterCenterActivity.class.getSimpleName().equals(className)) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("smart-routers://router-0x02?boxedString=CaMnter")));
             }
         });
     }
@@ -122,6 +128,7 @@ public class SmartRouterActivity extends BaseAppCompatActivity {
         this.classes = new ArrayList<>();
         this.classes.add(SmartRouterSampleActivity.class);
         this.classes.add(CustomRouterActivity.class);
+        this.classes.add(RouterCenterActivity.class);
         this.adapter = new MenuRecyclerViewAdapter();
         this.adapter.setList(classes);
         this.recyclerView.setAdapter(adapter);
