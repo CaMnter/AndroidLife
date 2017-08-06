@@ -78,8 +78,9 @@ public final class SmartRouters {
     @SuppressWarnings("unchecked")
     public static void setFieldValue(@NonNull final Activity activity) {
         final String targetFullName = activity.getClass().getName();
+        Router router = ROUTER_MAP.get(targetFullName);
         try {
-            Router router = ROUTER_MAP.get(targetFullName);
+            // finding by _SmartRouter
             if (router == null) {
                 Class<?> routerClass = Class.forName(targetFullName + "_SmartRouter");
                 Constructor constructor = routerClass.getDeclaredConstructor(String.class);
@@ -89,12 +90,20 @@ public final class SmartRouters {
             }
             router.setFieldValue(activity);
         } catch (Exception e) {
+            // finding by register map
+            router = REGISTER_MAP.get(activity.getClass());
+            if (router != null) {
+                router.setFieldValue(activity);
+                return;
+            }
             new Throwable("[SmartRouters]   [running]   " + targetFullName, e).printStackTrace();
         }
     }
 
 
+    @SuppressWarnings("unchecked")
     public static void register(@NonNull final Router register) {
+        REGISTER_MAP.put(register.getTargetActivityClass(), register);
         register.register(ACTIVITY_CLASS_MAP);
     }
 
