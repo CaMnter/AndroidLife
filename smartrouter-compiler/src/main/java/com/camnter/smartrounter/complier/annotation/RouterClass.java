@@ -119,6 +119,7 @@ public class RouterClass extends BaseAnnotatedClass {
              * SmartRouter # putValue(final int value)
              */
             .addMethod(this.constructorBuilder().build())
+            .addMethod(this.getTargetActivityClassBuilder().build())
             .addMethod(this.registerMethodBuilder().build())
             .addMethod(this.setFieldValueMethodBuilder().build())
             .addMethods(this.putFieldMethodBuilder())
@@ -171,6 +172,31 @@ public class RouterClass extends BaseAnnotatedClass {
                     )
                 )
                 .addCode("super(host);\n");
+    }
+
+
+    /**
+     * SmartRouter # getTargetActivityClass()
+     *
+     * @return MethodSpec.Builder
+     */
+    private MethodSpec.Builder getTargetActivityClassBuilder() {
+        final TypeName activityTypeName = ClassName.get(this.getPackageName(),
+            this.getSimpleName());
+        // public Class<Activity> getTargetActivityClass()
+        return
+            MethodSpec.methodBuilder(
+                "getTargetActivityClass")
+                .addAnnotation(Override.class)
+                .addAnnotation(ANDROID_SUPPORT_ANNOTATION_NONNULL)
+                .addModifiers(Modifier.PUBLIC)
+                .returns(
+                    ParameterizedTypeName.get(
+                        ClassName.get(Class.class),
+                        activityTypeName
+                    )
+                )
+                .addCode("    return $T.class;\n", activityTypeName);
     }
 
 

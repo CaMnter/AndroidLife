@@ -14,4 +14,6 @@ public interface Router<A extends Activity> {
 
     void setFieldValue(@NonNull final A activity);
 
+    Class<A> getTargetActivityClass();
+
 }

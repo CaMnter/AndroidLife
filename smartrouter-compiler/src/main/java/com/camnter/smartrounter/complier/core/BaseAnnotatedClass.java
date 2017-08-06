@@ -14,7 +14,7 @@ import javax.lang.model.util.Elements;
 
 public abstract class BaseAnnotatedClass implements BaseAnnotatedInterface {
 
-    private static final ClassName ANDROID_SUPPORT_ANNOTATION_NONNULL = ClassName.get(
+    protected static final ClassName ANDROID_SUPPORT_ANNOTATION_NONNULL = ClassName.get(
         "android.support.annotation",
         "NonNull"
     );

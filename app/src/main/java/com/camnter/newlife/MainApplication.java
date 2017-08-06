@@ -61,6 +61,12 @@ public class MainApplication extends Application {
                 activity.exampleBoxedString = uri.getQueryParameter("boxedString");
             }
 
+
+            @Override
+            public Class<CustomRouterActivity> getTargetActivityClass() {
+                return CustomRouterActivity.class;
+            }
+
         });
     }
 
