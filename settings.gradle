@@ -1,4 +1,4 @@
-include ':app',
+include ':app', ':butterknife-8.6.0:butterknife-gradle-plugin',
 
         ':smartrouter',
         ':smartrouter-compiler',
