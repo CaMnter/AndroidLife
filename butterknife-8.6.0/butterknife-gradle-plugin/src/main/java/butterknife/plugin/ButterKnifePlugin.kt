@@ -9,7 +9,6 @@ import org.gradle.api.DomainObjectSet
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionContainer
-import java.butterknife.plugin.FinalRClassBuilder
 import java.io.File
 import kotlin.reflect.KClass
 
