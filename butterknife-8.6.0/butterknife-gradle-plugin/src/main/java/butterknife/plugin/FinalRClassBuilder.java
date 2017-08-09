@@ -1,4 +1,4 @@
-package java.butterknife.plugin;
+package butterknife.plugin;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
