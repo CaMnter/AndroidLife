@@ -1,4 +1,8 @@
-include ':app', ':butterknife-8.6.0:butterknife-gradle-plugin',
+include ':app',
+
+        ':arouter-api',
+        ':arouter-compiler',
+        ':arouter-annotation',
 
         ':smartrouter',
         ':smartrouter-compiler',
@@ -7,6 +11,7 @@ include ':app', ':butterknife-8.6.0:butterknife-gradle-plugin',
         ':butterknife-8.6.0:butterknife',
         ':butterknife-8.6.0:butterknife-annotations',
         ':butterknife-8.6.0:butterknife-compiler',
+        ':butterknife-8.6.0:butterknife-gradle-plugin',
 
         ':smartsave',
         ':smartsave-compiler',
