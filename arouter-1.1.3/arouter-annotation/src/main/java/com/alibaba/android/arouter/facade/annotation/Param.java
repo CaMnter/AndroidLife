@@ -12,6 +12,9 @@ import java.lang.annotation.Target;
  * @author Alex <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 2016/11/22 18:01
+ *
+ * 老版本的协议参数解析注解，已废弃
+ * 换成了 @Autowired 注解
  */
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.CLASS)

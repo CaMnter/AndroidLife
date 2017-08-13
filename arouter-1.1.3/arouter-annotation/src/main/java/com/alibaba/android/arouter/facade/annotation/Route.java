@@ -11,6 +11,9 @@ import java.lang.annotation.Target;
  * @author Alex <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 16/8/15 下午9:29
+ *
+ * 路由注解，表示这是一个路由，类注解
+ * 在 Fragment，Activity，Service，IProvider 的实现类都生效
  */
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.CLASS)
