@@ -1,8 +1,8 @@
 include ':app',
 
-        ':arouter-api',
-        ':arouter-compiler',
-        ':arouter-annotation',
+        ':arouter-1.1.3:arouter-api',
+        ':arouter-1.1.3:arouter-compiler',
+        ':arouter-1.1.3:arouter-annotation',
 
         ':smartrouter',
         ':smartrouter-compiler',
