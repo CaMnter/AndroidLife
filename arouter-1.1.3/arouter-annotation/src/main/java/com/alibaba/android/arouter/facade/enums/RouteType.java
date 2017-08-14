@@ -6,6 +6,16 @@ package com.alibaba.android.arouter.facade.enums;
  * @author Alex <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 16/8/23 22:33
+ *
+ * 枚举，路由的类型
+ * 可以是：
+ * Activity
+ * Service
+ * IProvider 实现类
+ * ContentProvider
+ * BoardCast
+ * Method
+ * Fragment
  */
 public enum RouteType {
     ACTIVITY(0, "android.app.Activity"),
@@ -49,6 +59,12 @@ public enum RouteType {
     }
 
 
+    /**
+     * 通过解析 class name 获取对应的 RouteType
+     *
+     * @param name class name
+     * @return RouteType
+     */
     public static RouteType parse(String name) {
         for (RouteType routeType : RouteType.values()) {
             if (routeType.getClassName().equals(name)) {

@@ -11,6 +11,17 @@ import javax.lang.model.element.Element;
  * @author Alex <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 16/8/24 09:45
+ *
+ * 路由的数据信息类
+ * 包含：
+ * RouteType     类型
+ * Element       注解元素
+ * Class<?>      注解元素 class
+ * path          路径
+ * group         组
+ * priority      优先级
+ * extra         额外数据
+ * paramsType    参数类型，key = name，value = TypeKind 内的枚举 int 值
  */
 public class RouteMeta {
     private RouteType type;         // Type of route
