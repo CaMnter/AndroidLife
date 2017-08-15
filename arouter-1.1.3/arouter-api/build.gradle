@@ -35,4 +35,6 @@ android {
 
 dependencies {
     provided rootProject.ext.denpendencies["support-v4"]
+    compile project(':arouter-1.1.3:arouter-annotation')
+    annotationProcessor project(':arouter-1.1.3:arouter-compiler')
 }
