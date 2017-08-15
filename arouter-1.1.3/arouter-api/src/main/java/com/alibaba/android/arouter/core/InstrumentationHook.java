@@ -17,6 +17,17 @@ import java.lang.reflect.Field;
  * @author Alex <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 2016/11/24 16:42
+ *
+ * 自定义了 Instrumentation 类，覆写了 newActivity 方法
+ * 除了，执行原 newActivity 的 cl.loadClass(className).newInstance() 外
+ *
+ * 仅仅为了拿到该 Activity 的实例，然后反射 field，获取 intent 内传过来的规定结构的 String[]
+ * 进行反射 field 赋值
+ *
+ * 即使是 private 的 field 也会被设置为 public，然后赋值
+ *
+ * 该类是一个 hook 类，之前版本被用来 hook 掉 ActivityThread 中的 field mInstrumentation
+ * 然后，在每次 Activity 被打开的时候，会自动反射 field 赋值
  */
 @Deprecated
 public class InstrumentationHook extends Instrumentation {
@@ -32,7 +43,15 @@ public class InstrumentationHook extends Instrumentation {
      * @param intent The Intent object that specified the activity class being
      * instantiated.
      * @return The newly instantiated Activity object.
+     *
+     * 覆写了父类的 newActivity 方法
+     * 同样也执行了父类中 newActivity 方法的 cl.loadClass(className).newInstance()
+     *
+     * 通过自动复制的通用 key ，从 intent 中获取 String[]，这里的每个 String 内容，都有 | 隔开
+     * | 左边是 该 Activity 的 field name，用于反射 和 从 intent extra 取出 field 需要的 value
+     * 最后给 field 赋值
      */
+    @Override
     public Activity newActivity(ClassLoader cl, String className,
                                 Intent intent)
         throws InstantiationException, IllegalAccessException,

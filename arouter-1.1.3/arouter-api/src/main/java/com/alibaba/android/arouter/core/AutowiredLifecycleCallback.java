@@ -13,6 +13,10 @@ import com.alibaba.android.arouter.launcher.ARouter;
  * @author zhilong <a href="mailto:zhilong.lzl@alibaba-inc.com">Contact me.</a>
  * @version 1.0
  * @since 2017/2/21 上午11:28
+ *
+ * 之前被废弃的注解 @Autowired 的生命周期
+ * 不过继承了 Application.ActivityLifecycleCallbacks
+ * 就意味着要在 Application 中进行 registerActivityLifecycleCallbacks
  */
 @Deprecated
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
