@@ -16,13 +16,32 @@ import static com.alibaba.android.arouter.utils.Consts.SUFFIX_AUTOWIRED;
  * @author zhilong <a href="mailto:zhilong.lzl@alibaba-inc.com">Contact me.</a>
  * @version 1.0
  * @since 2017/2/28 下午6:08
+ *
+ * 拦截器服务，实现了 AutowiredService 接口
+ * 作为一个固定的 拦截器服务，固定地址 /arouter/service/autowired
  */
 @Route(path = "/arouter/service/autowired")
 public class AutowiredServiceImpl implements AutowiredService {
+
+    /*
+     * LRU 缓存 实现 ISyringe 接口的 JavaPoet 生成类 和 类名
+     *
+     * 这里的类名是元素类名：比如 TestActivity，类名是 TestActvity
+     * 但是类是改元素的注入生成类，实现了 ISyringe 接口
+     * 即，TestActivity$$ARouter$$Autowired
+     */
     private LruCache<String, ISyringe> classCache;
+    // 缓存 实现 ISyringe 接口的 JavaPoet 生成类名
     private List<String> blackList;
 
 
+    /**
+     * 初始化方法
+     *
+     * 初始化缓存数据结构，其中 LRU 缓存大小为 66
+     *
+     * @param context context
+     */
     @Override
     public void init(Context context) {
         classCache = new LruCache<>(66);
@@ -30,6 +49,19 @@ public class AutowiredServiceImpl implements AutowiredService {
     }
 
 
+    /**
+     * 自动注入
+     *
+     * 先从类名缓存查看是否有
+     * 有的话，跳过
+     * 无，缓存到类名缓存，和 LRU 类名 与 类 的关系缓存内
+     *
+     * 这里的类名是元素类名：比如 TestActivity，类名是 TestActvity
+     * 但是类是改元素的注入生成类，实现了 ISyringe 接口
+     * 即，TestActivity$$ARouter$$Autowired
+     *
+     * @param instance the instance who need autowired.
+     */
     @Override
     public void autowire(Object instance) {
         String className = instance.getClass().getName();
