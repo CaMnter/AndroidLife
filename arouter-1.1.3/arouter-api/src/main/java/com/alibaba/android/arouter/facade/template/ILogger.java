@@ -8,6 +8,9 @@ import com.alibaba.android.arouter.utils.Consts;
  * @author 正纬 <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 16/5/16 下午5:39
+ *
+ * 定义 log 工具的方法
+ * 也提供自定义 log 功能
  */
 public interface ILogger {
 
