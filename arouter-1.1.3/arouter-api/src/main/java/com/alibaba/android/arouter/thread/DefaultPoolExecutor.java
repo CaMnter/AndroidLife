@@ -18,14 +18,19 @@ import java.util.concurrent.TimeUnit;
  * @author 正纬 <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 16/4/28 下午4:07
+ *
+ * ARouter 自定义线程池
  */
 public class DefaultPoolExecutor extends ThreadPoolExecutor {
-    //    Thread args
+    // CPU 核数
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+    // 初始化线程数
     private static final int INIT_THREAD_COUNT = CPU_COUNT + 1;
+    // 最大线程数
     private static final int MAX_THREAD_COUNT = 20;
+    // 线程
     private static final long SURPLUS_THREAD_LIFE = 30L;
-
+    // 线程数量超过核心线程数的时候，多余的空闲的线程在终止前等待任务的最大时间
     private static DefaultPoolExecutor instance;
 
 
@@ -53,10 +58,12 @@ public class DefaultPoolExecutor extends ThreadPoolExecutor {
 
 
     /*
-     *  线程执行结束，顺便看一下有么有什么乱七八糟的异常
+     * 线程执行结束，顺便看一下有么有什么乱七八糟的异常
      *
      * @param r the runnable that has completed
      * @param t the exception that caused termination, or null if
+     *
+     * 只是为了在线程结束后，打印日志
      */
     @Override
     protected void afterExecute(Runnable r, Throwable t) {

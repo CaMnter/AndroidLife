@@ -8,6 +8,8 @@ import java.util.Map;
  * @author zhilong <a href="mailto:zhilong.lzl@alibaba-inc.com">Contact me.</a>
  * @version 1.0
  * @since 2017/3/10 下午3:26
+ *
+ * 从 Apache 工具类拷贝来的部分代码
  */
 public class MapUtils {
     /**

@@ -10,6 +10,8 @@ import com.alibaba.android.arouter.facade.template.ILogger;
  * @author zhilong <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 2015-12-08 21:44:10
+ *
+ * ARouter 默认的 Logger
  */
 public class DefaultLogger implements ILogger {
 

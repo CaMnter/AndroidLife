@@ -27,6 +27,17 @@ import java.util.ArrayList;
  * @author Alex <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.1.0
  * @since 16/8/22 19:16
+ *
+ * RouteMeta 的 扩展类
+ *
+ * uri                      路由 Uri
+ * tag                      路由跳转过程中的 异常
+ * mBundle                  路由跳转传输的数据
+ * flags                    路由跳转过程中的 intent flag （ FLAG_ACTIVITY_* ）
+ * timeout                  路由超时时间
+ * provider                 除开的 Fragment 的 Postcard，其他属于 IProvider 的实现类都会设置上自己
+ * greenChannel             绿色通道，可以跳过所有拦截器
+ * serializationService     json service，object to json
  */
 public final class Postcard extends RouteMeta {
     // Base

@@ -11,9 +11,17 @@ import java.util.Map;
  * @author Alex <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 16/9/9 14:40
+ *
+ * Text 工具类
  */
 public class TextUtils {
 
+    /**
+     * 判断 CharSequence 空内容或者 空
+     *
+     * @param cs cs
+     * @return boolean
+     */
     public static boolean isEmpty(final CharSequence cs) {
         return cs == null || cs.length() == 0;
     }
@@ -21,6 +29,8 @@ public class TextUtils {
 
     /**
      * Print thread stack
+     *
+     * 打印 堆栈信息
      */
     public static String formatStackTrace(StackTraceElement[] stackTrace) {
         StringBuilder sb = new StringBuilder();
@@ -35,6 +45,15 @@ public class TextUtils {
     /**
      * Split query parameters
      *
+     * 从 Uri 中查找参数的键值对，返回一个 map
+     *
+     * 如果用 uri.getQueryParameter(String key) 的话，会很快就完成
+     * 但是会调用 N 次 getQueryParameter，一次 getQueryParameter 就得 while 一趟
+     * 就会有 N 次 while
+     * 这样会浪费性能
+     *
+     * 这里一次 while 拿到所有 key value，部分源码参考了 getQueryParameter
+     *
      * @param rawUri raw uri
      * @return map with params
      */
@@ -47,6 +66,17 @@ public class TextUtils {
 
         Map<String, String> paramMap = new LinkedHashMap<>();
         int start = 0;
+        /*
+         * 找到 & 的位置
+         * 找到 = 的位置
+         *
+         * 确定 end 标记，value 的结束
+         * 确定 separator 标记，key 的结束
+         *
+         * 拿到 key 和 value
+         *
+         * 一直循环下去，拿到全部 key value
+         */
         do {
             int next = query.indexOf('&', start);
             int end = (next == -1) ? query.length() : next;
@@ -74,6 +104,8 @@ public class TextUtils {
     /**
      * Split key with |
      *
+     * 拿到 | 左边的值
+     *
      * @param key raw key
      * @return left key
      */
@@ -89,6 +121,8 @@ public class TextUtils {
     /**
      * Split key with |
      *
+     * 拿到 | 右边的值
+     *
      * @param key raw key
      * @return right key
      */
@@ -99,4 +133,5 @@ public class TextUtils {
             return key;
         }
     }
+
 }
