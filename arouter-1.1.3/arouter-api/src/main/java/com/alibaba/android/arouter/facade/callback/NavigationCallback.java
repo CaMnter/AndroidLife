@@ -13,8 +13,8 @@ import com.alibaba.android.arouter.facade.Postcard;
  *
  * 在 _ARouter # navigation 进行路由跳转时的回调接口
  *
- * onFound          表示在 _ARouter # navigation 跳转过程中，找到了需要的 IProvider
- * onLost           表示在 _ARouter # navigation 跳转过程中，没找到了需要的 IProvider
+ * onFound          表示在 _ARouter # navigation 跳转过程中，找到了需要的 RouteMeta
+ * onLost           表示在 _ARouter # navigation 跳转过程中，没找到了需要的 RouteMeta
  * onArrival        表示在 _ARouter # navigation 跳转过程中，成功
  * onInterrupt      表示在 _ARouter # navigation 跳转过程中，被某拦截器拦截，发生中断
  */
