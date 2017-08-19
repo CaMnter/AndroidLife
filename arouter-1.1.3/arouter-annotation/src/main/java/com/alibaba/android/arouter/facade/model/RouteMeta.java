@@ -16,7 +16,7 @@ import javax.lang.model.element.Element;
  * 包含：
  * RouteType     类型
  * Element       注解元素
- * Class<?>      注解元素 class
+ * Class<?>      跳转目标 class
  * path          路径
  * group         组
  * priority      优先级
