@@ -38,6 +38,29 @@ import java.util.ArrayList;
  * provider                 除开的 Fragment 的 Postcard，其他属于 IProvider 的实现类都会设置上自己
  * greenChannel             绿色通道，可以跳过所有拦截器
  * serializationService     json service，object to json
+ *
+ *
+ * flags:
+ *
+ * Intent.FLAG_ACTIVITY_SINGLE_TOP,
+ * Intent.FLAG_ACTIVITY_NEW_TASK,
+ * Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+ * Intent.FLAG_DEBUG_LOG_RESOLUTION,
+ * Intent.FLAG_FROM_BACKGROUND,
+ * Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT,
+ * Intent.FLAG_ACTIVITY_CLEAR_TASK,
+ * Intent.FLAG_ACTIVITY_CLEAR_TOP,
+ * Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS,
+ * Intent.FLAG_ACTIVITY_FORWARD_RESULT,
+ * Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY,
+ * Intent.FLAG_ACTIVITY_MULTIPLE_TASK,
+ * Intent.FLAG_ACTIVITY_NO_ANIMATION,
+ * Intent.FLAG_ACTIVITY_NO_USER_ACTION,
+ * Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP,
+ * Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED,
+ * Intent.FLAG_ACTIVITY_REORDER_TO_FRONT,
+ * Intent.FLAG_ACTIVITY_TASK_ON_HOME,
+ * Intent.FLAG_RECEIVER_REGISTERED_ONLY
  */
 public final class Postcard extends RouteMeta {
     // Base

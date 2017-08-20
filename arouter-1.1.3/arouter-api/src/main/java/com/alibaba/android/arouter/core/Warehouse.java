@@ -16,8 +16,38 @@ import java.util.Map;
  * @author zhilong <a href="mailto:zhilong.lzl@alibaba-inc.com">Contact me.</a>
  * @version 1.0
  * @since 2017/2/23 下午1:39
+ *
+ * {@link Warehouse#groupsIndex}
+ * 路由组缓存
+ * key   = 路由组 name
+ * value = 路由组
+ *
+ * {@link Warehouse#routes}
+ * 路由信息缓存
+ * key   = 路由 path
+ * value = 路由信息类
+ *
+ * {@link Warehouse#providers}
+ * service 缓存
+ * key   = 路由信息类 class
+ * value = service
+ *
+ * {@link Warehouse#providersIndex}
+ * service 的 路由信息缓存
+ * key   = service 的 full package name
+ * value = 路由信息类
+ *
+ * {@link Warehouse#interceptorsIndex}
+ * 拦截器缓存
+ * key   = 拦截器优先级
+ * value = 拦截器 class
+ *
+ * {@link Warehouse#interceptors}
+ * 拦截器缓存
+ * value = 拦截器
  */
 class Warehouse {
+
     // Cache route and metas
     static Map<String, Class<? extends IRouteGroup>> groupsIndex = new HashMap<>();
     static Map<String, RouteMeta> routes = new HashMap<>();
@@ -40,4 +70,5 @@ class Warehouse {
         interceptors.clear();
         interceptorsIndex.clear();
     }
+
 }
