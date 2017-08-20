@@ -60,6 +60,9 @@ import static com.alibaba.android.arouter.utils.Consts.TAG;
  * 通过一个 服务 name 获取一个 关系类
  *
  * {@link LogisticsCenter#completion(Postcard)}
+ *
+ * 往 关系类 中，添加参数。反射实例化所需要的 IProvider，并初始化
+ *
  * 0. 根据关系类，拿到 路径，根据 路径 从缓存中查找 路由信息类
  *
  * 如果从缓存中 没有查到 路由信息类
@@ -207,6 +210,54 @@ public class LogisticsCenter {
     /**
      * Completion the postcard by route metas
      *
+     * 往 关系类 中，添加参数。反射实例化所需要的 IProvider，并初始化
+     *
+     * 0. 根据关系类，拿到 路径，根据 路径 从缓存中查找 路由信息类
+     *
+     * 如果从缓存中 没有查到 路由信息类
+     *
+     * 1. 从关系类中，拿到 路由组 name，根据 路由组 name 从缓存中查找 路由组 class
+     * 1.1 没有，抛异常
+     * 1.2 有，继续
+     *
+     * 2. 根据  路由组 class 反射构造 路由组 实例
+     * 3. 路由组 实例 调用 loadInto，缓存 路由信息类
+     * 4. 移除该路由组缓存
+     * 5. 没报异常的话，重新加载
+     *
+     * 重新加载后，应该不会走该系列流程
+     * 缓存中能查到对应的 路由信息类
+     *
+     * ---
+     *
+     * 如果从缓存中 没有查到 路由信息类
+     *
+     * 1. 从路由信息类中获取到，跳转目标 class，路由类型，优先级 和 额外数据
+     * -  添加到 关系类 中
+     *
+     *
+     * 2.1 从 关系类 中，拿到 Uri
+     * 2.2 如果为 null，跳出 2 到 3
+     * 2.3 根据 uri，拿到该 uri 下的所有参数键值对（ key，value ）
+     * 2.4 从 路由信息类 中，获取所有参数 值类型
+     *
+     * 2.5 如果 值类型 不为 null
+     * 2.5.1 将所有参数键值对，保存到 关系类 的 bundle 内
+     * 2.5.2 同时，在 关系类的 extra 上，保存 自动注入的类型（ key = ARouter.AUTO_INJECT ）
+     *
+     * 2.6 最后，在 关系类的 bundle 上，保存 uri（ key = ARouter.RAW_URI ）
+     *
+     *
+     * 3. 根据 路由信息类 中，路由的类型
+     *
+     * 3.1.1 如果是 IProvider 类型，从 路由信息类 中拿到 跳转目标 class
+     * 3.1.2 根据该 class，从缓存中获取到 IProvider 实例
+     * 3.1.3 如果 IProvider 实例 为 null，反射实例化，调用 初始化方法 后放入缓存
+     * 3.1.4 在 关系类 中加入该 IProvider
+     * 3.1.5 在 关系类 中打开 绿色通道
+     *
+     * 3.2 如果是 Fragment 类型，在 关系类 中打开 绿色通道
+     *
      * @param postcard Incomplete postcard, should completion by this method.
      */
     public synchronized static void completion(Postcard postcard) {
@@ -214,11 +265,11 @@ public class LogisticsCenter {
             throw new NoRouteFoundException(TAG + "No postcard!");
         }
 
-        // 根据关系类，拿到 路径，根据 路径 从缓存中查找 路由信息类
+        // 根据关系类，拿到 路径，根据 路径 从缓存中查找 关系类
         RouteMeta routeMeta = Warehouse.routes.get(postcard.getPath());
 
         /*
-         * 如果从缓存中 没有查到 路由信息类
+         * 如果从缓存中 没有查到 关系类
          *
          * 1. 从关系类中，拿到 路由组 name，根据 路由组 name 从缓存中查找 路由组 class
          * 1.1 没有，抛异常
@@ -267,7 +318,7 @@ public class LogisticsCenter {
         } else {
 
             /*
-             * 如果从缓存中 没有查到 路由信息类
+             * 如果从缓存中 查到 关系类
              *
              * 1. 从路由信息类中获取到，跳转目标 class，路由类型，优先级 和 额外数据
              * -  添加到 关系类 中
