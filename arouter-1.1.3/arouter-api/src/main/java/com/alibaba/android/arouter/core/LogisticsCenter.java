@@ -123,6 +123,9 @@ public class LogisticsCenter {
     /**
      * LogisticsCenter init, load all metas in memory. Demand initialization
      *
+     * 反射初始化所有 JavaPoet 生成 com.alibaba.android.arouter.routes 包下的 类
+     * 然后初始化缓存所有的 路由组，拦截器 和 service 的 RouteMeta
+     *
      * 1. 获取所有 com.alibaba.android.arouter.routes JavaPoet 生成的 class name
      * 2. 遍历改目录下所有 class name
      *
