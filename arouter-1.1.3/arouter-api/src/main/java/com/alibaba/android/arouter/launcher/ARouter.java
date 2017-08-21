@@ -13,6 +13,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * ARouter facade
  *
+ * 外观模式 - 外观
+ * 没有什么具体实现，都是调用 _ARouter 去完成
+ *
+ *
  * @author Alex <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 16/8/16 14:36
@@ -201,4 +205,5 @@ public final class ARouter {
     public Object navigation(Context mContext, Postcard postcard, int requestCode, NavigationCallback callback) {
         return _ARouter.getInstance().navigation(mContext, postcard, requestCode, callback);
     }
+
 }

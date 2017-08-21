@@ -26,6 +26,65 @@ import java.util.regex.Pattern;
  * @author 正纬 <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 16/6/27 下午10:58
+ *
+ * {@link ClassUtils#getMultiDexPreferences(Context)}
+ * 获取 MultiDex 的 SharedPreferences
+ * copy from MultiDex 源码
+ *
+ * {@link ClassUtils#getFileNameByPackageName(Context, String)}
+ * 通过指定包名，扫描包下面包含的所有的 ClassName
+ *
+ * 1. 获取所有 dex file
+ * 2. 从 dex file 中获取所有 packageName 目录下 class name
+ *
+ * {@link ClassUtils#getSourcePaths(Context)}
+ * 参考了 MultiDex 源码
+ *
+ * 1. 如果 VM 已经支持了 MultiDex，就不要去 Secondary Folder 加载 Classesx.zip 了，那里已经么有了
+ * 2. 如果没支持，继续
+ * 3. 找到 /data/data/( app package name )/code_cache/secondary-dexes 文件夹
+ * 4. 获取 dex file
+ * 5. 如果是 debug 模式，还得去尝试读取 instant run 的全部 dex 文件
+ *
+ * {@link ClassUtils#tryLoadInstantRunDexFile(ApplicationInfo)}
+ * 尝试读取 instant run 的全部 dex 文件
+ *
+ * >= 5.0
+ * 直接获取 applicationInfo.splitSourceDirs
+ *
+ * < 5.0
+ * 1. 开始反射实例化 instant run 包的 Paths
+ * 2. 反射调用 Paths # getDexFileDirectory 获取到 dex 文件夹
+ * 3. 然后拿到每个 .dex 文件
+ *
+ * {@link ClassUtils#isVMMultidexCapable()}
+ * 判断虚拟机是否支持 MultiDex
+ *
+ * copy from MultiDex 源码
+ *
+ * 1. 通过正则表达式将版本号分成 major (主版本号)和 minor (次版本号)
+ * 2. 通过判断主版本和次版本是否大于一个常量来判定虚拟机内建支持 MultiDex
+ *
+ * 当虚拟机的主版本号大于 3 或版本大于等于 2.1 时，就意味着内建支持 MultiDex
+ * 实际中，不同 Android 版本的虚拟机版本对照表如下：
+ *
+ * Android版本    |   虚拟机版本
+ *
+ * android 4.4    |     2.0
+ *
+ * android 5.0    |     2.1
+ *
+ * android 5.0.1  |     2.1
+ *
+ * android 5.1    |     2.1
+ *
+ * android 6.0    |     2.1
+ *
+ * 4.4 以后的 ART 虚拟机均支持内建的 MultiDex 特征
+ * 4.4 的 ART 虚拟机还处于测试阶段，所以不支持
+ *
+ * {@link ClassUtils#isYunOS()}
+ * 判断系统是否为 YunOS 系统
  */
 public class ClassUtils {
     private static final String EXTRACTED_NAME_EXT = ".classes";
@@ -44,7 +103,7 @@ public class ClassUtils {
     /**
      * 获取 MultiDex 的 SharedPreferences
      *
-     * 复制于 MultiDex 源码
+     * copy from MultiDex 源码
      *
      * @param context context
      * @return SharedPreferences
@@ -218,7 +277,7 @@ public class ClassUtils {
      *
      * 判断虚拟机是否支持 MultiDex
      *
-     * 复制于 MultiDex 源码
+     * copy from MultiDex 源码
      *
      * 1. 通过正则表达式将版本号分成 major (主版本号)和 minor (次版本号)
      * 2. 通过判断主版本和次版本是否大于一个常量来判定虚拟机内建支持 MultiDex

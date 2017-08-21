@@ -13,6 +13,28 @@ import java.util.Map;
  * @since 16/9/9 14:40
  *
  * Text 工具类
+ *
+ * {@link TextUtils#isEmpty(CharSequence)}
+ * 判断 CharSequence 空内容或者 空
+ *
+ * {@link TextUtils#formatStackTrace(StackTraceElement[])}
+ * 打印 堆栈信息
+ *
+ * {@link TextUtils#splitQueryParameters(Uri)}
+ * 从 Uri 中查找参数的键值对，返回一个 map
+ *
+ * 如果用 uri.getQueryParameter(String key) 的话，会很快就完成
+ * 但是会调用 N 次 getQueryParameter，一次 getQueryParameter 就得 while 一趟
+ * 就会有 N 次 while
+ * 这样会浪费性能
+ *
+ * 这里一次 while 拿到所有 key value，部分源码参考了 getQueryParameter
+ *
+ * {@link TextUtils#getLeft(String)}
+ * 拿到 | 左边的内容
+ *
+ * {@link TextUtils#getRight(String)}
+ * 拿到 | 右边的内容
  */
 public class TextUtils {
 
@@ -104,7 +126,7 @@ public class TextUtils {
     /**
      * Split key with |
      *
-     * 拿到 | 左边的值
+     * 拿到 | 左边的内容
      *
      * @param key raw key
      * @return left key
@@ -121,7 +143,7 @@ public class TextUtils {
     /**
      * Split key with |
      *
-     * 拿到 | 右边的值
+     * 拿到 | 右边的内容
      *
      * @param key raw key
      * @return right key

@@ -19,6 +19,21 @@ import static com.alibaba.android.arouter.utils.Consts.SUFFIX_AUTOWIRED;
  *
  * 拦截器服务，实现了 AutowiredService 接口
  * 作为一个固定的 拦截器服务，固定地址 /arouter/service/autowired
+ *
+ * {@link AutowiredServiceImpl#init(Context)}
+ * 初始化方法
+ * 初始化缓存数据结构，其中 LRU 缓存大小为 66
+ *
+ * {@link AutowiredServiceImpl#autowire(Object)}
+ * 自动注入
+ *
+ * 先从类名缓存查看是否有
+ * 有的话，跳过
+ * 无，缓存到类名缓存，和 LRU 类名 与 类 的关系缓存内
+ *
+ * 这里的类名是元素类名：比如 TestActivity，类名是 TestActvity
+ * 但是类是改元素的注入生成类，实现了 ISyringe 接口
+ * 即，TestActivity$$ARouter$$Autowired
  */
 @Route(path = "/arouter/service/autowired")
 public class AutowiredServiceImpl implements AutowiredService {

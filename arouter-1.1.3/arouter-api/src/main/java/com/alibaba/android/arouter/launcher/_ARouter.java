@@ -42,6 +42,97 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author Alex <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 16/8/16 14:39
+ *
+ * {@link _ARouter#init(Application)}
+ * 1. 反射初始化所有 JavaPoet 生成 com.alibaba.android.arouter.routes 包下的 类
+ * -  然后初始化缓存所有的 路由组，拦截器 和 service 的 RouteMeta
+ *
+ * 2. 设置  初始化标记
+ *
+ * {@link _ARouter#destroy()}
+ * 销毁方法（ 只有在 debug 模式下有效 ）
+ *
+ * 1. 设置  初始化标记
+ * 2. 清空所有缓存
+ *
+ * {@link _ARouter#attachBaseContext()}
+ * Hook 当前进程中的 ActivityThread.mInstrumentation 为 InstrumentationHook（已废弃）
+ *
+ * InstrumentationHook 自定义了 Instrumentation 类，覆写了 newActivity 方法
+ * 除了，执行原 newActivity 的 cl.loadClass(className).newInstance() 外
+ *
+ * 仅仅为了拿到该 Activity 的实例，然后反射 field，获取 intent 内传过来的规定结构的 String[]
+ * 进行反射 field 赋值
+ *
+ * 即使是 private 的 field 也会被设置为 public，然后赋值
+ *
+ * 该类是一个 hook 类，之前版本被用来 hook 掉 ActivityThread 中的 field mInstrumentation
+ * 然后，在每次 Activity 被打开的时候，会自动反射 field 赋值
+ *
+ * 老版本的自动注入方式（通过 hook Instrumentation，已废弃）
+ *
+ * {@link _ARouter#inject(Object)}
+ * 自动注入
+ *
+ * 在 Activity onCreate 的时候调用
+ *
+ * 此方法的出现，才废弃了
+ * {@link _ARouter#attachBaseContext()}
+ * {@link InstrumentationHook}
+ * {@link com.alibaba.android.arouter.core.AutowiredLifecycleCallback}
+ *
+ * 会获取到 JavaPoet 为该 Activity 生成的 ISyringe 类
+ * 然后反射构造该 ISyringe 实例，调用 注入 方法
+ *
+ * {@link _ARouter#build(String)}
+ * String path 构造一个 Postcard，同时提取出 group
+ * 并且 会提前 调用 地址预处理 service
+ *
+ * {@link _ARouter#build(Uri)}
+ * uri 构造一个 Postcard，同时提取出 group
+ * 并且 会提前 调用 地址预处理 service
+ *
+ * {@link _ARouter#build(String, String)}
+ * 真正的 构造 Postcard 方法
+ * 并且 会提前 调用 地址预处理 service
+ *
+ * {@link _ARouter#extractGroup(String)}
+ * 从 路径 中，提取出 group
+ * group：第一个 / 与 第二个 / 之间的内容
+ *
+ * {@link _ARouter#afterInit()}
+ * 初始化 拦截器 service
+ *
+ * {@link _ARouter#navigation(Class)}
+ * 根据 service class 进行跳转 （ 通常用于获取一个 service ）
+ *
+ * 1. 通过一个 服务 name 获取一个 关系类
+ * 2. 往 关系类 中，添加参数。反射实例化所需要的 IProvider，并初始化
+ * 3. 在执行第二步的时候，已经将 IProvider 放入 关系类中。所以，这里从 关系类 中拿到 IProvider
+ * 4. 强转 IProvider 为泛型 T （ 具体 service ）
+ *
+ * {@link _ARouter#navigation(Context, Postcard, int, NavigationCallback)}
+ * 跳转 （ 通常用于打开 Activity ）
+ *
+ * 1. 往 关系类 中，添加参数。反射实例化所需要的 IProvider，并初始化
+ * 2. 第一步失败了，失败回调，还有执行 降级 service，最后 return，不走以下
+ *
+ * 3. 回调成功
+ * 4.1 判断是否是 绿色通道。不是，执行 拦截器 service。拦截器全部没拦截才 返回 Activity
+ * 4.2 是 绿色通道。返回 Activity
+ *
+ * {@link _ARouter#_navigation(Context, Postcard, int, NavigationCallback)}
+ * 真正的跳转 （ 通常用于打开 Activity ）
+ *
+ * 1. 拿到 context，如果当前传入的 Activity context 为 null，就拿 Application context
+ * 2. 然后，根据 路由数据类型 分发逻辑：
+ *
+ * 2.1 Activity 类型，如果 context 不是 Activity，就添加 flag = FLAG_ACTIVITY_NEW_TASK
+ * -   切到主线程，start Activity 和 设置 activity 转场动画
+ * 2.2 Provider 类型，返回 IProvider 对象，然后转为 Object
+ * 2.3 BoardCast 或 ContentProvider 或 Fragment 类型，会反射构造一个该类型的实例
+ * -   如果是，Fragment 类型的话，会添加额外的数据到 bundle 里
+ * 2.4 Method 或 Service 或 default，目前 没有处理，return null
  */
 final class _ARouter {
     static ILogger logger = new DefaultLogger(Consts.TAG); // 日志工具

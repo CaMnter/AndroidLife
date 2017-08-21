@@ -24,6 +24,35 @@ import static com.alibaba.android.arouter.utils.Consts.TAG;
  *
  * 拦截器服务，实现了 InterceptorService 接口
  * 作为一个固定的 拦截器服务，固定地址 /arouter/service/interceptor
+ *
+ * {@link InterceptorServiceImpl#doInterceptions(Postcard, InterceptorCallback)}
+ * 检查是否有拦截器。有，继续下走。无，执行该 InterceptorService 的拦截器回调 onContinue
+ * 检查拦截器初始化状态
+ *
+ * 线程池启动异步线程任务（实质上不会并发，并且在 UI 线程开启的子线程）：
+ * 1. 定义一个跟拦截器数量一样的 count 的 CountDownLatch
+ * 2. 处理每一个拦截器，并执行拦截器回调
+ * 3. 然后，CountDownLatch.await 在该子线程阻塞，等待所有拦截器回调执行完（ 防止拦截器的处理过程有子线程在跑 ）
+ * 4. 处理 CountDownLatch 的状态，执行该 InterceptorService 的拦截器回调
+ *
+ * {@link InterceptorServiceImpl#_excute(int, CancelableCountDownLatch, Postcard)}
+ * 逐个执行拦截器
+ * 1. 处理每个拦截器的 process 方法，直到执行完为止
+ * 2. 在执行每个拦截器执行 process 时。没有中断的话，都会通知 CountDownLatch 完成
+ * 3. 只要有一个拦截器执行 process 时，中断了，CountDownLatch 就会执行 while --count，直到 0 为止
+ * 4. 强行解除 CountDownLatch 对上面子线程的阻塞
+ *
+ * {@link InterceptorServiceImpl#init(Context)}
+ * 线程池启动异步线程任务
+ * 检查是否有拦截器，然后拿出每个拦截器的 class
+ * 反射实例化每个一个拦截器实例
+ * 然后反射调用每个拦截器 init 方法初始化自身，然后将每个拦截器实例保存在 Warehouse 的 List 内
+ *
+ * 保存全部实例后，保存标记，用于标识所有拦截器的状态，然后开锁 interceptorInitLock
+ * （ 如果在此之前执行了 checkInterceptorsInitStatus 的话，意味着之前执行过 doInterceptions，那个线程处于阻塞和等待，最大时间 10 s ）
+ *
+ * {@link InterceptorServiceImpl#checkInterceptorsInitStatus()}
+ * 检查是否初始化好了，然后会锁 10 s
  */
 @Route(path = "/arouter/service/interceptor")
 public class InterceptorServiceImpl implements InterceptorService {
@@ -95,6 +124,7 @@ public class InterceptorServiceImpl implements InterceptorService {
      * @param counter interceptor counter
      * @param postcard routeMeta
      *
+     * 逐个执行拦截器
      * 1. 处理每个拦截器的 process 方法，直到执行完为止
      * 2. 在执行每个拦截器执行 process 时。没有中断的话，都会通知 CountDownLatch 完成
      * 3. 只要有一个拦截器执行 process 时，中断了，CountDownLatch 就会执行 while --count，直到 0 为止

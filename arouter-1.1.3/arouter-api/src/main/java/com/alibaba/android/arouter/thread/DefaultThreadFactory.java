@@ -12,6 +12,22 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author zhilong <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 15/12/25 上午10:51
+ *
+ * {@link DefaultThreadFactory#newThread(Runnable)}
+ * 初始化一个线程
+ *
+ * 守护线程是运行在后台的一种特殊进程，它独立于控制终端，并且周期性地执行某种任务或着等待处理某些发生的事件
+ * 也就是在程序运行的时候在后台提供一种通用服务的线程，在没有用户线程客服务时会自动离开。
+ *
+ * 守护线程生命周期：守护线程并不是程序中不可缺少的部分。当所有的非守护线程即用户线程结束，程序也就终止了
+ * 同时还会kill掉进程中的所有守护线程。
+ *
+ * 守护线程的优先级比较低，用于为系统中的其它对象和线程提供服务。
+ *
+ * 1. 初始化一个线程
+ * 2. 判断线程是不是守护线程，是的话，设为非守护线程（ 用户线程 ）
+ * 3. 设置线程优先级为 normal
+ * 4. 设置线程捕获异常 Handler
  */
 public class DefaultThreadFactory implements ThreadFactory {
     private static final AtomicInteger poolNumber = new AtomicInteger(1);

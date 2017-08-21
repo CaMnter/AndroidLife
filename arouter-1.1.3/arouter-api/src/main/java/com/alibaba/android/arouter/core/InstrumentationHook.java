@@ -28,6 +28,14 @@ import java.lang.reflect.Field;
  *
  * 该类是一个 hook 类，之前版本被用来 hook 掉 ActivityThread 中的 field mInstrumentation
  * 然后，在每次 Activity 被打开的时候，会自动反射 field 赋值
+ *
+ * {@link InstrumentationHook#newActivity(ClassLoader, String, Intent)}
+ * 覆写了父类的 newActivity 方法
+ * 同样也执行了父类中 newActivity 方法的 cl.loadClass(className).newInstance()
+ *
+ * 通过自动复制的通用 key ，从 intent 中获取 String[]，这里的每个 String 内容，都有 | 隔开
+ * | 左边是 该 Activity 的 field name，用于反射 和 从 intent extra 取出 field 需要的 value
+ * 最后给 field 赋值
  */
 @Deprecated
 public class InstrumentationHook extends Instrumentation {
