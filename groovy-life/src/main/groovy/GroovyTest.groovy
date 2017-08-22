@@ -1,3 +1,10 @@
+/**
+ * 必须 切到当前 package 下
+ * groovy-life/main/groovy 包下
+ *
+ * 执行： groovy ???.groovy
+ **/
+
 println "\n 1. <Hello World by Groovy?"
 
 
