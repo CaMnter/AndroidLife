@@ -50,17 +50,85 @@ import static javax.lang.model.element.Modifier.PUBLIC;
  * @author Alex <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 16/8/23 14:11
+ *
+ * {@link InterceptorProcessor#init(ProcessingEnvironment)}
+ * 初始化方法（ 覆写 ）
+ * 1. 初始化所有工具
+ * 2. 从 Options 中获取 moduleName
+ * 3. 保存 IInterceptor 的 TypeMirror
+ *
+ * {@link InterceptorProcessor#process(Set, RoundEnvironment)}
+ * 处理 @Interceptor 元素
+ *
+ * {@link InterceptorProcessor#parseInterceptors(Set)}
+ * 处理 @Interceptor 元素
+ * 1. 编译每个 @Interceptor 元素
+ * 2. 验证每个 @Interceptor 元素
+ * 3. 根据优先级 = key，@Interceptor 元素 为 value，缓存到 TreeMap 内
+ * 4. JavaPoet 生成 java class
+ *
+ * {@link InterceptorProcessor#verify(Element)}
+ * 验证 @Interceptor 的元素
+ * 1. 元素 是否有 @Interceptor
+ * 2. 元素是否是 iInterceptor 的 实现类
  */
+@SuppressWarnings("DanglingJavadoc")
+// annotationProcessor 必备注解，自动运行
 @AutoService(Processor.class)
+/**
+ * module build.gradle
+ *
+ * android {
+ *
+ *   ...
+ *
+ *   defaultConfig {
+ *
+ *       ...
+ *
+ *       javaCompileOptions {
+ *           annotationProcessorOptions {
+ *               arguments = [ moduleName : project.getName() ]
+ *           }
+ *       }
+ *
+ *       ...
+ *
+ *   }
+ *
+ *   ...
+ *
+ * }
+ *
+ * KEY_MODULE_NAME = moduleName
+ * 会在{@link ProcessingEnvironment#getOptions()}中，放入
+ * 从 build.gradle 设置的  key = moduleName，value = project.getName()
+ */
 @SupportedOptions(KEY_MODULE_NAME)
+// 取代了 覆写 getSupportedSourceVersion
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
+// 取代了 覆写 getSupportedAnnotationTypes
 @SupportedAnnotationTypes(ANNOTATION_TYPE_INTECEPTOR)
 public class InterceptorProcessor extends AbstractProcessor {
+
+    /*
+     * key   = 拦截器的 优先级
+     * value = 拦截器的 Element，类 Element
+     */
     private Map<Integer, Element> interceptors = new TreeMap<>();
+    // 用于生产 .java 文件
     private Filer mFiler;       // File util, write class file into disk.
+    // 用于在 annotationProcessor 过程中打 log
     private Logger logger;
+    // 用于获取 Element 或 类型
     private Elements elementUtil;
+    /*
+     * 用于获取 ProcessingEnvironment#getOptions()
+     * key = moduleName 的值
+     * 即，@SupportedOptions(KEY_MODULE_NAME) 加入到 options 的值
+     */
     private String moduleName = null;   // Module name, maybe its 'app' or others
+    // 保存 IInterceptor 的 TypeMirror
     private TypeMirror iInterceptor = null;
 
 
@@ -70,6 +138,12 @@ public class InterceptorProcessor extends AbstractProcessor {
      * {@code processingEnv} argument.  An {@code
      * IllegalStateException} will be thrown if this method is called
      * more than once on the same object.
+     *
+     * 初始化方法（ 覆写 ）
+     *
+     * 1. 初始化所有工具
+     * 2. 从 Options 中获取 moduleName
+     * 3. 保存 IInterceptor 的 TypeMirror
      *
      * @param processingEnv environment to access facilities the tool framework
      * provides to the processor
@@ -110,7 +184,15 @@ public class InterceptorProcessor extends AbstractProcessor {
 
 
     /**
-     * {@inheritDoc}
+     * Annotation Processor 的处理方法（ 覆写 ）
+     *
+     * 处理 @Interceptor 元素
+     *
+     * @param annotations Set<? extends TypeElement>
+     * @param roundEnv RoundEnvironment
+     * @return 返回是否这些注释由该处理器声明
+     * 如果 true 返回，则会声明注释，并且不会要求后续处理器处理它们
+     * 如果 false 返回，注释是无人认领的，后续处理器可能被要求处理它们。处理器可以总是返回相同的布尔值，或者可以根据所选择的标准来改变结果
      */
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -131,12 +213,25 @@ public class InterceptorProcessor extends AbstractProcessor {
     /**
      * Parse tollgate.
      *
+     * 处理 @Interceptor 元素
+     *
+     * 1. 编译每个 @Interceptor 元素
+     * 2. 验证每个 @Interceptor 元素
+     * 3. 根据优先级 = key，@Interceptor 元素 为 value，缓存到 TreeMap 内
+     * 4. JavaPoet 生成 java class
+     *
      * @param elements elements of tollgate.
+     * @throws IOException IOException
      */
     private void parseInterceptors(Set<? extends Element> elements) throws IOException {
         if (CollectionUtils.isNotEmpty(elements)) {
             logger.info(">>> Found interceptors, size is " + elements.size() + " <<<");
 
+            /**
+             * 1. 编译每个 @Interceptor 元素
+             * 2. 验证每个 @Interceptor 元素
+             * 3. 根据优先级 = key，@Interceptor 元素 为 value，缓存到 TreeMap 内
+             */
             // Verify and cache, sort incidentally.
             for (Element element : elements) {
                 if (verify(element)) {  // Check the interceptor meta
@@ -160,6 +255,10 @@ public class InterceptorProcessor extends AbstractProcessor {
                 }
             }
 
+            /**
+             * 获取 IInterceptor 的 TypeElement
+             * 获取 IInterceptorGroup 的 TypeElement
+             */
             // Interface of ARouter.
             TypeElement type_ITollgate = elementUtil.getTypeElement(IINTERCEPTOR);
             TypeElement type_ITollgateGroup = elementUtil.getTypeElement(IINTERCEPTOR_GROUP);
@@ -168,6 +267,11 @@ public class InterceptorProcessor extends AbstractProcessor {
              *  Build input type, format as :
              *
              *  ```Map<Integer, Class<? extends ITollgate>>```
+             *
+             *  @Override
+             *  public void loadInto(Map<Integer, Class<? extends IInterceptor>> interceptors)
+             *  中的参数类型
+             *  Map<Integer, Class<? extends IInterceptor>>
              */
             ParameterizedTypeName inputMapTypeOfTollgate = ParameterizedTypeName.get(
                 ClassName.get(Map.class),
@@ -178,10 +282,21 @@ public class InterceptorProcessor extends AbstractProcessor {
                 )
             );
 
+            /**
+             *  @Override
+             *  public void loadInto(Map<Integer, Class<? extends IInterceptor>> interceptors)
+             *  中的参数
+             *  Map<Integer, Class<? extends IInterceptor>> interceptors
+             */
             // Build input param name.
             ParameterSpec tollgateParamSpec = ParameterSpec.builder(inputMapTypeOfTollgate,
                 "interceptors").build();
 
+            /**
+             * 整个 loadInto 方法
+             *  @Override
+             *  public void loadInto(Map<Integer, Class<? extends IInterceptor>> interceptors)
+             */
             // Build method : 'loadInto'
             MethodSpec.Builder loadIntoMethodOfTollgateBuilder = MethodSpec.methodBuilder(
                 METHOD_LOAD_INTO)
@@ -189,6 +304,10 @@ public class InterceptorProcessor extends AbstractProcessor {
                 .addModifiers(PUBLIC)
                 .addParameter(tollgateParamSpec);
 
+            /**
+             * 添加 拦截器 缓存
+             * eg: interceptors.put(7, Test1Interceptor.class);
+             */
             // Generate
             if (null != interceptors && interceptors.size() > 0) {
                 // Build method body
@@ -199,6 +318,11 @@ public class InterceptorProcessor extends AbstractProcessor {
                 }
             }
 
+            /**
+             * 生成 java class
+             *
+             * public class ???$$Interceptors$$app implements IInterceptorGroup
+             */
             // Write to disk(Write file even interceptors is empty.)
             JavaFile.builder(PACKAGE_OF_GENERATE_FILE,
                 TypeSpec.classBuilder(NAME_OF_INTERCEPTOR + SEPARATOR + moduleName)
@@ -211,11 +335,17 @@ public class InterceptorProcessor extends AbstractProcessor {
 
             logger.info(">>> Interceptor group write over. <<<");
         }
+
     }
 
 
     /**
      * Verify inteceptor meta
+     *
+     * 验证 @Interceptor 的元素
+     *
+     * 1. 元素 是否有 @Interceptor
+     * 2. 元素是否是 iInterceptor 的 实现类
      *
      * @param element Interceptor taw type
      * @return verify result
@@ -226,4 +356,5 @@ public class InterceptorProcessor extends AbstractProcessor {
         return null != interceptor &&
             ((TypeElement) element).getInterfaces().contains(iInterceptor);
     }
+
 }
