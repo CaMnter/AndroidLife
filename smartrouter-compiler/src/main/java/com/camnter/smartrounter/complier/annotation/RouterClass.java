@@ -55,7 +55,7 @@ import static com.camnter.smartrounter.complier.RouterType.STRING;
 
 public class RouterClass extends BaseAnnotatedClass {
 
-    private final List<RouterHostAnnotation> routerHostAnnotationList;
+    private final List<RouterPathAnnotation> routerPathAnnotationList;
     private final List<RouterFieldAnnotation> routerFieldAnnotationList;
 
 
@@ -63,13 +63,13 @@ public class RouterClass extends BaseAnnotatedClass {
                        Elements elements,
                        String fullClassName) {
         super(annotatedElement, elements, fullClassName);
-        this.routerHostAnnotationList = new ArrayList<>();
+        this.routerPathAnnotationList = new ArrayList<>();
         this.routerFieldAnnotationList = new ArrayList<>();
     }
 
 
-    public void addRouterHostAnnotation(RouterHostAnnotation routerHostAnnotation) {
-        this.routerHostAnnotationList.add(routerHostAnnotation);
+    public void addRouterHostAnnotation(RouterPathAnnotation routerPathAnnotation) {
+        this.routerPathAnnotationList.add(routerPathAnnotation);
     }
 
 
@@ -229,11 +229,11 @@ public class RouterClass extends BaseAnnotatedClass {
             );
 
         // routerMapping.put($1L, $2L.class)
-        for (RouterHostAnnotation routerHostAnnotation : this.routerHostAnnotationList) {
-            final String activitySimpleName = routerHostAnnotation.getElement()
+        for (RouterPathAnnotation routerPathAnnotation : this.routerPathAnnotationList) {
+            final String activitySimpleName = routerPathAnnotation.getElement()
                 .getSimpleName()
                 .toString();
-            for (String host : routerHostAnnotation.getHost()) {
+            for (String host : routerPathAnnotation.getHost()) {
                 registerMethodBuilder.addCode(
                     "routerMapping.put($T.getScheme() + \"://\" + $S, $L.class);\n",
                     SMART_ROUTERS,

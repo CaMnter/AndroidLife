@@ -6,13 +6,13 @@ import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.smartrouter.SmartRouters;
 import com.camnter.smartrouter.annotation.RouterField;
-import com.camnter.smartrouter.annotation.RouterHost;
+import com.camnter.smartrouter.annotation.RouterPath;
 
 /**
  * @author CaMnter
  */
 
-@RouterHost("router-0x01")
+@RouterPath("router-0x01")
 public class SmartRouterSampleActivity extends BaseAppCompatActivity {
 
     @RouterField("char")

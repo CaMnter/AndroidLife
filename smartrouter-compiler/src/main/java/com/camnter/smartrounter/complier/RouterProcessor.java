@@ -2,11 +2,11 @@ package com.camnter.smartrounter.complier;
 
 import com.camnter.smartrounter.complier.annotation.RouterClass;
 import com.camnter.smartrounter.complier.annotation.RouterFieldAnnotation;
-import com.camnter.smartrounter.complier.annotation.RouterHostAnnotation;
+import com.camnter.smartrounter.complier.annotation.RouterPathAnnotation;
 import com.camnter.smartrounter.complier.annotation.RouterManagerClass;
 import com.camnter.smartrounter.complier.core.BaseProcessor;
 import com.camnter.smartrouter.annotation.RouterField;
-import com.camnter.smartrouter.annotation.RouterHost;
+import com.camnter.smartrouter.annotation.RouterPath;
 import com.google.auto.service.AutoService;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -48,7 +48,7 @@ public class RouterProcessor extends BaseProcessor {
     public Set<String> getSupportedAnnotationTypes() {
         return new HashSet<String>() {
             {
-                this.add(RouterHost.class.getCanonicalName());
+                this.add(RouterPath.class.getCanonicalName());
                 this.add(RouterField.class.getCanonicalName());
             }
         };
@@ -58,7 +58,7 @@ public class RouterProcessor extends BaseProcessor {
     private Set<Class<? extends Annotation>> getSupportedAnnotations() {
         return new LinkedHashSet<Class<? extends Annotation>>() {
             {
-                this.add(RouterHost.class);
+                this.add(RouterPath.class);
                 this.add(RouterField.class);
             }
         };
@@ -111,10 +111,10 @@ public class RouterProcessor extends BaseProcessor {
 
 
     private void processRouterHost(RoundEnvironment roundEnv) throws IllegalArgumentException {
-        for (Element element : roundEnv.getElementsAnnotatedWith(RouterHost.class)) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(RouterPath.class)) {
             RouterClass routerClass = this.getAnnotatedClass(element);
-            RouterHostAnnotation routerHostAnnotation = new RouterHostAnnotation(element);
-            routerClass.addRouterHostAnnotation(routerHostAnnotation);
+            RouterPathAnnotation routerPathAnnotation = new RouterPathAnnotation(element);
+            routerClass.addRouterHostAnnotation(routerPathAnnotation);
         }
     }
 

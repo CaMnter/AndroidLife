@@ -1,7 +1,7 @@
 package com.camnter.smartrounter.complier.annotation;
 
 import com.camnter.smartrouter.annotation.RouterField;
-import com.camnter.smartrouter.annotation.RouterHost;
+import com.camnter.smartrouter.annotation.RouterPath;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Name;
@@ -34,7 +34,7 @@ public class RouterFieldAnnotation {
             throw new IllegalArgumentException(
                 String.format(
                     "value() in [%1$s] for field [%2$s] is not valid",
-                    RouterHost.class.getSimpleName(),
+                    RouterPath.class.getSimpleName(),
                     element.getSimpleName())
             );
         }
