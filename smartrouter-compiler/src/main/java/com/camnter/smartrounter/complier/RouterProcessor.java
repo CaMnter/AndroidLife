@@ -2,8 +2,8 @@ package com.camnter.smartrounter.complier;
 
 import com.camnter.smartrounter.complier.annotation.RouterClass;
 import com.camnter.smartrounter.complier.annotation.RouterFieldAnnotation;
-import com.camnter.smartrounter.complier.annotation.RouterPathAnnotation;
 import com.camnter.smartrounter.complier.annotation.RouterManagerClass;
+import com.camnter.smartrounter.complier.annotation.RouterPathAnnotation;
 import com.camnter.smartrounter.complier.core.BaseProcessor;
 import com.camnter.smartrouter.annotation.RouterField;
 import com.camnter.smartrouter.annotation.RouterPath;
@@ -17,15 +17,50 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+
+import static com.camnter.smartrounter.complier.core.BaseProcessor.KEY_MODULE_NAME;
 
 /**
  * @author CaMnter
  */
 
+@SuppressWarnings("DanglingJavadoc")
+// annotationProcessor 必备注解，自动运行
 @AutoService(Processor.class)
+/**
+ * module build.gradle
+ *
+ * android {
+ *
+ *   ...
+ *
+ *   defaultConfig {
+ *
+ *       ...
+ *
+ *       javaCompileOptions {
+ *           annotationProcessorOptions {
+ *               arguments = [ moduleName : project.getName() ]
+ *           }
+ *       }
+ *
+ *       ...
+ *
+ *   }
+ *
+ *   ...
+ *
+ * }
+ *
+ * KEY_MODULE_NAME = moduleName
+ * 会在{@link ProcessingEnvironment#getOptions()}中，放入
+ * 从 build.gradle 设置的  key = moduleName，value = project.getName()
+ */
+@SupportedOptions(KEY_MODULE_NAME)
 public class RouterProcessor extends BaseProcessor {
 
     private Map<String, RouterClass> routerClassHashMap = new HashMap<>();
@@ -98,7 +133,7 @@ public class RouterProcessor extends BaseProcessor {
         }
         // RouterManagerClass
         try {
-            new RouterManagerClass(this.targetModuleName, this.routerClassHashMap)
+            new RouterManagerClass(this.moduleName, this.routerClassHashMap)
                 .javaFile()
                 .writeTo(this.filer);
         } catch (IOException e) {

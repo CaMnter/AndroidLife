@@ -19,12 +19,14 @@ import javax.tools.Diagnostic;
 
 public abstract class BaseProcessor extends AbstractProcessor {
 
+    public static final String KEY_MODULE_NAME = "moduleName";
+
     protected ProcessingEnvironment processingEnvironment;
 
     protected Filer filer;
     protected Elements elements;
     protected Messager messager;
-    protected String targetModuleName;
+    protected String moduleName;
 
 
     @Override
@@ -38,8 +40,15 @@ public abstract class BaseProcessor extends AbstractProcessor {
         final Map<String, String> optionsMap = this.processingEnv.getOptions();
         final Set<String> keySet = optionsMap.keySet();
         for (String key : keySet) {
-            if ("targetModuleName".equals(key)) {
-                this.targetModuleName = optionsMap.get(key);
+            if (KEY_MODULE_NAME.equals(key)) {
+                this.moduleName = optionsMap.get(key);
+                if (null != this.moduleName &&
+                    !this.moduleName.isEmpty()) {
+                    this.moduleName = this.moduleName.substring(0, 1).toUpperCase() +
+                        this.moduleName.substring(1);
+                }
+                this.i("[BaseProcessor]   [init]   [moduleName] = %1$s",
+                    this.moduleName);
             }
         }
     }

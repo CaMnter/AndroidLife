@@ -9,8 +9,8 @@ def releaseTime() {
 }
 
 repositories {
-//    maven { url 'http://uk.maven.org/maven2' }
-//    maven { url 'https://raw.githubusercontent.com/umeng/mvn-repo-umeng/master/repository' }
+    //    maven { url 'http://uk.maven.org/maven2' }
+    //    maven { url 'https://raw.githubusercontent.com/umeng/mvn-repo-umeng/master/repository' }
     jcenter()
     mavenCentral()
 }
@@ -26,6 +26,11 @@ android {
         versionName rootProject.ext.android.versionName
         applicationId "com.camnter.newlife"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
     }
 
     compileOptions {
@@ -70,13 +75,13 @@ android {
         }
     }
 
-//    // 渠道Flavors
-//    productFlavors {
-//        github {
-//            applicationId "com.camnter.newlife"
-//            manifestPlaceholders = [DEBUG: "debug"]
-//        }
-//    }
+    //    // 渠道Flavors
+    //    productFlavors {
+    //        github {
+    //            applicationId "com.camnter.newlife"
+    //            manifestPlaceholders = [DEBUG: "debug"]
+    //        }
+    //    }
 
     lintOptions {
         abortOnError false
@@ -105,7 +110,6 @@ android {
             universalApk true
         }
     }
-
 }
 
 dependencies {
@@ -191,6 +195,5 @@ task nativeLibsToJar(type: Zip, description: 'create a jar archive of the native
     into 'lib/'
 }
 
-tasks.withType(JavaCompile) {
-    compileTask -> compileTask.dependsOn(nativeLibsToJar)
+tasks.withType(JavaCompile) { compileTask -> compileTask.dependsOn(nativeLibsToJar)
 }

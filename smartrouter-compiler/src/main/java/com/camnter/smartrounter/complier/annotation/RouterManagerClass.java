@@ -26,10 +26,9 @@ public class RouterManagerClass implements BaseAnnotatedInterface {
     private final Map<String, RouterClass> routerClassHashMap;
 
 
-    public RouterManagerClass(String targetModuleName,
+    public RouterManagerClass(String moduleName,
                               Map<String, RouterClass> routerClassHashMap) {
-        final String targetModuleName1 = targetModuleName == null ? "Main" : targetModuleName;
-        this.className = targetModuleName1 + "RouterManagerClass";
+        this.className = moduleName == null ? "Main" : moduleName + "RouterManagerClass";
         this.routerClassHashMap = routerClassHashMap;
     }
 
