@@ -1,6 +1,7 @@
 package com.camnter.smartrouter;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +11,11 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import com.camnter.smartrouter.core.Filter;
 import com.camnter.smartrouter.core.Router;
+import com.camnter.smartrouter.utils.ClassUtils;
+import com.camnter.smartrouter.utils.Const;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,10 +29,11 @@ public final class SmartRouters {
     private static final Map<String, Class<? extends Activity>> ACTIVITY_CLASS_MAP
         = new HashMap<>();
     private static boolean LOADING_HISTORY_MARK = false;
-    private static Class MANAGER_CLASS;
     private static String SCHEME = "routers";
     private static String HOST = "";
     private static Filter FILTER;
+    private volatile static Application APPLICATION;
+    private volatile static boolean debuggable = BuildConfig.DEBUG;
 
 
     public static String getScheme() {
@@ -61,12 +66,30 @@ public final class SmartRouters {
     }
 
 
-    public static void running(@Nullable final String scheme) {
+    public static synchronized void debug() {
+        debuggable = true;
+    }
+
+
+    public static boolean debuggable() {
+        return debuggable;
+    }
+
+
+    public static void running(@NonNull final Application application, @Nullable final String scheme) {
+        APPLICATION = application;
         SCHEME = scheme;
-        if (MANAGER_CLASS == null) {
+        if (!LOADING_HISTORY_MARK) {
             try {
-                MANAGER_CLASS = Class.forName(
-                    "com.camnter.smartrouter.MainRouterManagerClass");
+                final List<String> classFileNames = ClassUtils.getFileNameByPackageName(
+                    application,
+                    Const.SMART_ROUTER_PACKAGE
+                );
+                for (String className : classFileNames) {
+                    if (className.endsWith(Const.MANAGER_CLASS_SUFFIX)) {
+                        Class.forName(className);
+                    }
+                }
                 LOADING_HISTORY_MARK = true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -82,7 +105,7 @@ public final class SmartRouters {
         try {
             // finding by _SmartRouter
             if (router == null) {
-                Class<?> routerClass = Class.forName(targetFullName + "_SmartRouter");
+                Class<?> routerClass = Class.forName(targetFullName + Const.SMART_ROUTER_SUFFIX);
                 Constructor constructor = routerClass.getDeclaredConstructor(String.class);
                 constructor.setAccessible(true);
                 router = (Router) constructor.newInstance("");
@@ -117,7 +140,7 @@ public final class SmartRouters {
 
         // check loading history
         if (!LOADING_HISTORY_MARK) {
-            running(SCHEME);
+            running(APPLICATION, SCHEME);
         }
         final Class<? extends Activity> clazz = ACTIVITY_CLASS_MAP.get(schemeAndHost);
         if (clazz != null) {
@@ -142,6 +165,9 @@ public final class SmartRouters {
             if (FILTER.start(context, mapUrl)) {
                 return false;
             }
+        }
+        if (APPLICATION == null) {
+            return false;
         }
 
         final Uri uri = Uri.parse(url);

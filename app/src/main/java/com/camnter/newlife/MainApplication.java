@@ -42,7 +42,7 @@ public class MainApplication extends Application {
 
 
     private void initRouter() {
-        SmartRouters.running(SCHEME);
+        SmartRouters.running(this, SCHEME);
         SmartRouters.register(new Router<CustomRouterActivity>() {
 
             @Override

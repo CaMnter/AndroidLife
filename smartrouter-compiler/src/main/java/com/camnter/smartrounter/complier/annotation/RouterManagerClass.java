@@ -1,6 +1,7 @@
 package com.camnter.smartrounter.complier.annotation;
 
 import com.camnter.smartrounter.complier.core.BaseAnnotatedInterface;
+import com.camnter.smartrouter.utils.Const;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
@@ -20,7 +21,7 @@ import static com.camnter.smartrounter.complier.core.BaseAnnotatedClass.createNo
 
 public class RouterManagerClass implements BaseAnnotatedInterface {
 
-    private static final String PACKAGE_NAME = "com.camnter.smartrouter";
+    private static final String PACKAGE_NAME = Const.SMART_ROUTER_PACKAGE;
 
     private final String className;
     private final Map<String, RouterClass> routerClassHashMap;
@@ -28,7 +29,7 @@ public class RouterManagerClass implements BaseAnnotatedInterface {
 
     public RouterManagerClass(String moduleName,
                               Map<String, RouterClass> routerClassHashMap) {
-        this.className = moduleName == null ? "Main" : moduleName + "RouterManagerClass";
+        this.className = moduleName == null ? "Main" : moduleName + Const.MANAGER_CLASS_SUFFIX;
         this.routerClassHashMap = routerClassHashMap;
     }
 
@@ -91,7 +92,7 @@ public class RouterManagerClass implements BaseAnnotatedInterface {
         final List<MethodSpec> getSmartRouterMethods = new ArrayList<>();
         for (RouterClass routerClass : this.routerClassHashMap.values()) {
             final TypeName routerTypeName = ClassName.get(routerClass.getPackageName(),
-                routerClass.getSimpleName() + "_SmartRouter");
+                routerClass.getSimpleName() + Const.SMART_ROUTER_SUFFIX);
             final MethodSpec.Builder getSmartRouterMethodBuilder = MethodSpec
                 .methodBuilder("get" + routerClass.getSimpleName() + "SmartRouter")
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
@@ -124,7 +125,7 @@ public class RouterManagerClass implements BaseAnnotatedInterface {
                 .returns(TypeName.VOID)
                 .addCode("try {\n")
                 .addCode("    Class.forName($S);\n",
-                    routerClass.getFullClassName() + "_SmartRouter")
+                    routerClass.getFullClassName() + Const.SMART_ROUTER_SUFFIX)
                 .addCode("} catch (ClassNotFoundException e) {\n")
                 .addCode("    e.printStackTrace();\n")
                 .addCode("}\n");

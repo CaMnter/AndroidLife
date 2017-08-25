@@ -2,6 +2,7 @@ package com.camnter.smartrounter.complier.annotation;
 
 import com.camnter.smartrounter.complier.RouterType;
 import com.camnter.smartrounter.complier.core.BaseAnnotatedClass;
+import com.camnter.smartrouter.utils.Const;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
@@ -86,7 +87,7 @@ public class RouterClass extends BaseAnnotatedClass {
     @Override
     public JavaFile javaFile() {
 
-        final String className = this.annotatedElementSimpleName + "_SmartRouter";
+        final String className = this.annotatedElementSimpleName + Const.SMART_ROUTER_SUFFIX;
 
         /*
          * _SmartRouter
