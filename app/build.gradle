@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'me.tatarka.retrolambda'
-//apply from: rootProject.getRootDir().getAbsolutePath() + "/common.gradle"
-//apply plugin: RocooFixPlugin
+// apply from: rootProject.getRootDir().getAbsolutePath() + "/common.gradle"
+// apply plugin: RocooFixPlugin
+apply plugin: 'com.camnter.plugin.life'
 
 def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
