@@ -5,7 +5,7 @@ class LifePlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        project.task('lifeTask') << {
+        project.task('LifeTask') << {
             println "[LifePlugin]   [println]   Save you from anything"
         }
     }
