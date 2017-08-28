@@ -36,7 +36,7 @@ buildscript {
         ...
         
         // local repository
-        classpath 'com.camnter.gradle.plugin.life:gradle-plugin-life:1.0.0'
+        classpath 'com.camnter.gradle.plugin.life:gradle-plugin-life:1.0.1'
         
         ...
         
@@ -51,7 +51,8 @@ buildscript {
 <br>
     
 ```{r, engine='shell', count_lines}
-gradle camnterLifeTask
+gradle lifePlugin
+gradle lifeTask
 ```
 
 <br>

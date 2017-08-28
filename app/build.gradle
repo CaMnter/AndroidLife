@@ -12,7 +12,7 @@ buildscript {
         maven { url uri('../gradle-plugin-life/repository') }
     }
     dependencies {
-        classpath 'com.camnter.gradle.plugin.life:gradle-plugin-life:1.0.0'
+        classpath 'com.camnter.gradle.plugin.life:gradle-plugin-life:1.0.1'
     }
 }
 
