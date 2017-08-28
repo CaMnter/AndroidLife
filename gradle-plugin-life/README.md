@@ -33,7 +33,7 @@ buildscript {
         ...
         
         // local repository
-        classpath 'com.camnter.plugin.life:gradle-plugin-life:1.0.0'
+        classpath 'com.camnter.gradle.plugin.life:gradle-plugin-life:1.0.0'
         
         ...
         
@@ -48,7 +48,7 @@ buildscript {
 <br>
     
 ```{r, engine='groovy', count_lines}
-apply plugin: 'com.camnter.plugin.life'
+apply plugin: 'com.camnter.gradle.plugin.life'
 ```
 
 <br>

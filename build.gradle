@@ -28,7 +28,7 @@ buildscript {
 
         // local repository
         classpath 'com.jakewharton.butterknife:butterknife-gradle-plugin:1.0.0'
-        classpath 'com.camnter.plugin.life:gradle-plugin-life:1.0.0'
+        classpath 'com.camnter.gradle.plugin.life:gradle-plugin-life:1.0.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

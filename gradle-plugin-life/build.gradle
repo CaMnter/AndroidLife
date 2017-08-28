@@ -22,7 +22,7 @@ dependencies {
     compile 'com.android.tools.build:gradle:2.2.0'
 }
 
-group = 'com.camnter.plugin.life'
+group = 'com.camnter.gradle.plugin.life'
 version = '1.0.0'
 
 sourceSets {
