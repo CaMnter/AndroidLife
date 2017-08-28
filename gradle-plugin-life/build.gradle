@@ -23,7 +23,7 @@ dependencies {
 }
 
 group = 'com.camnter.gradle.plugin.life'
-version = '1.0.0'
+version = '1.0.1'
 
 sourceSets {
     main {
