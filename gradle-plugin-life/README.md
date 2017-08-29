@@ -7,28 +7,25 @@
  
 <br>
     
-```{r, engine='shell', count_lines}
+```shell
 gradle :gradle-plugin-life:uploadArchives 
 ```
 
 <br>
 
-## module build.gradle
+## project build.gradle
  
 <br>
     
-```{r, engine='groovy', count_lines}
-apply plugin: 'com.android.application'
-apply plugin: 'com.camnter.gradle.plugin.life'
-
+```gradle
 buildscript {
     repositories {
     
         ...
         
-        jcenter()
-        mavenLocal()
-        maven { url uri('../gradle-plugin-life/repository') }
+        maven { url uri('../gradle-plugin-life-repository') }
+        
+        ...
         
     }
     dependencies {
@@ -46,11 +43,21 @@ buildscript {
 
 <br>
 
+## module build.gradle
+ 
+<br>
+    
+```gradle
+apply plugin: 'com.camnter.gradle.plugin.life'
+```
+
+<br>
+
 ## execute
 
 <br>
     
-```{r, engine='shell', count_lines}
+```shell
 gradle lifePlugin
 gradle lifeTask
 ```
