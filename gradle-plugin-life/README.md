@@ -33,7 +33,7 @@ buildscript {
         ...
         
         // local repository
-        classpath 'com.camnter.gradle.plugin.life:gradle-plugin-life:1.0.1'
+        classpath 'com.camnter.gradle.plugin.life:gradle-plugin-life:1.0.2'
         
         ...
         
@@ -60,6 +60,7 @@ apply plugin: 'com.camnter.gradle.plugin.life'
 ```shell
 gradle lifePlugin
 gradle lifeTask
+gradle lifeExtensionTask  
 ```
 
 <br>
