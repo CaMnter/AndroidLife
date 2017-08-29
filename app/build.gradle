@@ -5,17 +5,6 @@ apply plugin: 'me.tatarka.retrolambda'
 // apply plugin: RocooFixPlugin
 apply plugin: 'com.camnter.gradle.plugin.life'
 
-buildscript {
-    repositories {
-        jcenter()
-        mavenLocal()
-        maven { url uri('../gradle-plugin-life/repository') }
-    }
-    dependencies {
-        classpath 'com.camnter.gradle.plugin.life:gradle-plugin-life:1.0.1'
-    }
-}
-
 def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }

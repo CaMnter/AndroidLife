@@ -3,6 +3,10 @@ package com.camnter.gradle.plugin.life
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
+class LifePluginExtension {
+    def tag = "[LifePluginExtension]";
+}
+
 class LifePlugin implements Plugin<Project> {
 
     @Override

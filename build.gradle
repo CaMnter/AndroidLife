@@ -16,6 +16,7 @@ buildscript {
 
         // local repository
         maven { url uri('butterknife-8.6.0/repository') }
+        maven { url uri('gradle-plugin-life-repository') }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
@@ -27,6 +28,7 @@ buildscript {
 
         // local repository
         classpath 'com.jakewharton.butterknife:butterknife-gradle-plugin:1.0.0'
+        classpath 'com.camnter.gradle.plugin.life:gradle-plugin-life:1.0.1'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
