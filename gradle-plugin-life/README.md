@@ -13,42 +13,31 @@ gradle :gradle-plugin-life:uploadArchives
 
 <br>
 
-## project build.gradle
- 
-<br>
-    
-```gradle
-buildscript {
-    repositories {
-    
-        ...
-        
-        maven { url uri('../gradle-plugin-life-repository') }
-        
-        ...
-        
-    }
-    dependencies {
-    
-        ...
-        
-        // local repository
-        classpath 'com.camnter.gradle.plugin.life:gradle-plugin-life:1.0.2'
-        
-        ...
-        
-    }
-}
-```
-
-<br>
-
 ## module build.gradle
  
 <br>
     
 ```gradle
 apply plugin: 'com.camnter.gradle.plugin.life'
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        // local repository
+        maven { url uri('../gradle-plugin-life-repository') }
+    }
+    dependencies {
+        // local repository
+        classpath 'com.camnter.gradle.plugin.life:gradle-plugin-life:1.0.2'
+    }
+}
+
+// sample
+lifeExtension {
+    id = "[App Module]   [CaMnter]"
+    save = "[App Module]   [Save you from anything]"
+}
 ```
 
 <br>
