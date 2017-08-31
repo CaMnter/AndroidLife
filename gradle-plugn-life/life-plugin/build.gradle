@@ -17,7 +17,7 @@ dependencies {
     compileOnly localGroovy()
 }
 
-group = 'com.camnter.gradle.plugin.life'
+group = 'com.camnter.gradle.plugin'
 version = '1.0.3'
 
 sourceSets {
@@ -35,7 +35,7 @@ sourceSets {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: uri('../gradle-plugin-life-repository'))
+            repository(url: uri('../repository'))
         }
     }
 }
