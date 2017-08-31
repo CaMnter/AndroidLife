@@ -3,11 +3,12 @@
   <groupId>com.camnter.gradle.plugin.life</groupId>
   <artifactId>gradle-plugin-life</artifactId>
   <versioning>
-    <release>1.0.2</release>
+    <release>1.0.3</release>
     <versions>
       <version>1.0.1</version>
       <version>1.0.2</version>
+      <version>1.0.3</version>
     </versions>
-    <lastUpdated>20170829100143</lastUpdated>
+    <lastUpdated>20170831030405</lastUpdated>
   </versioning>
 </metadata>

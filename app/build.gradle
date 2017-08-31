@@ -3,25 +3,6 @@ apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'me.tatarka.retrolambda'
 // apply from: rootProject.getRootDir().getAbsolutePath() + "/common.gradle"
 // apply plugin: RocooFixPlugin
-apply plugin: 'com.camnter.gradle.plugin.life'
-
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
-        // local repository
-        maven { url uri('../gradle-plugin-life-repository') }
-    }
-    dependencies {
-        // local repository
-        classpath 'com.camnter.gradle.plugin.life:gradle-plugin-life:1.0.2'
-    }
-}
-
-lifeExtension {
-    id = "[App Module]   [CaMnter]"
-    save = "[App Module]   [Save you from anything]"
-}
 
 def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
@@ -215,4 +196,28 @@ task nativeLibsToJar(type: Zip, description: 'create a jar archive of the native
 }
 
 tasks.withType(JavaCompile) { compileTask -> compileTask.dependsOn(nativeLibsToJar)
+}
+
+apply plugin: 'com.camnter.gradle.plugin.life'
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        // local repository
+        maven { url uri('../gradle-plugin-life-repository') }
+    }
+    dependencies {
+        // local repository
+        classpath 'com.camnter.gradle.plugin.life:gradle-plugin-life:1.0.3'
+    }
+}
+
+lifeExtension {
+    id = "[App Module]   [CaMnter]"
+    save = "[App Module]   [Save you from anything]"
+//    nestLifeExtension {
+//        home = "[App Module]   [https://camnter.com]"
+//        email = "[App Module]   [yuanyu.camnter@gmail.com]"
+//    }
 }

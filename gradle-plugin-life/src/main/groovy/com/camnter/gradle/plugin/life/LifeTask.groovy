@@ -3,7 +3,7 @@ package com.camnter.gradle.plugin.life
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
-class LifeTask extends DefaultTask {
+public class LifeTask extends DefaultTask {
 
     @TaskAction
     void output() {

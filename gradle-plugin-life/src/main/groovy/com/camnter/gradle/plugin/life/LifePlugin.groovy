@@ -3,12 +3,7 @@ package com.camnter.gradle.plugin.life
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-class LifePluginExtension {
-    def id = "[CaMnter]"
-    def save = "[Save you from anything]"
-}
-
-class LifePlugin implements Plugin<Project> {
+public class LifePlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
@@ -18,7 +13,8 @@ class LifePlugin implements Plugin<Project> {
 
         project.task('lifeTask', type: LifeTask)
 
-        project.extensions.create("lifeExtension", LifePluginExtension)
+        project.extensions.create('lifeExtension', LifePluginExtension)
+        project.lifeExtension.extensions.create('nestLifeExtension', NestLifePluginExtension)
         project.task('lifeExtensionTask', type: LifeExtensionTask)
     }
 }
