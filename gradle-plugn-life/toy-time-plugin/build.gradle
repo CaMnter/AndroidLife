@@ -1,0 +1,41 @@
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+buildscript {
+    dependencies {
+        classpath 'org.codehaus.groovy:groovy-all:2.4.1'
+    }
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+}
+
+dependencies {
+    compileOnly gradleApi()
+    compileOnly localGroovy()
+}
+
+group = 'com.camnter.gradle.plugin'
+version = '1.0.0'
+
+sourceSets {
+    main {
+        groovy {
+            srcDir 'src/main/groovy'
+        }
+
+        java {
+            srcDir 'src/main/java'
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../repository'))
+        }
+    }
+}
