@@ -9,6 +9,10 @@ import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.TaskState
 import org.gradle.internal.time.Clock
 
+/**
+ * @author CaMnter
+ */
+
 class ToyTimeListener implements TaskExecutionListener, BuildListener {
 
     def Clock clock
@@ -30,7 +34,16 @@ class ToyTimeListener implements TaskExecutionListener, BuildListener {
     @Override
     void afterExecute(Task task, TaskState taskState) {
         def elapsedMillis = this.clock.elapsedMillis
-        times.add([elapsedMillis, task.path])
+        final String keyword = task.project.toyTimeExtension.keyword
+        if (elapsedMillis >= task.project.toyTimeExtension.minElapsedMillis) {
+            if (keyword != null && keyword.length() > 0) {
+                if (task.path.contains(keyword)) {
+                    times.add([elapsedMillis, task.path])
+                }
+            } else {
+                times.add([elapsedMillis, task.path])
+            }
+        }
         task.project.logger.info "${task.path} spend ${elapsedMillis}ms"
     }
 

@@ -29,7 +29,7 @@ buildscript {
     }
     dependencies {
         // local repository
-        classpath 'com.camnter.gradle.plugin.toytime:toy-time-plugin:1.0.0'
+        classpath 'com.camnter.gradle.plugin.toytime:toy-time-plugin:1.0.1'
     }
 }
 ```
