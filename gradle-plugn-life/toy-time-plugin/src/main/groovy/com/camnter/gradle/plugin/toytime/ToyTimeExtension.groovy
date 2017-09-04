@@ -6,7 +6,7 @@ package com.camnter.gradle.plugin.toytime;
 
 public class ToyTimeExtension {
 
-    def keyword = "";
-    def minElapsedMillis = 50;
+    def keyword = ''
+    def minElapsedMillis = 50
 
 }

@@ -2,6 +2,7 @@ package com.camnter.gradle.plugin.toytime
 
 import org.gradle.BuildListener
 import org.gradle.BuildResult
+import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionListener
 import org.gradle.api.initialization.Settings
@@ -15,11 +16,23 @@ import org.gradle.internal.time.Clock
 
 class ToyTimeListener implements TaskExecutionListener, BuildListener {
 
+    def Project project
+
     def Clock clock
     def times = []
 
+    def keyword = ''
+    def minElapsedMillis = 0
+
+    public ToyTimeListener(Project target) {
+        project = target
+    }
+
     @Override
     void buildFinished(BuildResult buildResult) {
+        printf "\n%-17s   =  %s", ["[keyword]", this.keyword]
+        printf "\n%-17s  =  %s\n\n", ["[minElapsedMillis]", this.minElapsedMillis]
+
         println "Task spend time:"
         for (time in times) {
             printf "%7sms  %s\n", time
@@ -34,9 +47,8 @@ class ToyTimeListener implements TaskExecutionListener, BuildListener {
     @Override
     void afterExecute(Task task, TaskState taskState) {
         def elapsedMillis = this.clock.elapsedMillis
-        final String keyword = task.project.toyTimeExtension.keyword
-        if (elapsedMillis >= task.project.toyTimeExtension.minElapsedMillis) {
-            if (keyword != null && keyword.length() > 0) {
+        if (elapsedMillis >= minElapsedMillis) {
+            if (null != keyword && keyword.length() > 0) {
                 if (task.path.contains(keyword)) {
                     times.add([elapsedMillis, task.path])
                 }
@@ -57,5 +69,9 @@ class ToyTimeListener implements TaskExecutionListener, BuildListener {
     void projectsLoaded(Gradle gradle) {}
 
     @Override
-    void projectsEvaluated(Gradle gradle) {}
+    void projectsEvaluated(Gradle gradle) {
+        def toyTimeExtension = project.extensions.getByName('toyTimeExtension')
+        this.keyword = toyTimeExtension.keyword
+        this.minElapsedMillis = toyTimeExtension.minElapsedMillis
+    }
 }

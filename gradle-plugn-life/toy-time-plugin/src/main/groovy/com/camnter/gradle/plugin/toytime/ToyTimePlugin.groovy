@@ -17,6 +17,6 @@ class ToyTimePlugin implements Plugin<Project> {
     @Override
     void apply(Project target) {
         target.extensions.create('toyTimeExtension', ToyTimeExtension)
-        target.gradle.addListener(new ToyTimeListener())
+        target.gradle.addListener(new ToyTimeListener(target))
     }
 }
