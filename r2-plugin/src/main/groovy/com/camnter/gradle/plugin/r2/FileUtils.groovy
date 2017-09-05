@@ -15,26 +15,26 @@ class FileUtils {
         if (isRooted(relative)) return relative
         def baseName = file.toString()
         def fileName
-        if (baseName.isEmpty() || baseName.endsWith(File.separatorChar)) {
+        if (baseName.isEmpty() || baseName.endsWith(String.valueOf(File.separatorChar))) {
             fileName = baseName + relative
         } else {
-            fileName = baseName + File.separatorChar + relative
+            fileName = baseName + String.valueOf(File.separatorChar) + relative
         }
         return fileName
     }
 
     public static int getRootLength(String path) {
         // Note: separators should be already replaced to system ones
-        def first = path.indexOf(File.separatorChar, 0)
+        def first = path.indexOf(String.valueOf(File.separatorChar), 0)
         def length = path.length()
         if (first == 0) {
             if (length > 1 && (Character.valueOf(path[1])) == File.separatorChar) {
                 // Network names like //my.host/home/something ? => //my.host/home/ should be root
                 // NB: does not work in Unix because //my.host/home is converted into /my.host/home there
                 // So in Windows we'll have root of //my.host/home but in Unix just /
-                first = path.indexOf(File.separatorChar, 2)
+                first = path.indexOf(String.valueOf(File.separatorChar), 2)
                 if (first >= 0) {
-                    first = path.indexOf(File.separatorChar, first + 1)
+                    first = path.indexOf(String.valueOf(File.separatorChar), first + 1)
                     if (first >= 0) return first + 1 else return length
                 }
             }

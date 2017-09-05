@@ -47,12 +47,12 @@ class R2Plugin implements Plugin<Project> {
                 // 在 processResources 阶段添加任务
                 processResources.doLast {
                     // 拿到 R 文件路径，替换分隔符
-                    def String pathToR = processResources.packageForR.replace('.',
-                            File.separatorChar)
+                    def String pathToR = processResources.packageForR.replace(".",
+                            String.valueOf(File.separatorChar))
                     // 拿到 R 文件
-                    def File rFile = FileUtils.resolve(
+                    def File rFile = new File(FileUtils.resolve(
                             new File(FileUtils.resolve(processResources.sourceOutputDir, pathToR)),
-                            "R.java")
+                            "R.java"))
                     // JavaPoet + JavaParser 生成 R2.java
                     println "[R2Plugin]   [applyPlugin]   [rFile] = ${rFile.toString()}"
                     R2ClassBuilder.brewJava(rFile, processResources.sourceOutputDir,
