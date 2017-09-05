@@ -1,4 +1,4 @@
-include ':app',
+include ':app', ':r2-plugin',
 
         ':gradle-plugn-life:toy-time-plugin',
         ':gradle-plugn-life:life-plugin',

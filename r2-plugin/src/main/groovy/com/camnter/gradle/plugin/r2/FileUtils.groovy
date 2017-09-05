@@ -1,0 +1,56 @@
+package com.camnter.gradle.plugin.r2
+
+/**
+ * Refer to the  kotlin source code
+ *
+ * kotlin/io/files/FilePathComponents.kt
+ * kotlin/io/files/Utils.kt
+ *
+ * @author CaMnter
+ */
+
+class FileUtils {
+
+    public static String resolve(File file, String relative) {
+        if (isRooted(relative)) return relative
+        def baseName = file.toString()
+        def fileName
+        if (baseName.isEmpty() || baseName.endsWith(File.separatorChar)) {
+            fileName = baseName + relative
+        } else {
+            fileName = baseName + File.separatorChar + relative
+        }
+        return fileName
+    }
+
+    public static int getRootLength(String path) {
+        // Note: separators should be already replaced to system ones
+        def first = path.indexOf(File.separatorChar, 0)
+        def length = path.length()
+        if (first == 0) {
+            if (length > 1 && (Character.valueOf(path[1])) == File.separatorChar) {
+                // Network names like //my.host/home/something ? => //my.host/home/ should be root
+                // NB: does not work in Unix because //my.host/home is converted into /my.host/home there
+                // So in Windows we'll have root of //my.host/home but in Unix just /
+                first = path.indexOf(File.separatorChar, 2)
+                if (first >= 0) {
+                    first = path.indexOf(File.separatorChar, first + 1)
+                    if (first >= 0) return first + 1 else return length
+                }
+            }
+            return 1
+        }
+        // C:\
+        if (first > 0 && path[first - 1] == ':') {
+            first++
+            return first
+        }
+        // C:
+        if (first == -1 && path.endsWith(':')) return length
+        return 0
+    }
+
+    public static boolean isRooted(String relative) {
+        return getRootLength(relative) > 0
+    }
+}
