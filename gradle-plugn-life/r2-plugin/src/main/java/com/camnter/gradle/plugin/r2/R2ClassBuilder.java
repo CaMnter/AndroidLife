@@ -72,7 +72,7 @@ public final class R2ClassBuilder {
         }
 
         JavaFile finalR = JavaFile.builder(packageName, result.build())
-            .addFileComment("Generated code from Butter Knife gradle plugin. Do not modify!")
+            .addFileComment("Generated code from gradle plugin. Do not modify!")
             .build();
 
         finalR.writeTo(outputDir);
