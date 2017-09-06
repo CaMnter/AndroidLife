@@ -25,6 +25,7 @@ import static javax.lang.model.element.Modifier.STATIC;
  * Also enables adding support annotations to indicate the type of resource for every field.
  */
 public final class R2ClassBuilder {
+
     private static final String SUPPORT_ANNOTATION_PACKAGE = "android.support.annotation";
     private static final String[] SUPPORTED_TYPES = {
         "array", "attr", "bool", "color", "dimen", "drawable", "id", "integer", "string"
@@ -41,7 +42,7 @@ public final class R2ClassBuilder {
      * @param outputDir R2.java 输出文件夹
      * @param packageName 包名
      * @param className R2 name
-     * @throws Exception
+     * @throws Exception exception
      */
     public static void brewJava(File rFile, File outputDir, String packageName, String className)
         throws Exception {
@@ -179,4 +180,5 @@ public final class R2ClassBuilder {
     private static String capitalize(String word) {
         return Character.toUpperCase(word.charAt(0)) + word.substring(1);
     }
+
 }
