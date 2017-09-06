@@ -1,5 +1,6 @@
-include ':app', ':r2-plugin',
+include ':app',
 
+        ':gradle-plugn-life:r2-plugin',
         ':gradle-plugn-life:toy-time-plugin',
         ':gradle-plugn-life:life-plugin',
 
