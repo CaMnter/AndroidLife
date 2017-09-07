@@ -43,22 +43,27 @@ class R2Plugin implements Plugin<Project> {
             variant.outputs.forEach { output ->
                 // ProcessAndroidResources
                 def ProcessAndroidResources processResources = output.processResources
-                // TODO proper task registered as source-generating?
-                // 在 processResources 阶段添加任务
-                processResources.doLast {
-                    // 拿到 R 文件路径，替换分隔符
-                    println "[R2Plugin]   [applyPlugin]   [packageForR]    [before] = ${processResources.packageForR}"
-                    def String pathToR = processResources.packageForR.replace(".",
-                            FileUtils.FILE_SEPARATOR)
-                    println "[R2Plugin]   [applyPlugin]   [packageForR]    [after]  = ${pathToR}"
-                    // 拿到 R 文件
-                    def File rFile = new File(FileUtils.resolve(
-                            new File(FileUtils.resolve(processResources.sourceOutputDir, pathToR)),
-                            "R.java"))
-                    // JavaPoet + JavaParser 生成 R2.java
-                    println "[R2Plugin]   [applyPlugin]   [rFile] = ${rFile.path}"
-                    R2ClassBuilder.brewJava(rFile, processResources.sourceOutputDir,
-                            processResources.packageForR, "R2")
+                if (processResources != null) {
+                    // TODO proper task registered as source-generating?
+                    // 在 processResources 阶段添加任务
+                    processResources.doLast {
+                        // 拿到 R 文件路径，替换分隔符
+                        println "[R2Plugin]   [applyPlugin]   [packageForR]    [before] = ${processResources.packageForR}"
+                        if (processResources.packageForR == null) {
+                            return
+                        }
+                        def String pathToR = processResources.packageForR.replace(".",
+                                FileUtils.FILE_SEPARATOR)
+                        println "[R2Plugin]   [applyPlugin]   [packageForR]    [after]  = ${pathToR}"
+                        // 拿到 R 文件
+                        def File rFile = new File(FileUtils.resolve(new File(
+                                FileUtils.resolve(processResources.sourceOutputDir, pathToR)),
+                                "R.java"))
+                        // JavaPoet + JavaParser 生成 R2.java
+                        println "[R2Plugin]   [applyPlugin]   [rFile] = ${rFile.path}"
+                        R2ClassBuilder.brewJava(rFile, processResources.sourceOutputDir,
+                                processResources.packageForR, "R2")
+                    }
                 }
             }
         }
