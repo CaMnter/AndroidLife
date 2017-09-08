@@ -207,13 +207,14 @@ buildscript {
     }
     dependencies {
         // local repository
+        classpath 'com.camnter.gradle.plugin:r2-plugin:1.0.1'
         classpath 'com.camnter.gradle.plugin:life-plugin:1.0.3'
         classpath 'com.camnter.gradle.plugin:toy-time-plugin:1.0.2'
     }
 }
 
 /***************
- * life plugin *
+ * Life plugin *
  ***************/
 
 apply plugin: 'com.camnter.gradle.plugin.life'
@@ -237,3 +238,9 @@ toyTimeExtension {
     keyword = ''
     minElapsedMillis = 10
 }
+
+/*************
+ * R2 plugin *
+ *************/
+
+apply plugin: 'com.camnter.gradle.plugin.r2'
