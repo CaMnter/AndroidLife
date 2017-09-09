@@ -6,9 +6,13 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        google()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'http://android-mirror.bugly.qq.com:8080/' }
         maven { url "https://plugins.gradle.org/m2/" }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
         //        ivy {
         //         URL can refer to a local directory
         //        maven { url '// url "../local-repo"' }
@@ -18,7 +22,7 @@ buildscript {
         maven { url uri('butterknife-8.6.0/repository') }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta2'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.4'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.6.0'
@@ -32,15 +36,21 @@ buildscript {
     }
 }
 
-allprojects {
+subprojects { project ->
     repositories {
         jcenter()
         mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'http://android-mirror.bugly.qq.com:8080/' }
         maven { url "https://plugins.gradle.org/m2/" }
+        google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
+}
 
+allprojects {
     // 有版本冲突的时候强制使用指定的版本，对于相关依赖也同样有效
     configurations.all {
         resolutionStrategy.force rootProject.ext.denpendencies["support-v7"]

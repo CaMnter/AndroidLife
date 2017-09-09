@@ -10,8 +10,11 @@ buildscript {
         classpath 'org.codehaus.groovy:groovy-all:2.4.1'
     }
     repositories {
-        mavenLocal()
-        jcenter()
+        mavenCentral()
+        google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 }
 
