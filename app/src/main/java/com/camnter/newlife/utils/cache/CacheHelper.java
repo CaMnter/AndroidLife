@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.util.LruCache;
 import java.lang.ref.SoftReference;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Description：CacheHelper
@@ -72,7 +73,7 @@ public abstract class CacheHelper {
              * @return
              */
             @Override
-            protected boolean removeEldestEntry(Entry<String, SoftReference<Object>> eldest) {
+            protected boolean removeEldestEntry(Map.Entry<String, SoftReference<Object>> eldest) {
                 return this.size() > SOFT_CACHE_SIZE;
             }
         };

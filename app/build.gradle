@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
-apply plugin: 'me.tatarka.retrolambda'
 // apply from: rootProject.getRootDir().getAbsolutePath() + "/common.gradle"
 // apply plugin: RocooFixPlugin
 
@@ -61,17 +60,38 @@ android {
             manifestPlaceholders = [DEBUG: "debug"]
 
             // app-debug-androidTest-unaligned.apk
-            applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def outputFile = output.outputFile
-                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        def fileName = "app-debug-androidTest-unaligned.apk"
-                        println("====== buildTypes.output ======")
-                        println("AppName: " + fileName)
-                        output.outputFile = new File(outputFile.parent, fileName)
-                    }
+            /**
+             * 作为 Android 插件 3.0 迁移指南建议
+             *
+             * 使用 all() 而不是 each()
+             * 使用 outputFileName 而不是 output.outputFile 如果你只更改文件名（就是你的情况）
+             *
+             * If you use each() to iterate through the variant objects,
+             * you need to start using all(). That's because each() iterates
+             * through only the objects that already exist during configuration time—
+             * but those object don't exist at configuration time with the new model.
+             * However, all() adapts to the new model by picking up object as they are
+             * added during execution.
+             */
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    def fileName = "app-debug-androidTest-unaligned.apk"
+                    println("====== buildTypes.output ======")
+                    println("AppName: " + fileName)
+                    outputFileName = fileName
                 }
             }
+            //            android.applicationVariants.all { variant ->
+            //                variant.outputs.each { output ->
+            //                    def outputFile = output.outputFile
+            //                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+            //                        def fileName = "app-debug-androidTest-unaligned.apk"
+            //                        println("====== buildTypes.output ======")
+            //                        println("AppName: " + fileName)
+            //                        output.outputFile = new File(outputFile.parent, fileName)
+            //                    }
+            //                }
+            //            }
         }
     }
 
@@ -222,10 +242,10 @@ apply plugin: 'com.camnter.gradle.plugin.life'
 lifeExtension {
     id = "[App Module]   [CaMnter]"
     save = "[App Module]   [Save you from anything]"
-//    nestLifeExtension {
-//        home = "[App Module]   [https://camnter.com]"
-//        email = "[App Module]   [yuanyu.camnter@gmail.com]"
-//    }
+    //    nestLifeExtension {
+    //        home = "[App Module]   [https://camnter.com]"
+    //        email = "[App Module]   [yuanyu.camnter@gmail.com]"
+    //    }
 }
 
 /******************
@@ -243,4 +263,4 @@ toyTimeExtension {
  * R2 plugin *
  *************/
 
-apply plugin: 'com.camnter.gradle.plugin.r2'
+//apply plugin: 'com.camnter.gradle.plugin.r2'
