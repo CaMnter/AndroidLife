@@ -59,7 +59,10 @@ class ButterKnifePlugin : Plugin<Project> {
     private fun configureR2Generation(project: Project, variants: DomainObjectSet<out BaseVariant>) {
         // 遍历 DomainObjectSet<out BaseVariant>
         variants.all { variant ->
-            // 获取每个 output 文件夹 File
+            /**
+             * 获取每个 output 文件夹 File
+             * generated/source/r2/{package name}/
+             */
             val outputDir = project.buildDir.resolve(
                     "generated/source/r2/${variant.dirName}")
 
