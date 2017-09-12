@@ -1,19 +1,5 @@
 package com.camnter.gradle.plugin.r2
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.AppPlugin
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.LibraryPlugin
-import com.android.build.gradle.api.BaseVariant
-import com.android.build.gradle.tasks.ProcessAndroidResources
-import org.gradle.api.DomainObjectSet
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-
-/**
- * @author CaMnter
- */
-
 import com.android.build.gradle.*
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.tasks.ProcessAndroidResources
@@ -55,12 +41,13 @@ class R2Plugin implements Plugin<Project> {
         }
     }
 
-    private void configureR2Generation(Project project, DomainObjectSet<BaseVariant> variants) {
+    private static void configureR2Generation(Project project, DomainObjectSet<BaseVariant> variants) {
         println "[R2Plugin]   [applyPlugin]"
         // 遍历 DomainObjectSet<out BaseVariant>
         variants.all { variant ->
             // 获取每个 output 文件夹 File
-            File outputDir = project.buildDir.resolve("generated/source/r2/${variant.dirName}")
+            File outputDir = new File(
+                    FileUtils.resolve(project.buildDir, "generated/source/r2/${variant.dirName}"))
             // 创建对应的 R2 任务
             Task task = project.tasks.create("generate${variant.name.capitalize()}R2")
             // 设置 R2 任务的 输出目录 File
@@ -68,7 +55,7 @@ class R2Plugin implements Plugin<Project> {
             // 注册任务
             variant.registerJavaGeneratingTask(task, outputDir)
 
-            AtomicBoolean once = AtomicBoolean()
+            AtomicBoolean once = new AtomicBoolean()
 
             // 遍历 DomainObjectCollection<BaseVariantOutput>
             variant.outputs.all { output ->
@@ -84,18 +71,17 @@ class R2Plugin implements Plugin<Project> {
                     // 拿到 R 文件夹路径
                     String rPackage = processResources.packageForR
                     // 替换 R 文件夹路径 的 分隔符
-                    String pathToR = rPackage.replace('.', FileUtils.separatorChar)
+                    String pathToR = rPackage.replace('.', FileUtils.FILE_SEPARATOR)
                     // 拿到 R 文件
                     File rFile = new File(FileUtils.resolve(
                             new File(FileUtils.resolve(processResources.sourceOutputDir, pathToR)),
                             "R.java"))
-                    task.apply {
-                        // 注册 R File 到任务内
-                        inputs.file(rFile)
-                        // JavaPoet + JavaParser 生成 R2.java
-                        doLast {
-                            R2ClassBuilder.brewJava(rFile, outputDir, rPackage, "R2")
-                        }
+
+                    // 注册 R File 到任务内
+                    task.inputs.file(rFile)
+                    // JavaPoet + JavaParser 生成 R2.java
+                    task.doLast {
+                        R2ClassBuilder.brewJava(rFile, outputDir, rPackage, "R2")
                     }
                 }
             }

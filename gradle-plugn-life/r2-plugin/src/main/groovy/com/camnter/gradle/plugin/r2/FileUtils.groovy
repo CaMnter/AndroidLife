@@ -11,9 +11,9 @@ package com.camnter.gradle.plugin.r2
 
 class FileUtils {
 
-    static FILE_SEPARATOR = String.valueOf(File.separatorChar) as String
+    public static FILE_SEPARATOR = String.valueOf(File.separatorChar) as String
 
-    public static String resolve(File file, String relative) {
+    static String resolve(File file, String relative) {
         if (isRooted(relative)) return relative
         def baseName = file.toString()
         def fileName
@@ -25,7 +25,7 @@ class FileUtils {
         return fileName
     }
 
-    public static int getRootLength(String path) {
+    static int getRootLength(String path) {
         // Note: separators should be already replaced to system ones
         def first = path.indexOf(FILE_SEPARATOR, 0)
         def length = path.length()
@@ -52,7 +52,7 @@ class FileUtils {
         return 0
     }
 
-    public static boolean isRooted(String relative) {
+    static boolean isRooted(String relative) {
         return getRootLength(relative) > 0
     }
 }
