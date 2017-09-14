@@ -223,7 +223,7 @@ buildscript {
         jcenter()
         mavenCentral()
         // local repository
-        maven { url uri('../gradle-plugn-life/repository') }
+        maven { url uri('../gradle-plugin-life/repository') }
     }
     dependencies {
         // local repository

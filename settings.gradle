@@ -1,8 +1,8 @@
 include ':app',
 
-        ':gradle-plugn-life:r2-plugin',
-        ':gradle-plugn-life:toy-time-plugin',
-        ':gradle-plugn-life:life-plugin',
+        ':gradle-plugin-life:r2-plugin',
+        ':gradle-plugin-life:toy-time-plugin',
+        ':gradle-plugin-life:life-plugin',
 
         ':arouter-1.1.3:arouter-api',
         ':arouter-1.1.3:arouter-compiler',
