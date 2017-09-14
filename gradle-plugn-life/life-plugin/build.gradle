@@ -4,7 +4,7 @@ apply plugin: 'maven'
 
 buildscript {
     dependencies {
-        classpath 'org.codehaus.groovy:groovy-all:2.4.1'
+        classpath 'org.codehaus.groovy:groovy-all:2.4.7'
     }
     repositories {
         mavenLocal()
