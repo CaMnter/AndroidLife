@@ -227,7 +227,7 @@ buildscript {
     }
     dependencies {
         // local repository
-        classpath 'com.camnter.gradle.plugin:r2-plugin:1.0.1'
+        classpath 'com.camnter.gradle.plugin:r2-plugin:1.0.2'
         classpath 'com.camnter.gradle.plugin:life-plugin:1.0.3'
         classpath 'com.camnter.gradle.plugin:toy-time-plugin:1.0.2'
     }
@@ -263,4 +263,4 @@ toyTimeExtension {
  * R2 plugin *
  *************/
 
-//apply plugin: 'com.camnter.gradle.plugin.r2'
+apply plugin: 'com.camnter.gradle.plugin.r2'
