@@ -21,7 +21,7 @@ buildscript {
 dependencies {
     compileOnly gradleApi()
     compileOnly localGroovy()
-    implementation 'com.android.tools.build:gradle:3.0.0-beta5'
+    implementation 'com.android.tools.build:gradle:3.0.0-beta6'
 }
 
 group = 'com.camnter.gradle.plugin'
