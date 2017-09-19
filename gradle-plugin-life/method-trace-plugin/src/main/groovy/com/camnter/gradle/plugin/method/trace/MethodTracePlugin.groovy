@@ -1,5 +1,6 @@
 package com.camnter.gradle.plugin.method.trace
 
+import com.camnter.gradle.plugin.method.trace.task.MethodExpectTraceTask
 import com.camnter.gradle.plugin.method.trace.task.MethodWholeTraceTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -18,5 +19,6 @@ class MethodTracePlugin implements Plugin<Project> {
     @Override
     void apply(Project target) {
         target.task('methodWholeTraceTask', type: MethodWholeTraceTask)
+        target.task('methodExpectTraceTask', type: MethodExpectTraceTask)
     }
 }

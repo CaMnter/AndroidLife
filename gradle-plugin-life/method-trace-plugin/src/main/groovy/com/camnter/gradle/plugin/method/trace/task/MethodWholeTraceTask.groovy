@@ -5,6 +5,10 @@ import com.camnter.gradle.plugin.method.trace.utils.FileUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
+/**
+ * @author CaMnter
+ */
+
 class MethodWholeTraceTask extends DefaultTask {
 
     @TaskAction
