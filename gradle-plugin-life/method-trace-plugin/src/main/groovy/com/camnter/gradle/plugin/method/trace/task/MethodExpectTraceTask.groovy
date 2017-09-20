@@ -36,8 +36,8 @@ class MethodExpectTraceTask extends DefaultTask {
             if (it.isFile() && fileName.endsWith('.txt') &&
                     !fileName.endsWith('_enter.txt') &&
                     !fileName.endsWith('_enterExit.txt')) {
-                printf '%-60s  =  %s', 'MethodExpectTraceTask]   [main]   [fileName]'
-                println " = ${fileName}"
+                printf "%-60s  =  %s",
+                        ["[MethodExpectTraceTask]   [main]   [fileName]", "${fileName}\n"]
                 def expectEnterTxtName = fileName.replace('.txt', '_enter.txt')
                 def expectEnterExitTextName = fileName.replace('.txt', '_enterExit.txt')
 
@@ -65,10 +65,10 @@ class MethodExpectTraceTask extends DefaultTask {
                         expectEnterExitFile.append("${line}\n")
                     }
                 }
-                printf '%-60s  =  %s', '[MethodExpectTraceTask]   [main]   [expectEnterFile]'
-                println " = ${expectEnterFile.path}"
-                printf '%-60s  =  %s', '[MethodExpectTraceTask]   [main]   [expectEnterExitFile]'
-                println " = ${expectEnterExitFile.path}"
+                printf "%-60s  =  %s",
+                        ["[MethodExpectTraceTask]   [main]   [expectEnterFile]", "${expectEnterFile.path}\n"]
+                printf "%-60s  =  %s",
+                        ["[MethodExpectTraceTask]   [main]   [expectEnterExitFile]", "${expectEnterExitFile.path}\n"]
             }
         }
     }

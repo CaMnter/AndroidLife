@@ -222,6 +222,12 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url "https://plugins.gradle.org/m2/" }
+        google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
         // local repository
         maven { url uri('../gradle-plugin-life/repository') }
     }
@@ -230,6 +236,7 @@ buildscript {
         classpath 'com.camnter.gradle.plugin:r2-plugin:1.0.3'
         classpath 'com.camnter.gradle.plugin:life-plugin:1.0.3'
         classpath 'com.camnter.gradle.plugin:toy-time-plugin:1.0.2'
+        classpath 'com.camnter.gradle.plugin:method-trace-plugin:1.0.1'
     }
 }
 
@@ -264,3 +271,9 @@ toyTimeExtension {
  *************/
 
 apply plugin: 'com.camnter.gradle.plugin.r2'
+
+/****************
+ * Method trace *
+ ****************/
+
+apply plugin: 'com.camnter.gradle.plugin.method.trace'
