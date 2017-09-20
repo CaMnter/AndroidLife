@@ -17,9 +17,15 @@ class MethodExpectTraceTask extends DefaultTask {
     @TaskAction
     void main() {
         println '[MethodExpectTraceTask]   [main]'
-        def packageName = 'com.camnter'
+        def packageName = ''
         if (project.hasProperty('packageName')) {
             packageName = project.getProject('packageName')
+        }
+
+        packageName = project.methodTraceExtension.packageName
+        if ('' == packageName || null == packageName) {
+            project.logger.error "[MethodExpectTraceTask]  Task failure, because packageName is required"
+            return
         }
 
         def packageNameSignature = packageName.replaceAll('[.]', '/')

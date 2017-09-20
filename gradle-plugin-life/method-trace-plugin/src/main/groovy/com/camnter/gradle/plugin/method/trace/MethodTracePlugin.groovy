@@ -20,5 +20,6 @@ class MethodTracePlugin implements Plugin<Project> {
     void apply(Project target) {
         target.task('methodWholeTraceTask', type: MethodWholeTraceTask)
         target.task('methodExpectTraceTask', type: MethodExpectTraceTask)
+        target.extensions.create('methodTraceExtension', MethodTraceExtension)
     }
 }
