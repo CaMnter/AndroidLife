@@ -1,9 +1,10 @@
-include ':app', ':resources-size-plugin',
+include ':app',
 
         ':gradle-plugin-life:r2-plugin',
         ':gradle-plugin-life:toy-time-plugin',
         ':gradle-plugin-life:life-plugin',
         ':gradle-plugin-life:method-trace-plugin',
+        ':gradle-plugin-life:resources-size-plugin',
 
         ':arouter-1.1.3:arouter-api',
         ':arouter-1.1.3:arouter-compiler',
