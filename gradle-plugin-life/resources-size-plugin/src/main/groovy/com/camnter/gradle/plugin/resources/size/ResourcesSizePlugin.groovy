@@ -67,27 +67,43 @@ class ResourcesSizePlugin implements Plugin<Project> {
                     resourcesDir = "merged/${it.productFlavors[0].name}"
                 }
 
+                def capitalize = it.name.capitalize()
                 def processResourceTask = project.tasks.findByName(
                         "process${it.name.capitalize()}Resources")
-                def taskName = "resourcesSize${it.name.capitalize()}"
+                def taskName = "resourcesSize${capitalize}"
 
                 project.task(taskName) {
                     doLast {
                         def resourcesDirFile = new File(
                                 "${project.projectDir}/build/intermediates/res/${resourcesDir}/")
-                        def bigImagePathList = []
+                        def bigImagePathList = ([] as LinkedList<ArrayList<String>>)
                         resourcesDirFile.traverse {
                             def fileName = it.name
                             if (fileName.contains('drawable') || fileName.contains('mipmap')) {
                                 // TODO
                                 if (ImageUtils.checkImageSize(it, 1024 * 100 /*100kb*/)) {
-                                    bigImagePathList << [((float) it.length() / 1024.0f).round(2) +
-                                                                 ' kb', it.path]
+                                    def name = it.path.
+                                            replace('.flat' as String, '').
+                                            replace(resourcesDirFile.path as String,
+                                                    '').
+                                            replace(capitalize.toLowerCase() as String,
+                                                    '')
+                                            .replaceAll('/', '')
+                                    bigImagePathList << (["${((float) it.length() / 1024.0f).round(2)}kb", name] as ArrayList<String>)
                                 }
                             }
                         }
                         if (bigImagePathList.size() > 0) {
-                            println "[ResourcesSizePlugin]   [${taskName}] :"
+                            printf "%-21s >> \n", ['[ResourcesSizePlugin]']
+                            printf "%-21s >> %s\n", ['[TaskName]', taskName]
+                            printf "%-21s >> %s\n",
+                                    ['[Directory]', resourcesDirFile]
+                            // sort
+                            bigImagePathList.sort { current, next ->
+                                (current.get(0).
+                                        replace('kb' as String, '') as Float) <=> (next.get(0).
+                                        replace('kb' as String, '') as Float)
+                            }
                         }
                         bigImagePathList.each {
                             printf "%10s : %s\n", it
