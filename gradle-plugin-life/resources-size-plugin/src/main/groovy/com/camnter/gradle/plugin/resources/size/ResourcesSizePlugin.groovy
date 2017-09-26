@@ -21,6 +21,7 @@ class ResourcesSizePlugin implements Plugin<Project> {
     @Override
     void apply(Project target) {
         println "[ResourcesSizePlugin]"
+        target.extensions.create('resourcesSizeExtension', ResourcesSizeExtension)
         // variants
         target.plugins.all {
             if (it instanceof FeaturePlugin) {
@@ -41,7 +42,6 @@ class ResourcesSizePlugin implements Plugin<Project> {
     private void execute(Project project, DomainObjectSet<BaseVariant> variants) {
         // debug or assemble
         def taskNames = project.gradle.startParameter.taskNames
-        // TODO
         def debugTask = false
         def containAssembleTask = false
 
@@ -56,7 +56,13 @@ class ResourcesSizePlugin implements Plugin<Project> {
             }
         }
 
-        // TODO assemble
+        if (debugTask && !project.resourcesSizeExtension.debugAble) {
+            return
+        }
+
+        if (containAssembleTask && !project.resourcesSizeExtension.debugAble) {
+            return
+        }
 
         project.afterEvaluate {
             variants.all {
@@ -80,8 +86,9 @@ class ResourcesSizePlugin implements Plugin<Project> {
                         resourcesDirFile.traverse {
                             def fileName = it.name
                             if (fileName.contains('drawable') || fileName.contains('mipmap')) {
-                                // TODO
-                                if (ImageUtils.checkImageSize(it, 1024 * 100 /*100kb*/)) {
+                                if (ImageUtils.checkImageSize(it,
+                                        1024 * project.resourcesSizeExtension.maxSize
+                                        /* default 100kb*/)) {
                                     def name = it.path.
                                             replace('.flat' as String, '').
                                             replace(resourcesDirFile.path as String,
@@ -98,6 +105,7 @@ class ResourcesSizePlugin implements Plugin<Project> {
                             printf "%-21s >> %s\n", ['[TaskName]', taskName]
                             printf "%-21s >> %s\n",
                                     ['[Directory]', resourcesDirFile]
+                            printf "%-21s >> \n", ['[BigImage]']
                             // sort
                             bigImagePathList.sort { current, next ->
                                 (current.get(0).
