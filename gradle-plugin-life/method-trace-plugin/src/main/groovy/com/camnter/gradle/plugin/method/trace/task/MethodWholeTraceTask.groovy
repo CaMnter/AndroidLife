@@ -26,7 +26,7 @@ class MethodWholeTraceTask extends DefaultTask {
 
             // DmTraceDump command
             def command = "${platformToolsPath}/dmtracedump  -ho ${it.absolutePath} >> ${txtFile.absolutePath}"
-            println "[MethodWholeTraceTask]   [main]   [command] == ${command}"
+            printf "%43s : %s\n", ['[MethodWholeTraceTask]   [main]   [command]', command]
 
             def osName = System.getProperty("os.name").toLowerCase()
 

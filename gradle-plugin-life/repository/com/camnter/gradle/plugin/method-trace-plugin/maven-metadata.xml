@@ -3,13 +3,14 @@
   <groupId>com.camnter.gradle.plugin</groupId>
   <artifactId>method-trace-plugin</artifactId>
   <versioning>
-    <release>1.1.1</release>
+    <release>1.1.2</release>
     <versions>
       <version>1.0.0</version>
       <version>1.0.1</version>
       <version>1.1.0</version>
       <version>1.1.1</version>
+      <version>1.1.2</version>
     </versions>
-    <lastUpdated>20170922102439</lastUpdated>
+    <lastUpdated>20170927150708</lastUpdated>
   </versioning>
 </metadata>
