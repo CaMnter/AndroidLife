@@ -29,7 +29,7 @@ buildscript {
     }
     dependencies {
         // local repository
-        classpath 'com.camnter.gradle.plugin.life:method-trace-plugin:1.1.1'
+        classpath 'com.camnter.gradle.plugin.life:method-trace-plugin:1.1.2'
     }
 }
 
@@ -48,6 +48,8 @@ methodTraceExtension {
 ```shell
 gradle methodWholeTraceTask
 gradle methodExpectTraceTask
+// sample
+gradle methodExpectTraceTask -P packageName=com.camnter
 ```
 
 <br>
