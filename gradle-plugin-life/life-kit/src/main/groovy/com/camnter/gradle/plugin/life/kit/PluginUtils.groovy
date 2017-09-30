@@ -27,4 +27,23 @@ class PluginUtils {
             }
         }
     }
+
+    static void dispatchSystem(Closure osXClosure,
+            Closure linuxClosure,
+            Closure windowClosure) {
+        String system = System.getProperty("os.name")
+        switch (system) {
+            case "Mac OS X":
+                osXClosure.call()
+                break
+            case "Linux":
+                linuxClosure.call()
+                break
+            case "Windows":
+                windowClosure.call()
+                break
+            default:
+                return
+        }
+    }
 }
