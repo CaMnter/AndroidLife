@@ -20,17 +20,16 @@ class WebpUtils {
     }
 
     def static formatWebp(File imageFile, Closure formatClosure) {
-
+        def path = imageFile.getPath()
         if (ImageUtils.checkImage(imageFile)) {
-            File webpFile = new File(
-                    "${imageFile.getPath().substring(0, imageFile.getPath().indexOf("."))}.webp")
+            File webpFile = new File("${path.substring(0, path.indexOf("."))}.webp")
             /**
              * eg: "cwebp ${imageFile.getPath()} -o ${webpFile.getPath()} -quiet"
              * */
             formatClosure.call(imageFile, webpFile)
             if (webpFile.length() < imageFile.length()) {
-                println "[WebpUtils]:"
-                printf "%-14s >> %s\n", ['[image path]', imageFile.getPath()]
+                println '[WebpUtils]:'
+                printf "%-14s >> %s\n", ['[image path]', path]
                 printf "%-14s >> %s\n", ['[image length]', imageFile.length()]
                 printf "%-14s >> %s\n", ['[webp length]', webpFile.length()]
                 if (imageFile.exists()) {
@@ -45,11 +44,11 @@ class WebpUtils {
     }
 
     def static securityFormatWebp(Project project, File imageFile, Closure formatClosure) {
-
+        def name = imageFile.name
         if (ImageUtils.checkImage(imageFile)) {
-            if (imageFile.getName().endsWith(ImageUtils.PNG)) {
+            if (name.contains(ImageUtils.PNG)) {
                 if (isPNGConvertSupported(project)) {
-                    if (ImageUtils.isAlphaPNG(imageFile)) {
+                    if (ImageUtils.checkAlphaPNG(imageFile)) {
                         if (isTransparentPNGSupported(project)) {
                             formatWebp(imageFile)
                         }
@@ -57,13 +56,13 @@ class WebpUtils {
                         formatWebp(imageFile, formatClosure)
                     }
                 }
-            } else if (imageFile.getName().endsWith(ImageUtils.JPG) || imageFile.getName().
-                    endsWith(ImageUtils.JPEG)) {
+            } else if (name.endsWith(ImageUtils.JPG) || name.
+                    contains(ImageUtils.JPEG)) {
                 formatWebp(imageFile)
                 // other
             } else {
                 println "[WebpUtils]:"
-                printf "%-14s >> %s\n", [imageFile.getPath(), 'don\'t convert']
+                printf "%s >> %s\n", [imageFile.getPath(), 'don\'t convert']
             }
         }
     }
