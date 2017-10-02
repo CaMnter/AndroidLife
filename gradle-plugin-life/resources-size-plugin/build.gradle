@@ -22,10 +22,11 @@ dependencies {
     compileOnly gradleApi()
     compileOnly localGroovy()
     implementation 'com.android.tools.build:gradle:3.0.0-beta6'
+    implementation project(':gradle-plugin-life:magic-plugin-kit')
 }
 
 group = 'com.camnter.gradle.plugin'
-version = '1.1.0'
+version = '1.1.1'
 
 sourceSets {
     main {

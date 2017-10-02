@@ -2,7 +2,7 @@ package com.camnter.gradle.plugin.resources.size
 
 import com.android.build.gradle.*
 import com.android.build.gradle.api.BaseVariant
-import com.camnter.gradle.plugin.resources.size.utils.ImageUtils
+import com.camnter.gradle.magic.plugin.kit.ImageUtils
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.Plugin
 import org.gradle.api.Project
