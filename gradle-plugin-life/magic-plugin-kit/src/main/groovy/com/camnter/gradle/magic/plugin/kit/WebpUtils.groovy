@@ -1,4 +1,4 @@
-package com.camnter.gradle.plugin.life.kit
+package com.camnter.gradle.magic.plugin.kit
 
 import org.gradle.api.Project
 

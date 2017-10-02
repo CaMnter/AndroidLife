@@ -1,3 +1,5 @@
+package com.camnter.gradle.magic.plugin.kit
+
 /**
  * @author CaMnter
  */

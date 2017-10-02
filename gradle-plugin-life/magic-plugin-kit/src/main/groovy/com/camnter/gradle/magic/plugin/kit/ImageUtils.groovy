@@ -1,4 +1,7 @@
-package com.camnter.gradle.plugin.resources.size.utils
+package com.camnter.gradle.magic.plugin.kit
+
+import javax.imageio.ImageIO
+import java.awt.image.BufferedImage
 
 /**
  * @author CaMnter
@@ -14,6 +17,24 @@ class ImageUtils {
     static boolean checkImage(File file) {
         return (file.getName().contains(JPG) || file.getName().contains(PNG) ||
                 file.getName().contains(JPEG)) && !file.getName().contains(DOT_9PNG)
+    }
+
+    static boolean checkJPG(File file) {
+        return file.getName().contains(JPG) || file.getName().endsWith(JPEG)
+    }
+
+    static boolean checkAlphaPNG(File filePath) {
+        if (filePath.exists()) {
+            try {
+                BufferedImage bufferedImage = ImageIO.read(filePath)
+                return bufferedImage.getColorModel().hasAlpha()
+            } catch (Exception e) {
+                println e.message
+                return false
+            }
+        } else {
+            return false
+        }
     }
 
     static boolean checkImageSize(File imageFile, int maxSize) {

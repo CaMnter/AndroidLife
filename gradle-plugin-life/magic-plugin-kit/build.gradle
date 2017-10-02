@@ -24,7 +24,7 @@ dependencies {
     implementation 'com.android.tools.build:gradle:3.0.0-beta6'
 }
 
-group = 'com.camnter.gradle.plugin.life.kit'
+group = 'com.camnter.gradle.magic.plugin.kit'
 version = '1.0.0'
 
 sourceSets {
