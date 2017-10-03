@@ -276,11 +276,11 @@ apply plugin: 'com.camnter.gradle.plugin.r2'
  * Method trace *
  ****************/
 
-//apply plugin: 'com.camnter.gradle.plugin.method.trace'
-//
-//methodTraceExtension {
-//    packageName = 'com.camnter'
-//}
+apply plugin: 'com.camnter.gradle.plugin.method.trace'
+
+methodTraceExtension {
+    packageName = 'com.camnter'
+}
 
 /*************************
  * Resources size plugin *
