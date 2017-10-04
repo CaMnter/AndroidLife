@@ -1,6 +1,5 @@
 package com.camnter.gradle.plugin.r2
 
-import com.android.build.gradle.*
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.tasks.ProcessAndroidResources
 import org.gradle.api.DomainObjectSet
@@ -24,26 +23,21 @@ class R2Plugin implements Plugin<Project> {
     @Override
     void apply(Project target) {
         println "[R2Plugin]   [apply]"
-        target.plugins.all {
-            if (it instanceof FeaturePlugin) {
-                FeatureExtension featureExtension = target.extensions.getByType(
-                        FeatureExtension.class)
-                configureR2Generation(target, featureExtension.featureVariants)
-                configureR2Generation(target, featureExtension.libraryVariants)
-            } else if (it instanceof AppPlugin) {
-                AppExtension appExtension = target.extensions.getByType(AppExtension.class)
-                configureR2Generation(target, appExtension.applicationVariants)
-            } else if (it instanceof LibraryPlugin) {
-                LibraryExtension libraryExtension = target.extensions.getByType(
-                        LibraryExtension.class)
-                configureR2Generation(target, libraryExtension.libraryVariants)
-            }
+        PluginUtils.dispatchPlugin(target) {
+            configureR2Generation(target, it.applicationVariants)
+        } {
+            configureR2Generation(target, it.libraryVariants)
+        } {
+            configureR2Generation(target, it.featureVariants)
+            configureR2Generation(target, it.libraryVariants)
         }
     }
 
-    private static void configureR2Generation(Project project, DomainObjectSet<BaseVariant> variants) {
+    private static void configureR2Generation(Project project,
+            DomainObjectSet<BaseVariant> variants) {
         println "[R2Plugin]   [applyPlugin]"
         // 遍历 DomainObjectSet<out BaseVariant>
+        if (variants == null || variants.size() == 0) return
         variants.all { variant ->
             // 获取每个 output 文件夹 File
             File outputDir = new File(
@@ -79,7 +73,6 @@ class R2Plugin implements Plugin<Project> {
 
                     // 注册 R File 到任务内
                     task.inputs.file(rFile)
-                    // JavaPoet + JavaParser 生成 R2.java
                     task.doLast {
                         R2ClassBuilder.brewJava(rFile, outputDir, rPackage, "R2")
                     }
