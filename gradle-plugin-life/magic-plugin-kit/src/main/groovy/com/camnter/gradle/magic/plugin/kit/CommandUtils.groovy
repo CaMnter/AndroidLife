@@ -7,7 +7,26 @@ package com.camnter.gradle.magic.plugin.kit
 class CommandUtils {
 
     static void command(String command) {
-        def process = command.execute()
+        PluginUtils.dispatchSystem {
+            commandByOsX(command)
+        } {
+            commandByOsX(command)
+        } {
+            commandByWindow(command)
+        }
+    }
+
+    private static void commandByOsX(String command) {
+        def process = ['bash', '-c', command].execute()
+        printCommandInfo(process)
+    }
+
+    private static void commandByWindow(String command) {
+        def process = ("cmd /c start  /b ${command}").execute()
+        printCommandInfo(process)
+    }
+
+    private static void printCommandInfo(Process process) {
         def output = new StringBuilder()
         def error = new StringBuilder()
         process.consumeProcessOutput(output, error)
