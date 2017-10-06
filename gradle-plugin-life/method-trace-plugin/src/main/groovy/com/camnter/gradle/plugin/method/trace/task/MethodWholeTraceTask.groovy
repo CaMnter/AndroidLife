@@ -1,6 +1,7 @@
 package com.camnter.gradle.plugin.method.trace.task
 
 import com.android.build.gradle.AppExtension
+import com.camnter.gradle.plugin.method.trace.utils.CommandUtils
 import com.camnter.gradle.plugin.method.trace.utils.FileUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
@@ -28,15 +29,7 @@ class MethodWholeTraceTask extends DefaultTask {
             def command = "${platformToolsPath}/dmtracedump  -ho ${it.absolutePath} >> ${txtFile.absolutePath}"
             printf "%43s : %s\n", ['[MethodWholeTraceTask]   [main]   [command]', command]
 
-            def osName = System.getProperty("os.name").toLowerCase()
-
-            if (osName.contains('windows')) {
-                // windows
-                ("cmd /c start  /b ${command}").execute()
-            } else {
-                // linux | osX
-                ['bash', '-c', command].execute()
-            }
+            CommandUtils.command(command)
         }
     }
 
