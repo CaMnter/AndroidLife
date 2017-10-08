@@ -16,15 +16,15 @@ import org.gradle.internal.time.Clock
 
 class ToyTimeListener implements TaskExecutionListener, BuildListener {
 
-    def Project project
+    Project project
 
-    def Clock clock
+    Clock clock
     def times = []
 
     def keyword = ''
     def minElapsedMillis = 0
 
-    public ToyTimeListener(Project target) {
+    ToyTimeListener(Project target) {
         project = target
     }
 
