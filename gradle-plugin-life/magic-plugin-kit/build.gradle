@@ -7,7 +7,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 buildscript {
     dependencies {
-        classpath 'org.codehaus.groovy:groovy-all:2.4.7'
+        classpath rootProject.ext.denpendencies["groovy"]
     }
     repositories {
         mavenCentral()
