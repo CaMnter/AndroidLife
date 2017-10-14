@@ -2,6 +2,9 @@ package com.camnter.gradle.plugin.resources.optimize.l2
 
 import com.android.build.gradle.*
 import com.android.build.gradle.api.BaseVariant
+import com.camnter.gradle.plugin.resources.optimize.l2.utils.CommandUtils
+import com.camnter.gradle.plugin.resources.optimize.l2.utils.CompressUtils
+import com.camnter.gradle.plugin.resources.optimize.l2.utils.WebpUtils
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -12,6 +15,8 @@ import org.gradle.api.Project
 
 class ResourcesOptimizeL2Plugin implements Plugin<Project> {
 
+    ResourcesOptimizeL2Extension resourcesSizeExtension
+
     /**
      * Apply this plugin to the given target object.
      *
@@ -21,6 +26,7 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
     void apply(Project target) {
         println "[ResourcesOptimizeL2Plugin]"
         target.extensions.create('resourcesOptimizeL2Extension', ResourcesOptimizeL2Extension)
+        resourcesSizeExtension = target.resourcesSizeExtension
         // variants
         target.plugins.all {
             if (it instanceof FeaturePlugin) {
@@ -55,13 +61,11 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
             }
         }
 
-        // TODO modify
-        if (debugTask && !project.resourcesSizeExtension.debugAble) {
+        if (debugTask && !resourcesSizeExtension.debugResourcesSize) {
             return
         }
 
-        // TODO modify
-        if (containAssembleTask && !project.resourcesSizeExtension.debugAble) {
+        if (containAssembleTask && !resourcesSizeExtension.debugResourcesSize) {
             return
         }
 
@@ -77,7 +81,7 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                 def capitalize = it.name.capitalize()
                 def processResourceTask = project.tasks.findByName(
                         "process${it.name.capitalize()}Resources")
-                def taskName = "resourcesSize${capitalize}"
+                def taskName = "resourcesOptimizeL2${capitalize}"
 
                 project.task(taskName) {
                     doLast {
@@ -98,6 +102,34 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                                     '')
                                             .replaceAll('/', '')
                                     bigImagePathList << (["${((float) it.length() / 1024.0f).round(2)}kb", name] as ArrayList<String>)
+                                }
+
+                                // compress
+                                if (resourcesSizeExtension.debugResourcesOptimize) {
+                                    /**
+                                     * jpg
+                                     * eg: "guetzli ${file.path} ${file.path}"
+                                     *
+                                     * png
+                                     * eg: "pngquant --skip-if-larger --speed 3 --force --output ${file.path} -- ${file.path}"
+                                     * */
+                                    CompressUtils.compressResource(it) { File file ->
+                                        CommandUtils.command("guetzli ${file.path} ${file.path}")
+                                    } { File file ->
+                                        CommandUtils.command(
+                                                "pngquant --skip-if-larger --speed 3 --force --output ${file.path} -- ${file.path}")
+                                    }
+                                }
+
+                                if (resourcesSizeExtension.debugResourcesOptimize) {
+                                    WebpUtils.securityFormatWebp(project, it) {
+                                        File imageFile, File webpFile ->
+                                            /**
+                                             * "cwebp ${imageFile.getPath()} -o ${webpFile.getPath()} -quiet"
+                                             * */
+                                            CommandUtils.command(
+                                                    "cwebp ${imageFile.getPath()} -o ${webpFile.getPath()} -quiet")
+                                    }
                                 }
                             }
                         }
