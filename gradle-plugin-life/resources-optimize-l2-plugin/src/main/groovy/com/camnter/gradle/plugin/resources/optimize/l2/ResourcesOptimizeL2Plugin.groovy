@@ -4,6 +4,7 @@ import com.android.build.gradle.*
 import com.android.build.gradle.api.BaseVariant
 import com.camnter.gradle.plugin.resources.optimize.l2.utils.CommandUtils
 import com.camnter.gradle.plugin.resources.optimize.l2.utils.CompressUtils
+import com.camnter.gradle.plugin.resources.optimize.l2.utils.ImageUtils
 import com.camnter.gradle.plugin.resources.optimize.l2.utils.WebpUtils
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.Plugin
@@ -15,7 +16,7 @@ import org.gradle.api.Project
 
 class ResourcesOptimizeL2Plugin implements Plugin<Project> {
 
-    ResourcesOptimizeL2Extension resourcesSizeExtension
+    ResourcesOptimizeL2Extension resourcesOptimizeL2Extension
 
     /**
      * Apply this plugin to the given target object.
@@ -26,7 +27,7 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
     void apply(Project target) {
         println "[ResourcesOptimizeL2Plugin]"
         target.extensions.create('resourcesOptimizeL2Extension', ResourcesOptimizeL2Extension)
-        resourcesSizeExtension = target.resourcesSizeExtension
+        resourcesOptimizeL2Extension = target.resourcesOptimizeL2Extension
         // variants
         target.plugins.all {
             if (it instanceof FeaturePlugin) {
@@ -61,11 +62,11 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
             }
         }
 
-        if (debugTask && !resourcesSizeExtension.debugResourcesSize) {
+        if (debugTask && !resourcesOptimizeL2Extension.debugResourcesSize) {
             return
         }
 
-        if (containAssembleTask && !resourcesSizeExtension.debugResourcesSize) {
+        if (containAssembleTask && !resourcesOptimizeL2Extension.debugResourcesSize) {
             return
         }
 
@@ -105,7 +106,7 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                 }
 
                                 // compress
-                                if (resourcesSizeExtension.debugResourcesOptimize) {
+                                if (resourcesOptimizeL2Extension.debugResourcesOptimize) {
                                     /**
                                      * jpg
                                      * eg: "guetzli ${file.path} ${file.path}"
@@ -121,7 +122,7 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                     }
                                 }
 
-                                if (resourcesSizeExtension.webpConvert) {
+                                if (resourcesOptimizeL2Extension.webpConvert) {
                                     WebpUtils.securityFormatWebp(project, it) {
                                         File imageFile, File webpFile ->
                                             /**
