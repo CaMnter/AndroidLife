@@ -121,7 +121,7 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                     }
                                 }
 
-                                if (resourcesSizeExtension.debugResourcesOptimize) {
+                                if (resourcesSizeExtension.webpConvert) {
                                     WebpUtils.securityFormatWebp(project, it) {
                                         File imageFile, File webpFile ->
                                             /**
