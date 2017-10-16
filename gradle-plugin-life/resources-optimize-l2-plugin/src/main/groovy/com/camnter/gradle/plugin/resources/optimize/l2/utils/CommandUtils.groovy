@@ -7,17 +7,22 @@ package com.camnter.gradle.plugin.resources.optimize.l2.utils
 class CommandUtils {
 
     static void command(String command) {
-        PluginUtils.dispatchSystem {
-            commandByOsX(command)
-        } {
-            commandByOsX(command)
-        } {
-            commandByWindow(command)
+        try {
+            PluginUtils.dispatchSystem {
+                commandByOsX(command)
+            } {
+                commandByOsX(command)
+            } {
+                commandByWindow(command)
+            }
+        } catch (Exception e) {
+            println "[CommandUtils]   ${e.message}"
         }
     }
 
     private static void commandByOsX(String command) {
-        def process = ['bash', '-c', command].execute()
+        // ['bash', '-c', command].execute()
+        def process = command.execute()
         printCommandInfo(process)
     }
 
