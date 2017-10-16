@@ -115,10 +115,10 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                      * eg: "pngquant --skip-if-larger --speed 3 --force --output ${file.path} -- ${file.path}"
                                      * */
                                     CompressUtils.compressResource(it) { File file ->
-                                        CommandUtils.command("guetzli ${file.path} ${file.path}")
-                                    } { File file ->
                                         CommandUtils.command(
                                                 "pngquant --skip-if-larger --speed 3 --force --output ${file.path} -- ${file.path}")
+                                    } { File file ->
+                                        CommandUtils.command("guetzli ${file.path} ${file.path}")
                                     }
                                 }
 
