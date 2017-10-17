@@ -6,41 +6,47 @@ package com.camnter.gradle.plugin.resources.optimize.l2.utils
 
 class CommandUtils {
 
-    static void command(String command) {
+    static void command(String command, Closure outputClosure, Closure errorClosure) {
         try {
             PluginUtils.dispatchSystem {
-                commandByOsX(command)
+                commandByOsX(command, outputClosure, errorClosure)
             } {
-                commandByOsX(command)
+                commandByOsX(command, outputClosure, errorClosure)
             } {
-                commandByWindow(command)
+                commandByWindow(command, outputClosure, errorClosure)
             }
         } catch (Exception e) {
-            println "[CommandUtils]   ${e.message}"
+            println "[CommandUtils]   [ErrorMessage] = ${e.message}"
         }
     }
 
-    private static void commandByOsX(String command) {
-        // ['bash', '-c', command].execute()
-        def process = command.execute()
-        printCommandInfo(process)
+    private static void commandByOsX(String command, Closure outputClosure, Closure errorClosure) {
+        println "[CommandUtils]   [command] = ${command}"
+        def process = ['bash', '-c', command].execute()
+        printCommandInfo(process, outputClosure, errorClosure)
     }
 
-    private static void commandByWindow(String command) {
+    private static void commandByWindow(String command, Closure outputClosure,
+            Closure errorClosure) {
         def process = ("cmd /c start  /b ${command}").execute()
-        printCommandInfo(process)
+        printCommandInfo(process, outputClosure, errorClosure)
     }
 
-    private static void printCommandInfo(Process process) {
+    private static void printCommandInfo(Process process, Closure outputClosure,
+            Closure errorClosure) {
         def output = new StringBuilder()
         def error = new StringBuilder()
         process.consumeProcessOutput(output, error)
         process.waitFor()
         if ('' != output.toString() && 0 != output.length()) {
-            printf "%6s:  %s", ['output', output]
+            def outputString = output.toString()
+            printf "%6s:  %s", ['output', outputString]
+            if (outputClosure != null) outputClosure.call(outputString)
         }
         if ('' != error.toString() && 0 != error.length()) {
-            printf "%6s:  %s", ['error', error]
+            def errorString = error.toString()
+            printf "%6s:  %s", ['error', errorString]
+            if (errorClosure != null) errorClosure.call(errorString)
         }
     }
 
