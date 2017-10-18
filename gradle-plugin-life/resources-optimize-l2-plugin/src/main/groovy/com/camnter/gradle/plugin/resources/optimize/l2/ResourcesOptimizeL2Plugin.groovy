@@ -89,6 +89,13 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                         def resourcesDirFile = new File(
                                 "${project.projectDir}/build/intermediates/res/${resourcesDir}/")
                         def bigImagePathList = ([] as LinkedList<ArrayList<String>>)
+
+                        CommandUtils.which('pngquant') { String output ->
+                            println "[ResourcesOptimizeL2Plugin]   [Test]   [output] = ${output}"
+                        } { String error ->
+                            println "[ResourcesOptimizeL2Plugin]   [Test]   [error] = ${error}"
+                        }
+
                         resourcesDirFile.traverse {
                             def fileName = it.name
                             if (fileName.contains('drawable') || fileName.contains('mipmap')) {
@@ -116,9 +123,17 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                      * */
                                     CompressUtils.compressResource(it) { File file ->
                                         CommandUtils.command(
-                                                "pngquant --skip-if-larger --speed 3 --force --output ${file.path} -- ${file.path}")
+                                                "/usr/local/bin/pngquant --skip-if-larger --speed 3 --force --output ${file.path} -- ${file.path}") {
+                                            String output ->
+                                        } { String error ->
+                                            println "[ResourcesOptimizeL2Plugin]   [CommandUtils]   [error] = ${error}"
+                                        }
                                     } { File file ->
-                                        CommandUtils.command("guetzli ${file.path} ${file.path}")
+                                        CommandUtils.command(
+                                                "/usr/local/bin/guetzli ${file.path} ${file.path}") {
+                                            String output ->
+                                        } { String error ->
+                                        }
                                     }
                                 }
 
@@ -129,7 +144,10 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                              * "cwebp ${imageFile.getPath()} -o ${webpFile.getPath()} -quiet"
                                              * */
                                             CommandUtils.command(
-                                                    "cwebp ${imageFile.getPath()} -o ${webpFile.getPath()} -quiet")
+                                                    "/usr/local/bin/cwebp ${imageFile.getPath()} -o ${webpFile.getPath()} -quiet") {
+                                                String output ->
+                                            } { String error ->
+                                            }
                                     }
                                 }
                             }
