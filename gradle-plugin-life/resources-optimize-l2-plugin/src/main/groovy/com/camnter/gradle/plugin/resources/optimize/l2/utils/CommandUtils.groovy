@@ -67,25 +67,74 @@ class CommandUtils {
         }
     }
 
-    static void which(String command, outputClosure, errorClosure) {
-        PluginUtils.dispatchSystem {
-            commandByOsXByBash("which ${command}", outputClosure, errorClosure)
-        } {
-            commandByOsXByBash("which ${command}", outputClosure, errorClosure)
-        } {
-            commandByWindow("which ${command}", outputClosure, errorClosure)
+    String execByWindow(String command, File dir) {
+        println "[CommandUtils]   [command] = ${command}"
+        return exec("cmd /c start  /b ${command}", dir)
+    }
+
+    /**
+     * 执行系统命令, 返回执行结果
+     *
+     * @param command 需要执行的命令
+     * @param dir 执行命令的子进程的工作目录, null 表示和当前主进程工作目录相同
+     */
+    static String exec(String command, File dir) throws Exception {
+        StringBuilder result = new StringBuilder()
+        Process process = null
+        BufferedReader bufferedOutput = null
+        BufferedReader bufferedError = null
+
+        try {
+            // 执行命令, 返回一个子进程对象（命令在子进程中执行）
+            process = Runtime.getRuntime().exec(command, null, dir)
+            // 方法阻塞, 等待命令执行完成（ 成功会返回 0）
+            process.waitFor()
+            // 获取命令执行结果, 有两个结果: 正常的输出 和 错误的输出（子进程的输出就是主进程的输入）
+            bufferedOutput =
+                    new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"))
+            bufferedError =
+                    new BufferedReader(new InputStreamReader(process.getErrorStream(), "UTF-8"))
+            // 读取输出
+            String line
+            while ((line = bufferedOutput.readLine()) != null) {
+                result.append(line).append('\n')
+            }
+            while ((line = bufferedError.readLine()) != null) {
+                result.append(line).append('\n')
+            }
+        } finally {
+            closeStream(bufferedOutput)
+            closeStream(bufferedError)
+            // 销毁子进程
+            if (process != null) {
+                process.destroy()
+            }
+        }
+        // 返回执行结果
+        return result.toString()
+    }
+
+    static void closeStream(Closeable stream) {
+        if (stream != null) {
+            try {
+                stream.close()
+            } catch (Exception e) {
+                // nothing
+                println "[CommandUtils]   [closeStream] = ${e.message}"
+            }
         }
     }
 
     static void chmod(String path) {
-        command("chmod 755 $path")
+        com.camnter.gradle.plugin.resources.optimize.l2.utils.CommandUtils.command(
+                "chmod 755 $path")
     }
 
     static void removeDirectory(String path) {
-        command("rm -rf $path")
+        com.camnter.gradle.plugin.resources.optimize.l2.utils.CommandUtils.command("rm -rf $path")
     }
 
     static void removeFile(String path) {
-        command("rm $path")
+        com.camnter.gradle.plugin.resources.optimize.l2.utils.CommandUtils.command("rm $path")
     }
 }
