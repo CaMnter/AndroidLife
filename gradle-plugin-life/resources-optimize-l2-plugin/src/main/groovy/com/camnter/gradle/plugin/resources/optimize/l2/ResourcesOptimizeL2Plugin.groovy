@@ -16,6 +16,8 @@ import org.gradle.api.Project
 
 class ResourcesOptimizeL2Plugin implements Plugin<Project> {
 
+    static final NOT_FOUND = "not found"
+
     ResourcesOptimizeL2Extension resourcesOptimizeL2Extension
 
     /**
@@ -90,11 +92,22 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                 "${project.projectDir}/build/intermediates/res/${resourcesDir}/")
                         def bigImagePathList = ([] as LinkedList<ArrayList<String>>)
 
-                        CommandUtils.which('pngquant') { String output ->
-                            println "[ResourcesOptimizeL2Plugin]   [Test]   [output] = ${output}"
-                        } { String error ->
-                            println "[ResourcesOptimizeL2Plugin]   [Test]   [error] = ${error}"
-                        }
+                        /**
+                         * check compress tools
+                         * */
+                        def pngquantResult = CommandUtils.exec('which pngquant', null)
+                        println "[ResourcesOptimizeL2Plugin]   [which pngquant] = ${pngquantResult}"
+                        def guetzliResult = CommandUtils.exec('which guetzli', null)
+                        println "[ResourcesOptimizeL2Plugin]   [which guetzli] = ${guetzliResult}"
+                        def cwebpResult = CommandUtils.exec('which cwebp', null)
+                        println "[ResourcesOptimizeL2Plugin]   [which cwebp] = ${cwebpResult}"
+
+                        /**
+                         * compress path
+                         * */
+                        def pngquantPath = whichFound(pngquantResult) ? pngquantResult : ''
+                        def guetzliPath = whichFound(guetzliResult) ? guetzliResult : ''
+                        def cwebpPath = whichFound(cwebpResult) ? cwebpResult : ''
 
                         resourcesDirFile.traverse {
                             def fileName = it.name
@@ -123,14 +136,14 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                      * */
                                     CompressUtils.compressResource(it) { File file ->
                                         CommandUtils.command(
-                                                "/usr/local/bin/pngquant --skip-if-larger --speed 3 --force --output ${file.path} -- ${file.path}") {
+                                                "${pngquantPath}pngquant --skip-if-larger --speed 3 --force --output ${file.path} -- ${file.path}") {
                                             String output ->
                                         } { String error ->
                                             println "[ResourcesOptimizeL2Plugin]   [CommandUtils]   [error] = ${error}"
                                         }
                                     } { File file ->
                                         CommandUtils.command(
-                                                "/usr/local/bin/guetzli ${file.path} ${file.path}") {
+                                                "${guetzliPath}guetzli ${file.path} ${file.path}") {
                                             String output ->
                                         } { String error ->
                                         }
@@ -144,7 +157,7 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                              * "cwebp ${imageFile.getPath()} -o ${webpFile.getPath()} -quiet"
                                              * */
                                             CommandUtils.command(
-                                                    "/usr/local/bin/cwebp ${imageFile.getPath()} -o ${webpFile.getPath()} -quiet") {
+                                                    "${cwebpPath}cwebp ${imageFile.getPath()} -o ${webpFile.getPath()} -quiet") {
                                                 String output ->
                                             } { String error ->
                                             }
@@ -175,5 +188,9 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                 processResourceTask.dependsOn project.tasks.findByName(taskName)
             }
         }
+    }
+
+    def whichFound(String result) {
+        return !result.contains(NOT_FOUND)
     }
 }
