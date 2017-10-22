@@ -17,7 +17,6 @@ import org.gradle.api.Project
 class ResourcesOptimizeL2Plugin implements Plugin<Project> {
 
     static final String BIN_DIR = '/usr/local/bin'
-    static final String NOT_SUCH = 'no such'
 
     ResourcesOptimizeL2Extension resourcesOptimizeL2Extension
 
@@ -94,24 +93,24 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                         def bigImagePathList = ([] as LinkedList<ArrayList<String>>)
 
                         def binResult = CommandUtils.exec("ls ${BIN_DIR}", null)
-                        printf "%-57s = \n",
+                        printf "%-53s = %s\n",
                                 ['[ResourcesOptimizeL2Plugin]   [which bin]', binResult]
 
                         /**
                          * check compress tools
                          * */
-                        def cwebpPath = binResult.contains('cwebp') ? "${BIN_DIR}/cwebp" : ''
-                        def guetzliPath = binResult.contains('guetzliPath') ? "${BIN_DIR}/guetzli" :
+                        String cwebpPath = binResult.contains('cwebp') ? "${BIN_DIR}/cwebp" : ''
+                        String guetzliPath = binResult.contains('guetzli') ? "${BIN_DIR}/guetzli" :
                                 ''
-                        def pngquantPath = binResult.contains('pngquantPath') ?
+                        String pngquantPath = binResult.contains('pngquant') ?
                                 "${BIN_DIR}/pngquant" : ''
 
-                        printf "%-57s = \n",
+                        printf "%-53s = %s\n",
                                 ['[ResourcesOptimizeL2Plugin]   [bin cwebp path]', cwebpPath]
-                        printf "%-57s = \n",
+                        printf "%-53s = %s\n",
                                 ['[ResourcesOptimizeL2Plugin]   [bin guetzli path]', guetzliPath]
-                        printf "%-57s = \n",
-                                ['[ResourcesOptimizeL2Plugin]   [bin pngquantPath path]', pngquantPath]
+                        printf "%-53s = %s\n",
+                                ['[ResourcesOptimizeL2Plugin]   [bin pngquant path]', pngquantPath]
 
                         /**
                          * set path of extension
@@ -126,22 +125,22 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                             pngquantPath = resourcesOptimizeL2Extension.pngquantPath
                         }
 
-                        printf "%-57s = \n",
+                        printf "%-53s = %s\n",
                                 ['[ResourcesOptimizeL2Plugin]   [execute cwebp path]', cwebpPath]
-                        printf "%-57s = \n",
+                        printf "%-53s = %s\n",
                                 ['[ResourcesOptimizeL2Plugin]   [execute guetzli path]', guetzliPath]
-                        printf "%-57s = \n",
-                                ['[ResourcesOptimizeL2Plugin]   [execute pngquantPath path]', pngquantPath]
+                        printf "%-53s = %s\n",
+                                ['[ResourcesOptimizeL2Plugin]   [execute pngquant path]', pngquantPath]
 
-                        def cwebpEnable = checkPath(cwebpPath)
-                        def guetzliEnable = checkPath(guetzliPath)
-                        def pngquantEnable = checkPath(pngquantPath)
+                        boolean cwebpEnable = CommandUtils.checkPath(cwebpPath)
+                        boolean guetzliEnable = CommandUtils.checkPath(guetzliPath)
+                        boolean pngquantEnable = CommandUtils.checkPath(pngquantPath)
 
-                        printf "%-57s = \n",
+                        printf "%-53s = %s\n",
                                 ['[ResourcesOptimizeL2Plugin]   [cwebpEnable]', cwebpEnable]
-                        printf "%-57s = \n",
+                        printf "%-53s = %s\n",
                                 ['[ResourcesOptimizeL2Plugin]   [guetzliEnable]', guetzliEnable]
-                        printf "%-57s = \n",
+                        printf "%-53s = %s\n",
                                 ['[ResourcesOptimizeL2Plugin]   [pngquantEnable]', pngquantEnable]
 
 
@@ -232,13 +231,5 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                 processResourceTask.dependsOn project.tasks.findByName(taskName)
             }
         }
-    }
-
-    static def checkPath(String path) {
-        def result = CommandUtils.exec("${path}", null)
-        if (result == null || result == '' || result.length() == 0) return false
-        def lowerResult = result.toLowerCase()
-        if (lowerResult.contains(NOT_SUCH)) return false
-        result true
     }
 }

@@ -6,6 +6,8 @@ package com.camnter.gradle.plugin.resources.optimize.l2.utils
 
 class CommandUtils {
 
+    static final String NOT_SUCH = 'no such'
+
     static void command(String command, Closure outputClosure, Closure errorClosure) {
         PluginUtils.dispatchSystem {
             commandByOsX(command, outputClosure, errorClosure)
@@ -123,6 +125,10 @@ class CommandUtils {
                 println "[CommandUtils]   [closeStream] = ${e.message}"
             }
         }
+    }
+
+    static boolean checkPath(String path) {
+        return new File(path).exists()
     }
 
     static void chmod(String path) {
