@@ -10,4 +10,8 @@ class ResourcesOptimizeL2Extension {
     def debugResourcesOptimize = false
     // 100 kb
     def maxSize = 100
+
+    def cwebpPath = ''
+    def guetzliPath = ''
+    def pngquantPath = ''
 }
