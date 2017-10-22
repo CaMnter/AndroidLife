@@ -237,7 +237,7 @@ buildscript {
         classpath 'com.camnter.gradle.plugin:toy-time-plugin:1.0.2'
         classpath 'com.camnter.gradle.plugin:method-trace-plugin:1.1.3'
         classpath 'com.camnter.gradle.plugin:resources-size-plugin:1.1.1'
-        classpath 'com.camnter.gradle.plugin:resources-optimize-l2-plugin:1.0.1'
+        classpath 'com.camnter.gradle.plugin:resources-optimize-l2-plugin:1.0.4'
     }
 }
 
@@ -308,4 +308,7 @@ resourcesOptimizeL2Extension {
     debugResourcesOptimize = true
     // 100 kb
     maxSize = 100
+    cwebpPath = ''
+    guetzliPath = ''
+    pngquantPath = ''
 }
