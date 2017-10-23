@@ -91,10 +91,7 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                         def resourcesDirFile = new File(
                                 "${project.projectDir}/build/intermediates/res/${resourcesDir}/")
                         def bigImagePathList = ([] as LinkedList<ArrayList<String>>)
-
                         def binResult = CommandUtils.exec("ls ${BIN_DIR}", null)
-                        printf "%-53s = %s\n",
-                                ['[ResourcesOptimizeL2Plugin]   [which bin]', binResult]
 
                         /**
                          * check compress tools
