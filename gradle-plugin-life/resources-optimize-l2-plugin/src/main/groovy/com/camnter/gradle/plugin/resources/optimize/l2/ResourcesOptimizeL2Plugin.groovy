@@ -147,13 +147,6 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                 if (ImageUtils.checkImageSize(it,
                                         1024 * project.resourcesSizeExtension.maxSize
                                         /* default 100kb*/)) {
-                                    def name = it.path.
-                                            replace('.flat' as String, '').
-                                            replace(resourcesDirFile.path as String,
-                                                    '').
-                                            replace(capitalize.toLowerCase() as String,
-                                                    '')
-                                            .replaceAll('/', '')
                                     bigImagePathList << (["${((float) it.length() / 1024.0f).round(2)}kb", name] as ArrayList<String>)
                                 }
 
@@ -205,8 +198,9 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                 }
                             }
                         }
+                        printf "%-21s >> %s\n",
+                                ['[ResourcesOptimizeL2Plugin]', "[bit image count] = ${bigImagePathList.size()}"]
                         if (bigImagePathList.size() > 0) {
-                            printf "%-21s >> \n", ['[ResourcesOptimizeL2Plugin]']
                             printf "%-21s >> %s\n", ['[TaskName]', taskName]
                             printf "%-21s >> %s\n",
                                     ['[Directory]', resourcesDirFile]
