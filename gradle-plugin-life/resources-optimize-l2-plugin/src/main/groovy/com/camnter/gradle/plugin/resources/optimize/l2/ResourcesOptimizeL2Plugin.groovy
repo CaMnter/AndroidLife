@@ -143,13 +143,11 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
 
                         resourcesDirFile.traverse {
                             def fileName = it.name
-                            if (fileName.contains('drawable') || fileName.contains('mipmap')) {
-                                if (ImageUtils.checkImageSize(it,
-                                        1024 * project.resourcesSizeExtension.maxSize
-                                        /* default 100kb*/)) {
-                                    bigImagePathList << (["${((float) it.length() / 1024.0f).round(2)}kb", name] as ArrayList<String>)
+                            if (ImageUtils.checkImage(it)) {
+                                def kbValue = it.size() / 1000.0f
+                                if ((kbValue) > resourcesOptimizeL2Extension.maxSize) {
+                                    bigImagePathList << (["${kbValue}kb", fileName] as ArrayList<String>)
                                 }
-
                                 // compress
                                 if (resourcesOptimizeL2Extension.debugResourcesOptimize) {
                                     /**
