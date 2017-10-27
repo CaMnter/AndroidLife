@@ -1,6 +1,5 @@
 package com.camnter.gradle.plugin.resources.optimize.l2.utils
 
-import com.android.build.gradle.*
 import org.gradle.api.Project
 
 /**
@@ -13,45 +12,13 @@ class WebpUtils {
     static final int VERSION_SUPPORT_TRANSPARENT_WEBP = 18
 
     static boolean isPNGConvertSupported(Project project) {
-        def minSdkVersion = 0
-        project.plugins.all {
-            if (it instanceof AppPlugin) {
-                AppExtension appExtension = project.extensions.getByType(AppExtension.class)
-                minSdkVersion = appExtension.defaultConfig.minSdkVersion.apiLevel
-                return minSdkVersion >= VERSION_SUPPORT_WEBP
-            } else if (it instanceof LibraryPlugin) {
-                LibraryExtension libraryExtension = project.extensions.getByType(
-                        LibraryExtension.class)
-                minSdkVersion = libraryExtension.defaultConfig.minSdkVersion.apiLevel
-                return minSdkVersion >= VERSION_SUPPORT_WEBP
-            } else if (it instanceof FeaturePlugin) {
-                FeatureExtension featureExtension = project.extensions.getByType(
-                        FeatureExtension.class)
-                minSdkVersion = featureExtension.defaultConfig.minSdkVersion.apiLevel
-                return minSdkVersion >= VERSION_SUPPORT_WEBP
-            }
-        }
+        def minSdkVersion = AndroidUtils.getMinSdkVersion(project)
+        return minSdkVersion >= VERSION_SUPPORT_WEBP
     }
 
     static boolean isTransparentPNGSupported(Project project) {
-        def minSdkVersion = 0
-        project.plugins.all {
-            if (it instanceof AppPlugin) {
-                AppExtension appExtension = project.extensions.getByType(AppExtension.class)
-                minSdkVersion = appExtension.defaultConfig.minSdkVersion.apiLevel
-                return minSdkVersion >= VERSION_SUPPORT_TRANSPARENT_WEBP
-            } else if (it instanceof LibraryPlugin) {
-                LibraryExtension libraryExtension = project.extensions.getByType(
-                        LibraryExtension.class)
-                minSdkVersion = libraryExtension.defaultConfig.minSdkVersion.apiLevel
-                return minSdkVersion >= VERSION_SUPPORT_TRANSPARENT_WEBP
-            } else if (it instanceof FeaturePlugin) {
-                FeatureExtension featureExtension = project.extensions.getByType(
-                        FeatureExtension.class)
-                minSdkVersion = featureExtension.defaultConfig.minSdkVersion.apiLevel
-                return minSdkVersion >= VERSION_SUPPORT_TRANSPARENT_WEBP
-            }
-        }
+        def minSdkVersion = AndroidUtils.getMinSdkVersion(project)
+        return minSdkVersion >= VERSION_SUPPORT_TRANSPARENT_WEBP
     }
 
     def static formatWebp(File imageFile, Closure formatClosure) {

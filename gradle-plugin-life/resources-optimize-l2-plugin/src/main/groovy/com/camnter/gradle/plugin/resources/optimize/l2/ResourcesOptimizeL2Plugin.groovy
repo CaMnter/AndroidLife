@@ -2,10 +2,7 @@ package com.camnter.gradle.plugin.resources.optimize.l2
 
 import com.android.build.gradle.*
 import com.android.build.gradle.api.BaseVariant
-import com.camnter.gradle.plugin.resources.optimize.l2.utils.CommandUtils
-import com.camnter.gradle.plugin.resources.optimize.l2.utils.CompressUtils
-import com.camnter.gradle.plugin.resources.optimize.l2.utils.ImageUtils
-import com.camnter.gradle.plugin.resources.optimize.l2.utils.WebpUtils
+import com.camnter.gradle.plugin.resources.optimize.l2.utils.*
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.Plugin
 import org.gradle.api.Project
