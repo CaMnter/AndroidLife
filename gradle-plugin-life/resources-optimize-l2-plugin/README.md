@@ -3,6 +3,32 @@
 <br>
 <br>
 
+## homebrew
+
+[Install Homebrew](https://brew.sh)
+
+<br>
+
+## install tools by homebrew
+
+```shell
+brew install cwebp
+brew install guetzli
+brew install pngquant
+``` 
+ 
+<br>
+
+## check tools 
+
+```shell
+which cwebp
+which guetzli
+which pngquant
+``` 
+
+<br>
+
 ## generate local plugin
  
 <br>
@@ -29,7 +55,7 @@ buildscript {
     }
     dependencies {
         // local repository
-        classpath 'com.camnter.gradle.plugin:resources-optimize-l2-plugin:1.0.0'
+        classpath 'com.camnter.gradle.plugin:resources-optimize-l2-plugin:1.0.7'
     }
 }
 
@@ -37,9 +63,12 @@ buildscript {
 resourcesOptimizeL2Extension {
     webpConvert = false
     debugResourcesSize = true
-    debugResourcesOptimize = false
+    debugResourcesOptimize = true
     // 100 kb
-    def maxSize = 100
+    maxSize = 50
+    cwebpPath = ''
+    guetzliPath = ''
+    pngquantPath = ''
 }
 ```
 
