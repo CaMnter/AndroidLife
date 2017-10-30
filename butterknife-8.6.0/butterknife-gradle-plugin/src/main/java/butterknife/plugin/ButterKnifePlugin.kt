@@ -86,7 +86,7 @@ class ButterKnifePlugin : Plugin<Project> {
                 // need to configure the task once with the R.java input and action.
                 if (once.compareAndSet(false, true)) {
                     // 拿到 R 文件夹路径
-                    val rPackage = processResources.packageForR
+                    val rPackage = processResources.originalApplicationId
                     // 替换 R 文件夹路径 的 分隔符
                     val pathToR = rPackage.replace('.', File.separatorChar)
                     // 拿到 R 文件
