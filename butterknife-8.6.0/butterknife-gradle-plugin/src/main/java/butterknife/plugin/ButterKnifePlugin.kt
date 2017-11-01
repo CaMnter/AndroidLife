@@ -109,6 +109,7 @@ class ButterKnifePlugin : Plugin<Project> {
                         inputs.file(rFile)
                         // JavaPoet + JavaParser 生成 R2.java
                         doLast {
+                            println("[ButterKnifePlugin]   [generate${variant.name.capitalize()}R2]   [doLast]")
                             FinalRClassBuilder.brewJava(rFile, outputDir, rPackage, "R2")
                         }
                     }
