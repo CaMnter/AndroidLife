@@ -15,6 +15,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import java.lang.ref.WeakReference;
 import java.util.Calendar;
 import java.util.Locale;
@@ -45,11 +47,16 @@ public class CountDownView extends LinearLayout {
     private int borderColor;
     private int backgroundColor;
 
-    private TextView hourText;
-    private TextView firstColonText;
-    private TextView minuteText;
-    private TextView secondColonText;
-    private TextView secondText;
+    @BindView(R2.id.count_down_hour_text)
+    TextView hourText;
+    @BindView(R2.id.count_down_first_colon_text)
+    TextView firstColonText;
+    @BindView(R2.id.count_down_minute_text)
+    TextView minuteText;
+    @BindView(R2.id.exclusive_count_down_second_colon_text)
+    TextView secondColonText;
+    @BindView(R2.id.count_down_second_text)
+    TextView secondText;
 
     private static final boolean LOG = false;
 
@@ -156,11 +163,7 @@ public class CountDownView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        this.hourText = (TextView) this.findViewById(R.id.count_down_hour_text);
-        this.firstColonText = (TextView) this.findViewById(R.id.count_down_first_colon_text);
-        this.minuteText = (TextView) this.findViewById(R.id.count_down_minute_text);
-        this.secondColonText = (TextView) this.findViewById(R.id.exclusive_count_down_second_colon_text);
-        this.secondText = (TextView) this.findViewById(R.id.count_down_second_text);
+        ButterKnife.bind(this);
 
         this.hourText.setTextColor(this.timeColor);
         this.minuteText.setTextColor(this.timeColor);

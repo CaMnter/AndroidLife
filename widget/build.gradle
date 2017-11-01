@@ -31,6 +31,8 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
     })
     testCompile rootProject.ext.denpendencies["junit"]
+    provided rootProject.ext.denpendencies["butterknife"]
+    annotationProcessor rootProject.ext.annotationProcessor["butterknife-compiler"]
     provided rootProject.ext.denpendencies["recyclerview-v7"]
     provided rootProject.ext.denpendencies["support-v7"]
     provided project(':utils')
