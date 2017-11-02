@@ -8,7 +8,7 @@
 <br>
     
 ```shell
-gradle gradle-plugn-life:toy-time-plugin:uploadArchives 
+gradle gradle-plugin-life:toy-time-plugin:uploadArchives 
 ```
 
 <br>
@@ -29,7 +29,7 @@ buildscript {
     }
     dependencies {
         // local repository
-        classpath 'com.camnter.gradle.plugin.toytime:toy-time-plugin:1.0.2'
+        classpath 'com.camnter.gradle.plugin.toytime:toy-time-plugin:1.0.3'
     }
 }
 
