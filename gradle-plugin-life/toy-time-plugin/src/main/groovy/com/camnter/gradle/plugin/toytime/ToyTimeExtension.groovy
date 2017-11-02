@@ -1,4 +1,4 @@
-package com.camnter.gradle.plugin.toytime;
+package com.camnter.gradle.plugin.toytime
 
 /**
  * @author CaMnter

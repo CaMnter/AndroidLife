@@ -8,7 +8,6 @@ import org.gradle.api.execution.TaskExecutionListener
 import org.gradle.api.initialization.Settings
 import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.TaskState
-import org.gradle.internal.time.Clock
 
 /**
  * @author CaMnter
