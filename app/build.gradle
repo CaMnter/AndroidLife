@@ -249,12 +249,12 @@ lifeExtension {
  * ToyTime plugin *
  ******************/
 
-apply plugin: 'com.camnter.gradle.plugin.toytime'
-
-toyTimeExtension {
-    keyword = ''
-    minElapsedMillis = 10
-}
+//apply plugin: 'com.camnter.gradle.plugin.toytime'
+//
+//toyTimeExtension {
+//    keyword = ''
+//    minElapsedMillis = 10
+//}
 
 /*************
  * R2 plugin *
