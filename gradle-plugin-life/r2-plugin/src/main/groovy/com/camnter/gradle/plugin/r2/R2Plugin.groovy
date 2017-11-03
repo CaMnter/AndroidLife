@@ -1,18 +1,15 @@
 package com.camnter.gradle.plugin.r2
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.AppPlugin
-import com.android.build.gradle.FeatureExtension
-import com.android.build.gradle.FeaturePlugin
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.LibraryPlugin
+import com.android.build.gradle.*
 import com.android.build.gradle.api.BaseVariant
+import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.tasks.ProcessAndroidResources
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 
+import java.lang.reflect.Field
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -46,14 +43,11 @@ class R2Plugin implements Plugin<Project> {
         }
     }
 
-    private static void configureR2Generation(Project project,
+    private void configureR2Generation(Project project,
             DomainObjectSet<BaseVariant> variants) {
         println "[R2Plugin]   [configureR2Generation]"
         // 遍历 DomainObjectSet<out BaseVariant>
         try {
-            if (null == variants) return
-            if (variants.size() == 0) return
-            println "[R2Plugin]   [configureR2Generation]   variants.size() != 0 && variants != null"
             variants.all {
                 if (null == it) {
                     println "[R2Plugin]   [applyPlugin]   [variants.all]:   it == null"
@@ -73,7 +67,6 @@ class R2Plugin implements Plugin<Project> {
 
                 // 遍历 DomainObjectCollection<BaseVariantOutput>
                 it.outputs.all { output ->
-
                     // ProcessAndroidResources
                     ProcessAndroidResources processResources = output.processResources
                     // ProcessAndroidResources 添加到任务内
@@ -83,7 +76,12 @@ class R2Plugin implements Plugin<Project> {
                     // need to configure the task once with the R.java input and action.
                     if (once.compareAndSet(false, true)) {
                         // 拿到 R 文件夹路径
-                        String rPackage = processResources.packageForR
+                        def variantScope = getVariantScope(processResources)
+                        def variantData = variantScope.variantData
+                        def config = variantData.variantConfiguration
+                        def splitName = config.splitFromManifest
+                        def rPackage = splitName == null ? config.originalApplicationId :
+                                config.originalApplicationId + "." + splitName
                         // 替换 R 文件夹路径 的 分隔符
                         String pathToR = rPackage.replace('.', FileUtils.FILE_SEPARATOR)
                         // 拿到 R 文件
@@ -102,5 +100,17 @@ class R2Plugin implements Plugin<Project> {
         } catch (Exception e) {
             println "[R2Plugin]   [configureR2Generation]   ${e.message}"
         }
+    }
+
+    /**
+     * Android gradle plugin 3.1.0 alpha01
+     *
+     * private VariantScope variantScope
+     * */
+    private VariantScope getVariantScope(ProcessAndroidResources processResources) {
+        Field variantScope = ProcessAndroidResources.class.getDeclaredField('variantScope')
+        variantScope.setAccessible(true)
+        def value = variantScope.get(processResources)
+        return value as VariantScope
     }
 }
