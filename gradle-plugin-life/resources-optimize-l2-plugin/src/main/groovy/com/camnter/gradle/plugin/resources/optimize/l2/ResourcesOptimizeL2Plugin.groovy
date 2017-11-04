@@ -2,7 +2,11 @@ package com.camnter.gradle.plugin.resources.optimize.l2
 
 import com.android.build.gradle.*
 import com.android.build.gradle.api.BaseVariant
-import com.camnter.gradle.plugin.resources.optimize.l2.utils.*
+import com.android.build.gradle.tasks.ProcessAndroidResources
+import com.camnter.gradle.plugin.resources.optimize.l2.utils.CommandUtils
+import com.camnter.gradle.plugin.resources.optimize.l2.utils.CompressUtils
+import com.camnter.gradle.plugin.resources.optimize.l2.utils.ImageUtils
+import com.camnter.gradle.plugin.resources.optimize.l2.utils.WebpUtils
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -71,6 +75,18 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
 
         project.afterEvaluate {
             variants.all {
+
+                // check aapt2
+                it.outputs.all { output ->
+                    ProcessAndroidResources processResources = output.processResources
+                    def aapt2Enabled = processResources.aapt2Enabled
+                    printf "%-42s = %s\n",
+                            ['[ResourcesOptimizeL2Plugin]   [aapt2Enabled]', "${aapt2Enabled}   [VariantOutput Name] = ${output.name}"]
+                    if (aapt2Enabled) {
+                        return
+                    }
+                }
+
                 def resourcesDir
                 if (it.productFlavors.size() == 0) {
                     resourcesDir = 'merged'
@@ -82,7 +98,6 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                 def processResourceTask = project.tasks.findByName(
                         "process${it.name.capitalize()}Resources")
                 def taskName = "resourcesOptimizeL2${capitalize}"
-
                 project.task(taskName) {
                     doLast {
                         def resourcesDirFile = new File(
