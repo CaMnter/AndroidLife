@@ -55,7 +55,7 @@ buildscript {
     }
     dependencies {
         // local repository
-        classpath 'com.camnter.gradle.plugin:resources-optimize-l2-plugin:1.0.7'
+        classpath 'com.camnter.gradle.plugin:resources-optimize-l2-plugin:1.0.8'
     }
 }
 
