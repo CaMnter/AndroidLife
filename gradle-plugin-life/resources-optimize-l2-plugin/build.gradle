@@ -25,7 +25,7 @@ dependencies {
 }
 
 group = 'com.camnter.gradle.plugin'
-version = '1.0.7'
+version = '1.0.8'
 
 sourceSets {
     main {
