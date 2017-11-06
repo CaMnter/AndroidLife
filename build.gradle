@@ -4,9 +4,9 @@ apply from: 'config.gradle'
 
 buildscript {
     repositories {
+        maven { url 'https://maven.google.com' }
         jcenter()
         mavenCentral()
-        google()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url "https://plugins.gradle.org/m2/" }
         maven {
@@ -21,7 +21,7 @@ buildscript {
         maven { url uri('butterknife-8.6.0/repository') }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0-alpha01'
+        classpath 'com.android.tools.build:gradle:3.1.0-alpha02'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.4'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.6.0'

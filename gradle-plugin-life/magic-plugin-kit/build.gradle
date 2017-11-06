@@ -21,7 +21,7 @@ buildscript {
 dependencies {
     compileOnly gradleApi()
     compileOnly localGroovy()
-    implementation 'com.android.tools.build:gradle:3.1.0-alpha01'
+    implementation 'com.android.tools.build:gradle:3.1.0-alpha02'
 }
 
 group = 'com.camnter.gradle.magic.plugin.kit'
