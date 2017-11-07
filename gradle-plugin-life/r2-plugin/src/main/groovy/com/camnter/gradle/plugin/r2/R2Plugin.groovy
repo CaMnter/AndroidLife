@@ -5,6 +5,7 @@ import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
 import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
 import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.tasks.ProcessAndroidResources
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -51,7 +52,6 @@ class R2Plugin implements Plugin<Project> {
         try {
             variants.all {
                 if (null == it) {
-                    println "[R2Plugin]   [applyPlugin]   [variants.all]:   it == null"
                     return
                 }
                 // 获取每个 output 文件夹 File
@@ -59,7 +59,7 @@ class R2Plugin implements Plugin<Project> {
                         FileUtils.resolve(project.buildDir, "generated/source/r2/${it.dirName}"))
                 // 创建对应的 R2 任务
                 Task task = project.tasks.create("generate${it.name.capitalize()}R2")
-                // 设置 R2 任务的 输出目录 File
+                // 设置 R2 任务的 输出目录gr File
                 task.outputs.dir(outputDir)
                 // 注册任务
                 it.registerJavaGeneratingTask(task, outputDir)
@@ -70,11 +70,56 @@ class R2Plugin implements Plugin<Project> {
                 it.outputs.all { output ->
                     // ProcessAndroidResources
                     def processResources = output.processResources
+
+                    // 区分 android gradle plugin 版本
+                    String version = ''
+                    String alpha = ''
+                    project.rootProject
+                            .buildscript
+                            .configurations
+                            .classpath
+                            .resolvedConfiguration
+                            .firstLevelModuleDependencies.
+                            each {
+                                def name = it.name
+                                if (name.contains('com.android.tools.build:gradle')) {
+                                    def moduleVersion = it.moduleVersion
+                                    // alpha ?
+                                    if (moduleVersion.contains("-")) {
+                                        def versionArray = moduleVersion.split("-")
+                                        println "[R2Plugin]   [versionArray] = ${versionArray}"
+                                        version = versionArray[0]
+                                        alpha = versionArray[1]
+                                    } else {
+                                        version = moduleVersion
+                                    }
+                                }
+                            }
+                    def firstVersion = version.substring(0, 1) as Integer
                     // 拿到 R 文件夹路径
-                    def rPackage = isLibrary ?
-                            (processResources as GenerateLibraryRFileTask).packageForR :
-                            getPackageForRFromLinkApplicationAndroidResourcesTask(
-                                    processResources as LinkApplicationAndroidResourcesTask)
+                    def rPackage = ''
+                    if (version == '3.1.0') {
+                        if ('' != alpha) {
+                            switch (alpha) {
+                                case "alpha01":
+                                    rPackage = getPackageForRFromProcessAndroidResources(
+                                            processResources)
+                                    break
+                                case "alpha02":
+                                    rPackage = isLibrary ?
+                                            (processResources as GenerateLibraryRFileTask).packageForR :
+                                            getPackageForRFromLinkApplicationAndroidResourcesTask(
+                                                    processResources as LinkApplicationAndroidResourcesTask)
+                                    break
+                            }
+                        } else {
+                            // TODO 3.1.0 final version
+                        }
+                    } else if (version == '3.0.0' || firstVersion < 3) {
+                        // less than or equal to 3.0.0
+                        rPackage = processResources.packageForR
+                    }
+                    println "[R2Plugin]   [isLibrary] = ${isLibrary}   [rPackage] = ${rPackage}   [android gradle plugin version] = ${version}   [android gradle plugin alpha] = ${alpha}   [android gradle plugin firstVersion] = ${firstVersion}"
                     // ProcessAndroidResources 添加到任务内
                     task.dependsOn(output.processResources)
                     // Though there might be multiple outputs, their R files are all the same. Thus, we only
@@ -105,14 +150,14 @@ class R2Plugin implements Plugin<Project> {
      *
      * ProcessResources
      *
-     * In 3.1.0 alpha2, renamed to LinkApplicationAndroidResourcesTask
+     * In 3.1.0 alpha02, renamed to LinkApplicationAndroidResourcesTask
      *
      * @return
      */
     private String getPackageForRFromLinkApplicationAndroidResourcesTask(
             LinkApplicationAndroidResourcesTask linkApplicationAndroidResourcesTask) {
-
-        def variantScope = getVariantScope(linkApplicationAndroidResourcesTask)
+        def variantScope = getVariantScopeFromLinkApplicationAndroidResourcesTask(
+                linkApplicationAndroidResourcesTask)
         def variantData = variantScope.variantData
         def config = variantData.variantConfiguration
         def splitName = config.splitFromManifest
@@ -128,12 +173,47 @@ class R2Plugin implements Plugin<Project> {
      *
      * private VariantScope variantScope
      * */
-    private VariantScope getVariantScope(
+    private VariantScope getVariantScopeFromLinkApplicationAndroidResourcesTask(
             LinkApplicationAndroidResourcesTask linkApplicationAndroidResourcesTask) {
         Field variantScope = LinkApplicationAndroidResourcesTask.class.getDeclaredField(
                 'variantScope')
         variantScope.setAccessible(true)
         def value = variantScope.get(linkApplicationAndroidResourcesTask)
+        return value as VariantScope
+    }
+
+    /**
+     * Refer to Android gradle plugin 3.0.0 source code
+     *
+     * ProcessResources
+     *
+     * In 3.1.0 alpha01
+     *
+     * @return
+     */
+    private String getPackageForRFromProcessAndroidResources(
+            ProcessAndroidResources processAndroidResources) {
+        def variantScope = getVariantScopeFromProcessAndroidResources(processAndroidResources)
+        def variantData = variantScope.variantData
+        def config = variantData.variantConfiguration
+        def splitName = config.splitFromManifest
+        def rPackage = splitName == null ? config.originalApplicationId :
+                config.originalApplicationId + "." + splitName
+        return rPackage
+    }
+
+    /**
+     * Android gradle plugin 3.1.0 alpha01
+     *
+     * ProcessAndroidResources
+     *
+     * private VariantScope variantScope
+     * */
+    private VariantScope getVariantScopeFromProcessAndroidResources(
+            ProcessAndroidResources processAndroidResources) {
+        Field variantScope = ProcessAndroidResources.class.getDeclaredField('variantScope')
+        variantScope.setAccessible(true)
+        def value = variantScope.get(processAndroidResources)
         return value as VariantScope
     }
 }
