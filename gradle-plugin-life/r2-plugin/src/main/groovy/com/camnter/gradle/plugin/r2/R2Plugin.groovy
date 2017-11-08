@@ -59,7 +59,7 @@ class R2Plugin implements Plugin<Project> {
                         FileUtils.resolve(project.buildDir, "generated/source/r2/${it.dirName}"))
                 // 创建对应的 R2 任务
                 Task task = project.tasks.create("generate${it.name.capitalize()}R2")
-                // 设置 R2 任务的 输出目录gr File
+                // 设置 R2 任务的 输出目录 r File
                 task.outputs.dir(outputDir)
                 // 注册任务
                 it.registerJavaGeneratingTask(task, outputDir)
