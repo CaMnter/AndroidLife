@@ -2,6 +2,7 @@ package com.camnter.gradle.magic.plugin.kit
 
 import com.android.build.gradle.*
 import org.gradle.api.Project
+import org.gradle.api.plugins.PluginContainer
 
 /**
  * @author CaMnter
@@ -12,19 +13,16 @@ class PluginUtils {
     static int dispatchPlugin(Project project, Closure<AppExtension> appClosure,
             Closure<LibraryExtension> libraryClosure,
             Closure<FeatureExtension> featureClosure) {
-        project.plugins.all {
-            if (it instanceof AppPlugin) {
-                AppExtension appExtension = project.extensions.getByType(AppExtension.class)
-                appClosure.call(appExtension)
-            } else if (it instanceof LibraryPlugin) {
-                LibraryExtension libraryExtension = project.extensions.getByType(
-                        LibraryExtension.class)
-                libraryClosure.call(libraryExtension)
-            } else if (it instanceof FeaturePlugin) {
-                FeatureExtension featureExtension = project.extensions.getByType(
-                        FeatureExtension.class)
-                featureClosure.call(featureExtension)
-            }
+        PluginContainer plugins = project.plugins
+        if (plugins.hasPlugin(AppPlugin.class)) {
+            AppExtension appExtension = project.extensions.getByType(AppExtension.class)
+            appClosure.call(appExtension)
+        } else if (plugins.hasPlugin(LibraryPlugin.class)) {
+            LibraryExtension libraryExtension = project.extensions.getByType(LibraryExtension.class)
+            libraryClosure.call(libraryExtension)
+        } else if (plugins.hasPlugin(FeaturePlugin.class)) {
+            FeatureExtension featureExtension = project.extensions.getByType(FeatureExtension.class)
+            featureClosure.call(featureExtension)
         }
     }
 

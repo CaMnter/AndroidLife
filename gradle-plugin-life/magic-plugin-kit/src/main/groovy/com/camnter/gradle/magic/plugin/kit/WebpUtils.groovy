@@ -12,11 +12,13 @@ class WebpUtils {
     static final int VERSION_SUPPORT_TRANSPARENT_WEBP = 18
 
     static boolean isPNGConvertSupported(Project project) {
-        return AndroidUtils.getMinSdkVersion(project) >= VERSION_SUPPORT_WEBP
+        def minSdkVersion = AndroidUtils.getMinSdkVersion(project)
+        return minSdkVersion >= VERSION_SUPPORT_WEBP
     }
 
     static boolean isTransparentPNGSupported(Project project) {
-        return AndroidUtils.getMinSdkVersion(project) >= VERSION_SUPPORT_TRANSPARENT_WEBP
+        def minSdkVersion = AndroidUtils.getMinSdkVersion(project)
+        return minSdkVersion >= VERSION_SUPPORT_TRANSPARENT_WEBP
     }
 
     def static formatWebp(File imageFile, Closure formatClosure) {
