@@ -260,7 +260,7 @@ toyTimeExtension {
  * R2 plugin *
  *************/
 
-apply plugin: 'com.camnter.gradle.plugin.r2'
+//apply plugin: 'com.camnter.gradle.plugin.r2'
 
 /****************
  * Method trace *
