@@ -100,17 +100,15 @@ class R2Plugin implements Plugin<Project> {
                     def rPackage = ''
                     if (version == '3.1.0') {
                         if ('' != alpha) {
-                            switch (alpha) {
-                                case "alpha01":
-                                    rPackage = getPackageForRFromProcessAndroidResources(
-                                            processResources)
-                                    break
-                                case "alpha02":
-                                    rPackage = isLibrary ?
-                                            (processResources as GenerateLibraryRFileTask).packageForR :
-                                            getPackageForRFromLinkApplicationAndroidResourcesTask(
-                                                    processResources as LinkApplicationAndroidResourcesTask)
-                                    break
+                            if (alpha == "alpha01") {
+                                rPackage =
+                                        getPackageForRFromProcessAndroidResources(processResources)
+                            } else {
+                                // "alpha02", "alpha03"...
+                                rPackage = isLibrary ?
+                                        (processResources as GenerateLibraryRFileTask).packageForR :
+                                        getPackageForRFromLinkApplicationAndroidResourcesTask(
+                                                processResources as LinkApplicationAndroidResourcesTask)
                             }
                         } else {
                             // TODO 3.1.0 final version
