@@ -3,7 +3,7 @@
   <groupId>com.jakewharton.butterknife</groupId>
   <artifactId>butterknife-gradle-plugin</artifactId>
   <versioning>
-    <release>1.0.5</release>
+    <release>1.0.6</release>
     <versions>
       <version>1.0.0</version>
       <version>1.0.1</version>
@@ -11,7 +11,8 @@
       <version>1.0.3</version>
       <version>1.0.4</version>
       <version>1.0.5</version>
+      <version>1.0.6</version>
     </versions>
-    <lastUpdated>20171109083420</lastUpdated>
+    <lastUpdated>20171113071815</lastUpdated>
   </versioning>
 </metadata>
