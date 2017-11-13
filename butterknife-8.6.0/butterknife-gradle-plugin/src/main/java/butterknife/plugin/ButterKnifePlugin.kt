@@ -115,15 +115,15 @@ class ButterKnifePlugin : Plugin<Project> {
                 var rPackage = ""
                 if (version == "3.1.0") {
                     if ("" != alpha) {
-                        when (alpha) {
-                            "alpha01" ->
-                                rPackage = processResources.getPackageForR310Alpha01()
-                            "alpha02" ->
-                                rPackage = if (isLibrary) {
-                                    (processResources as GenerateLibraryRFileTask).packageForR
-                                } else {
-                                    (processResources as LinkApplicationAndroidResourcesTask).getPackageForR310Alpha02()
-                                }
+                        rPackage = if (alpha == "alpha01") {
+                            processResources.getPackageForR310Alpha01()
+                        } else {
+                            // "alpha02", "alpha03"...
+                            if (isLibrary) {
+                                (processResources as GenerateLibraryRFileTask).packageForR
+                            } else {
+                                (processResources as LinkApplicationAndroidResourcesTask).getPackageForR310Alpha02()
+                            }
                         }
                     } else {
                         // TODO 3.1.0 final version
