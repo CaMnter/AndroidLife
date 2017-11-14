@@ -46,6 +46,7 @@ include ':app',
         ':instant-run:instant-run-runtime',
         ':instant-run:instant-run-server',
 
+        ':dex-method-counts',
         ':groovy-life',
         ':gradle-plugin-course',
         ':hotfix',

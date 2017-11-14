@@ -1,0 +1,22 @@
+apply plugin: 'application'
+
+mainClassName = "info.persistent.dex.Main"
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+    }
+}
+
+jar {
+    // Redirect output to match launcher script
+    destinationDir = file('build/jar')
+    manifest {
+        attributes("Main-Class": mainClassName)
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
