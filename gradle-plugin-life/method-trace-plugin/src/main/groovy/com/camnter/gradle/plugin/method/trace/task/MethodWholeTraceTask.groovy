@@ -26,7 +26,12 @@ class MethodWholeTraceTask extends DefaultTask {
             txtFile.write('')
 
             // DmTraceDump command
-            def command = "${platformToolsPath}/dmtracedump  -ho ${it.absolutePath} >> ${txtFile.absolutePath}"
+
+            // The space in the path is processed only when the command line is executed
+            def input = it.absolutePath.replaceAll(" ", "\\\\ ")
+            def output = txtFile.absolutePath.replaceAll(" ", "\\\\ ")
+
+            def command = "${platformToolsPath}/dmtracedump  -ho ${input} >> ${output}"
             printf "%43s : %s\n", ['[MethodWholeTraceTask]   [main]   [command]', command]
 
             CommandUtils.command(command)
