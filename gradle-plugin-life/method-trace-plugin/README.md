@@ -29,7 +29,7 @@ buildscript {
     }
     dependencies {
         // local repository
-        classpath 'com.camnter.gradle.plugin.life:method-trace-plugin:1.1.2'
+        classpath 'com.camnter.gradle.plugin.life:method-trace-plugin:1.1.4'
     }
 }
 
