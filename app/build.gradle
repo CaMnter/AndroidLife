@@ -1,7 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
-// apply from: rootProject.getRootDir().getAbsolutePath() + "/common.gradle"
-// apply plugin: RocooFixPlugin
+
+/**
+ * gradle projectReport
+ * build/reports/project/dependencies/index.html
+ *
+ * gradle -q dependencies app:dependencies --configuration compile
+ */
+apply plugin: 'project-report'
 
 def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
