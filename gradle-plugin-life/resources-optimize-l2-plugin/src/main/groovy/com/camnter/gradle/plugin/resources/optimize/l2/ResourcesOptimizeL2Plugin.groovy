@@ -2,6 +2,7 @@ package com.camnter.gradle.plugin.resources.optimize.l2
 
 import com.android.build.gradle.*
 import com.android.build.gradle.api.BaseVariant
+import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
 import com.android.build.gradle.tasks.ProcessAndroidResources
 import com.camnter.gradle.plugin.resources.optimize.l2.utils.CommandUtils
 import com.camnter.gradle.plugin.resources.optimize.l2.utils.CompressUtils
@@ -77,14 +78,19 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
             variants.all {
 
                 // check aapt2
+                boolean aapt2Enabled = false
                 it.outputs.all { output ->
                     ProcessAndroidResources processResources = output.processResources
-                    def aapt2Enabled = processResources.aapt2Enabled
-                    printf "%-42s = %s\n",
-                            ['[ResourcesOptimizeL2Plugin]   [aapt2Enabled]', "${aapt2Enabled}   [VariantOutput Name] = ${output.name}"]
-                    if (aapt2Enabled) {
-                        return
+                    if (processResources instanceof LinkApplicationAndroidResourcesTask) {
+                        aapt2Enabled =
+                                (processResources as LinkApplicationAndroidResourcesTask).aapt2Enabled
                     }
+                    printf "%-42s = %s\n",
+                            ['[ResourcesOptimizeL2Plugin]   [aapt2Enabled]', "${aapt2Enabled}   [VariantOutput Name] = ${output.name}   [VariantOutput] = ${output.class.name}"]
+                }
+
+                if (aapt2Enabled) {
+                    return
                 }
 
                 def resourcesDir
