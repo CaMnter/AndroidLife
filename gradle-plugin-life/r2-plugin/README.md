@@ -29,7 +29,7 @@ buildscript {
     }
     dependencies {
         // local repository
-        classpath 'com.camnter.gradle.plugin:r2-plugin:1.1.5'
+        classpath 'com.camnter.gradle.plugin:r2-plugin:1.1.6'
     }
 }
 ```
