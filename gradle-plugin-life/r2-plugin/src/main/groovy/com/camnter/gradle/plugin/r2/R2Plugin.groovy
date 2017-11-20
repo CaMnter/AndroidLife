@@ -2,9 +2,14 @@ package com.camnter.gradle.plugin.r2
 
 import com.android.build.gradle.*
 import com.android.build.gradle.api.BaseVariant
+import com.android.build.gradle.internal.api.ApplicationVariantImpl
+import com.android.build.gradle.internal.api.FeatureVariantImpl
+import com.android.build.gradle.internal.api.LibraryVariantImpl
+import com.android.build.gradle.internal.core.GradleVariantConfiguration
 import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
 import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
 import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.tasks.ProcessAndroidResources
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.Plugin
@@ -66,6 +71,25 @@ class R2Plugin implements Plugin<Project> {
 
                 AtomicBoolean once = new AtomicBoolean()
 
+                def rPackage = null
+                try {
+                    BaseVariantData variantData = null
+                    if (it instanceof ApplicationVariantImpl) {
+                        variantData = (it as ApplicationVariantImpl).variantData
+                    } else if (it instanceof LibraryVariantImpl) {
+                        variantData = (it as LibraryVariantImpl).variantData
+                    } else if (it instanceof FeatureVariantImpl) {
+                        variantData = (it as FeatureVariantImpl).variantData
+                    }
+
+                    if (variantData != null) {
+                        GradleVariantConfiguration config = variantData.variantConfiguration
+                        String splitName = config.splitFromManifest
+                        rPackage = splitName == null ? config.originalApplicationId :
+                                config.originalApplicationId + "." + splitName
+                    }
+                } catch (Exception e) {
+                }
                 // 遍历 DomainObjectCollection<BaseVariantOutput>
                 it.outputs.all { output ->
                     // ProcessAndroidResources
@@ -97,25 +121,30 @@ class R2Plugin implements Plugin<Project> {
                             }
                     def firstVersion = version.substring(0, 1) as Integer
                     // 拿到 R 文件夹路径
-                    def rPackage = ''
-                    if (version == '3.1.0') {
-                        if ('' != alpha) {
-                            if (alpha == "alpha01") {
-                                rPackage =
-                                        getPackageForRFromProcessAndroidResources(processResources)
+                    if (rPackage == null) {
+                        println "[R2Plugin]  get BaseVariantData failure"
+                        rPackage = ''
+                        if (version == '3.1.0') {
+                            if ('' != alpha) {
+                                if (alpha == "alpha01") {
+                                    rPackage = getPackageForRFromProcessAndroidResources(
+                                            processResources)
+                                } else {
+                                    // "alpha02", "alpha03"...
+                                    rPackage = isLibrary ?
+                                            (processResources as GenerateLibraryRFileTask).packageForR :
+                                            getPackageForRFromLinkApplicationAndroidResourcesTask(
+                                                    processResources as LinkApplicationAndroidResourcesTask)
+                                }
                             } else {
-                                // "alpha02", "alpha03"...
-                                rPackage = isLibrary ?
-                                        (processResources as GenerateLibraryRFileTask).packageForR :
-                                        getPackageForRFromLinkApplicationAndroidResourcesTask(
-                                                processResources as LinkApplicationAndroidResourcesTask)
+                                // TODO 3.1.0 final version
                             }
-                        } else {
-                            // TODO 3.1.0 final version
+                        } else if (version == '3.0.0' || firstVersion < 3) {
+                            // less than or equal to 3.0.0
+                            rPackage = processResources.packageForR
                         }
-                    } else if (version == '3.0.0' || firstVersion < 3) {
-                        // less than or equal to 3.0.0
-                        rPackage = processResources.packageForR
+                    } else {
+                        println "[R2Plugin]  get BaseVariantData success   [rPackage] = ${rPackage}"
                     }
                     println "[R2Plugin]   [isLibrary] = ${isLibrary}   [rPackage] = ${rPackage}   [android gradle plugin version] = ${version}   [android gradle plugin alpha] = ${alpha}   [android gradle plugin firstVersion] = ${firstVersion}"
                     // ProcessAndroidResources 添加到任务内
