@@ -25,6 +25,12 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class R2Plugin implements Plugin<Project> {
 
+    static final String VERSION_3_ZERO_FIELD = "com.android.builder.Version"
+    // <= 3.0
+    static final String VERSION_3_ONE_FIELD = "com.android.builder.model.Version"
+    // > 3.1
+    static final String AGP_VERSION_FIELD = "ANDROID_GRADLE_PLUGIN_VERSION"
+
     /**
      * Apply this plugin to the given target object.
      *
@@ -52,6 +58,24 @@ class R2Plugin implements Plugin<Project> {
 
     private void configureR2Generation(Project project, DomainObjectSet<BaseVariant> variants,
             boolean isLibrary) {
+
+        String gradlePluginVersion = ""
+        try {
+            gradlePluginVersion = Class.forName(VERSION_3_ZERO_FIELD).
+                    getDeclaredField(AGP_VERSION_FIELD).
+                    get(this).
+                    toString()
+        } catch (Exception e) {
+        }
+        try {
+            gradlePluginVersion = Class.forName(VERSION_3_ONE_FIELD).
+                    getDeclaredField(AGP_VERSION_FIELD).
+                    get(this).
+                    toString()
+        } catch (Exception e) {
+        }
+
+        println "[R2Plugin]   [gradlePluginVersion] = ${gradlePluginVersion}"
         println "[R2Plugin]   [configureR2Generation]"
         // 遍历 DomainObjectSet<out BaseVariant>
         try {
@@ -98,27 +122,38 @@ class R2Plugin implements Plugin<Project> {
                     // 区分 android gradle plugin 版本
                     String version = ''
                     String alpha = ''
-                    project.rootProject
-                            .buildscript
-                            .configurations
-                            .classpath
-                            .resolvedConfiguration
-                            .firstLevelModuleDependencies.
-                            each {
-                                def name = it.name
-                                if (name.contains('com.android.tools.build:gradle')) {
-                                    def moduleVersion = it.moduleVersion
-                                    // alpha ?
-                                    if (moduleVersion.contains("-")) {
-                                        def versionArray = moduleVersion.split("-")
-                                        println "[R2Plugin]   [versionArray] = ${versionArray}"
-                                        version = versionArray[0]
-                                        alpha = versionArray[1]
-                                    } else {
-                                        version = moduleVersion
+                    if (gradlePluginVersion != "") {
+                        if (gradlePluginVersion.contains("-")) {
+                            def versionArray = gradlePluginVersion.split("-")
+                            println "[R2Plugin]   [versionArray] = ${versionArray}"
+                            version = versionArray[0]
+                            alpha = versionArray[1]
+                        } else {
+                            version = moduleVersion
+                        }
+                    } else {
+                        project.rootProject
+                                .buildscript
+                                .configurations
+                                .classpath
+                                .resolvedConfiguration
+                                .firstLevelModuleDependencies.
+                                each {
+                                    def name = it.name
+                                    if (name.contains('com.android.tools.build:gradle')) {
+                                        def moduleVersion = it.moduleVersion
+                                        // alpha ?
+                                        if (moduleVersion.contains("-")) {
+                                            def versionArray = moduleVersion.split("-")
+                                            println "[R2Plugin]   [versionArray] = ${versionArray}"
+                                            version = versionArray[0]
+                                            alpha = versionArray[1]
+                                        } else {
+                                            version = moduleVersion
+                                        }
                                     }
                                 }
-                            }
+                    }
                     def firstVersion = version.substring(0, 1) as Integer
                     // 拿到 R 文件夹路径
                     if (rPackage == null) {
