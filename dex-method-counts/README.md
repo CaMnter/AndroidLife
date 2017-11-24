@@ -11,12 +11,12 @@ To run it with Ant:
 
 or with Gradle:
 
-    $ ./gradlew assemble
+    $ gradle :dex-method-counts:assemble
     $ ./dex-method-counts path/to/App.apk # or .zip or .dex or directory
-
+    
 on Windows:
 
-    $ gradlew assemble
+    $ gradle :dex-method-counts:assemble
     $ dex-method-counts.bat path\to\App.apk
 
 You'll see output of the form:
