@@ -11,13 +11,23 @@ To run it with Ant:
 
 or with Gradle:
 
-    $ gradle :dex-method-counts:assemble
-    $ ./dex-method-counts path/to/App.apk # or .zip or .dex or directory
+    $ mkdir dex-method-counts/scripts
+    $ gradle :dex-method-counts:assemble && cp dex-method-counts/build/scripts/dex-method-counts dex-method-counts/scripts/dex-method-counts
+    $ vi dex-method-counts.bat
+    
+    `CLASSPATH=...` -> `CLASSPATH=$APP_HOME/dex-method-counts/repository/dex-method-counts.jar`
+    
+    $ ./dex-method-counts/dex-method-counts path/to/App.apk # or .zip or .dex or directory
     
 on Windows:
-
-    $ gradle :dex-method-counts:assemble
-    $ dex-method-counts.bat path\to\App.apk
+    
+    $ mkdir dex-method-counts/scripts
+    $ gradle :dex-method-counts:assemble && cp dex-method-counts/build/scripts/dex-method-counts.bat dex-method-counts/scripts/dex-method-counts.bat
+    $ vi dex-method-counts.bat
+    
+    `CLASSPATH=...` -> `CLASSPATH=$APP_HOME/dex-method-counts/repository/dex-method-counts.jar`
+    
+    $ ./dex-method-counts/dex-method-counts.bat path\to\App.apk
 
 You'll see output of the form:
 
