@@ -12,7 +12,7 @@ sourceSets {
 
 jar {
     // Redirect output to match launcher script
-    destinationDir = file('build/lib')
+    destinationDir = file('repository')
     manifest {
         attributes("Main-Class": mainClassName)
     }
