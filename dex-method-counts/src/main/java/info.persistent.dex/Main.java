@@ -28,6 +28,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
+@SuppressWarnings("DanglingJavadoc")
 public class Main {
     private boolean countFields;
     private boolean includeClasses;
@@ -45,8 +46,24 @@ public class Main {
 
     void run(String[] args) {
         try {
+            /**
+             * 解析 参数
+             * 获取一些解析选项 和 路径
+             */
             String[] inputFileNames = parseArgs(args);
             int overallCount = 0;
+            /**
+             * 遍历所有传入的路径
+             * 获取每个路径文件（ dex or apk ），文件内的每个 （ dex ）
+             *
+             * 遍历每个 dex 数据
+             * 通过 google 的 api，实例化 DexData
+             * 通过 google 的 api，生成 所有 dex 数据（ class，package，maxDepth and filter ）
+             *
+             * 输出方法数信息
+             *
+             * 获取方法数
+             */
             for (String fileName : collectFileNames(inputFileNames)) {
                 System.out.println("Processing " + fileName);
                 DexCount counts;
@@ -55,15 +72,23 @@ public class Main {
                 } else {
                     counts = new DexMethodCounts(outputStyle);
                 }
+                // 路径文件（ dex or apk ），文件内的每个 （ dex ）
                 List<RandomAccessFile> dexFiles = openInputFiles(fileName);
 
+                /**
+                 * 遍历每个 dex 数据
+                 * 通过 google 的 api，实例化 DexData
+                 * 通过 google 的 api，生成 所有 dex 数据（ class，package，maxDepth and filter ）
+                 */
                 for (RandomAccessFile dexFile : dexFiles) {
                     DexData dexData = new DexData(dexFile);
                     dexData.load();
                     counts.generate(dexData, includeClasses, packageFilter, maxDepth, filter);
                     dexFile.close();
                 }
+                // 输出方法数信息
                 counts.output();
+                // 获取方法数
                 overallCount = counts.getOverallCount();
             }
             System.out.println(
@@ -88,6 +113,10 @@ public class Main {
      * Opens an input file, which could be a .dex or a .jar/.apk with a
      * classes.dex inside.  If the latter, we extract the contents to a
      * temporary file.
+     *
+     * 将路径转为 zip
+     * 获取 zip 文件中的每个 dex 的数据（  RandomAccessFile ）
+     * 返回一个  List<RandomAccessFile>
      */
     List<RandomAccessFile> openInputFiles(String fileName) throws IOException {
         List<RandomAccessFile> dexFiles = new ArrayList<RandomAccessFile>();
@@ -106,6 +135,12 @@ public class Main {
     /**
      * Tries to open an input file as a Zip archive (jar/apk) with a
      * "classes.dex" inside.
+     *
+     * 将 路径 转换为 zip
+     *
+     * 遍历 zip 文件中的每个 dex
+     * 通过 openDexFile 方法获取 zip 文件中的每个 dex 的数据（ RandomAccessFile ）
+     * 保存到集合 dexFiles
      */
     void openInputFileAsZip(String fileName, List<RandomAccessFile> dexFiles) throws IOException {
         ZipFile zipFile;
@@ -134,6 +169,21 @@ public class Main {
     }
 
 
+    /**
+     * 读取 zip 中的 dex 数据
+     *
+     * 其实就是创建了一个 new dex
+     * 然后用 RandomAccessFile 把 zip 中的 dex 的数据写到 new dex 上
+     * 最后删除这个 new dex，因为数据已经读完到了 RandomAccessFile 上
+     * 不需要这个 new dex
+     *
+     * 返回的是 RandomAccessFile，已经将 zip 的数据读完了
+     *
+     * @param zipFile zipFile
+     * @param entry entry
+     * @return RandomAccessFile
+     * @throws IOException IOException
+     */
     RandomAccessFile openDexFile(ZipFile zipFile, ZipEntry entry) throws IOException {
         // We know it's a zip; see if there's anything useful inside.  A
         // failure here results in some type of IOException (of which
