@@ -1,4 +1,4 @@
-include ':app', ':dex-method-counts-plugin',
+include ':app',
 
         ':gradle-plugin-life:magic-plugin-kit',
         ':gradle-plugin-life:r2-plugin',
