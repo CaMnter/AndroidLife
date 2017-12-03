@@ -1,4 +1,4 @@
-package com.camnter.gradle.plugin.dex.method.counts;
+package com.camnter.gradle.plugin.dex.method.counts.struct;
 
 import java.io.PrintStream;
 import java.util.NavigableMap;

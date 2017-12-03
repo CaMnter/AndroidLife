@@ -1,6 +1,10 @@
 package com.camnter.gradle.plugin.dex.method.counts;
 
 import com.android.dexdeps.DexData;
+import com.camnter.gradle.plugin.dex.method.counts.struct.Filter;
+import com.camnter.gradle.plugin.dex.method.counts.struct.IntHolder;
+import com.camnter.gradle.plugin.dex.method.counts.struct.Node;
+import com.camnter.gradle.plugin.dex.method.counts.struct.OutputStyle;
 import java.util.Map;
 import java.util.TreeMap;
 

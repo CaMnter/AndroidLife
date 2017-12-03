@@ -1,5 +1,6 @@
-package com.camnter.gradle.plugin.dex.method.counts;
+package com.camnter.gradle.plugin.dex.method.counts.struct;
 
+import com.camnter.gradle.plugin.dex.method.counts.DexCount;
 import java.util.Map;
 
 /**
@@ -10,13 +11,13 @@ public enum OutputStyle {
 
     TREE {
         @Override
-        void output(DexCount dexCount) {
+        public void output(DexCount dexCount) {
             dexCount.getPackageTree().output("");
         }
     },
     FLAT {
         @Override
-        void output(DexCount counts) {
+        public void output(DexCount counts) {
             for (Map.Entry<String, IntHolder> e : counts.getPackageCount().entrySet()) {
                 String packageName = e.getKey();
                 if (packageName == "") {
@@ -28,6 +29,6 @@ public enum OutputStyle {
     };
 
 
-    abstract void output(DexCount dexCount);
+    public abstract void output(DexCount dexCount);
 
 }
