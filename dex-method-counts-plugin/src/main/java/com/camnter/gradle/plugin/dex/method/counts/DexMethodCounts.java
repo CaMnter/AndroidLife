@@ -2,7 +2,7 @@ package com.camnter.gradle.plugin.dex.method.counts;
 
 import com.android.dexdeps.ClassRef;
 import com.android.dexdeps.DexData;
-import com.android.dexdeps.FieldRef;
+import com.android.dexdeps.MethodRef;
 import com.android.dexdeps.Output;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,31 +14,27 @@ import java.util.Set;
  * @author CaMnter
  */
 
-public class DexFieldCounts extends DexCount {
+public class DexMethodCounts extends DexCount {
 
     private final StringBuilder builder;
 
 
-    DexFieldCounts(OutputStyle outputStyle) {
+    DexMethodCounts(OutputStyle outputStyle) {
         super(outputStyle);
         this.builder = new StringBuilder();
     }
 
 
     @Override
-    public void generate(DexData dexData,
-                         boolean includeClasses,
-                         String packageFilter,
-                         int maxDepth,
-                         Filter filter) {
-        final FieldInfo fieldInfo = getFieldRef(dexData, filter);
-        final StringBuilder builder = fieldInfo.builder;
-        final FieldRef[] fieldRefs = fieldInfo.fieldRefs;
+    public void generate(DexData dexData, boolean includeClasses, String packageFilter, int maxDepth, Filter filter) {
+        final MethodInfo methodInfo = getMethodRefs(dexData, filter);
+        final StringBuilder builder = methodInfo.builder;
+        final MethodRef[] methodRefs = methodInfo.methodRefs;
         if (builder != null) this.builder.append(builder.toString());
-        if (fieldRefs == null) return;
+        if (methodRefs == null) return;
 
-        for (FieldRef fieldRef : fieldRefs) {
-            final String classDescriptor = fieldRef.getDeclClassName();
+        for (MethodRef methodRef : methodRefs) {
+            final String classDescriptor = methodRef.getDeclClassName();
             final String packageName = includeClasses ?
                                        Output.descriptorToDot(classDescriptor).replace('$', '.') :
                                        Output.packageNameOnly(classDescriptor);
@@ -59,7 +55,8 @@ public class DexFieldCounts extends DexCount {
                     } else {
                         final Node childPackageNode = new Node();
                         if (name.length() == 0) {
-                            // This field is declared in a class that is part of the default package.
+                            // This method is declared in a class that is part of the default package.
+                            // Typical examples are methods that operate on arrays of primitive data types.
                             name = "<default>";
                         }
                         packageNode.children.put(name, childPackageNode);
@@ -79,16 +76,17 @@ public class DexFieldCounts extends DexCount {
     }
 
 
-    private static FieldInfo getFieldRef(DexData dexData, Filter filter) {
-        final FieldRef[] fieldRefs = dexData.getFieldRefs();
+    private static MethodInfo getMethodRefs(DexData dexData,
+                                            Filter filter) {
+        final MethodRef[] methodRefs = dexData.getMethodRefs();
         final StringBuilder builder = new StringBuilder();
 
         builder.append("Read in ")
-            .append(fieldRefs.length)
-            .append(" field IDs.")
+            .append(methodRefs.length)
+            .append(" method IDs.")
             .append("\n");
         if (filter == Filter.ALL) {
-            return new FieldInfo(fieldRefs, builder);
+            return new MethodInfo(methodRefs, builder);
         }
 
         // 外部 class
@@ -98,49 +96,49 @@ public class DexFieldCounts extends DexCount {
             .append(" external class references.")
             .append("\n");
 
-        // 外部 field
-        final Set<FieldRef> externalFieldRefs = new HashSet<>();
+        // 外部 method
+        final Set<MethodRef> externalMethodRefs = new HashSet<MethodRef>();
         for (ClassRef classRef : externalClassRefs) {
-            Collections.addAll(externalFieldRefs, classRef.getFieldArray());
+            Collections.addAll(externalMethodRefs, classRef.getMethodArray());
         }
         builder.append("Read in ")
-            .append(externalFieldRefs.size())
-            .append(" external field references.")
+            .append(externalMethodRefs.size())
+            .append(" external method references.")
             .append("\n");
 
-        // 过滤 field
-        final List<FieldRef> filteredFieldRefs = new ArrayList<>();
-        for (FieldRef FieldRef : fieldRefs) {
-            boolean isExternal = externalFieldRefs.contains(FieldRef);
+        // 过滤 method
+        final List<MethodRef> filteredMethodRefs = new ArrayList<MethodRef>();
+        for (MethodRef methodRef : methodRefs) {
+            boolean isExternal = externalMethodRefs.contains(methodRef);
             if ((filter == Filter.DEFINED_ONLY && !isExternal) ||
                 (filter == Filter.REFERENCED_ONLY && isExternal)) {
-                filteredFieldRefs.add(FieldRef);
+                filteredMethodRefs.add(methodRef);
             }
         }
-
         builder.append("Filtered to ")
-            .append(filteredFieldRefs.size())
+            .append(filteredMethodRefs.size())
             .append(" ")
             .append(filter == Filter.DEFINED_ONLY ? "defined" : "referenced")
-            .append(" field IDs.")
+            .append(" method IDs.")
             .append("\n");
 
-        return new FieldInfo(
-            filteredFieldRefs.toArray(new FieldRef[filteredFieldRefs.size()]),
+        return new MethodInfo(
+            filteredMethodRefs.toArray(new MethodRef[filteredMethodRefs.size()]),
             builder
         );
+
     }
 
 
-    private static final class FieldInfo {
+    private static final class MethodInfo {
 
-        private FieldRef[] fieldRefs;
+        private MethodRef[] methodRefs;
         private StringBuilder builder;
 
 
-        public FieldInfo(FieldRef[] fieldRefs,
-                         StringBuilder builder) {
-            this.fieldRefs = fieldRefs;
+        public MethodInfo(MethodRef[] methodRefs,
+                          StringBuilder builder) {
+            this.methodRefs = methodRefs;
             this.builder = builder;
         }
 
