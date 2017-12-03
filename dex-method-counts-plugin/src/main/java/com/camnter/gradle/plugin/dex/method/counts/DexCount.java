@@ -35,13 +35,13 @@ public abstract class DexCount {
                                   Filter filter);
 
 
-    void output() {
-        outputStyle.output(this);
+    public void output() {
+        this.outputStyle.output(this);
     }
 
 
-    int getOverallCount() {
-        return overallCount;
+    public int getOverallCount() {
+        return this.overallCount;
     }
 
 

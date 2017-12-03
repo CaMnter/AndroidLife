@@ -23,7 +23,7 @@ public class DexMethodCounts extends DexCount {
     private final StringBuilder builder;
 
 
-    DexMethodCounts(OutputStyle outputStyle) {
+    public DexMethodCounts(OutputStyle outputStyle) {
         super(outputStyle);
         this.builder = new StringBuilder();
     }
