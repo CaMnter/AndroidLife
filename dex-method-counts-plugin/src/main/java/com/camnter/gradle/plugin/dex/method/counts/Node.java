@@ -10,9 +10,9 @@ import java.util.TreeMap;
 
 public class Node {
 
-    private int count = 0;
+    public int count = 0;
     private static final PrintStream out = System.out;
-    private NavigableMap<String, Node> children = new TreeMap<String, Node>();
+    public NavigableMap<String, Node> children = new TreeMap<String, Node>();
 
 
     public void output(String indent) {

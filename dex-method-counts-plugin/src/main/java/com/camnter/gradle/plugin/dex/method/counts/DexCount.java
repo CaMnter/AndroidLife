@@ -1,6 +1,6 @@
 package com.camnter.gradle.plugin.dex.method.counts;
 
-import java.io.PrintStream;
+import com.android.dexdeps.DexData;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -8,13 +8,12 @@ import java.util.TreeMap;
  * @author CaMnter
  */
 
-public class DexCount {
+public abstract class DexCount {
 
-    private static final PrintStream out = System.out;
-    private final OutputStyle outputStyle;
-    private final Node packageTree;
-    private final Map<String, IntHolder> packageCount;
-    private int overallCount = 0;
+    final OutputStyle outputStyle;
+    final Node packageTree;
+    final Map<String, IntHolder> packageCount;
+    int overallCount = 0;
 
 
     DexCount(OutputStyle outputStyle) {
@@ -24,7 +23,12 @@ public class DexCount {
                             ? new TreeMap<>() : null;
     }
 
-    // TODO generate method
+
+    public abstract void generate(DexData dexData,
+                                  boolean includeClasses,
+                                  String packageFilter,
+                                  int maxDepth,
+                                  Filter filter);
 
 
     void output() {
