@@ -17,7 +17,7 @@ class DexMethodCountsPlugin implements Plugin<Project> {
         applyPluginIfNotApply(project, JavaPlugin.class)
         Task dexMethodCountsBeforeJarTask = project.task('dexMethodCountsBeforeJar',
                 type: BeforeJarTask)
-        Task dexMethodCountsAfterJarTask = project.task('dexMethodCountsBeforeJar',
+        Task dexMethodCountsAfterJarTask = project.task('dexMethodCountsAfterJarTask',
                 type: AfterJarTask)
         Task jarTask = project.tasks.getByName('jar')
         jarTask.dependsOn dexMethodCountsBeforeJarTask
