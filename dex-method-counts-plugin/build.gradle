@@ -42,7 +42,7 @@ sourceSets {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: uri('../repository'))
+            repository(url: uri('../gradle-plugin-life/repository'))
         }
     }
 }

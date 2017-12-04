@@ -13,7 +13,7 @@ import org.gradle.api.plugins.PluginContainer
 class DexMethodCountsPlugin implements Plugin<Project> {
 
     @Override
-    def apply(Project project) {
+    void apply(Project project) {
         applyPluginIfNotApply(project, JavaPlugin.class)
         Task dexMethodCountsBeforeJarTask = project.task('dexMethodCountsBeforeJar',
                 type: BeforeJarTask)
