@@ -1,60 +1,61 @@
 package com.camnter.gradle.plugin.dex.method.counts
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.AppPlugin
-import com.android.build.gradle.FeatureExtension
-import com.android.build.gradle.FeaturePlugin
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.LibraryPlugin
-import com.android.build.gradle.api.BaseVariant
-import com.android.build.gradle.api.BaseVariantOutput
-import org.gradle.api.DomainObjectSet
+import com.android.repository.Revision
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-
-import java.lang.reflect.Method
-
 /**
  * @author CaMnter
  */
 
 class DexMethodCountsPlugin implements Plugin<Project> {
 
+    static final String VERSION_3_ZERO_FIELD = "com.android.builder.Version"
+    // <= 3.0
+    static final String VERSION_3_ONE_FIELD = "com.android.builder.model.Version"
+    // > 3.1
+    static final String AGP_VERSION_FIELD = "ANDROID_GRADLE_PLUGIN_VERSION"
+
+    def gradlePluginVersion
+
+    def gradlePluginRevision
+    def threeOhRevision = Revision.parseRevision("3.0.0")
+    def isBuildTools3
+
     @Override
     void apply(Project project) {
-        project.plugins.all {
-            if (it instanceof FeaturePlugin) {
-                FeatureExtension featureExtension = project.extensions.getByType(
-                        FeatureExtension.class)
-                applyVariant(project, featureExtension.featureVariants)
-            } else if (it instanceof AppPlugin) {
-                AppExtension appExtension = project.extensions.getByType(AppExtension.class)
-                applyVariant(project, appExtension.applicationVariants)
-            } else if (it instanceof LibraryPlugin) {
-                LibraryExtension libraryExtension = project.extensions.getByType(
-                        LibraryExtension.class)
-                applyVariant(project, libraryExtension.libraryVariants)
-            }
-        }
+        initVersion()
     }
 
-    private Collection<BaseVariantOutput> applyVariant(Project project,
-            DomainObjectSet<BaseVariant> variants) {
-        variants.all {
-            Collection<BaseVariantOutput> outputs = getOutputs(it)
-            outputs.each {
-                // TODO create Task
-                // TODO it.outputFile File
-                // TODO it.assemble Task
-                // TODO it.name String
-                println "[DexMethodCountsPlugin]   [name] = ${it.name}  [outputFile] = ${it.outputFile}   [assemble] = ${it.assemble}   [baseName] = ${it.baseName}   [dirName] = ${it.dirName}"
-            }
+    def initVersion() {
+        Exception exception
+        try {
+            gradlePluginVersion = Class.forName(VERSION_3_ZERO_FIELD).
+                    getDeclaredField(AGP_VERSION_FIELD).
+                    get(this).
+                    toString()
+        } catch (Exception e) {
+            exception = e
         }
+        try {
+            gradlePluginVersion = Class.forName(VERSION_3_ONE_FIELD).
+                    getDeclaredField(AGP_VERSION_FIELD).
+                    get(this).
+                    toString()
+        } catch (Exception e) {
+            exception = e
+        }
+        if (gradlePluginVersion == null && exception != null) {
+            throw IllegalStateException(
+                    "dex-method-counts-plugin requires the Android plugin to be configured",
+                    exception)
+        } else if (gradlePluginVersion == null) {
+            throw IllegalStateException(
+                    "dex-method-counts-plugin requires the Android plugin to be configured")
+        }
+        gradlePluginRevision =
+                Revision.parseRevision(gradlePluginVersion, Revision.Precision.PREVIEW)
+        isBuildTools3 = gradlePluginRevision.compareTo(threeOhRevision,
+                Revision.PreviewComparison.IGNORE) >= 0
     }
 
-    private static Collection<BaseVariantOutput> getOutputs(BaseVariant variant) {
-        Method getOutputs = BaseVariant.class.getMethod("getOutputs")
-        getOutputs.setAccessible(true)
-        return getOutputs.invoke(variant) as Collection<BaseVariantOutput>
-    }
 }
