@@ -1,5 +1,6 @@
 package com.camnter.utils;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -99,7 +100,7 @@ public class DeviceUtils {
         if (context != null) {
             ConnectivityManager mConnectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            @SuppressLint("MissingPermission") NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
             if (mNetworkInfo != null) {
                 return mNetworkInfo.isAvailable();
             }
@@ -157,7 +158,7 @@ public class DeviceUtils {
     public static String getDeviceId(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(
             Context.TELEPHONY_SERVICE);
-        String deviceId = tm.getDeviceId();
+        @SuppressLint("MissingPermission") String deviceId = tm.getDeviceId();
         if (deviceId == null) {
             return "-";
         } else {

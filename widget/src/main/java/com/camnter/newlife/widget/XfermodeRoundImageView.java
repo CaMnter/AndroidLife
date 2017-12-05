@@ -1,5 +1,6 @@
 package com.camnter.newlife.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -99,7 +100,7 @@ public class XfermodeRoundImageView extends android.support.v7.widget.AppCompatI
             this.mWeakReference = new WeakReference<>(bitmap);
         }
         if (bitmap != null) {
-            int sc = canvas.saveLayer(0, 0, this.getWidth(), this.getHeight(), null,
+            @SuppressLint("WrongConstant") int sc = canvas.saveLayer(0, 0, this.getWidth(), this.getHeight(), null,
                 Canvas.MATRIX_SAVE_FLAG |
                     Canvas.CLIP_SAVE_FLAG |
                     Canvas.HAS_ALPHA_LAYER_SAVE_FLAG |

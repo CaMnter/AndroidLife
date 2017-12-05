@@ -15,7 +15,6 @@
         android:paddingBottom="10dp"
         android:gravity="center"
         android:clickable="true"
-        android:onClick="doSomething"
         android:drawablePadding="10dp"
         android:drawableTop="@drawable/ic_gallery_in_layer"
         android:text="相册"/>
@@ -38,7 +37,6 @@
         android:paddingBottom="10dp"
         android:gravity="center"
         android:clickable="true"
-        android:onClick="doSomething"
         android:drawablePadding="10dp"
         android:drawableTop="@drawable/img_camera_in_layer"
         android:text="拍照"/>

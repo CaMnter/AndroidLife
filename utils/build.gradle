@@ -29,14 +29,14 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.google.code.findbugs'
     })
-    testProvided rootProject.ext.denpendencies["junit"]
+    testCompile rootProject.ext.denpendencies["junit"]
     // 如果要使用 Mockito，你需要添加此条依赖库
-    testProvided rootProject.ext.denpendencies["mockito-core"]
+    testCompile rootProject.ext.denpendencies["mockito-core"]
     // 如果你要使用 Mockito 用于 Android instrumentation tests，那么需要你添加以下三条依赖库
-    androidTestProvided rootProject.ext.denpendencies["mockito-core"]
-    androidTestProvided rootProject.ext.denpendencies["dexmaker"]
-    androidTestProvided rootProject.ext.denpendencies["dexmaker-mockito"]
-    androidTestProvided(rootProject.ext.denpendencies["espresso-core"], {
+    androidTestCompile rootProject.ext.denpendencies["mockito-core"]
+    androidTestCompile rootProject.ext.denpendencies["dexmaker"]
+    androidTestCompile rootProject.ext.denpendencies["dexmaker-mockito"]
+    androidTestCompile(rootProject.ext.denpendencies["espresso-core"], {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'support-v7'

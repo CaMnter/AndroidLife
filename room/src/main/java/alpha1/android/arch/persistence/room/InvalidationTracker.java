@@ -20,6 +20,7 @@ import alpha1.android.arch.core.executor.AppToolkitTaskExecutor;
 import alpha1.android.arch.core.internal.SafeIterableMap;
 import alpha1.android.arch.persistence.db.SupportSQLiteDatabase;
 import alpha1.android.arch.persistence.db.SupportSQLiteStatement;
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.support.annotation.NonNull;
@@ -296,6 +297,7 @@ public class InvalidationTracker {
      *
      * @param observer The observer which listens the database for changes.
      */
+    @SuppressLint("RestrictedApi")
     public void addObserver(Observer observer) {
         final String[] tableNames = observer.mTables;
         int[] tableIds = new int[tableNames.length];
@@ -343,6 +345,7 @@ public class InvalidationTracker {
      *
      * @param observer The observer to remove.
      */
+    @SuppressLint("RestrictedApi")
     @SuppressWarnings("WeakerAccess")
     public void removeObserver(final Observer observer) {
         ObserverWrapper wrapper;
@@ -378,6 +381,7 @@ public class InvalidationTracker {
      * if you have another connection to the database or directly use {@link
      * SupportSQLiteDatabase}, you may need to call this manually.
      */
+    @SuppressLint("RestrictedApi")
     @SuppressWarnings("WeakerAccess")
     public void refreshVersionsAsync() {
         // TODO we should consider doing this sync instead of async.

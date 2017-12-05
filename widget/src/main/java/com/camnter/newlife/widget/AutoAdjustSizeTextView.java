@@ -7,7 +7,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-public class AutoAdjustSizeTextView extends TextView {
+public class AutoAdjustSizeTextView extends android.support.v7.widget.AppCompatTextView {
 
     // 最小字体
     private static final float DEFAULT_MIN_TEXT_SIZE = 8.0f;

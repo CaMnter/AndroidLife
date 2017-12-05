@@ -22,6 +22,7 @@ import alpha1.android.arch.persistence.db.SupportSQLiteOpenHelper;
 import alpha1.android.arch.persistence.db.SupportSQLiteQuery;
 import alpha1.android.arch.persistence.db.SupportSQLiteStatement;
 import alpha1.android.arch.persistence.db.framework.FrameworkSQLiteOpenHelperFactory;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.CallSuper;
@@ -133,6 +134,7 @@ public abstract class RoomDatabase {
      *
      * @hide
      */
+    @SuppressLint("RestrictedApi")
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     public void assertNotMainThread() {
         if (mAllowMainThreadQueries) {
