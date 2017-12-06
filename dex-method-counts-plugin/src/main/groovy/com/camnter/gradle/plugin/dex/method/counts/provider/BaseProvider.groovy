@@ -1,0 +1,95 @@
+package com.camnter.gradle.plugin.dex.method.counts.provider
+
+import com.android.build.gradle.*
+import com.android.build.gradle.api.*
+import com.camnter.gradle.plugin.dex.method.counts.task.BaseDexMethodCountsTask
+import org.gradle.api.DomainObjectCollection
+import org.gradle.api.Project
+import org.gradle.api.Task
+import org.gradle.api.plugins.ExtensionContainer
+import org.gradle.api.plugins.PluginContainer
+
+import java.lang.reflect.Method
+
+abstract class BaseProvider {
+
+    protected final Project project
+
+    BaseProvider(Project project) {
+        this.project = project
+    }
+
+    def apply() {
+        if (isInstantRun(project)) {
+            project.logger.info(
+                    "[DexMethodCountsPlugin]   Instant Run detected; disabling dex-method-counts-plugin")
+            return
+        }
+
+        DomainObjectCollection<BaseVariant> variants
+        PluginContainer plugins = project.plugins
+        ExtensionContainer extensions = project.extensions
+        if (plugins.hasPlugin(AppPlugin.class)) {
+            AppExtension appExtension = extensions.getByType(AppExtension.class)
+            variants = appExtension.applicationVariants
+        } else if (plugins.hasPlugin(TestPlugin.class)) {
+            TestExtension testExtension = extensions.getByType(TestPlugin.class)
+            variants = testExtension.applicationVariants
+        } else if (plugins.hasPlugin(LibraryPlugin.class)) {
+            LibraryExtension libraryExtension = extensions.getByType(LibraryExtension.class)
+            variants = libraryExtension.libraryVariants
+        } else if (plugins.hasPlugin(FeaturePlugin.class)) {
+            FeatureExtension featureExtension = extensions.getByType(FeatureExtension.class)
+            variants = featureExtension.featureVariants
+        } else {
+            throw IllegalArgumentException(
+                    "[DexMethodCountsPlugin]   dex-method-counts-plugin requires the Android plugin to be configured")
+        }
+
+        variants.all { BaseVariant variant ->
+            if (variant instanceof TestVariant) {
+                applyToTestVariant(variants as TestVariant)
+            } else if (variant instanceof LibraryVariant) {
+                applyToTestVariant(variants as LibraryVariant)
+            } else if (variant instanceof FeatureVariant) {
+                applyToTestVariant(variants as FeatureVariant)
+            } else if (variant instanceof ApplicationVariant) {
+                applyToTestVariant(variants as ApplicationVariant)
+            }
+        }
+    }
+
+    static def isInstantRun(Project project) {
+        def optionString = project.getProperties().get("android.optional.compilation") as String
+        if (optionString == null) return false
+        def isInstantRun = false
+        optionString.split(",").each {
+            if (it.trim() == "INSTANT_DEV") {
+                isInstantRun = true
+            }
+        }
+        return isInstantRun
+    }
+
+    private Collection<BaseVariantOutput> getOutputs(BaseVariant variant) {
+        Method getOutputs = BaseVariant.class.getMethod("getOutputs")
+        getOutputs.setAccessible(true)
+        return getOutputs.invoke(variant) as Collection<BaseVariantOutput>
+    }
+
+    protected void addDexCountTaskToGraph(Task parentTask, BaseDexMethodCountsTask dexcountTask) {
+        dexcountTask.dependsOn(parentTask)
+        dexcountTask.mustRunAfter(parentTask)
+        parentTask.finalizedBy(dexcountTask)
+    }
+
+    def abstract applyToApkVariant(ApkVariant variant)
+
+    def abstract applyToTestVariant(TestVariant variant)
+
+    def abstract applyToLibraryVariant(LibraryVariant variant)
+
+    def abstract applyToFeatureVariant(FeatureVariant variant)
+
+    def abstract applyToApplicationVariant(ApplicationVariant variant)
+}
