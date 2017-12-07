@@ -1,6 +1,5 @@
 package com.camnter.gradle.plugin.dex.method.counts.struct;
 
-import java.io.PrintStream;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
@@ -11,20 +10,29 @@ import java.util.TreeMap;
 public class Node {
 
     public int count = 0;
-    private static final PrintStream out = System.out;
+    public StringBuilder stringBuilder = new StringBuilder();
     public NavigableMap<String, Node> children = new TreeMap<String, Node>();
 
 
-    public void output(String indent) {
+    public StringBuilder output(String indent) {
         if (indent.length() == 0) {
-            out.println("<root>: " + count);
+            this.stringBuilder
+                .append("<root>: ")
+                .append(count)
+                .append("\n");
         }
         indent += "    ";
         for (String name : children.navigableKeySet()) {
             Node child = children.get(name);
-            out.println(indent + name + ": " + child.count);
+            this.stringBuilder
+                .append(indent)
+                .append(name)
+                .append(": ")
+                .append(child.count)
+                .append("\n");
             child.output(indent);
         }
+        return stringBuilder;
     }
 
 }

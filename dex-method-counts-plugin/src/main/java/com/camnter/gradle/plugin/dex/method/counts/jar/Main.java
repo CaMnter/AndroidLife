@@ -80,6 +80,7 @@ public class Main {
                 for (RandomAccessFile dexFile : dexFiles) {
                     DexData dexData = new DexData(dexFile);
                     dexData.load();
+                    // 计算方法数
                     counts.generate(dexData, includeClasses, packageFilter, maxDepth, filter);
                     dexFile.close();
                 }

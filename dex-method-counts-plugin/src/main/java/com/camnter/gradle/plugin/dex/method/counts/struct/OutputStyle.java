@@ -2,6 +2,7 @@ package com.camnter.gradle.plugin.dex.method.counts.struct;
 
 import com.camnter.gradle.plugin.dex.method.counts.DexCount;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author CaMnter
@@ -11,24 +12,26 @@ public enum OutputStyle {
 
     TREE {
         @Override
-        public void output(DexCount dexCount) {
-            dexCount.getPackageTree().output("");
+        public StringBuilder output(DexCount dexCount) {
+           return dexCount.getPackageTree().output("");
         }
     },
     FLAT {
         @Override
-        public void output(DexCount counts) {
+        public StringBuilder output(DexCount counts) {
+            StringBuilder stringBuilder = new StringBuilder();
             for (Map.Entry<String, IntHolder> e : counts.getPackageCount().entrySet()) {
                 String packageName = e.getKey();
-                if (packageName == "") {
+                if (Objects.equals(packageName, "")) {
                     packageName = "<no package>";
                 }
-                System.out.printf("%6s %s\n", e.getValue().value, packageName);
+                stringBuilder.append(String.format("%6s %s\n", e.getValue().value, packageName));
             }
+            return  stringBuilder;
         }
     };
 
 
-    public abstract void output(DexCount dexCount);
+    public abstract StringBuilder output(DexCount dexCount);
 
 }

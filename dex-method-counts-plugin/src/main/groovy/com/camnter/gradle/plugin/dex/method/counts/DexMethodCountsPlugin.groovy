@@ -3,6 +3,7 @@ package com.camnter.gradle.plugin.dex.method.counts
 import com.android.repository.Revision
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+
 /**
  * @author CaMnter
  */
@@ -46,16 +47,15 @@ class DexMethodCountsPlugin implements Plugin<Project> {
         }
         if (gradlePluginVersion == null && exception != null) {
             throw IllegalStateException(
-                    "dex-method-counts-plugin requires the Android plugin to be configured",
+                    "[DexMethodCountsPlugin]   requires the Android plugin to be configured",
                     exception)
         } else if (gradlePluginVersion == null) {
             throw IllegalStateException(
-                    "dex-method-counts-plugin requires the Android plugin to be configured")
+                    "[DexMethodCountsPlugin]   requires the Android plugin to be configured")
         }
         gradlePluginRevision =
                 Revision.parseRevision(gradlePluginVersion, Revision.Precision.PREVIEW)
         isBuildTools3 = gradlePluginRevision.compareTo(threeOhRevision,
                 Revision.PreviewComparison.IGNORE) >= 0
     }
-
 }

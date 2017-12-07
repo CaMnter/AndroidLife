@@ -7,6 +7,7 @@ import com.camnter.gradle.plugin.dex.method.counts.DexFieldCounts
 import com.camnter.gradle.plugin.dex.method.counts.DexMethodCounts
 import com.camnter.gradle.plugin.dex.method.counts.struct.Filter
 import com.camnter.gradle.plugin.dex.method.counts.struct.OutputStyle
+import com.camnter.gradle.plugin.dex.method.counts.utils.FileUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
@@ -17,6 +18,8 @@ import java.util.zip.ZipException
 import java.util.zip.ZipFile
 
 abstract class BaseDexMethodCountsTask extends DefaultTask {
+
+    static def OUTPUT_BASIC_INFORMATION = "%-29s = %s\n"
 
     @Input
     @Optional
@@ -40,6 +43,7 @@ abstract class BaseDexMethodCountsTask extends DefaultTask {
         if (fileToCount == null || !fileToCount.exists()) return
         stringBuilder = new StringBuilder()
         try {
+
             // TODO countFields
             // TODO includeClasses
             // TODO packageFilter
@@ -70,9 +74,10 @@ abstract class BaseDexMethodCountsTask extends DefaultTask {
                     // 计算方法数
                     counts.generate(dexData, includeClasses, packageFilter, maxDepth, filter)
                     dexFile.close()
+                    stringBuilder.append(counts.getBuilder())
                 }
                 // 输出方法数信息
-                counts.output()
+                stringBuilder.append(counts.output())
                 // 获取方法数
                 int overallCount = counts.getOverallCount()
                 stringBuilder
@@ -87,23 +92,33 @@ abstract class BaseDexMethodCountsTask extends DefaultTask {
                     .append("\n")
         }
 
-        // TODO 打印文件
+        // 打印文件
+        File outputDir = new File(
+                FileUtils.resolve(project.buildDir, "output/dex-method-counts-plugin"))
+        if (!outputDir.exists()) {
+            outputDir.mkdirs()
+        }
+        File outputFile = new File(FileUtils.resolve(outputDir, "${variantOutput.name}.txt"))
+        outputFile.write('')
+        outputFile.write(stringBuilder)
     }
 
     def recordOutputBasicInformation() {
         if (variantOutput == null) return
-        record("%-29s = %s\n", "[name]", $ { variantOutput.name })
-        record("%-29s = %s\n", "[dirName]", $ { variantOutput.dirName })
-        record("%-29s = %s\n", "[baseName]", $ { variantOutput.baseName })
-        record("%-29s = %s\n", "[assemble]", $ { variantOutput.assemble })
-        record("%-29s = %s\n", "[outputFile]", $ { variantOutput.outputFile })
-        record("%-29s = %s\n", "[outputType]", $ { variantOutput.outputType })
-        record("%-29s = %s\n", "[versionCode]", $ { variantOutput.versionCode })
-        record("%-29s = %s\n", "[processResources]", $ { variantOutput.processResources })
-        record("%-29s = %s\n", "[outputFile.exists]", $ { variantOutput.outputFile.exists() })
-        record("%-29s = %s\n", "[processResources.name]", $ { variantOutput.processResources.name })
-        record("%-29s = %s\n", "[processResources.class.name]",
-                $ { variantOutput.processResources.class.name })
+        record(OUTPUT_BASIC_INFORMATION, "[name]", variantOutput.name)
+        record(OUTPUT_BASIC_INFORMATION, "[dirName]", variantOutput.dirName)
+        record(OUTPUT_BASIC_INFORMATION, "[baseName]", variantOutput.baseName)
+        record(OUTPUT_BASIC_INFORMATION, "[assemble]", variantOutput.assemble)
+        record(OUTPUT_BASIC_INFORMATION, "[outputFile]", variantOutput.outputFile)
+        record(OUTPUT_BASIC_INFORMATION, "[outputType]", variantOutput.outputType)
+        record(OUTPUT_BASIC_INFORMATION, "[versionCode]", variantOutput.versionCode)
+        record(OUTPUT_BASIC_INFORMATION, "[processResources]", variantOutput.processResources)
+        record(OUTPUT_BASIC_INFORMATION, "[outputFile.exists]",
+                variantOutput.outputFile.exists())
+        record(OUTPUT_BASIC_INFORMATION, "[processResources.name]",
+                variantOutput.processResources.name)
+        record(OUTPUT_BASIC_INFORMATION, "[processResources.class.name]",
+                variantOutputvariantOutput.processResources.class.name)
     }
 
     def record(def format, def previousValue, def nextValue) {
@@ -219,7 +234,7 @@ abstract class BaseDexMethodCountsTask extends DefaultTask {
      *
      * @return a List of file names to process
      */
-    private static List<String> collectFileNames(String inputFileName) {
+    private List<String> collectFileNames(String inputFileName) {
         List<String> fileNames = new ArrayList<String>()
         File file = new File(inputFileName)
         if (file.isDirectory()) {

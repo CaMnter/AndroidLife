@@ -17,6 +17,7 @@ public abstract class DexCount {
     final OutputStyle outputStyle;
     final Node packageTree;
     final Map<String, IntHolder> packageCount;
+    final StringBuilder builder;
     int overallCount = 0;
 
 
@@ -25,6 +26,7 @@ public abstract class DexCount {
         this.packageTree = this.outputStyle == OutputStyle.TREE ? new Node() : null;
         this.packageCount = this.outputStyle == OutputStyle.FLAT
                             ? new TreeMap<>() : null;
+        this.builder = new StringBuilder();
     }
 
 
@@ -35,8 +37,8 @@ public abstract class DexCount {
                                   Filter filter);
 
 
-    public void output() {
-        this.outputStyle.output(this);
+    public StringBuilder output() {
+        return this.outputStyle.output(this);
     }
 
 
@@ -47,6 +49,11 @@ public abstract class DexCount {
 
     public Node getPackageTree() {
         return this.packageTree;
+    }
+
+
+    public StringBuilder getBuilder() {
+        return this.builder;
     }
 
 

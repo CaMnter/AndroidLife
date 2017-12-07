@@ -71,7 +71,7 @@ abstract class BaseProvider {
         return isInstantRun
     }
 
-    private Collection<BaseVariantOutput> getOutputs(BaseVariant variant) {
+    protected Collection<BaseVariantOutput> getOutputs(BaseVariant variant) {
         Method getOutputs = BaseVariant.class.getMethod("getOutputs")
         getOutputs.setAccessible(true)
         return getOutputs.invoke(variant) as Collection<BaseVariantOutput>
