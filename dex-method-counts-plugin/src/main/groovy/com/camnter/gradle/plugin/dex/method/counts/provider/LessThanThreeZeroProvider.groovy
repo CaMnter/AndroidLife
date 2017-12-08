@@ -1,6 +1,7 @@
 package com.camnter.gradle.plugin.dex.method.counts.provider
 
 import com.android.build.gradle.api.*
+import com.camnter.gradle.plugin.dex.method.counts.task.BaseDexMethodCountsTask
 import org.gradle.api.Project
 
 class LessThanThreeZeroProvider extends BaseProvider {
@@ -12,8 +13,16 @@ class LessThanThreeZeroProvider extends BaseProvider {
     @Override
     def applyToApkVariant(ApkVariant variant) {
         getOutputs(variant).each {
-            // TODO 创建任务
-            // TODO addDexcountTaskToGraph(output.packageApplication, task)
+            def taskName = createTaskName(variant)
+            def outputDir = createOutputDir(variant, it)
+            def dexMethodCountsTask = project.task(type: BaseDexMethodCountsTask,
+                    overwrite: true, taskName) { BaseDexMethodCountsTask task ->
+                task.fileToCount = it.outputFile
+                task.outputDir = outputDir
+                task.variant = variant
+                task.variantOutput = it
+            }
+            addDexCountTaskToGraph(it.assemble, dexMethodCountsTask)
         }
     }
 
@@ -25,8 +34,16 @@ class LessThanThreeZeroProvider extends BaseProvider {
     @Override
     def applyToLibraryVariant(LibraryVariant variant) {
         getOutputs(variant).each {
-            // TODO 创建任务
-            // TODO addDexcountTaskToGraph(output.packageApplication, task)
+            def taskName = createTaskName(variant)
+            def outputDir = createOutputDir(variant, it)
+            def dexMethodCountsTask = project.task(type: BaseDexMethodCountsTask,
+                    overwrite: true, taskName) { BaseDexMethodCountsTask task ->
+                task.fileToCount = it.outputFile
+                task.outputDir = outputDir
+                task.variant = variant
+                task.variantOutput = it
+            }
+            addDexCountTaskToGraph(it.assemble, dexMethodCountsTask)
         }
     }
 

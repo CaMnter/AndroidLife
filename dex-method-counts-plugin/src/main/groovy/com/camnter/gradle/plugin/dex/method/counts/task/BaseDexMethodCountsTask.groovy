@@ -1,5 +1,6 @@
 package com.camnter.gradle.plugin.dex.method.counts.task
 
+import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.dexdeps.DexData
 import com.camnter.gradle.plugin.dex.method.counts.DexCount
@@ -25,6 +26,14 @@ abstract class BaseDexMethodCountsTask extends DefaultTask {
     @Input
     @Optional
     File fileToCount
+
+    @Input
+    @Optional
+    String outputDir
+
+    @Input
+    @Optional
+    BaseVariant variant
 
     @Input
     @Optional
@@ -96,20 +105,20 @@ abstract class BaseDexMethodCountsTask extends DefaultTask {
         }
 
         // 打印文件
-        File outputDir = new File(
-                FileUtils.resolve(project.buildDir, "output/dex-method-counts-plugin"))
+        File outputDir = new File(outputDir)
         if (!outputDir.exists()) {
             outputDir.mkdirs()
         }
-        File outputFile = new File(FileUtils.resolve(outputDir, "${variantOutput.name}.txt"))
+        File outputFile = new File(FileUtils.resolve(outputDir, "${fileToCount.name}.txt"))
         outputFile.write('')
         outputFile.write(stringBuilder)
     }
 
     def recordOutputBasicInformation() {
+        record(OUTPUT_BASIC_INFORMATION, "[name]", fileToCount.name)
+        record(OUTPUT_BASIC_INFORMATION, "[dirName]", fileToCount.path)
+
         if (variantOutput == null) return
-        record(OUTPUT_BASIC_INFORMATION, "[name]", variantOutput.name)
-        record(OUTPUT_BASIC_INFORMATION, "[dirName]", variantOutput.dirName)
         record(OUTPUT_BASIC_INFORMATION, "[baseName]", variantOutput.baseName)
         record(OUTPUT_BASIC_INFORMATION, "[assemble]", variantOutput.assemble)
         record(OUTPUT_BASIC_INFORMATION, "[outputFile]", variantOutput.outputFile)

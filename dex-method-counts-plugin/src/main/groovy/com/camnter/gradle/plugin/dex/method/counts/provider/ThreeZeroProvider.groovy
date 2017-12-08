@@ -1,6 +1,7 @@
 package com.camnter.gradle.plugin.dex.method.counts.provider
 
 import com.android.build.gradle.api.*
+import com.camnter.gradle.plugin.dex.method.counts.task.BaseDexMethodCountsTask
 import org.gradle.api.Project
 
 class ThreeZeroProvider extends BaseProvider {
@@ -13,9 +14,16 @@ class ThreeZeroProvider extends BaseProvider {
     def applyToApkVariant(ApkVariant variant) {
         variant.outputs.all {
             if (it instanceof ApkVariantOutput) {
-                // TODO output.outputFile
-                // TODO 创建任务
-                // TODO addDexcountTaskToGraph(output.packageApplication, task)
+                def taskName = createTaskName(variant)
+                def outputDir = createOutputDir(variant, it)
+                def dexMethodCountsTask = project.task(type: BaseDexMethodCountsTask,
+                        overwrite: true, taskName) { BaseDexMethodCountsTask task ->
+                    task.fileToCount = it.outputFile
+                    task.outputDir = outputDir
+                    task.variant = variant
+                    task.variantOutput = it
+                }
+                addDexCountTaskToGraph(it.packageApplication, dexMethodCountsTask)
             } else {
                 throw IllegalArgumentException(
                         "[DexMethodCountsPlugin]   Unexpected output type for variant ${variant.name}: ${it.class.name}")
@@ -31,8 +39,13 @@ class ThreeZeroProvider extends BaseProvider {
     @Override
     def applyToLibraryVariant(LibraryVariant variant) {
         def packageLibraryTask = variant.packageLibrary
-        // TODO 创建任务
-        // TODO addDexcountTaskToGraph(output.packageApplication, task)
+        def dexMethodCountsTask = project.task(type: BaseDexMethodCountsTask, overwrite: true,
+                "dexMethodCounts${variant.name.capitalize()}") { BaseDexMethodCountsTask task ->
+            task.fileToCount = packageLibraryTask.archivePath
+            task.variant = variant
+            task.variantOutput = null
+        }
+        addDexCountTaskToGraph(packageLibraryTask, dexMethodCountsTask)
     }
 
     @Override
@@ -44,5 +57,4 @@ class ThreeZeroProvider extends BaseProvider {
     def applyToApplicationVariant(ApplicationVariant variant) {
         applyToApkVariant(variant)
     }
-
 }

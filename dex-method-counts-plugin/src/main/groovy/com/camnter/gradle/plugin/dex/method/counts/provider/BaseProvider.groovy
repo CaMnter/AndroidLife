@@ -3,6 +3,7 @@ package com.camnter.gradle.plugin.dex.method.counts.provider
 import com.android.build.gradle.*
 import com.android.build.gradle.api.*
 import com.camnter.gradle.plugin.dex.method.counts.task.BaseDexMethodCountsTask
+import com.camnter.gradle.plugin.dex.method.counts.utils.FileUtils
 import org.gradle.api.DomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -77,10 +78,34 @@ abstract class BaseProvider {
         return getOutputs.invoke(variant) as Collection<BaseVariantOutput>
     }
 
-    protected void addDexCountTaskToGraph(Task parentTask, BaseDexMethodCountsTask dexcountTask) {
+    def addDexCountTaskToGraph(Task parentTask, BaseDexMethodCountsTask dexcountTask) {
         dexcountTask.dependsOn(parentTask)
         dexcountTask.mustRunAfter(parentTask)
         parentTask.finalizedBy(dexcountTask)
+    }
+
+    def createTaskName(BaseVariant variant) {
+        def taskName = "dexMethodCounts${variant.name.capitalize()}"
+        if (getOutputs(variant).size > 1) {
+            if (output == null) {
+                throw AssertionError("[DexMethodCountsPlugin]   Output should never be null here")
+            }
+            taskName += it.name.capitalize()
+        }
+        return taskName
+    }
+
+    def createOutputDir(BaseVariant variant, ApkVariantOutput output) {
+        def outputDir = FileUtils.resolve(project.buildDir,
+                "output/dex-method-counts-plugin")
+        if (getOutputs(variant).size > 1) {
+            if (output == null) {
+                throw AssertionError("[DexMethodCountsPlugin]   Output should never be null here")
+            }
+            outputDir = FileUtils.resolve(outputDir,
+                    "${output.name}")
+        }
+        return outputDir
     }
 
     def abstract applyToApkVariant(ApkVariant variant)
