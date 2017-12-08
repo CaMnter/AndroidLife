@@ -5,6 +5,7 @@ import com.android.dexdeps.DexData
 import com.camnter.gradle.plugin.dex.method.counts.DexCount
 import com.camnter.gradle.plugin.dex.method.counts.DexFieldCounts
 import com.camnter.gradle.plugin.dex.method.counts.DexMethodCounts
+import com.camnter.gradle.plugin.dex.method.counts.DexMethodCountsExtension
 import com.camnter.gradle.plugin.dex.method.counts.struct.Filter
 import com.camnter.gradle.plugin.dex.method.counts.struct.OutputStyle
 import com.camnter.gradle.plugin.dex.method.counts.utils.FileUtils
@@ -29,6 +30,8 @@ abstract class BaseDexMethodCountsTask extends DefaultTask {
     @Optional
     BaseVariantOutput variantOutput
 
+    DexMethodCountsExtension dexMethodCountsExtension
+
     boolean countFields = true
     boolean includeClasses = true
     String packageFilter = ""
@@ -43,10 +46,10 @@ abstract class BaseDexMethodCountsTask extends DefaultTask {
         if (fileToCount == null || !fileToCount.exists()) return
         stringBuilder = new StringBuilder()
         try {
-
-            // TODO countFields
-            // TODO includeClasses
-            // TODO packageFilter
+            dexMethodCountsExtension = project.dexMethodCountsExtension
+            countFields = dexMethodCountsExtension.countFields
+            includeClasses = dexMethodCountsExtension.includeClasses
+            packageFilter = dexMethodCountsExtension.packageFilter
 
             for (String fileName : collectFileNames(fileToCount)) {
                 stringBuilder

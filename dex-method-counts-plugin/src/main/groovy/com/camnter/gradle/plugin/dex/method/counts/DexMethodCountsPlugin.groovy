@@ -25,6 +25,7 @@ class DexMethodCountsPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         initVersion()
+        project.extensions.create('dexMethodCountsExtension', DexMethodCountsExtension)
     }
 
     def initVersion() {
