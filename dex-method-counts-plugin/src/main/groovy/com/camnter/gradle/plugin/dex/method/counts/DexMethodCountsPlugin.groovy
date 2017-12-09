@@ -1,6 +1,9 @@
 package com.camnter.gradle.plugin.dex.method.counts
 
 import com.android.repository.Revision
+import com.camnter.gradle.plugin.dex.method.counts.provider.BaseProvider
+import com.camnter.gradle.plugin.dex.method.counts.provider.LessThanThreeZeroProvider
+import com.camnter.gradle.plugin.dex.method.counts.provider.ThreeZeroProvider
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -16,14 +19,16 @@ class DexMethodCountsPlugin implements Plugin<Project> {
     // > 3.1
     static final String AGP_VERSION_FIELD = "ANDROID_GRADLE_PLUGIN_VERSION"
 
-    def gradlePluginVersion
+    def project
 
+    def gradlePluginVersion
     def gradlePluginRevision
     def threeOhRevision = Revision.parseRevision("3.0.0")
     def isBuildTools3
 
     @Override
     void apply(Project project) {
+        this.project = project
         initVersion()
         project.extensions.create('dexMethodCountsExtension', DexMethodCountsExtension)
     }
@@ -58,5 +63,10 @@ class DexMethodCountsPlugin implements Plugin<Project> {
                 Revision.parseRevision(gradlePluginVersion, Revision.Precision.PREVIEW)
         isBuildTools3 = gradlePluginRevision.compareTo(threeOhRevision,
                 Revision.PreviewComparison.IGNORE) >= 0
+
+        BaseProvider provider = isBuildTools3 ? new ThreeZeroProvider(project) :
+                new LessThanThreeZeroProvider(project)
+
+        provider.apply()
     }
 }
