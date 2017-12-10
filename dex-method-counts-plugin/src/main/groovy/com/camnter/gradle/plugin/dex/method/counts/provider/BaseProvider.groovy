@@ -87,13 +87,13 @@ abstract class BaseProvider {
         parentTask.finalizedBy(dexcountTask)
     }
 
-    def createTaskName(BaseVariant variant) {
+    def createTaskName(BaseVariant variant, ApkVariantOutput output) {
         def taskName = "dexMethodCounts${variant.name.capitalize()}"
-        if (getOutputs(variant).size > 1) {
+        if (getOutputs(variant).size() > 1) {
             if (output == null) {
                 throw AssertionError("[DexMethodCountsPlugin]   Output should never be null here")
             }
-            taskName += it.name.capitalize()
+            taskName += output.name.capitalize()
         }
         return taskName
     }
@@ -101,12 +101,11 @@ abstract class BaseProvider {
     def createOutputDir(BaseVariant variant, ApkVariantOutput output) {
         def outputDir = FileUtils.resolve(project.buildDir,
                 "output/dex-method-counts-plugin")
-        if (getOutputs(variant).size > 1) {
+        if (getOutputs(variant).size() > 1) {
             if (output == null) {
                 throw AssertionError("[DexMethodCountsPlugin]   Output should never be null here")
             }
-            outputDir = FileUtils.resolve(outputDir,
-                    "${output.name}")
+            outputDir = FileUtils.resolve(new File(outputDir), output.name)
         }
         return outputDir
     }

@@ -13,7 +13,7 @@ class LessThanThreeZeroProvider extends BaseProvider {
     @Override
     def applyToApkVariant(ApkVariantImpl variant) {
         getOutputs(variant).each {
-            def taskName = createTaskName(variant)
+            def taskName = createTaskName(variant, it)
             def outputDir = createOutputDir(variant, it)
             def dexMethodCountsTask = project.task(type: BaseDexMethodCountsTask,
                     overwrite: true, taskName) { BaseDexMethodCountsTask task ->
@@ -34,7 +34,7 @@ class LessThanThreeZeroProvider extends BaseProvider {
     @Override
     def applyToLibraryVariant(LibraryVariantImpl variant) {
         getOutputs(variant).each {
-            def taskName = createTaskName(variant)
+            def taskName = createTaskName(variant, it)
             def outputDir = createOutputDir(variant, it)
             def dexMethodCountsTask = project.task(type: BaseDexMethodCountsTask,
                     overwrite: true, taskName) { BaseDexMethodCountsTask task ->

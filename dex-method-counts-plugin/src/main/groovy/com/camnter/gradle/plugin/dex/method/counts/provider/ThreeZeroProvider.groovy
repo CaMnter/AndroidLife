@@ -15,7 +15,7 @@ class ThreeZeroProvider extends BaseProvider {
     def applyToApkVariant(ApkVariantImpl variant) {
         variant.outputs.all {
             if (it instanceof ApkVariantOutput) {
-                def taskName = createTaskName(variant)
+                def taskName = createTaskName(variant, it)
                 def outputDir = createOutputDir(variant, it)
                 def dexMethodCountsTask = project.task(type: BaseDexMethodCountsTask,
                         overwrite: true, taskName) { BaseDexMethodCountsTask task ->

@@ -9,7 +9,7 @@ package com.camnter.gradle.plugin.dex.method.counts.utils
  * @author CaMnter
  */
 
-public class FileUtils {
+class FileUtils {
 
     public static FILE_SEPARATOR = String.valueOf(File.separatorChar) as String
 
