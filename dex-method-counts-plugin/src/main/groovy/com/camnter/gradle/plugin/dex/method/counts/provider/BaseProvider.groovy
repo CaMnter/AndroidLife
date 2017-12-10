@@ -1,7 +1,10 @@
 package com.camnter.gradle.plugin.dex.method.counts.provider
 
 import com.android.build.gradle.*
-import com.android.build.gradle.api.*
+import com.android.build.gradle.api.ApkVariantOutput
+import com.android.build.gradle.api.BaseVariant
+import com.android.build.gradle.api.BaseVariantOutput
+import com.android.build.gradle.internal.api.*
 import com.camnter.gradle.plugin.dex.method.counts.task.BaseDexMethodCountsTask
 import com.camnter.gradle.plugin.dex.method.counts.utils.FileUtils
 import org.gradle.api.DomainObjectCollection
@@ -48,14 +51,14 @@ abstract class BaseProvider {
         }
 
         variants.all { BaseVariant variant ->
-            if (variant instanceof TestVariant) {
-                applyToTestVariant(variants as TestVariant)
-            } else if (variant instanceof LibraryVariant) {
-                applyToTestVariant(variants as LibraryVariant)
-            } else if (variant instanceof FeatureVariant) {
-                applyToTestVariant(variants as FeatureVariant)
-            } else if (variant instanceof ApplicationVariant) {
-                applyToTestVariant(variants as ApplicationVariant)
+            if (variant instanceof TestVariantImpl) {
+                applyToTestVariant(variant)
+            } else if (variant instanceof LibraryVariantImpl) {
+                applyToLibraryVariant(variant)
+            } else if (variant instanceof FeatureVariantImpl) {
+                applyToFeatureVariant(variant)
+            } else if (variant instanceof ApplicationVariantImpl) {
+                applyToApplicationVariant(variant)
             }
         }
     }
@@ -108,13 +111,13 @@ abstract class BaseProvider {
         return outputDir
     }
 
-    def abstract applyToApkVariant(ApkVariant variant)
+    def abstract applyToApkVariant(ApkVariantImpl variant)
 
-    def abstract applyToTestVariant(TestVariant variant)
+    def abstract applyToTestVariant(TestVariantImpl variant)
 
-    def abstract applyToLibraryVariant(LibraryVariant variant)
+    def abstract applyToLibraryVariant(LibraryVariantImpl variant)
 
-    def abstract applyToFeatureVariant(FeatureVariant variant)
+    def abstract applyToFeatureVariant(FeatureVariantImpl variant)
 
-    def abstract applyToApplicationVariant(ApplicationVariant variant)
+    def abstract applyToApplicationVariant(ApplicationVariantImpl variant)
 }

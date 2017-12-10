@@ -1,6 +1,6 @@
 package com.camnter.gradle.plugin.dex.method.counts.provider
 
-import com.android.build.gradle.api.*
+import com.android.build.gradle.internal.api.*
 import com.camnter.gradle.plugin.dex.method.counts.task.BaseDexMethodCountsTask
 import org.gradle.api.Project
 
@@ -11,7 +11,7 @@ class LessThanThreeZeroProvider extends BaseProvider {
     }
 
     @Override
-    def applyToApkVariant(ApkVariant variant) {
+    def applyToApkVariant(ApkVariantImpl variant) {
         getOutputs(variant).each {
             def taskName = createTaskName(variant)
             def outputDir = createOutputDir(variant, it)
@@ -27,12 +27,12 @@ class LessThanThreeZeroProvider extends BaseProvider {
     }
 
     @Override
-    def applyToTestVariant(TestVariant variant) {
+    def applyToTestVariant(TestVariantImpl variant) {
         applyToApkVariant(variant)
     }
 
     @Override
-    def applyToLibraryVariant(LibraryVariant variant) {
+    def applyToLibraryVariant(LibraryVariantImpl variant) {
         getOutputs(variant).each {
             def taskName = createTaskName(variant)
             def outputDir = createOutputDir(variant, it)
@@ -48,12 +48,12 @@ class LessThanThreeZeroProvider extends BaseProvider {
     }
 
     @Override
-    def applyToFeatureVariant(FeatureVariant variant) {
+    def applyToFeatureVariant(FeatureVariantImpl variant) {
         applyToApkVariant(variant)
     }
 
     @Override
-    def applyToApplicationVariant(ApplicationVariant variant) {
+    def applyToApplicationVariant(ApplicationVariantImpl variant) {
         applyToApkVariant(variant)
     }
 }
