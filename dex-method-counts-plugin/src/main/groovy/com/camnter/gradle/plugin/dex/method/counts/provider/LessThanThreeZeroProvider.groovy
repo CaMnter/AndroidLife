@@ -1,7 +1,7 @@
 package com.camnter.gradle.plugin.dex.method.counts.provider
 
 import com.android.build.gradle.internal.api.*
-import com.camnter.gradle.plugin.dex.method.counts.task.BaseDexMethodCountsTask
+import com.camnter.gradle.plugin.dex.method.counts.task.DexMethodCountsTask
 import org.gradle.api.Project
 
 class LessThanThreeZeroProvider extends BaseProvider {
@@ -15,8 +15,8 @@ class LessThanThreeZeroProvider extends BaseProvider {
         getOutputs(variant).each {
             def taskName = createTaskName(variant, it)
             def outputDir = createOutputDir(variant, it)
-            def dexMethodCountsTask = project.task(type: BaseDexMethodCountsTask,
-                    overwrite: true, taskName) { BaseDexMethodCountsTask task ->
+            def dexMethodCountsTask = project.task(type: DexMethodCountsTask,
+                    overwrite: true, taskName) { DexMethodCountsTask task ->
                 task.fileToCount = it.outputFile
                 task.outputDir = outputDir
                 task.variant = variant
@@ -36,8 +36,8 @@ class LessThanThreeZeroProvider extends BaseProvider {
         getOutputs(variant).each {
             def taskName = createTaskName(variant, it)
             def outputDir = createOutputDir(variant, it)
-            def dexMethodCountsTask = project.task(type: BaseDexMethodCountsTask,
-                    overwrite: true, taskName) { BaseDexMethodCountsTask task ->
+            def dexMethodCountsTask = project.task(type: DexMethodCountsTask,
+                    overwrite: true, taskName) { DexMethodCountsTask task ->
                 task.fileToCount = it.outputFile
                 task.outputDir = outputDir
                 task.variant = variant

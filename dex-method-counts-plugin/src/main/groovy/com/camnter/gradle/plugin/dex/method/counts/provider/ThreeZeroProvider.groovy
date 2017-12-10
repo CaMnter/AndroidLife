@@ -2,7 +2,7 @@ package com.camnter.gradle.plugin.dex.method.counts.provider
 
 import com.android.build.gradle.api.ApkVariantOutput
 import com.android.build.gradle.internal.api.*
-import com.camnter.gradle.plugin.dex.method.counts.task.BaseDexMethodCountsTask
+import com.camnter.gradle.plugin.dex.method.counts.task.DexMethodCountsTask
 import org.gradle.api.Project
 
 class ThreeZeroProvider extends BaseProvider {
@@ -17,8 +17,8 @@ class ThreeZeroProvider extends BaseProvider {
             if (it instanceof ApkVariantOutput) {
                 def taskName = createTaskName(variant, it)
                 def outputDir = createOutputDir(variant, it)
-                def dexMethodCountsTask = project.task(type: BaseDexMethodCountsTask,
-                        overwrite: true, taskName) { BaseDexMethodCountsTask task ->
+                def dexMethodCountsTask = project.task(type: DexMethodCountsTask,
+                        overwrite: true, taskName) { DexMethodCountsTask task ->
                     task.fileToCount = it.outputFile
                     task.outputDir = outputDir
                     task.variant = variant
@@ -40,8 +40,8 @@ class ThreeZeroProvider extends BaseProvider {
     @Override
     def applyToLibraryVariant(LibraryVariantImpl variant) {
         def packageLibraryTask = variant.packageLibrary
-        def dexMethodCountsTask = project.task(type: BaseDexMethodCountsTask, overwrite: true,
-                "dexMethodCounts${variant.name.capitalize()}") { BaseDexMethodCountsTask task ->
+        def dexMethodCountsTask = project.task(type: DexMethodCountsTask, overwrite: true,
+                "dexMethodCounts${variant.name.capitalize()}") { DexMethodCountsTask task ->
             task.fileToCount = packageLibraryTask.archivePath
             task.variant = variant
             task.variantOutput = null

@@ -5,7 +5,7 @@ import com.android.build.gradle.api.ApkVariantOutput
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.internal.api.*
-import com.camnter.gradle.plugin.dex.method.counts.task.BaseDexMethodCountsTask
+import com.camnter.gradle.plugin.dex.method.counts.task.DexMethodCountsTask
 import com.camnter.gradle.plugin.dex.method.counts.utils.FileUtils
 import org.gradle.api.DomainObjectCollection
 import org.gradle.api.Project
@@ -81,7 +81,7 @@ abstract class BaseProvider {
         return getOutputs.invoke(variant) as Collection<BaseVariantOutput>
     }
 
-    def addDexCountTaskToGraph(Task parentTask, BaseDexMethodCountsTask dexcountTask) {
+    def addDexCountTaskToGraph(Task parentTask, DexMethodCountsTask dexcountTask) {
         dexcountTask.dependsOn(parentTask)
         dexcountTask.mustRunAfter(parentTask)
         parentTask.finalizedBy(dexcountTask)

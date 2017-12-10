@@ -19,7 +19,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipException
 import java.util.zip.ZipFile
 
-abstract class BaseDexMethodCountsTask extends DefaultTask {
+class DexMethodCountsTask extends DefaultTask {
 
     static def OUTPUT_BASIC_INFORMATION = "%-29s = %s\n"
 
@@ -60,7 +60,7 @@ abstract class BaseDexMethodCountsTask extends DefaultTask {
             includeClasses = dexMethodCountsExtension.includeClasses
             packageFilter = dexMethodCountsExtension.packageFilter
 
-            for (String fileName : collectFileNames(fileToCount)) {
+            for (String fileName : collectFileNames(fileToCount.path)) {
                 stringBuilder
                         .append(" Processing ${fileToCount}")
                         .append("\n")
@@ -111,7 +111,7 @@ abstract class BaseDexMethodCountsTask extends DefaultTask {
         }
         File outputFile = new File(FileUtils.resolve(outputDir, "${fileToCount.name}.txt"))
         outputFile.write('')
-        outputFile.write(stringBuilder)
+        outputFile.write(stringBuilder.toString())
     }
 
     def recordOutputBasicInformation() {
@@ -130,7 +130,7 @@ abstract class BaseDexMethodCountsTask extends DefaultTask {
         record(OUTPUT_BASIC_INFORMATION, "[processResources.name]",
                 variantOutput.processResources.name)
         record(OUTPUT_BASIC_INFORMATION, "[processResources.class.name]",
-                variantOutputvariantOutput.processResources.class.name)
+                variantOutput.processResources.class.name)
     }
 
     def record(def format, def previousValue, def nextValue) {
@@ -146,7 +146,7 @@ abstract class BaseDexMethodCountsTask extends DefaultTask {
      * 获取 zip 文件中的每个 dex 的数据（  RandomAccessFile ）
      * 返回一个  List<RandomAccessFile>
      * */
-    static List<RandomAccessFile> openInputFiles(String fileName) throws IOException {
+    List<RandomAccessFile> openInputFiles(String fileName) throws IOException {
         List<RandomAccessFile> dexFiles = new ArrayList<RandomAccessFile>()
 
         openInputFileAsZip(fileName, dexFiles)
@@ -209,7 +209,7 @@ abstract class BaseDexMethodCountsTask extends DefaultTask {
      * @return RandomAccessFile
      * @throws IOException IOException
      */
-    static RandomAccessFile openDexFile(ZipFile zipFile, ZipEntry entry) throws IOException {
+    RandomAccessFile openDexFile(ZipFile zipFile, ZipEntry entry) throws IOException {
         // We know it's a zip; see if there's anything useful inside.  A
         // failure here results in some type of IOException (of which
         // ZipException is a subclass).
@@ -260,7 +260,7 @@ abstract class BaseDexMethodCountsTask extends DefaultTask {
         return fileNames
     }
 
-    static String usage() {
+    String usage() {
         return "DEX per-package/class method counts v1.5\n" +
                 "Usage: dex-method-counts [options] <file.{dex,apk,jar,directory}> ...\n" +
                 "Options:\n" +
