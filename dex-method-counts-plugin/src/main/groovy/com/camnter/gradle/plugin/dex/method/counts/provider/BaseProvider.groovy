@@ -100,7 +100,7 @@ abstract class BaseProvider {
 
     def createOutputDir(BaseVariant variant, ApkVariantOutput output) {
         def outputDir = FileUtils.resolve(project.buildDir,
-                "output/dex-method-counts-plugin")
+                "outputs/dex-method-counts-plugin")
         if (getOutputs(variant).size() > 1) {
             if (output == null) {
                 throw AssertionError("[DexMethodCountsPlugin]   Output should never be null here")
