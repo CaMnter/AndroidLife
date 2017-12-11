@@ -30,7 +30,7 @@ public class Node {
                 .append(": ")
                 .append(child.count)
                 .append("\n");
-            child.output(indent);
+            this.stringBuilder.append(child.output(indent));
         }
         return stringBuilder;
     }
