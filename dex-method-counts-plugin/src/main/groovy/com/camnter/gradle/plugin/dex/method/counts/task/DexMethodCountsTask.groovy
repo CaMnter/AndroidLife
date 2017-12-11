@@ -63,7 +63,7 @@ class DexMethodCountsTask extends DefaultTask {
             for (String fileName : collectFileNames(fileToCount.path)) {
                 stringBuilder
                         .append("Processing ${fileToCount}")
-                        .append("\n")
+                        .append("\n\n")
                 recordOutputBasicInformation()
 
                 DexCount counts
@@ -131,6 +131,7 @@ class DexMethodCountsTask extends DefaultTask {
                 variantOutput.processResources.name)
         record(OUTPUT_BASIC_INFORMATION, "[processResources.class.name]",
                 variantOutput.processResources.class.name)
+        stringBuilder.append("\n")
     }
 
     def record(def format, def previousValue, def nextValue) {
