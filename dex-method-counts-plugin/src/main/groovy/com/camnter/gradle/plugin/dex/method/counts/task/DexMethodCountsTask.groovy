@@ -42,7 +42,7 @@ class DexMethodCountsTask extends DefaultTask {
     DexMethodCountsExtension dexMethodCountsExtension
 
     boolean countFields = false
-    boolean includeClasses = true
+    boolean includeClasses = false
     String packageFilter = ""
     int maxDepth = Integer.MAX_VALUE
     Filter filter = Filter.ALL
