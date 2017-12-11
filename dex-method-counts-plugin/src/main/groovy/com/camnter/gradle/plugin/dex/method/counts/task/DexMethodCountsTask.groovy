@@ -41,7 +41,7 @@ class DexMethodCountsTask extends DefaultTask {
 
     DexMethodCountsExtension dexMethodCountsExtension
 
-    boolean countFields = true
+    boolean countFields = false
     boolean includeClasses = true
     String packageFilter = ""
     int maxDepth = Integer.MAX_VALUE
@@ -62,7 +62,7 @@ class DexMethodCountsTask extends DefaultTask {
 
             for (String fileName : collectFileNames(fileToCount.path)) {
                 stringBuilder
-                        .append(" Processing ${fileToCount}")
+                        .append("Processing ${fileToCount}")
                         .append("\n")
                 recordOutputBasicInformation()
 
