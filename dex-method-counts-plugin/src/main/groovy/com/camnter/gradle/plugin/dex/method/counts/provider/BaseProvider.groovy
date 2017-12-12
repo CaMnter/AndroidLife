@@ -90,22 +90,20 @@ abstract class BaseProvider {
     def createTaskName(BaseVariant variant, ApkVariantOutput output) {
         def taskName = "dexMethodCounts${variant.name.capitalize()}"
         if (getOutputs(variant).size() > 1) {
-            if (output == null) {
-                throw AssertionError("[DexMethodCountsPlugin]   Output should never be null here")
+            if (output != null) {
+                taskName += output.name.capitalize()
             }
-            taskName += output.name.capitalize()
         }
         return taskName
     }
 
     def createOutputDir(BaseVariant variant, ApkVariantOutput output) {
         def outputDir = FileUtils.resolve(project.buildDir,
-                "outputs/dex-method-counts-plugin")
+                "outputs/dex-method-counts-plugin/${variant.name}")
         if (getOutputs(variant).size() > 1) {
-            if (output == null) {
-                throw AssertionError("[DexMethodCountsPlugin]   Output should never be null here")
+            if (output != null) {
+                outputDir = FileUtils.resolve(new File(outputDir), output.name)
             }
-            outputDir = FileUtils.resolve(new File(outputDir), output.name)
         }
         return outputDir
     }

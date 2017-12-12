@@ -39,10 +39,13 @@ class ThreeZeroProvider extends BaseProvider {
 
     @Override
     def applyToLibraryVariant(LibraryVariantImpl variant) {
+        def taskName = createTaskName(variant, null)
+        def outputDir = createOutputDir(variant, null)
         def packageLibraryTask = variant.packageLibrary
         def dexMethodCountsTask = project.task(type: DexMethodCountsTask, overwrite: true,
-                "dexMethodCounts${variant.name.capitalize()}") { DexMethodCountsTask task ->
+                taskName) { DexMethodCountsTask task ->
             task.fileToCount = packageLibraryTask.archivePath
+            task.outputDir = outputDir
             task.variant = variant
             task.variantOutput = null
         }
