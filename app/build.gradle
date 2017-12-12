@@ -5,9 +5,8 @@ apply plugin: 'com.getkeepsafe.dexcount'
  * gradle projectReport
  * build/reports/project/dependencies/index.html
  *
- * gradle -q dependencies app:dependencies --configuration compile
- */
-apply plugin: 'project-report'
+ * gradle -q dependencies app:dependencies --configuration compile*/
+//apply plugin: 'project-report'
 
 def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
@@ -78,14 +77,14 @@ android {
              * but those object don't exist at configuration time with the new model.
              * However, all() adapts to the new model by picking up object as they are
              * added during execution.*/
-//            android.applicationVariants.all { variant ->
-//                variant.outputs.all {
-//                    def fileName = "app-debug-androidTest-unaligned.apk"
-//                    println("====== buildTypes.output ======")
-//                    println("AppName: " + fileName)
-//                    outputFileName = fileName
-//                }
-//            }
+            //            android.applicationVariants.all { variant ->
+            //                variant.outputs.all {
+            //                    def fileName = "app-debug-androidTest-unaligned.apk"
+            //                    println("====== buildTypes.output ======")
+            //                    println("AppName: " + fileName)
+            //                    outputFileName = fileName
+            //                }
+            //            }
         }
     }
 
@@ -233,6 +232,7 @@ buildscript {
         classpath 'com.camnter.gradle.plugin:method-trace-plugin:1.1.4'
         classpath 'com.camnter.gradle.plugin:resources-size-plugin:1.1.1'
         classpath 'com.camnter.gradle.plugin:resources-optimize-l2-plugin:1.0.9'
+        classpath 'com.camnter.gradle.plugin:dex-method-counts-plugin:1.0.2'
     }
 }
 
@@ -307,3 +307,9 @@ resourcesOptimizeL2Extension {
     guetzliPath = ''
     pngquantPath = ''
 }
+
+/*********************
+ * Dex method counts *
+ *********************/
+
+apply plugin: 'com.camnter.gradle.plugin.dex.method.counts'
