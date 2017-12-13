@@ -20,4 +20,9 @@ package com.android.dexdeps;
  * Bad data found inside a DEX file.
  */
 public class DexDataException extends RuntimeException {
+
+    public DexDataException(String message) {
+        super(message);
+    }
+
 }

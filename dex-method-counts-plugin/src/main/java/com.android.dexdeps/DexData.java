@@ -87,7 +87,7 @@ public class DexData {
         if (!verifyMagic(magic)) {
             System.err.println("Magic number is wrong -- are you sure " +
                 "this is a DEX file?");
-            throw new DexDataException();
+            throw new DexDataException("Magic number is wrong -- are you sure this is a DEX file?");
         }
 
         /*
@@ -102,9 +102,10 @@ public class DexData {
             /* file is big-endian (!), reverse future reads */
             isBigEndian = true;
         } else {
-            System.err.println("Endian constant has unexpected value " +
+            System.err.println("Endian constant has unexpected value" +
                 Integer.toHexString(mHeaderItem.endianTag));
-            throw new DexDataException();
+            throw new DexDataException("Endian constant has unexpected value" +
+                Integer.toHexString(mHeaderItem.endianTag));
         }
 
         seek(8 + 4 + 20);  // magic, checksum, signature

@@ -3,6 +3,7 @@ package com.camnter.gradle.plugin.dex.method.counts.task
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.dexdeps.DexData
+import com.android.dexdeps.DexDataException
 import com.camnter.gradle.plugin.dex.method.counts.DexCount
 import com.camnter.gradle.plugin.dex.method.counts.DexFieldCounts
 import com.camnter.gradle.plugin.dex.method.counts.DexMethodCounts
@@ -102,6 +103,19 @@ class DexMethodCountsTask extends DefaultTask {
             stringBuilder
                     .append(usage())
                     .append("\n")
+        } catch (IOException ioe) {
+            if (ioe.message != null) {
+                stringBuilder.append("[IOException] = " + ioe.message)
+            } else {
+                stringBuilder.append("error")
+            }
+        } catch (DexDataException dde) {
+            /* a message was already reported, just bail quietly */
+            if (dde.message != null) {
+                stringBuilder.append("[IOException] = " + ioe.message)
+            } else {
+                stringBuilder.append("error")
+            }
         }
 
         // 打印文件
@@ -116,9 +130,12 @@ class DexMethodCountsTask extends DefaultTask {
 
     def recordOutputBasicInformation() {
         record(OUTPUT_BASIC_INFORMATION, "[name]", fileToCount.name)
-        record(OUTPUT_BASIC_INFORMATION, "[dirName]", fileToCount.path)
+        record(OUTPUT_BASIC_INFORMATION, "[dirName]", new File(fileToCount.path).parent)
 
-        if (variantOutput == null) return
+        if (variantOutput == null) {
+            stringBuilder.append("\n")
+            return
+        }
         record(OUTPUT_BASIC_INFORMATION, "[baseName]", variantOutput.baseName)
         record(OUTPUT_BASIC_INFORMATION, "[assemble]", variantOutput.assemble)
         record(OUTPUT_BASIC_INFORMATION, "[outputFile]", variantOutput.outputFile)
