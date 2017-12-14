@@ -37,3 +37,34 @@ dependencies {
     provided rootProject.ext.denpendencies["support-v7"]
     provided project(':utils')
 }
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url "https://plugins.gradle.org/m2/" }
+        google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        // local repository
+        maven { url uri('../gradle-plugin-life/repository') }
+    }
+    dependencies {
+        // local repository
+        classpath 'com.camnter.gradle.plugin:dex-method-counts-plugin:1.0.3'
+    }
+}
+
+/*********************
+ * Dex method counts *
+ *********************/
+
+apply plugin: 'com.camnter.gradle.plugin.dex.method.counts'
+
+dexMethodCountsExtension {
+    countFields = false
+    includeClasses = false
+    packageFilter = ""
+}
