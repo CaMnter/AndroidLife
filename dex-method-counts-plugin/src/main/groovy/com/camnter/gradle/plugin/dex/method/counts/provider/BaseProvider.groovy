@@ -15,6 +15,10 @@ import org.gradle.api.plugins.PluginContainer
 
 import java.lang.reflect.Method
 
+/**
+ * @author CaMnter
+ */
+
 abstract class BaseProvider {
 
     protected final Project project

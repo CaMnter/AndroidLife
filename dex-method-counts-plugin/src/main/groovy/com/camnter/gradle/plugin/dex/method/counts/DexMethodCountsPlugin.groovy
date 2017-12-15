@@ -1,6 +1,7 @@
 package com.camnter.gradle.plugin.dex.method.counts
 
 import com.android.repository.Revision
+import com.camnter.gradle.plugin.dex.method.counts.listener.DexMethodCountsListener
 import com.camnter.gradle.plugin.dex.method.counts.provider.BaseProvider
 import com.camnter.gradle.plugin.dex.method.counts.provider.LessThanThreeZeroProvider
 import com.camnter.gradle.plugin.dex.method.counts.provider.ThreeZeroProvider
@@ -31,6 +32,7 @@ class DexMethodCountsPlugin implements Plugin<Project> {
         this.project = project
         initVersion()
         project.extensions.create('dexMethodCountsExtension', DexMethodCountsExtension)
+        project.gradle.addListener(new DexMethodCountsListener(project))
     }
 
     def initVersion() {

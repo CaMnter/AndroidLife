@@ -5,6 +5,10 @@ import com.android.build.gradle.internal.api.*
 import com.camnter.gradle.plugin.dex.method.counts.task.DexMethodCountsTask
 import org.gradle.api.Project
 
+/**
+ * @author CaMnter
+ */
+
 class ThreeZeroProvider extends BaseProvider {
 
     ThreeZeroProvider(Project project) {

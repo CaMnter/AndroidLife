@@ -20,6 +20,10 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipException
 import java.util.zip.ZipFile
 
+/**
+ * @author CaMnter
+ */
+
 class DexMethodCountsTask extends DefaultTask {
 
     static def OUTPUT_BASIC_INFORMATION = "%-29s = %s\n"
@@ -41,6 +45,8 @@ class DexMethodCountsTask extends DefaultTask {
     BaseVariantOutput variantOutput
 
     DexMethodCountsExtension dexMethodCountsExtension
+
+    File analysisOutputFile
 
     boolean countFields = false
     boolean includeClasses = false
@@ -124,6 +130,7 @@ class DexMethodCountsTask extends DefaultTask {
             outputDir.mkdirs()
         }
         File outputFile = new File(FileUtils.resolve(outputDir, "${fileToCount.name}.txt"))
+        this.analysisOutputFile = outputFile
         outputFile.write('')
         outputFile.write(stringBuilder.toString())
     }
