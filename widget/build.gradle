@@ -53,7 +53,7 @@ buildscript {
     }
     dependencies {
         // local repository
-        classpath 'com.camnter.gradle.plugin:dex-method-counts-plugin:1.0.4'
+        classpath 'com.camnter.gradle.plugin:dex-method-counts-plugin:1.0.5'
     }
 }
 
@@ -66,5 +66,6 @@ apply plugin: 'com.camnter.gradle.plugin.dex.method.counts'
 dexMethodCountsExtension {
     countFields = false
     includeClasses = false
+    printAble = true
     packageFilter = ""
 }
