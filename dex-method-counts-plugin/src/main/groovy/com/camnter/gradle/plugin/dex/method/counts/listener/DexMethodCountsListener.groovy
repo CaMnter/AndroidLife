@@ -53,7 +53,7 @@ class DexMethodCountsListener implements TaskExecutionListener, BuildListener {
     @Override
     void buildFinished(BuildResult buildResult) {
         dexMethodCountsExtension = project.dexMethodCountsExtension
-        if (!dexMethodCountsExtension.printAble) return
+        if (!dexMethodCountsExtension.printAble || parcels.size() == 0) return
         println "\nDex analysis:\n"
         for (parcel in parcels) {
             println "${(parcel[0] as File).name}:"
