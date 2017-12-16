@@ -44,6 +44,10 @@ class DexMethodCountsTask extends DefaultTask {
     @Optional
     BaseVariantOutput variantOutput
 
+    @Input
+    @Optional
+    boolean isBuildTools3
+
     DexMethodCountsExtension dexMethodCountsExtension
 
     File analysisOutputFile
@@ -146,7 +150,10 @@ class DexMethodCountsTask extends DefaultTask {
         record(OUTPUT_BASIC_INFORMATION, "[baseName]", variantOutput.baseName)
         record(OUTPUT_BASIC_INFORMATION, "[assemble]", variantOutput.assemble)
         record(OUTPUT_BASIC_INFORMATION, "[outputFile]", variantOutput.outputFile)
-        record(OUTPUT_BASIC_INFORMATION, "[outputType]", variantOutput.outputType)
+        if (isBuildTools3) {
+            record(OUTPUT_BASIC_INFORMATION, "[outputType]",
+                    variantOutput.outputType)
+        }
         record(OUTPUT_BASIC_INFORMATION, "[versionCode]", variantOutput.versionCode)
         record(OUTPUT_BASIC_INFORMATION, "[processResources]", variantOutput.processResources)
         record(OUTPUT_BASIC_INFORMATION, "[outputFile.exists]",

@@ -12,6 +12,7 @@ class LessThanThreeZeroProvider extends BaseProvider {
 
     LessThanThreeZeroProvider(Project project) {
         super(project)
+        isBuildTools3 = false
     }
 
     @Override
@@ -25,6 +26,7 @@ class LessThanThreeZeroProvider extends BaseProvider {
                 task.outputDir = outputDir
                 task.variant = variant
                 task.variantOutput = it
+                task.isBuildTools3 = false
             }
             addDexCountTaskToGraph(it.assemble, dexMethodCountsTask)
         }
@@ -46,6 +48,7 @@ class LessThanThreeZeroProvider extends BaseProvider {
                 task.outputDir = outputDir
                 task.variant = variant
                 task.variantOutput = it
+                task.isBuildTools3 = false
             }
             addDexCountTaskToGraph(it.assemble, dexMethodCountsTask)
         }

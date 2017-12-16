@@ -22,6 +22,7 @@ import java.lang.reflect.Method
 abstract class BaseProvider {
 
     protected final Project project
+    protected boolean isBuildTools3 = true
 
     BaseProvider(Project project) {
         this.project = project
@@ -46,7 +47,7 @@ abstract class BaseProvider {
         } else if (plugins.hasPlugin(LibraryPlugin.class)) {
             LibraryExtension libraryExtension = extensions.getByType(LibraryExtension.class)
             variants = libraryExtension.libraryVariants
-        } else if (plugins.hasPlugin(FeaturePlugin.class)) {
+        } else if (isBuildTools3 && plugins.hasPlugin(FeaturePlugin.class)) {
             FeatureExtension featureExtension = extensions.getByType(FeatureExtension.class)
             variants = featureExtension.featureVariants
         } else {
@@ -59,7 +60,7 @@ abstract class BaseProvider {
                 applyToTestVariant(variant)
             } else if (variant instanceof LibraryVariantImpl) {
                 applyToLibraryVariant(variant)
-            } else if (variant instanceof FeatureVariantImpl) {
+            } else if (isBuildTools3 && variant instanceof FeatureVariantImpl) {
                 applyToFeatureVariant(variant)
             } else if (variant instanceof ApplicationVariantImpl) {
                 applyToApplicationVariant(variant)

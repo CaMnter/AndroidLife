@@ -27,6 +27,7 @@ class ThreeZeroProvider extends BaseProvider {
                     task.outputDir = outputDir
                     task.variant = variant
                     task.variantOutput = it
+                    task.isBuildTools3 = true
                 }
                 addDexCountTaskToGraph(it.packageApplication, dexMethodCountsTask)
             } else {
@@ -52,6 +53,7 @@ class ThreeZeroProvider extends BaseProvider {
             task.outputDir = outputDir
             task.variant = variant
             task.variantOutput = null
+            task.isBuildTools3 = true
         }
         addDexCountTaskToGraph(packageLibraryTask, dexMethodCountsTask)
     }
