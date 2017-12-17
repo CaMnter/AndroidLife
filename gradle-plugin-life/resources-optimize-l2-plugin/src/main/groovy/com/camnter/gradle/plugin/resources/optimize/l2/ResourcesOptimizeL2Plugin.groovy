@@ -56,25 +56,31 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
         def containAssembleTask = false
 
         for (def taskName : taskNames) {
-            if (taskName.contains("assemble") || taskName.contains("resguard")) {
-                if (taskName.toLowerCase().endsWith("debug") && taskName.toLowerCase().
-                        contains("debug")) {
+            println "taskName = ${taskName}"
+            if (taskName.contains("assemble") || taskName.contains("resguard") ||
+                    taskName.contains("build")) {
+                if (taskName.toLowerCase().contains("debug")) {
                     debugTask = true
                 }
                 containAssembleTask = true
+                println "taskName = ${taskName}"
                 break
             }
         }
 
-        if (debugTask && !resourcesOptimizeL2Extension.debugResourcesSize) {
-            return
-        }
-
-        if (containAssembleTask && !resourcesOptimizeL2Extension.debugResourcesSize) {
+        println "containAssembleTask = ${containAssembleTask}"
+        if (!containAssembleTask) {
             return
         }
 
         project.afterEvaluate {
+
+            println "debugTask = ${debugTask}"
+            println "resourcesOptimizeL2Extension.debugResourcesOptimize = ${resourcesOptimizeL2Extension.debugResourcesOptimize}"
+            if (debugTask && !resourcesOptimizeL2Extension.debugResourcesOptimize) {
+                return
+            }
+
             variants.all {
 
                 // check aapt2
@@ -167,50 +173,48 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                     bigImagePathList << (["${kbValue}kb", fileName] as ArrayList<String>)
                                 }
                                 // compress
-                                if (resourcesOptimizeL2Extension.debugResourcesOptimize) {
-                                    /**
-                                     * jpg
-                                     * eg: "/usr/local/bin/guetzli ${file.path} ${file.path}"
-                                     *
-                                     * png
-                                     * eg: "/usr/local/bin/pngquant --skip-if-larger --speed 3 --force --output ${file.path} -- ${file.path}"
-                                     * */
-                                    CompressUtils.compressResource(it) { File file ->
-                                        if (!pngquantEnable) return
-                                        CommandUtils.command(
-                                                "${pngquantPath} --skip-if-larger --speed 3 --force --output ${file.path} -- ${file.path}") {
-                                            String output ->
-                                        } { String error ->
-                                            printf "%-44s >> \n",
-                                                    ['[ResourcesOptimizeL2Plugin]   [CommandUtils]   [error]', error]
-                                        }
-                                    } { File file ->
-                                        if (!guetzliEnable) return
-                                        CommandUtils.command(
-                                                "${guetzliPath} ${file.path} ${file.path}") {
-                                            String output ->
-                                        } { String error ->
-                                            printf "%-44s >> \n",
-                                                    ['[ResourcesOptimizeL2Plugin]   [CommandUtils]   [error]', error]
-                                        }
+                                /**
+                                 * jpg
+                                 * eg: "/usr/local/bin/guetzli ${file.path} ${file.path}"
+                                 *
+                                 * png
+                                 * eg: "/usr/local/bin/pngquant --skip-if-larger --speed 3 --force --output ${file.path} -- ${file.path}"
+                                 * */
+                                CompressUtils.compressResource(it) { File file ->
+                                    if (!pngquantEnable) return
+                                    CommandUtils.command(
+                                            "${pngquantPath} --skip-if-larger --speed 3 --force --output ${file.path} -- ${file.path}") {
+                                        String output ->
+                                    } { String error ->
+                                        printf "%-44s >> \n",
+                                                ['[ResourcesOptimizeL2Plugin]   [CommandUtils]   [error]', error]
+                                    }
+                                } { File file ->
+                                    if (!guetzliEnable) return
+                                    CommandUtils.command(
+                                            "${guetzliPath} ${file.path} ${file.path}") {
+                                        String output ->
+                                    } { String error ->
+                                        printf "%-44s >> \n",
+                                                ['[ResourcesOptimizeL2Plugin]   [CommandUtils]   [error]', error]
                                     }
                                 }
+                            }
 
-                                if (resourcesOptimizeL2Extension.webpConvert) {
-                                    WebpUtils.securityFormatWebp(project, it) {
-                                        File imageFile, File webpFile ->
-                                            if (!cwebpEnable) return
-                                            /**
-                                             * "/usr/local/bin/cwebp ${imageFile.getPath()} -o ${webpFile.getPath()} -quiet"
-                                             * */
-                                            CommandUtils.command(
-                                                    "${cwebpPath} ${imageFile.getPath()} -o ${webpFile.getPath()} -quiet") {
-                                                String output ->
-                                            } { String error ->
-                                                printf "%-44s >> \n",
-                                                        ['[ResourcesOptimizeL2Plugin]   [CommandUtils]   [error]', error]
-                                            }
-                                    }
+                            if (resourcesOptimizeL2Extension.webpConvert) {
+                                WebpUtils.securityFormatWebp(project, it) {
+                                    File imageFile, File webpFile ->
+                                        if (!cwebpEnable) return
+                                        /**
+                                         * "/usr/local/bin/cwebp ${imageFile.getPath()} -o ${webpFile.getPath()} -quiet"
+                                         * */
+                                        CommandUtils.command(
+                                                "${cwebpPath} ${imageFile.getPath()} -o ${webpFile.getPath()} -quiet") {
+                                            String output ->
+                                        } { String error ->
+                                            printf "%-44s >> \n",
+                                                    ['[ResourcesOptimizeL2Plugin]   [CommandUtils]   [error]', error]
+                                        }
                                 }
                             }
                         }
