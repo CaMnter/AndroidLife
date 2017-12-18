@@ -110,6 +110,7 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                 def processResourceTask = project.tasks.findByName(
                         "process${it.name.capitalize()}Resources")
                 def taskName = "resourcesOptimizeL2${capitalize}"
+
                 project.task(taskName) {
                     doLast {
                         def resourcesDirFile = new File(
@@ -164,6 +165,12 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                         printf "%-53s = %s\n",
                                 ['[ResourcesOptimizeL2Plugin]   [pngquantEnable]', pngquantEnable]
 
+                        def optimizedResourceDir = new File(
+                                "${project.buildDir}/outputs/resources-optimize-l2-plugin/${capitalize.toLowerCase()}")
+                        if (optimizedResourceDir.exists()) {
+                            optimizedResourceDir.deleteDir()
+                        }
+                        optimizedResourceDir.mkdirs()
 
                         resourcesDirFile.traverse {
                             def fileName = it.name
@@ -184,7 +191,14 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                     if (!pngquantEnable) return
                                     CommandUtils.command(
                                             "${pngquantPath} --skip-if-larger --speed 3 --force --output ${file.path} -- ${file.path}") {
-                                        String output ->
+                                        String outputA ->
+                                            CommandUtils.command(
+                                                    "cp ${file.path} ${optimizedResourceDir.path}/${file.name}") {
+                                                String outputB ->
+                                            } { String error ->
+                                                printf "%-44s >> \n",
+                                                        ['[ResourcesOptimizeL2Plugin]   [CommandUtils]   [error]', error]
+                                            }
                                     } { String error ->
                                         printf "%-44s >> \n",
                                                 ['[ResourcesOptimizeL2Plugin]   [CommandUtils]   [error]', error]
@@ -193,7 +207,14 @@ class ResourcesOptimizeL2Plugin implements Plugin<Project> {
                                     if (!guetzliEnable) return
                                     CommandUtils.command(
                                             "${guetzliPath} ${file.path} ${file.path}") {
-                                        String output ->
+                                        String outputA ->
+                                            CommandUtils.command(
+                                                    "cp ${file.path} ${optimizedResourceDir.path}/${file.name}") {
+                                                String outputB ->
+                                            } { String error ->
+                                                printf "%-44s >> \n",
+                                                        ['[ResourcesOptimizeL2Plugin]   [CommandUtils]   [error]', error]
+                                            }
                                     } { String error ->
                                         printf "%-44s >> \n",
                                                 ['[ResourcesOptimizeL2Plugin]   [CommandUtils]   [error]', error]

@@ -67,6 +67,8 @@ class CommandUtils {
             printf "%6s:  %s", ['error', errorString]
             if (errorClosure != null) errorClosure.call(errorString)
         }
+        // both null = success
+        outputClosure.call("")
     }
 
     String execByWindow(String command, File dir) {
@@ -132,15 +134,15 @@ class CommandUtils {
     }
 
     static void chmod(String path) {
-        com.camnter.gradle.plugin.resources.optimize.l2.utils.CommandUtils.command(
+        command(
                 "chmod 755 $path")
     }
 
     static void removeDirectory(String path) {
-        com.camnter.gradle.plugin.resources.optimize.l2.utils.CommandUtils.command("rm -rf $path")
+        command("rm -rf $path")
     }
 
     static void removeFile(String path) {
-        com.camnter.gradle.plugin.resources.optimize.l2.utils.CommandUtils.command("rm $path")
+        command("rm $path")
     }
 }
