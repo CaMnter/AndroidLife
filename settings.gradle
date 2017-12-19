@@ -1,5 +1,7 @@
 include ':app',
 
+        ':plugin-life:load-simple-plugin:load-simple-plugin-host',
+
         ':dex-method-counts-plugin',
 
         ':gradle-plugin-life:magic-plugin-kit',
