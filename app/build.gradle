@@ -188,6 +188,7 @@ dependencies {
     compile project(':smartsave')
     compile project(':annotation-processor-annotation')
     compile project(':smartrouter')
+    compile project(':plugin-life:load-simple-plugin:load-simple-plugin-host')
 
     testCompile project(':utils')
 
@@ -311,11 +312,11 @@ resourcesOptimizeL2Extension {
  * Dex method counts *
  *********************/
 
-apply plugin: 'com.camnter.gradle.plugin.dex.method.counts'
-
-dexMethodCountsExtension {
-    countFields = false
-    includeClasses = false
-    printAble = true
-    packageFilter = ""
-}
+//apply plugin: 'com.camnter.gradle.plugin.dex.method.counts'
+//
+//dexMethodCountsExtension {
+//    countFields = false
+//    includeClasses = false
+//    printAble = true
+//    packageFilter = ""
+//}

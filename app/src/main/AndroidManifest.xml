@@ -262,6 +262,9 @@
             android:name=".ui.activity.smartrouter.CustomRouterActivity"
             android:label="CustomRouterActivity"/>
         <activity
+            android:name="com.camnter.load.simple.plugin.LoadSimplePluginActivity"
+            android:label="LoadSimplePluginActivity"/>
+        <activity
             android:name="com.camnter.smartrouter.RouterCenterActivity"
             android:label="RouterCenterActivity">
             <intent-filter>

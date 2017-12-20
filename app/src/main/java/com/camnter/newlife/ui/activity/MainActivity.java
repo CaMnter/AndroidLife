@@ -15,6 +15,7 @@ import com.camnter.easyrecyclerview.adapter.EasyRecyclerViewAdapter;
 import com.camnter.easyrecyclerview.holder.EasyRecyclerViewHolder;
 import com.camnter.easyrecyclerview.widget.EasyRecyclerView;
 import com.camnter.easyrecyclerview.widget.decorator.EasyDividerItemDecoration;
+import com.camnter.load.simple.plugin.LoadSimplePluginActivity;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.ui.activity.agera.AgeraActivity;
@@ -230,6 +231,7 @@ public class MainActivity extends BaseAppCompatActivity
         this.classes.add(TabAlphaViewActivity.class);
         this.classes.add(SmartSaveExampleActivity.class);
         this.classes.add(SmartRouterActivity.class);
+        this.classes.add(LoadSimplePluginActivity.class);
     }
 
 
