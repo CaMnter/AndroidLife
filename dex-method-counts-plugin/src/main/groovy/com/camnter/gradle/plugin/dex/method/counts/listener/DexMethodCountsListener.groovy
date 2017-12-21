@@ -56,8 +56,14 @@ class DexMethodCountsListener implements TaskExecutionListener, BuildListener {
         if (!dexMethodCountsExtension.printAble || parcels.size() == 0) return
         println "\nDex analysis:\n"
         for (parcel in parcels) {
-            println "${(parcel[0] as File).name}:"
-            println "${(parcel[1] as File).path}\n"
+            def first = parcel[0]
+            def second = parcel[1]
+            if (first) {
+                println "${(first as File).name}:"
+            }
+            if (second) {
+                println "${(second as File).path}\n"
+            }
         }
     }
 }
