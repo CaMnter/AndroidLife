@@ -53,7 +53,7 @@ buildscript {
     }
     dependencies {
         // local repository
-        classpath 'com.camnter.gradle.plugin:dex-method-counts-plugin:1.0.5'
+        classpath 'com.camnter.gradle.plugin:dex-method-counts-plugin:1.0.6'
     }
 }
 
