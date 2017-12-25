@@ -1,7 +1,7 @@
 include ':app',
 
-        ':register-activity-plugin-plugin',
-        ':register-activity-plugin-host',
+        ':plugin-life:register-activity-plugin:register-activity-plugin-plugin',
+        ':plugin-life:register-activity-plugin:register-activity-plugin-host',
         ':plugin-life:load-simple-plugin:load-simple-plugin-host',
 
         ':dex-method-counts-plugin',
