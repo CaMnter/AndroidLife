@@ -19,9 +19,11 @@ public class PluginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         final LinearLayout rootLayout = new LinearLayout(this);
-        rootLayout.setBackgroundColor(0xff000000);
+        rootLayout.setBackgroundColor(0xffffffff);
         final TextView text = new TextView(this);
+        text.setTextColor(0xff000000);
         text.setText("Plugin Activity");
+        text.setPadding(15, 15, 15, 15);
         rootLayout.addView(text);
         this.setContentView(rootLayout);
     }
