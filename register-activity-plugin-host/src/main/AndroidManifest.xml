@@ -18,7 +18,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.camnter.register.activity.plugin.plugin.PluginActivity"/>
+        <activity
+            android:name="com.camnter.register.activity.plugin.plugin.PluginActivity"
+            android:label="PluginActivity"/>
 
     </application>
 

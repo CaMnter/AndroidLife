@@ -4,12 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
+import android.widget.Toast;
 
 /**
  * @author CaMnter
  */
 
 public class RegisterActivityPluginActivity extends BaseAppCompatActivity {
+
+    final Handler handler = new Handler(Looper.getMainLooper());
+
+    View startText;
+
 
     /**
      * Fill in layout id
@@ -18,7 +25,7 @@ public class RegisterActivityPluginActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int getLayoutId() {
-        return 0;
+        return R.layout.activity_main;
     }
 
 
@@ -29,25 +36,35 @@ public class RegisterActivityPluginActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        final Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(new Runnable() {
+        this.startText = this.findViewById(R.id.start_text);
+        this.startText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                try {
-                    // plugin activity
-                    SmartApplication smartApplication
-                        = (SmartApplication) RegisterActivityPluginActivity.this.getApplication();
-                    final Intent intent = new Intent(RegisterActivityPluginActivity.this,
-                        smartApplication
-                            .getDexClassLoader()
-                            .loadClass(
-                                "com.camnter.register.activity.plugin.plugin.PluginActivity"));
-                    startActivity(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            public void onClick(View v) {
+                startText.setEnabled(false);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            // plugin activity
+                            SmartApplication smartApplication
+                                = (SmartApplication) RegisterActivityPluginActivity.this.getApplication();
+                            final Intent intent = new Intent(RegisterActivityPluginActivity.this,
+                                smartApplication
+                                    .getDexClassLoader()
+                                    .loadClass(
+                                        "com.camnter.register.activity.plugin.plugin.PluginActivity"));
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            ToastUtils.show(RegisterActivityPluginActivity.this, e.getMessage(),
+                                Toast.LENGTH_LONG);
+                            e.printStackTrace();
+                        } finally {
+                            startText.setEnabled(true);
+                        }
+                    }
+                });
             }
-        }, 3000);
+        });
     }
 
 
