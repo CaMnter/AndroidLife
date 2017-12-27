@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">LoadResourcesPluginPlugin</string>
+    <string name="load_resources_plugin_activity">Load resources plugin activity</string>
+</resources>
