@@ -70,14 +70,14 @@ public class PluginActivity extends AppCompatActivity {
     /**
      * 获取 插件 Resources
      *
-     * @param context Context
+     * @param newBase Context
      * @return Resources
      */
-    private Resources getPluginResources(final Context context) {
+    private Resources getPluginResources(final Context newBase) {
         try {
             String dir = null;
-            final File cacheDir = this.getExternalCacheDir();
-            final File filesDir = this.getExternalFilesDir("");
+            final File cacheDir = newBase.getExternalCacheDir();
+            final File filesDir = newBase.getExternalFilesDir("");
             if (cacheDir != null) {
                 dir = cacheDir.getAbsolutePath();
             } else {
@@ -90,13 +90,13 @@ public class PluginActivity extends AppCompatActivity {
             // assets 的 load-plugin-resource-plugin.apk 拷贝到 /storage/sdcard0/Android/data/[package name]/cache
             // 或者  /storage/sdcard0/Android/data/[package name]/files
             final File dexPath = new File(dir + File.separator + "load-plugin-resource-plugin.apk");
-            AssetsUtils.copyAssets(this, "load-plugin-resource-plugin.apk",
+            AssetsUtils.copyAssets(newBase, "load-plugin-resource-plugin.apk",
                 dexPath.getAbsolutePath());
 
             final AssetManager assetManager = AssetManager.class.newInstance();
             final Method addAssetPath = assetManager.getClass()
                 .getMethod("addAssetPath", String.class);
-            addAssetPath.invoke(assetManager, dexPath);
+            addAssetPath.invoke(assetManager, dexPath.getAbsolutePath());
 
             /**
              * 如果要 独立使用 Resources，而不 Hook mResources :
@@ -107,8 +107,8 @@ public class PluginActivity extends AppCompatActivity {
              */
             return new Resources(
                 assetManager,
-                context.getResources().getDisplayMetrics(),
-                context.getResources().getConfiguration()
+                newBase.getResources().getDisplayMetrics(),
+                newBase.getResources().getConfiguration()
             );
         } catch (Exception e) {
             e.printStackTrace();
