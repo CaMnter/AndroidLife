@@ -90,8 +90,11 @@ public class PluginActivity extends AppCompatActivity {
             // assets 的 load-plugin-resource-plugin.apk 拷贝到 /storage/sdcard0/Android/data/[package name]/cache
             // 或者  /storage/sdcard0/Android/data/[package name]/files
             final File dexPath = new File(dir + File.separator + "load-plugin-resource-plugin.apk");
-            AssetsUtils.copyAssets(newBase, "load-plugin-resource-plugin.apk",
-                dexPath.getAbsolutePath());
+
+            if (!dexPath.exists()) {
+                AssetsUtils.copyAssets(newBase, "load-plugin-resource-plugin.apk",
+                    dexPath.getAbsolutePath());
+            }
 
             final AssetManager assetManager = AssetManager.class.newInstance();
             final Method addAssetPath = assetManager.getClass()
