@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 public class SmartApplication extends Application {
 
     private DexClassLoader dexClassLoader;
+    private String dexAbsolutePath;
 
 
     /**
@@ -52,8 +53,9 @@ public class SmartApplication extends Application {
             // assets 的 load-plugin-resource-plugin.apk 拷贝到 /storage/sdcard0/Android/data/[package name]/cache
             // 或者  /storage/sdcard0/Android/data/[package name]/files
             final File dexPath = new File(dir + File.separator + "load-plugin-resource-plugin.apk");
+            final String dexAbsolutePath = dexPath.getAbsolutePath();
             AssetsUtils.copyAssets(this, "load-plugin-resource-plugin.apk",
-                dexPath.getAbsolutePath());
+                dexAbsolutePath);
 
             // /data/data/[package name]/app_load-plugin-resource-plugin
             final File optimizedDirectory = this.getDir("load-plugin-resource-plugin",
@@ -65,6 +67,8 @@ public class SmartApplication extends Application {
                 null,
                 this.getClassLoader()
             );
+
+            this.dexAbsolutePath = dexAbsolutePath;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,6 +112,11 @@ public class SmartApplication extends Application {
 
     public DexClassLoader getDexClassLoader() {
         return this.dexClassLoader;
+    }
+
+
+    public String getDexAbsolutePath() {
+        return this.dexAbsolutePath;
     }
 
 }
