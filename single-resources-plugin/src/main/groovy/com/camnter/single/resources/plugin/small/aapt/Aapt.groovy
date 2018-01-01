@@ -200,7 +200,7 @@ public class Aapt {
     }
 
     public static def generateRJava(File dest, String pkg, List types, List styleables) {
-         if (!dest.parentFile.exists()) {
+        if (!dest.parentFile.exists()) {
             dest.parentFile.mkdirs()
         }
         if (!dest.exists()) {
