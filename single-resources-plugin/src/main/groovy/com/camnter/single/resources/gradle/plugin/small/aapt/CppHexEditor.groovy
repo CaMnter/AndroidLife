@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.camnter.single.resources.plugin.small.aapt
+package com.camnter.single.resources.gradle.plugin.small.aapt
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder

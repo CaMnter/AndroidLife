@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.camnter.single.resources.plugin.small.util
+package com.camnter.single.resources.gradle.plugin.small.util
 
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile

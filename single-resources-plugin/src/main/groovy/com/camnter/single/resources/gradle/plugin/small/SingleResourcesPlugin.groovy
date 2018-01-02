@@ -1,8 +1,8 @@
-package com.camnter.single.resources.plugin
+package com.camnter.single.resources.gradle.plugin.small
 
 import com.android.build.gradle.tasks.ProcessAndroidResources
-import com.camnter.single.resources.plugin.small.aapt.Aapt
-import com.camnter.single.resources.plugin.small.aapt.SymbolParser
+import com.camnter.single.resources.gradle.plugin.small.aapt.Aapt
+import com.camnter.single.resources.gradle.plugin.small.aapt.SymbolParser
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.FileTree
@@ -21,8 +21,11 @@ class SingleResourcesPlugin implements Plugin<Project> {
     def retainedStyleables = []
     def allTypes = []
     def allStyleables = []
-    def packageId = 121
     // 0x79
+    def packageId = 121
+
+    def packagePath = "com/camnter/single/resources/plugin"
+    def packageName = "com.camnter.single.resources.plugin"
 
     @Override
     void apply(Project project) {
@@ -69,7 +72,7 @@ class SingleResourcesPlugin implements Plugin<Project> {
         File symbolFile = new File(aaptTask.textSymbolOutputDir, 'R.txt')
         prepareSplit(symbolFile)
         File sourceOutputDir = aaptTask.sourceOutputDir
-        File rJavaFile = new File(sourceOutputDir, "com/example/plugin5/R.java")
+        File rJavaFile = new File(sourceOutputDir, "${packagePath}/R.java")
         def rev = project.android.buildToolsRevision
         int noResourcesFlag = 0
         def filteredResources = new HashSet()
@@ -86,7 +89,7 @@ class SingleResourcesPlugin implements Plugin<Project> {
 
             println "[${project.name}] slice asset package and reset package id..."
 
-            String pkg = "com.example.plugin5"
+            String pkg = packageName
             // Overwrite the aapt-generated R.java with full edition
             rJavaFile.delete()
             aapt.generateRJava(rJavaFile, pkg, this.allTypes, this.allStyleables)

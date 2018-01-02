@@ -13,12 +13,12 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.camnter.single.resources.plugin.small.aapt
+package com.camnter.single.resources.gradle.plugin.small.aapt
 
 /**
  * enum from include/androidfw/ResourceTypes.h
  */
-public enum ResValueDataType {
-    public static int TYPE_REFERENCE = 0x01;
-    public static int TYPE_STRING = 0x03;
+public enum ResStringFlag {
+    public static int SORTED_FLAG = 1<<0;
+    public static int UTF8_FLAG = 1<<8;
 }

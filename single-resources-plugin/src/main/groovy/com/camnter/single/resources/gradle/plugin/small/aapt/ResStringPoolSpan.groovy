@@ -13,13 +13,13 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.camnter.single.resources.plugin.small.aapt
+package com.camnter.single.resources.gradle.plugin.small.aapt
 
 /**
  * enum from include/androidfw/ResourceTypes.h
  */
-public enum ResTableEntry {
-    public static int FLAG_COMPLEX = 0X0001;
-    public static int FLAG_PUBLIC = 0X0002;
-    public static int FLAG_WEAK = 0X0004;
+public enum ResStringPoolSpan {
+    public static int END = 0xFFFFFFFF;
+    public static byte[] END_SPAN = [0xFF, 0xFF, 0xFF, 0xFF,
+                                     0xFF, 0xFF, 0xFF, 0xFF]
 }

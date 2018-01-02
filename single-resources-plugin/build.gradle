@@ -21,7 +21,7 @@ buildscript {
 dependencies {
     compileOnly gradleApi()
     compileOnly localGroovy()
-    compile rootProject.ext.plugin["android-gradle-plugin"]
+    compile 'com.android.tools.build:gradle:2.3.3'
 }
 
 group = 'com.camnter.gradle.plugin'
@@ -42,7 +42,7 @@ sourceSets {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: uri('../repository'))
+            repository(url: uri('repository'))
         }
     }
 }
