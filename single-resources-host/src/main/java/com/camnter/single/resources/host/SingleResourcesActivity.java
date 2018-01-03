@@ -52,7 +52,7 @@ public class SingleResourcesActivity extends BaseAppCompatActivity {
                                 smartApplication
                                     .getDexClassLoader()
                                     .loadClass(
-                                        "com.camnter.load.plugin.resources.plugin.PluginActivity"));
+                                        "com.camnter.single.resources.plugin.SingleResourcesPluginActivity"));
                             startActivity(intent);
                         } catch (Exception e) {
                             ToastUtils.show(SingleResourcesActivity.this, e.getMessage(),
