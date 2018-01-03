@@ -4,16 +4,18 @@ import com.android.build.gradle.tasks.ProcessAndroidResources
 import com.android.sdklib.BuildToolInfo
 import com.camnter.single.resources.gradle.plugin.small.aapt.Aapt
 import com.camnter.single.resources.gradle.plugin.small.aapt.SymbolParser
+import com.camnter.single.resources.gradle.plugin.small.util.ZipUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.FileTree
-import com.camnter.single.resources.gradle.plugin.small.util.ZipUtils
 
 /**
  * CaMnter
  * */
 
 class SingleResourcesPlugin implements Plugin<Project> {
+
+    private static final String TAG = SingleResourcesPlugin.class.simpleName
 
     private static final int UNSET_TYPEID = 99
     private static final int UNSET_ENTRYID = -1
@@ -27,8 +29,8 @@ class SingleResourcesPlugin implements Plugin<Project> {
     def retainedStyleables = []
     def allTypes = []
     def allStyleables = []
-    // 0x79
-    def packageId = 121
+    // 0x77
+    def packageId = 119
 
     def packagePath = "com/camnter/single/resources/plugin"
     def packageName = "com.camnter.single.resources.plugin"
@@ -42,9 +44,9 @@ class SingleResourcesPlugin implements Plugin<Project> {
             // 防止 Up-To-Data 跳过该任务
             processDebugResources.outputs.upToDateWhen { false }
             processDebugResources.doLast {
-                println '[SingleResourcesPlugin]   prepare hook aapt'
+                println "[${TAG}]   prepare hook aapt"
                 if (it instanceof ProcessAndroidResources) {
-                    println '[SingleResourcesPlugin]  start hook aapt'
+                    println "[${TAG}]  start hook aapt"
                     hookAapt(it)
                 }
             }
@@ -89,12 +91,12 @@ class SingleResourcesPlugin implements Plugin<Project> {
         Aapt aapt = new Aapt(unzipApDir, rJavaFile, symbolFile, rev)
         if (this.retainedTypes != null && this.retainedTypes.size() > 0) {
             aapt.filterResources(this.retainedTypes, filteredResources)
-            println "[${project.name}] split library res files..."
+            println "[${TAG}]   [${project.name}] split library res files..."
 
             aapt.filterPackage(this.retainedTypes, this.packageId, this.idMaps, null,
                     this.retainedStyleables, updatedResources)
 
-            println "[${project.name}] slice asset package and reset package id..."
+            println "[${TAG}]   [${project.name}] slice asset package and reset package id..."
 
             String pkg = packageName
             // Overwrite the aapt-generated R.java with full edition
@@ -102,7 +104,7 @@ class SingleResourcesPlugin implements Plugin<Project> {
             aapt.generateRJava(rJavaFile, pkg, this.allTypes, this.allStyleables)
 
 
-            println "[${project.name}] split library R.java files..."
+            println "[${TAG}]   [${project.name}] split library R.java files..."
         } else {
             println 'No Resource To Modify'
         }
