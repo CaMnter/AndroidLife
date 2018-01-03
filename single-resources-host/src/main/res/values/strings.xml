@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">SingleResourcesHost</string>
-    <string name="host_info">Congratulations, successful! Here is the host's string content.</string>
+    <string name="host_info">Congratulations, successful! Here is the host string content.</string>
 </resources>
