@@ -1,11 +1,17 @@
 package com.camnter.single.resources.gradle.plugin.small
 
 import com.android.build.gradle.tasks.ProcessAndroidResources
+import com.android.sdklib.BuildToolInfo
 import com.camnter.single.resources.gradle.plugin.small.aapt.Aapt
 import com.camnter.single.resources.gradle.plugin.small.aapt.SymbolParser
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.FileTree
+import com.camnter.single.resources.gradle.plugin.small.util.ZipUtils
+
+/**
+ * CaMnter
+ * */
 
 class SingleResourcesPlugin implements Plugin<Project> {
 
@@ -33,6 +39,7 @@ class SingleResourcesPlugin implements Plugin<Project> {
 
         project.afterEvaluate {
             def processDebugResources = project.tasks['processDebugResources']
+            // 防止 Up-To-Data 跳过该任务
             processDebugResources.outputs.upToDateWhen { false }
             processDebugResources.doLast {
                 println '[SingleResourcesPlugin]   prepare hook aapt'
