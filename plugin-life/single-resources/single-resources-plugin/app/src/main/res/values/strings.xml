@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SingleResourcesPlugin</string>
+    <string name="load_single_resources_plugin_activity">Load single resources plugin activity</string>
+    <string name="host_text_default">Host resource loading failed</string>
+</resources>
