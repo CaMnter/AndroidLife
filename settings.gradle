@@ -1,5 +1,6 @@
 include ':app',
 
+        ':load-service-plugin-host',
         ':load-service-plugin-plugin',
 
         ':plugin-life:single-resources:single-resources-host',
