@@ -3,12 +3,14 @@ package com.camnter.load.service.plugin.plugin;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
@@ -44,8 +46,11 @@ public class PluginService extends Service {
                 switch (msg.what) {
                     case ACTIVITY_MESSAGE:
                         activityMessenger = msg.replyTo;
-                        final Message message = Message.obtain(null, PLUGIN_SERVICE_MESSAGE);
-                        message.obj = "Plugin service response info";
+                        final Bundle bundle = msg.getData();
+                        final String info = bundle == null
+                                            ? null
+                                            : bundle.getString("ACTIVITY_INFO");
+                        final Message message = createRequestMessage(String.valueOf(info));
                         try {
                             activityMessenger.send(message);
                         } catch (RemoteException e) {
@@ -56,6 +61,18 @@ public class PluginService extends Service {
             }
         };
         this.serviceMessenger = new Messenger(handler);
+    }
+
+
+    private Message createRequestMessage(@NonNull final String info) {
+        Message message = Message.obtain(null, PLUGIN_SERVICE_MESSAGE);
+        final Bundle bundle = new Bundle();
+        bundle.putString("SERVICE_INFO",
+            "Plugin service response info: There is Plugin Service, >> \"" + info + "\"");
+
+        message.setData(bundle);
+        message.replyTo = this.activityMessenger;
+        return message;
     }
 
 
