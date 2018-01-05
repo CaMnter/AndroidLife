@@ -18,7 +18,16 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.camnter.load.service.plugin.plugin.PluginService"/>
+        <service
+            android:name="com.camnter.load.service.plugin.plugin.PluginService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":loadServicePlugin">
+            <intent-filter>
+                <action android:name="com.camnter.load.service.plugin"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
 
     </application>
 

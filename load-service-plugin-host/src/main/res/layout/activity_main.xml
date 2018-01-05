@@ -17,7 +17,7 @@
         android:id="@+id/start_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start Plugin Activity"
+        android:text="Call Plugin Service"
         android:padding="10dp"
         android:textSize="15sp"
         android:textColor="#000000"/>
