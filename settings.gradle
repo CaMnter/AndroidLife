@@ -2,6 +2,7 @@ include ':app',
 
         ':multi-classloader-plugin-host',
         ':multi-classloader-plugin-one',
+        ':multi-classloader-plugin-two',
 
         ':plugin-life:load-service-plugin:load-service-plugin-host',
         ':plugin-life:load-service-plugin:load-service-plugin-plugin',
