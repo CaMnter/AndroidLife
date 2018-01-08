@@ -1,8 +1,9 @@
 include ':app',
 
+        ':multi-classloader-plugin-host',
+
         ':plugin-life:load-service-plugin:load-service-plugin-host',
         ':plugin-life:load-service-plugin:load-service-plugin-plugin',
-
         ':plugin-life:single-resources:single-resources-host',
         ':plugin-life:single-resources:single-resources-gradle-plugin',
         ':plugin-life:load-plugin-resources:load-plugin-resources-host',
