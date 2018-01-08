@@ -1,7 +1,7 @@
 include ':app',
 
-        ':load-service-plugin-host',
-        ':load-service-plugin-plugin',
+        ':plugin-life:load-service-plugin:load-service-plugin-host',
+        ':plugin-life:load-service-plugin:load-service-plugin-plugin',
 
         ':plugin-life:single-resources:single-resources-host',
         ':plugin-life:single-resources:single-resources-gradle-plugin',
