@@ -1,6 +1,7 @@
 include ':app',
 
         ':multi-classloader-plugin-host',
+        ':multi-classloader-plugin-one',
 
         ':plugin-life:load-service-plugin:load-service-plugin-host',
         ':plugin-life:load-service-plugin:load-service-plugin-plugin',
