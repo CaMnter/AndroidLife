@@ -25,6 +25,7 @@ public class DispatchClassloader extends ClassLoader {
         this.bundleClassloaderMap = new HashMap<>();
         this.loadDex(context, "multi-classloader-plugin-one.apk");
         this.loadDex(context, "multi-classloader-plugin-two.apk");
+        this.loadDex(context, "multi-classloader-plugin-three.apk");
     }
 
 

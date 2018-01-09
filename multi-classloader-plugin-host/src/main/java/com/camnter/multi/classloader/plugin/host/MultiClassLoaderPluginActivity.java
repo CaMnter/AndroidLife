@@ -5,18 +5,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+import com.camnter.multi.classloader.plugin.host.plugin.PluginInterface;
 
 /**
  * @author CaMnter
  */
 
-public class MultiClassLoaderPluginActivity extends BaseAppCompatActivity {
+public class MultiClassLoaderPluginActivity extends BaseAppCompatActivity
+    implements View.OnClickListener {
 
     final Handler handler = new Handler(Looper.getMainLooper());
 
     View startOneText;
     View startTwoText;
+    View startThreeText;
+    TextView threeMessageText;
 
     private ClassLoader pathClassLoader;
 
@@ -42,6 +47,11 @@ public class MultiClassLoaderPluginActivity extends BaseAppCompatActivity {
         final MultiClassLoaderApplication multiClassLoaderApplication
             = (MultiClassLoaderApplication) MultiClassLoaderPluginActivity.this.getApplication();
         this.pathClassLoader = multiClassLoaderApplication.getClassLoader();
+
+        this.startOneText = this.findViewById(R.id.start_one_text);
+        this.startTwoText = this.findViewById(R.id.start_two_text);
+        this.startThreeText = this.findViewById(R.id.start_three_text);
+        this.threeMessageText = (TextView) this.findViewById(R.id.three_message_text);
     }
 
 
@@ -50,10 +60,30 @@ public class MultiClassLoaderPluginActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void initListeners() {
-        this.startOneText = this.findViewById(R.id.start_one_text);
-        this.startOneText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        this.startOneText.setOnClickListener(this);
+        this.startTwoText.setOnClickListener(this);
+        this.startThreeText.setOnClickListener(this);
+    }
+
+
+    /**
+     * Initialize the Activity data
+     */
+    @Override
+    protected void initData() {
+
+    }
+
+
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.start_one_text:
                 startOneText.setEnabled(false);
                 handler.post(new Runnable() {
                     @Override
@@ -73,13 +103,8 @@ public class MultiClassLoaderPluginActivity extends BaseAppCompatActivity {
                         }
                     }
                 });
-            }
-        });
-
-        this.startTwoText = this.findViewById(R.id.start_two_text);
-        this.startTwoText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case R.id.start_two_text:
                 startTwoText.setEnabled(false);
                 handler.post(new Runnable() {
                     @Override
@@ -99,17 +124,41 @@ public class MultiClassLoaderPluginActivity extends BaseAppCompatActivity {
                         }
                     }
                 });
-            }
-        });
-    }
-
-
-    /**
-     * Initialize the Activity data
-     */
-    @Override
-    protected void initData() {
-
+                break;
+            case R.id.start_three_text:
+                startThreeText.setEnabled(false);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final Class<?> clazz = Class.forName(
+                                "com.camnter.multi.classloader.plugin.three.PluginThreeImplement");
+                            final PluginInterface pluginInterface
+                                = (PluginInterface) clazz.newInstance();
+                            final String pluginInfo = pluginInterface.getInfo();
+                            final String message =
+                                "[PluginThreeImplement ClassLoader] = " +
+                                    clazz.getClassLoader() + "\n" +
+                                    "[PluginInterface.class ClassLoader] = " +
+                                    PluginInterface.class.getClassLoader() + "\n" +
+                                    "[PluginInterface getInfo] = " +
+                                    pluginInfo + "\n";
+                            threeMessageText.setText(message);
+                            ToastUtils.show(MultiClassLoaderPluginActivity.this,
+                                "Success!\n" + pluginInfo,
+                                Toast.LENGTH_LONG);
+                        } catch (Exception e) {
+                            threeMessageText.setText(e.toString());
+                            ToastUtils.show(MultiClassLoaderPluginActivity.this, "Failure!",
+                                Toast.LENGTH_LONG);
+                            e.printStackTrace();
+                        } finally {
+                            startThreeText.setEnabled(true);
+                        }
+                    }
+                });
+                break;
+        }
     }
 
 }
