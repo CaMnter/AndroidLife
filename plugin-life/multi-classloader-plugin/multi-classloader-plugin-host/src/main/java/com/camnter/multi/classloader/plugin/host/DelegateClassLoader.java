@@ -12,13 +12,15 @@ import java.util.Map;
  * @author CaMnter
  */
 
-public class DispatchClassloader extends ClassLoader {
+public class DelegateClassLoader extends ClassLoader {
+
+    private static final String TAG = DelegateClassLoader.class.getSimpleName();
 
     private final ClassLoader originalClassLoader;
-    private final Map<String, BundleClassloader> bundleClassloaderMap;
+    private final Map<String, PluginClassloader> bundleClassloaderMap;
 
 
-    public DispatchClassloader(@NonNull final Context context,
+    public DelegateClassLoader(@NonNull final Context context,
                                @NonNull final ClassLoader pathClassLoader) {
         super(pathClassLoader.getParent());
         this.originalClassLoader = pathClassLoader;
@@ -47,21 +49,24 @@ public class DispatchClassloader extends ClassLoader {
             // 或者  /storage/sdcard0/Android/data/[package name]/files
             // assets 的 multi-classloader-plugin-two.apk 拷贝到 /storage/sdcard0/Android/data/[package name]/cache
             // 或者  /storage/sdcard0/Android/data/[package name]/files
+            // assets 的 multi-classloader-plugin-three.apk 拷贝到 /storage/sdcard0/Android/data/[package name]/cache
+            // 或者  /storage/sdcard0/Android/data/[package name]/files
             final File dexPath = new File(dir + File.separator + fullName);
             AssetsUtils.copyAssets(context, fullName, dexPath.getAbsolutePath());
 
             // /data/data/[package name]/app_multi-classloader-plugin-one
             // /data/data/[package name]/app_multi-classloader-plugin-two
+            // /data/data/[package name]/app_multi-classloader-plugin-three
             final String name = fullName.substring(0, fullName.lastIndexOf("."));
             final File optimizedDirectory = context.getDir(name, Context.MODE_PRIVATE);
 
-            final BundleClassloader bundleClassloader = new BundleClassloader(
+            final PluginClassloader pluginClassloader = new PluginClassloader(
                 dexPath.getAbsolutePath(),
                 optimizedDirectory.getAbsolutePath(),
                 null,
                 this.originalClassLoader
             );
-            this.bundleClassloaderMap.put(name, bundleClassloader);
+            this.bundleClassloaderMap.put(name, pluginClassloader);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,14 +89,14 @@ public class DispatchClassloader extends ClassLoader {
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         Class<?> clazz = null;
-        for (Map.Entry<String, BundleClassloader> entry : this.bundleClassloaderMap.entrySet()) {
+        for (Map.Entry<String, PluginClassloader> entry : this.bundleClassloaderMap.entrySet()) {
             final String apkName = entry.getKey();
-            final BundleClassloader bundleClassloader = entry.getValue();
+            final PluginClassloader pluginClassloader = entry.getValue();
             try {
-                clazz = bundleClassloader.findClass(name);
+                clazz = pluginClassloader.findClass(name);
             } catch (ClassNotFoundException e) {
-                Log.e("DispatchClassloader",
-                    "[DispatchClassloader]   [findClass]   [apkName] = " + apkName +
+                Log.e(TAG,
+                    TAG + "   [findClass]   [apkName] = " + apkName +
                         "， can't find " + name);
                 e.printStackTrace();
             }

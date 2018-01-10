@@ -6,9 +6,9 @@ import dalvik.system.DexClassLoader;
  * @author CaMnter
  */
 
-public class BundleClassloader extends DexClassLoader {
+public class PluginClassloader extends DexClassLoader {
 
-    public BundleClassloader(String dexPath, String optimizedDirectory, String librarySearchPath, ClassLoader parent) {
+    public PluginClassloader(String dexPath, String optimizedDirectory, String librarySearchPath, ClassLoader parent) {
         super(dexPath, optimizedDirectory, librarySearchPath, parent);
     }
 

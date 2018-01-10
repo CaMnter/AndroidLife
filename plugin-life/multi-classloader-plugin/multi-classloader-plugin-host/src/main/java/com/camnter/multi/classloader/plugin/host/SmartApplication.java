@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
  * @author CaMnter
  */
 
-public class MultiClassLoaderApplication extends Application {
+public class SmartApplication extends Application {
 
     /**
      * Set the base context for this ContextWrapper.  All calls will then be
@@ -42,13 +42,13 @@ public class MultiClassLoaderApplication extends Application {
 
     private void hookPathClassLoaderParent(@NonNull final Context context) {
         final ClassLoader pathClassLoader = context.getClassLoader();
-        final DispatchClassloader dispatchClassloader = new DispatchClassloader(context,
+        final DelegateClassLoader delegateClassLoader = new DelegateClassLoader(context,
             pathClassLoader);
         try {
             final Class<?> clazz = ClassLoader.class;
             final Field parent = clazz.getDeclaredField("parent");
             parent.setAccessible(true);
-            parent.set(pathClassLoader, dispatchClassloader);
+            parent.set(pathClassLoader, delegateClassLoader);
         } catch (Exception e) {
             e.printStackTrace();
         }

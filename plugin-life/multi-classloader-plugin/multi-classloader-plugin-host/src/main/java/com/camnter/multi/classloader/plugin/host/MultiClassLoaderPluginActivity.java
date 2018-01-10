@@ -44,9 +44,9 @@ public class MultiClassLoaderPluginActivity extends BaseAppCompatActivity
      */
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        final MultiClassLoaderApplication multiClassLoaderApplication
-            = (MultiClassLoaderApplication) MultiClassLoaderPluginActivity.this.getApplication();
-        this.pathClassLoader = multiClassLoaderApplication.getClassLoader();
+        final SmartApplication smartApplication
+            = (SmartApplication) MultiClassLoaderPluginActivity.this.getApplication();
+        this.pathClassLoader = smartApplication.getClassLoader();
 
         this.startOneText = this.findViewById(R.id.start_one_text);
         this.startTwoText = this.findViewById(R.id.start_two_text);
