@@ -1,5 +1,7 @@
 include ':app',
 
+        ':life-javassist-plugin',
+
         ':plugin-life:multi-classloader-plugin:multi-classloader-plugin-host',
         ':plugin-life:multi-classloader-plugin:multi-classloader-plugin-one',
         ':plugin-life:multi-classloader-plugin:multi-classloader-plugin-two',
