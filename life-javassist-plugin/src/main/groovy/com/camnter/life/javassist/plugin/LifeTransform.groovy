@@ -5,6 +5,10 @@ import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.utils.FileUtils
 import org.gradle.api.Project
 
+/**
+ * CaMnter
+ * */
+
 class LifeTransform extends Transform {
 
     private Project project
@@ -82,12 +86,12 @@ class LifeTransform extends Transform {
             throws TransformException, InterruptedException, IOException {
         def input = transformInvocation.inputs
         if (input == null) return
-
+        MainApplicationInject mainApplicationInject = new MainApplicationInject(project)
         input.each {
             // 文件夹
             it.directoryInputs.each {
                 // 注入代码
-                MainApplicationInject.inject(project, it)
+                mainApplicationInject.inject(it)
                 def output = transformInvocation.outputProvider.getContentLocation(it.name,
                         it.contentTypes,
                         it.scopes, Format.DIRECTORY)
@@ -96,7 +100,13 @@ class LifeTransform extends Transform {
             }
 
             // jar 文件
-            it.jarInputs.each {}
+            it.jarInputs.each {
+                def md5Name = mainApplicationInject.inject(it)
+                def output = transformInvocation.outputProvider.getContentLocation(md5Name,
+                        it.contentTypes,
+                        it.scopes, Format.JAR)
+                FileUtils.copyDirectory(it.file, output)
+            }
         }
     }
 }
