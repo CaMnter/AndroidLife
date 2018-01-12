@@ -21,8 +21,8 @@ buildscript {
 dependencies {
     compileOnly gradleApi()
     compileOnly localGroovy()
+    implementation rootProject.ext.plugin["javassist"]
     implementation rootProject.ext.plugin["android-gradle-plugin"]
-    compile 'org.javassist:javassist:3.20.0-GA'
 }
 
 group = 'com.camnter.gradle.plugin'
