@@ -40,6 +40,7 @@ import com.camnter.newlife.ui.activity.easyrecyclerviewsidebar.RoundImageSection
 import com.camnter.newlife.ui.activity.hotfix.HotFixActivity;
 import com.camnter.newlife.ui.activity.ipc.AIDLActivity;
 import com.camnter.newlife.ui.activity.ipc.MessengerActivity;
+import com.camnter.newlife.ui.activity.javassist.JavassistActivity;
 import com.camnter.newlife.ui.activity.jsbridge.JsBridgeActivity;
 import com.camnter.newlife.ui.activity.lrucache.LruCacheActivity;
 import com.camnter.newlife.ui.activity.rxjava.RxJavaAsyncActivity;
@@ -232,6 +233,7 @@ public class MainActivity extends BaseAppCompatActivity
         this.classes.add(SmartSaveExampleActivity.class);
         this.classes.add(SmartRouterActivity.class);
         this.classes.add(LoadSimplePluginActivity.class);
+        this.classes.add(JavassistActivity.class);
     }
 
 
