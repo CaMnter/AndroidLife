@@ -25,7 +25,7 @@ class LifeTransform extends Transform {
      */
     @Override
     String getName() {
-        return LifeTransform.simpleName
+        return 'lifeTransform'
     }
 
     /**

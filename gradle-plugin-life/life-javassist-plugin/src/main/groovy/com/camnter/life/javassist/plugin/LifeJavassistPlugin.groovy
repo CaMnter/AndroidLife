@@ -31,7 +31,7 @@ class LifeJavassistPlugin implements Plugin<Project> {
                     LIFE_JAVASSIST_EXTENSION)
 
             // 创建生成 LifeJavassistExtension 的 Task
-            def taskName = scope.getTaskName('JavassistExtensionTask')
+            def taskName = scope.getTaskName('lifeJavassistExtensionTask')
             final Task task = project.task(taskName)
             task.doLast {
                 createLifeJavassistExtension(scope, lifeJavassistExtension)
