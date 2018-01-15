@@ -105,7 +105,7 @@ class LifeTransform extends Transform {
                 def output = transformInvocation.outputProvider.getContentLocation(md5Name,
                         it.contentTypes,
                         it.scopes, Format.JAR)
-                FileUtils.copyDirectory(it.file, output)
+                FileUtils.copyFile(it.file, output)
             }
         }
     }
