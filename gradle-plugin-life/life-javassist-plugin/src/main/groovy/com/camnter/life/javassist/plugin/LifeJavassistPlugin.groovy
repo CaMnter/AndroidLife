@@ -51,23 +51,24 @@ class LifeJavassistPlugin implements Plugin<Project> {
 
     static def createLifeJavassistExtension(VariantScope scope,
             LifeJavassistExtension lifeJavassistExtension) {
-        def classContent = """com.camnter.newlife
+        def classContent =
+"""
+/**
+ * Automatically generated file by javassist
+ */
+package com.camnter.newlife;
 
-                         /**
-                          * CaMnter
-                          */
-                          
-                          public class LifeJavassistExtension {
-                          
-                              public static final String JAVASSIST_TAG = "Class created by javassist"
-                              public static final String JAVASSIST_USER_SIGN = "${
-            lifeJavassistExtension.sign
-        }"
-                              
-                          
-                          }
-                          
-                      """
+/**
+ * CaMnter
+ */
+  
+public class LifeJavassistExtension {
+
+    public static final String JAVASSIST_TAG = "Class created by javassist";
+    public static final String JAVASSIST_USER_SIGN = "${lifeJavassistExtension.sign}";
+
+}
+"""
         final File buildConfigOutputDir = scope.getBuildConfigSourceOutputDir()
         def javaFile = new File(buildConfigOutputDir, 'LifeJavassistExtension.java')
         javaFile.write(classContent, 'UTF-8')
