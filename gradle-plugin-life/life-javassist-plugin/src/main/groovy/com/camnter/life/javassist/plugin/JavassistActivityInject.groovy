@@ -12,9 +12,11 @@ import org.gradle.api.Project
  * CaMnter
  * */
 
-class MainApplicationInject extends BaseInject {
+class JavassistActivityInject extends BaseInject {
 
-    MainApplicationInject(Project project) {
+    private static final String TAG = JavassistActivityInject.simpleName
+
+    JavassistActivityInject(Project project) {
         super(project)
     }
 
@@ -42,29 +44,25 @@ class MainApplicationInject extends BaseInject {
          * */
         classPool.appendClassPath(android.bootClasspath[0].toString())
         /**
-         * MainApplication 有这些 import
+         * JavassistActivity 有这些 import
          *
-         * import com.camnter.newlife.ui.activity.smartrouter.CustomRouterActivity;
-         * import com.camnter.smartrouter.SmartRouters;
-         * import com.camnter.smartrouter.core.Router;
-         * import com.camnter.utils.AssetsUtils;
-         * import dodola.hotfix.HotFix;
+         * import android.widget.TextView;
+         * import android.widget.Toast;
+         * import com.camnter.newlife.R;
          * */
-        classPool.importPackage('com.camnter.newlife.ui.activity.smartrouter.CustomRouterActivity')
-        classPool.importPackage('com.camnter.smartrouter.SmartRouters')
-        classPool.importPackage('com.camnter.smartrouter.core.Router')
-        classPool.importPackage('com.camnter.utils.AssetsUtils')
-        classPool.importPackage('dodola.hotfix.HotFix')
+        classPool.importPackage('android.widget.TextView')
+        classPool.importPackage('android.widget.Toast')
+        classPool.importPackage('com.camnter.newlife.R')
 
         def dirFile = directoryInput.file
         if (dirFile.isDirectory()) {
             dirFile.eachFileRecurse {
                 def filePath = it.absolutePath
-                if (it.name.equals('MainApplication.class')) {
-                    println "[MainApplicationInject]   MainApplication.class was found   [filePath] = ${filePath}"
+                if (it.name.equals('JavassistActivity.class')) {
+                    println "[${TAG}]   JavassistActivity.class was found   [filePath] = ${filePath}"
                     final CtClass applicationClass = classPool.getCtClass(
-                            'com.camnter.newlife.MainApplication')
-                    println "[MainApplicationInject]   [MainApplication CtClass] = ${applicationClass.toString()}"
+                            'com.camnter.newlife.ui.activity.javassist.JavassistActivity')
+                    println "[${TAG}]   [JavassistActivity CtClass] = ${applicationClass.toString()}"
 
                     /**
                      * 解冻
@@ -82,10 +80,18 @@ class MainApplicationInject extends BaseInject {
                         applicationClass.defrost()
                     }
 
-                    final CtMethod onCreate = applicationClass.getDeclaredMethod('onCreate')
-                    println '[MainApplicationInject]   MainApplication#onCreate was found'
+                    final CtMethod onCreate = applicationClass.getDeclaredMethod('initViews')
+                    println '[${TAG}]   JavassistActivity#initViews was found'
 
-                    def injectContent = """// MainApplicationInject came here.\nfinal int mainApplicationInject = \"MainApplicationInject came here\";"""
+                    applicationClass.get
+
+                    def injectContent =
+                            """
+final TextView textView = (TextView) this.findView(R.id.text);
+final String showText = "Javassist success";
+textView.setText(showText);
+Toast.makeText(this, showText, Toast.LENGTH_LONG).show();
+"""
                     onCreate.insertBefore(injectContent)
                     applicationClass.writeFile(dirPath)
                     // 释放

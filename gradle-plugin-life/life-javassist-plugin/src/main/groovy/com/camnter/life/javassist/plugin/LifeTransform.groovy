@@ -86,7 +86,7 @@ class LifeTransform extends Transform {
             throws TransformException, InterruptedException, IOException {
         def input = transformInvocation.inputs
         if (input == null) return
-        MainApplicationInject mainApplicationInject = new MainApplicationInject(project)
+        JavassistActivityInject mainApplicationInject = new JavassistActivityInject(project)
         input.each {
             // 文件夹
             it.directoryInputs.each {
