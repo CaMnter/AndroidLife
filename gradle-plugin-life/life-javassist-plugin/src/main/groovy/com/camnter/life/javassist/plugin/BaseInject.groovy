@@ -1,8 +1,8 @@
 package com.camnter.life.javassist.plugin
 
-import com.android.build.api.dsl.extension.AppExtension
 import com.android.build.api.transform.DirectoryInput
 import com.android.build.api.transform.JarInput
+import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
 import org.gradle.api.Project
 
