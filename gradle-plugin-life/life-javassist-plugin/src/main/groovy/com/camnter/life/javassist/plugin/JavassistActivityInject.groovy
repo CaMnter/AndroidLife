@@ -83,8 +83,6 @@ class JavassistActivityInject extends BaseInject {
                     final CtMethod onCreate = applicationClass.getDeclaredMethod('initViews')
                     println '[${TAG}]   JavassistActivity#initViews was found'
 
-                    applicationClass.get
-
                     def injectContent =
                             """
 final TextView textView = (TextView) this.findView(R.id.text);
