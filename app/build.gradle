@@ -117,8 +117,7 @@ android {
 
     /**
      * 修复 INSTALL_FAILED_NO_MATCHING_ABIS 问题
-     * 不过是针对 模拟器 的临时花操作
-     */
+     * 不过是针对 模拟器 的临时花操作*/
     splits {
         abi {
             enable true
@@ -331,3 +330,7 @@ dexMethodCountsExtension {
  ******************/
 
 apply plugin: 'com.camnter.gradle.plugin.life.javassist'
+
+lifeJavassistExtension {
+    sign = 'Save you from anything'
+}
