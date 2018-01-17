@@ -1,5 +1,7 @@
 include ':app',
 
+        'buildSrc',
+
         ':gradle-plugin-life:life-javassist-plugin',
 
         ':plugin-life:multi-classloader-plugin:multi-classloader-plugin-host',

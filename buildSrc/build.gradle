@@ -1,0 +1,59 @@
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'maven'
+apply from: '../config.gradle'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+buildscript {
+    dependencies {
+        classpath 'org.codehaus.groovy:groovy-all:2.4.7'
+    }
+    repositories {
+        mavenCentral()
+        google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    google()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+
+dependencies {
+    compileOnly gradleApi()
+    compileOnly localGroovy()
+    implementation rootProject.ext.plugin["android-gradle-plugin"]
+    implementation 'com.github.javaparser:javaparser-core:3.3.0'
+    implementation 'com.squareup:javapoet:1.9.0'
+}
+
+group = 'com.camnter.gradle.plugin'
+version = '1.0.6'
+
+sourceSets {
+    main {
+        groovy {
+            srcDir 'src/main/groovy'
+        }
+
+        java {
+            srcDir 'src/main/java'
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../gradle-plugin-life/repository'))
+        }
+    }
+}
