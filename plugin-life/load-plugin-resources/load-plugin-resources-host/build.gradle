@@ -9,7 +9,6 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
-
     }
 
     sourceSets {
@@ -17,6 +16,10 @@ android {
             assets.srcDirs = ['src/main/assets', 'src/main/assets/']
             jniLibs.srcDirs = ['libs']
         }
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
     buildTypes {
