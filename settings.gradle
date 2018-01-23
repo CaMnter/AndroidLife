@@ -26,7 +26,6 @@ include ':app',
         ':dex-method-counts-plugin',
 
         ':gradle-plugin-life:magic-plugin-kit',
-        ':gradle-plugin-life:toy-time-plugin',
         ':gradle-plugin-life:life-plugin',
         ':gradle-plugin-life:method-trace-plugin',
 
