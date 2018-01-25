@@ -231,7 +231,6 @@ buildscript {
     dependencies {
         // local repository
         classpath 'com.camnter.gradle.plugin:life-plugin:1.0.3'
-        classpath 'com.camnter.gradle.plugin:dex-method-counts-plugin:1.0.6'
         classpath 'com.camnter.gradle.plugin:life-javassist-plugin:1.0.0'
     }
 }
