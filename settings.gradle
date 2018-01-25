@@ -2,8 +2,6 @@ include ':app',
 
         'buildSrc',
 
-        ':gradle-plugin-life:life-javassist-plugin',
-
         ':plugin-life:multi-classloader-plugin:multi-classloader-plugin-host',
         ':plugin-life:multi-classloader-plugin:multi-classloader-plugin-one',
         ':plugin-life:multi-classloader-plugin:multi-classloader-plugin-two',
@@ -25,9 +23,9 @@ include ':app',
 
         ':dex-method-counts-plugin',
 
+        ':gradle-plugin-life:life-javassist-plugin',
         ':gradle-plugin-life:magic-plugin-kit',
         ':gradle-plugin-life:life-plugin',
-        ':gradle-plugin-life:method-trace-plugin',
 
         ':arouter-1.1.3:arouter-api',
         ':arouter-1.1.3:arouter-compiler',
