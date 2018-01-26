@@ -21,8 +21,6 @@ include ':app',
 
         ':plugin-life:load-simple-plugin:load-simple-plugin-host',
 
-        ':dex-method-counts-plugin',
-
         ':gradle-plugin-life:life-javassist-plugin',
         ':gradle-plugin-life:magic-plugin-kit',
         ':gradle-plugin-life:life-plugin',
