@@ -1,6 +1,6 @@
 package com.camnter.reduce.dependency.packaging.plugin.three.three;
 
-import com.camnter.multi.classloader.plugin.host.plugin.PluginInterface;
+import com.camnter.reduce.dependency.packaging.plugin.three.host.plugin.PluginInterface;
 
 /**
  * @author CaMnter
