@@ -3,8 +3,8 @@ package com.camnter.gradle.plugin.reduce.dependency.packaging
 import com.android.build.api.transform.*
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.android.utils.FileUtils
 import groovy.io.FileType
-import org.apache.commons.io.FileUtils
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.Project
 
@@ -48,10 +48,10 @@ class ReduceDependencyPackagingTransform extends Transform {
 
         String applicationId = variants.first().applicationId
 
-        printf "%-52s = %s\n",
+        printf "%-57s = %s\n",
                 ['[ReduceDependencyPackagingPlugin]   [applicationId]', applicationId]
         def manifestFile = project.file("src/main/AndroidManifest.xml")
-        printf "%-52s = %s\n",
+        printf "%-57s = %s\n",
                 ['[ReduceDependencyPackagingPlugin]   [manifestFile]', "${manifestFile.path}   [exists] = ${manifestFile.exists()}"]
         if (manifestFile.exists()) {
             def parsedManifest = new XmlParser().parse(
@@ -60,44 +60,57 @@ class ReduceDependencyPackagingTransform extends Transform {
                 def packageName = parsedManifest.attribute("package")
                 if (packageName != null) {
                     applicationId = packageName
-                    printf "%-52s = %s\n",
+                    printf "%-57s = %s\n",
                             ['[ReduceDependencyPackagingPlugin]   [applicationId]', applicationId]
                 }
             }
         }
         applicationId = applicationId.replaceAll("\\.", String.valueOf(File.separatorChar))
-        printf "%-52s = %s\n\n",
+        printf "%-57s = %s\n\n",
                 ['[ReduceDependencyPackagingPlugin]   [applicationId]', applicationId]
 
         transformInvocation.inputs.each {
+
             it.directoryInputs.each { DirectoryInput directoryInput ->
+                def inputDir = directoryInput.file.path
                 directoryInput.file.traverse(type: FileType.FILES) {
-                    def entryName = it.path.substring(directoryInput.file.path.length() + 1)
-                    def destName = directoryInput.name + '/' + entryName
-                    def output = transformInvocation.outputProvider.getContentLocation(destName,
+                    def inputFileSuffixName = it.path.substring(inputDir.length() + 1)
+                    def outputDir = transformInvocation.outputProvider.getContentLocation(
+                            directoryInput.name,
                             directoryInput.contentTypes,
-                            directoryInput.scopes,
-                            Format.DIRECTORY)
-                    // check bundle
+                            directoryInput.scopes, Format.DIRECTORY)
+                    def output = new File(
+                            "${outputDir.path}${File.separator}${inputFileSuffixName}")
+
+                    // TODO check condition && check bundle && check filter
                     def copySuccess = false
-                    if (entryName.contains(applicationId)) {
+                    if (inputFileSuffixName.contains(applicationId)) {
+                        if (!output.parentFile.exists()) {
+                            output.mkdirs()
+                        }
                         FileUtils.copyFile(it, output)
-                        copySuccess = true
+                        copySuccess = output.exists()
                     }
 
-                    printf "%-52s = %s\n",
+                    printf "%-57s = %s\n",
                             ['[ReduceDependencyPackagingPlugin]   [copySuccess]', copySuccess]
-                    printf "%-52s = %s\n",
-                            ['[ReduceDependencyPackagingPlugin]   [directoryInput]', directoryInput.file.path]
-                    printf "%-52s = %s\n",
-                            ['[ReduceDependencyPackagingPlugin]   [entryName]', entryName]
-                    printf "%-52s = %s\n",
-                            ['[ReduceDependencyPackagingPlugin]   [destName]', destName]
-                    printf "%-52s = %s\n",
-                            ['[ReduceDependencyPackagingPlugin]   [output]', output.path]
-                    printf "%-52s = %s\n\n",
+                    printf "%-57s = %s\n",
+                            ['[ReduceDependencyPackagingPlugin]   [input name]', directoryInput.name]
+                    printf "%-57s = %s\n",
+                            ['[ReduceDependencyPackagingPlugin]   [inputFileSuffixName]', inputFileSuffixName]
+                    printf "%-57s = %s\n",
+                            ['[ReduceDependencyPackagingPlugin]   [inputDir]', inputDir]
+                    printf "%-57s = %s\n",
+                            ['[ReduceDependencyPackagingPlugin]   [outputDir]', outputDir]
+                    printf "%-57s = %s\n\n",
                             ['[ReduceDependencyPackagingPlugin]   [input]', it.path]
+                    printf "%-57s = %s\n\n",
+                            ['[ReduceDependencyPackagingPlugin]   [output]', output.path]
                 }
+            }
+
+            it.jarInputs.each { JarInput jarInput ->
+                // TODO check condition && check bundle && check filter
             }
         }
     }
