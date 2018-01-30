@@ -1,4 +1,4 @@
-package com.camnter.gradle.plugin.reduce.dependency.packaging
+package com.camnter.gradle.plugin.reduce.dependency.packaging.transform
 
 import com.android.build.api.transform.*
 import com.android.build.gradle.api.BaseVariant
@@ -7,6 +7,10 @@ import com.android.utils.FileUtils
 import groovy.io.FileType
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.Project
+
+/**
+ * @author CaMnter
+ */
 
 class ReduceDependencyPackagingTransform extends Transform {
 
