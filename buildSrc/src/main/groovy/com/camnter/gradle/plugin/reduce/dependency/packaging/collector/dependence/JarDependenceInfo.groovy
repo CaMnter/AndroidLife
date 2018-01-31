@@ -1,9 +1,7 @@
 package com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependence
 
-import com.android.builder.dependency.level2.JavaDependency
-
 /**
- * Copy from VirtualAPK
+ * Refer from VirtualAPK
  *
  * Represents a Jar dependency. This could be the output of a Java project.
  *
@@ -12,16 +10,18 @@ import com.android.builder.dependency.level2.JavaDependency
 
 class JarDependenceInfo extends DependenceInfo {
 
-    @Delegate JavaDependency dependency
+    // @Delegate JavaDependency dependency
+    File file
 
-    JarDependenceInfo(String group, String artifact, String version, JavaDependency jarDependency) {
+    JarDependenceInfo(String group, String artifact, String version, File file) {
         super(group, artifact, version)
-        this.dependency = jarDependency
+        // this.dependency = jarDependency
+        this.file = file
     }
 
     @Override
     File getJarFile() {
-        return dependency.artifactFile
+        return this.file
     }
 
     @Override

@@ -19,7 +19,8 @@ abstract class GradleTaskHooker<T extends Task> {
     private Project project
 
     /**
-     * A Build variant when build a apk and all its public data.*/
+     * A Build variant when build a apk and all its public data.
+     * */
     private ApkVariant apkVariant
 
     private ReduceDependencyPackagingExtension reduceDependencyPackagingExtension
@@ -55,7 +56,8 @@ abstract class GradleTaskHooker<T extends Task> {
     T getTask() {}
 
     /**
-     * Return the task name or transform name of the hooked task(transform task)*/
+     * Return the task name or transform name of the hooked task(transform task)
+     * */
     abstract String getTaskName()
 
     /**

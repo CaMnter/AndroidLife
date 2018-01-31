@@ -1,14 +1,12 @@
 package com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependence
 
-import com.android.builder.dependency.level2.AndroidDependency
 import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.res.ResourceEntry
 import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.res.StyleableEntry
 import com.google.common.collect.ArrayListMultimap
 import com.google.common.collect.ListMultimap
 import com.google.common.collect.Lists
-
 /**
- * Copy from VirtualAPK
+ * Refer from VirtualAPK
  *
  * Represents a AAR dependence from Maven repository or Android library module
  *
@@ -20,7 +18,9 @@ class AarDependenceInfo extends DependenceInfo {
     /**
      * Android library dependence in android build system, delegate of AarDependenceInfo
      * */
-    @Delegate AndroidDependency dependency
+    // @Delegate AndroidDependency dependency
+    File file
+
 
     /**
      * All resources(e.g. drawable, layout...) this library can access
@@ -32,14 +32,16 @@ class AarDependenceInfo extends DependenceInfo {
      * */
     List<StyleableEntry> aarStyleables = Lists.newArrayList()
 
-    AarDependenceInfo(String group, String artifact, String version, AndroidDependency dependency) {
+    AarDependenceInfo(String group, String artifact, String version, File file) {
         super(group, artifact, version)
-        this.dependency = dependency
+        // this.dependency = dependency
+        this.file = file
     }
 
     @Override
     File getJarFile() {
-        return dependency.jarFile
+        // TODO 剖析 AAR 内部的 jar，暂时返回 aar
+        return this.file
     }
 
     @Override

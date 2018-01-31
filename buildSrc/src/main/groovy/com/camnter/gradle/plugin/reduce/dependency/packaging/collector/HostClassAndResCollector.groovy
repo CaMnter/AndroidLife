@@ -5,7 +5,7 @@ import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependenc
 import java.util.zip.ZipFile
 
 /**
- * Copy from VirtualAPK
+ * Refer from VirtualAPK
  *
  * Collector of Class and Java Resource(no-class files in jar) in host apk
  *
@@ -39,11 +39,12 @@ class HostClassAndResCollector {
     def flatToJarFiles(Collection<DependenceInfo> stripDependencies, Collection<File> jarFiles) {
         stripDependencies.each {
             jarFiles.add(it.jarFile)
-            if (it in AarDependenceInfo) {
-                it.localJars.each {
-                    jarFiles.add(it)
-                }
-            }
+            // TODO 剖析 AAR 内部的 jar，暂时返回 aar
+            //            if (it in AarDependenceInfo) {
+            //                it.localJars.each {
+            //                    jarFiles.add(it)
+            //                }
+            //            }
         }
     }
 
