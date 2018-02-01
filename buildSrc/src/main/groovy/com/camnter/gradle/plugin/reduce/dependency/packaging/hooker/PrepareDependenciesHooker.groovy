@@ -76,7 +76,7 @@ class PrepareDependenciesHooker extends GradleTaskHooker<PrepareDependenciesTask
             configuration.files(dependency).each {
                 def fileName = it.name
                 printf "%-57s = %s\n",
-                        ['[ReduceDependencyPackagingPlugin]   [dependency file]', it.path]
+                        ['[ReduceDependencyPackagingPlugin]   [PrepareDependenciesHooker]   [dependency file]', it.path]
                 if (fileName.endsWith('.aar')) {
                     final AarDependenceInfo aar = new AarDependenceInfo(group, name, version, it)
                     if (hostDependencies.contains("${group}:${name}")) {

@@ -2,6 +2,7 @@ package com.camnter.gradle.plugin.reduce.dependency.packaging.hooker
 
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.api.ApplicationVariant
+import com.android.build.gradle.internal.pipeline.TransformTask
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionListener
@@ -27,14 +28,15 @@ class TaskHookerManager {
     TaskHookerManager(Project project, Instantiator instantiator) {
         this.project = project
         this.instantiator = instantiator
-        android = project.extensions.findByType(AppExtension)
+        this.android = project.extensions.findByType(AppExtension)
         project.gradle.addListener(new VirtualApkTaskListener())
     }
 
     void registerTaskHookers() {
         project.afterEvaluate {
             android.applicationVariants.all { ApplicationVariant appVariant ->
-                // TODO
+                registerTaskHooker(
+                        instantiator.newInstance(PrepareDependenciesHooker, project, appVariant))
             }
         }
     }
@@ -48,16 +50,26 @@ class TaskHookerManager {
         return taskHookerMap[taskName] as T
     }
 
-
-    private class VirtualApkTaskListener implements TaskExecutionListener{
+    private class VirtualApkTaskListener implements TaskExecutionListener {
 
         @Override
         void beforeExecute(Task task) {
-
+            if (task.project == project) {
+                if (task in TransformTask) {
+                    taskHookerMap[task.transform.name]?.beforeTaskExecute(task)
+                } else {
+                    taskHookerMap[task.name]?.beforeTaskExecute(task)
+                }
+            }
         }
 
         @Override
-        void afterExecute(Task task, TaskState taskState) {}
+        void afterExecute(Task task, TaskState taskState) {
+            if (task in TransformTask) {
+                taskHookerMap[task.transform.name]?.afterTaskExecute(task)
+            } else {
+                taskHookerMap[task.name]?.afterTaskExecute(task)
+            }
+        }
     }
-
 }
