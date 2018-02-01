@@ -2,7 +2,7 @@ package com.camnter.gradle.plugin.reduce.dependency.packaging.hooker
 
 import com.android.build.gradle.api.ApkVariant
 import com.android.build.gradle.api.ApplicationVariant
-import com.android.build.gradle.internal.tasks.PrepareDependenciesTask
+import com.android.build.gradle.internal.tasks.AppPreBuildTask
 import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependence.AarDependenceInfo
 import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependence.DependenceInfo
 import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependence.JarDependenceInfo
@@ -19,7 +19,7 @@ import org.gradle.api.artifacts.Dependency
  * @author CaMnter
  */
 
-class PrepareDependenciesHooker extends GradleTaskHooker<PrepareDependenciesTask> {
+class AppPreBuildHooker extends GradleTaskHooker<AppPreBuildTask> {
 
     //group:artifact:version
     def hostDependencies = [] as Set
@@ -28,7 +28,7 @@ class PrepareDependenciesHooker extends GradleTaskHooker<PrepareDependenciesTask
     def retainedJarLib = [] as Set<JarDependenceInfo>
     def stripDependencies = [] as Collection<DependenceInfo>
 
-    PrepareDependenciesHooker(Project project, ApkVariant apkVariant) {
+    AppPreBuildHooker(Project project, ApkVariant apkVariant) {
         super(project, apkVariant)
     }
 
@@ -37,15 +37,16 @@ class PrepareDependenciesHooker extends GradleTaskHooker<PrepareDependenciesTask
      * */
     @Override
     String getTaskName() {
-        return "prepare${apkVariant.name.capitalize()}Dependencies"
+        return "pre${apkVariant.name.capitalize()}Build"
     }
 
     /**
-     * Collect host dependencies via hostDependenceFile or exclude configuration before PrepareDependenciesTask execute,
-     * @param task Gradle Task fo PrepareDependenciesTask
+     * Callback function before the hooked task executes
+     *
+     * @param task Hooked task
      */
     @Override
-    void beforeTaskExecute(PrepareDependenciesTask task) {
+    void beforeTaskExecute(AppPreBuildTask task) {
         reduceDependencyPackagingExtension.hostDependenceFile.splitEachLine('\\s+',
                 { List<String> columns ->
                     final def module = columns[0].split(':')
@@ -58,12 +59,12 @@ class PrepareDependenciesHooker extends GradleTaskHooker<PrepareDependenciesTask
     }
 
     /**
-     * Classify all dependencies into retainedAarLibs & retainedJarLib & stripDependencies
+     * Callback function after the hooked task executes
      *
-     * @param task Gradle Task fo PrepareDependenciesTask
+     * @param task Hooked task
      */
     @Override
-    void afterTaskExecute(PrepareDependenciesTask task) {
+    void afterTaskExecute(AppPreBuildTask task) {
 
         reduceDependencyPackagingExtension.variantData = task.variant
 

@@ -36,7 +36,7 @@ class TaskHookerManager {
         project.afterEvaluate {
             android.applicationVariants.all { ApplicationVariant appVariant ->
                 registerTaskHooker(
-                        instantiator.newInstance(PrepareDependenciesHooker, project, appVariant))
+                        instantiator.newInstance(AppPreBuildHooker, project, appVariant))
             }
         }
     }
