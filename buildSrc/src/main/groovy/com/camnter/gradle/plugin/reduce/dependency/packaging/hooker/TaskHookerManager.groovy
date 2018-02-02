@@ -35,8 +35,7 @@ class TaskHookerManager {
     void registerTaskHookers() {
         project.afterEvaluate {
             android.applicationVariants.all { ApplicationVariant appVariant ->
-                registerTaskHooker(
-                        instantiator.newInstance(AppPreBuildHooker, project, appVariant))
+                registerTaskHooker(instantiator.newInstance(AppPreBuildHooker, project, appVariant))
             }
         }
     }
@@ -51,7 +50,6 @@ class TaskHookerManager {
     }
 
     private class VirtualApkTaskListener implements TaskExecutionListener {
-
         @Override
         void beforeExecute(Task task) {
             if (task.project == project) {
@@ -64,11 +62,13 @@ class TaskHookerManager {
         }
 
         @Override
-        void afterExecute(Task task, TaskState taskState) {
-            if (task in TransformTask) {
-                taskHookerMap[task.transform.name]?.afterTaskExecute(task)
-            } else {
-                taskHookerMap[task.name]?.afterTaskExecute(task)
+        void afterExecute(Task task, TaskState state) {
+            if (task.project == project) {
+                if (task in TransformTask) {
+                    taskHookerMap[task.transform.name]?.afterTaskExecute(task)
+                } else {
+                    taskHookerMap[task.name]?.afterTaskExecute(task)
+                }
             }
         }
     }

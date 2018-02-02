@@ -1,5 +1,7 @@
 package com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependence
 
+import com.android.builder.model.JavaLibrary
+
 /**
  * Refer from VirtualAPK
  *
@@ -10,18 +12,16 @@ package com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependen
 
 class JarDependenceInfo extends DependenceInfo {
 
-    // @Delegate JavaDependency dependency
-    File file
+    JavaLibrary library
 
-    JarDependenceInfo(String group, String artifact, String version, File file) {
+    JarDependenceInfo(String group, String artifact, String version, JavaLibrary library) {
         super(group, artifact, version)
-        // this.dependency = jarDependency
-        this.file = file
+        this.library = library
     }
 
     @Override
     File getJarFile() {
-        return this.file
+        return library.jarFile
     }
 
     @Override

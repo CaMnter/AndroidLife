@@ -13,9 +13,10 @@ abstract class DependenceInfo {
     /**
      * The type of of the DependenceInfo.
      * */
-    public enum DependenceType {
+    enum DependenceType {
 
-        /* Type of Android library */ AAR(0x01), /* Type of Java library */ JAR(0x02)
+        AAR(0x01) /* Type of Android library */,
+        JAR(0x02) /* Type of Java library */
 
         private final int value
 
@@ -23,7 +24,7 @@ abstract class DependenceInfo {
             this.value = value
         }
 
-        public int getValue() {
+        int getValue() {
             return value
         }
     }
@@ -62,4 +63,9 @@ abstract class DependenceInfo {
     abstract File getJarFile()
 
     abstract DependenceType getDependenceType()
+
+    @Override
+    String toString() {
+        return "${group}:${artifact}:${version} -> ${jarFile} -> ${super.toString()}"
+    }
 }

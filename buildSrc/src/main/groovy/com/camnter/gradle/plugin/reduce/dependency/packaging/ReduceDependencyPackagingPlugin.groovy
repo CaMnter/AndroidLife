@@ -11,7 +11,6 @@ import org.gradle.internal.reflect.Instantiator
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 
 import javax.inject.Inject
-
 /**
  * @author CaMnter
  */

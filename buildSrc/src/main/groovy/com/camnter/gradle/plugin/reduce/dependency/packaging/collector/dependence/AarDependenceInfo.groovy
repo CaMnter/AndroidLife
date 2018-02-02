@@ -1,10 +1,12 @@
 package com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependence
 
+import com.android.builder.model.AndroidLibrary
 import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.res.ResourceEntry
 import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.res.StyleableEntry
 import com.google.common.collect.ArrayListMultimap
 import com.google.common.collect.ListMultimap
 import com.google.common.collect.Lists
+
 /**
  * Refer from VirtualAPK
  *
@@ -18,9 +20,7 @@ class AarDependenceInfo extends DependenceInfo {
     /**
      * Android library dependence in android build system, delegate of AarDependenceInfo
      * */
-    // @Delegate AndroidDependency dependency
-    File file
-
+    AndroidLibrary library
 
     /**
      * All resources(e.g. drawable, layout...) this library can access
@@ -32,21 +32,31 @@ class AarDependenceInfo extends DependenceInfo {
      * */
     List<StyleableEntry> aarStyleables = Lists.newArrayList()
 
-    AarDependenceInfo(String group, String artifact, String version, File file) {
+    AarDependenceInfo(String group, String artifact, String version, AndroidLibrary library) {
         super(group, artifact, version)
-        // this.dependency = dependency
-        this.file = file
+        this.library = library
     }
 
     @Override
     File getJarFile() {
-        // TODO 剖析 AAR 内部的 jar，暂时返回 aar
-        return this.file
+        return library.jarFile
     }
 
     @Override
     DependenceType getDependenceType() {
         return DependenceType.AAR
+    }
+
+    File getAssetsFolder() {
+        return library.assetsFolder
+    }
+
+    File getJniFolder() {
+        return library.jniFolder
+    }
+
+    Collection<File> getLocalJars() {
+        return library.localJars
     }
 
     /**
@@ -57,16 +67,17 @@ class AarDependenceInfo extends DependenceInfo {
 
         def resKeys = [] as Set<String>
 
-        def rSymbol = symbolFile
+        def rSymbol = library.symbolFile
         if (rSymbol.exists()) {
             rSymbol.eachLine { line ->
                 if (!line.empty) {
                     def tokenizer = new StringTokenizer(line)
                     def valueType = tokenizer.nextToken()
-                    def resType = tokenizer.nextToken()
                     // resource type (attr/string/color etc.)
-                    def resName = tokenizer.nextToken()
+                    def resType = tokenizer.nextToken()
                     // resource name
+                    def resName = tokenizer.nextToken()
+
 
                     resKeys.add("${resType}:${resName}")
                 }
@@ -82,7 +93,7 @@ class AarDependenceInfo extends DependenceInfo {
      * @return package name of this library
      */
     public String getPackage() {
-        def xmlManifest = new XmlParser().parse(manifest)
+        def xmlManifest = new XmlParser().parse(library.manifest)
         return xmlManifest.@package
     }
 }

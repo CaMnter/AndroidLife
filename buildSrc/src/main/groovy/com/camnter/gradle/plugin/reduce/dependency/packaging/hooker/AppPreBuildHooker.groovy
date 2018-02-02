@@ -1,14 +1,19 @@
 package com.camnter.gradle.plugin.reduce.dependency.packaging.hooker
 
 import com.android.build.gradle.api.ApkVariant
-import com.android.build.gradle.api.ApplicationVariant
+import com.android.build.gradle.internal.api.ApplicationVariantImpl
+import com.android.build.gradle.internal.ide.ArtifactDependencyGraph
 import com.android.build.gradle.internal.tasks.AppPreBuildTask
+import com.android.build.gradle.internal.variant.BaseVariantData
+import com.android.builder.model.Dependencies
+import com.android.builder.model.SyncIssue
 import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependence.AarDependenceInfo
 import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependence.DependenceInfo
 import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependence.JarDependenceInfo
+import com.camnter.gradle.plugin.reduce.dependency.packaging.utils.FileUtil
 import org.gradle.api.Project
-import org.gradle.api.artifacts.Configuration
-import org.gradle.api.artifacts.Dependency
+
+import java.util.function.Consumer
 
 /**
  * Refer from VirtualAPK
@@ -47,12 +52,12 @@ class AppPreBuildHooker extends GradleTaskHooker<AppPreBuildTask> {
      */
     @Override
     void beforeTaskExecute(AppPreBuildTask task) {
-        reduceDependencyPackagingExtension.hostDependenceFile.splitEachLine('\\s+',
+        reduceDependencyPackagingExtension?.hostDependenceFile?.splitEachLine('\\s+',
                 { List<String> columns ->
                     final def module = columns[0].split(':')
                     hostDependencies.add("${module[0]}:${module[1]}")
                 })
-        reduceDependencyPackagingExtension.excludes.each { String artifact ->
+        reduceDependencyPackagingExtension?.excludes?.each { String artifact ->
             final def module = artifact.split(':')
             hostDependencies.add("${module[0]}:${module[1]}")
         }
@@ -65,35 +70,58 @@ class AppPreBuildHooker extends GradleTaskHooker<AppPreBuildTask> {
      */
     @Override
     void afterTaskExecute(AppPreBuildTask task) {
-
-        reduceDependencyPackagingExtension.variantData = task.variant
-
-        final ApplicationVariant variant = task.variant as ApplicationVariant
-        final Configuration configuration = variant.compileConfiguration
-        configuration.allDependencies.each { Dependency dependency ->
-            def group = dependency.group
-            def name = dependency.name
-            def version = dependency.version
-            configuration.files(dependency).each {
-                def fileName = it.name
-                printf "%-57s = %s\n",
-                        ['[ReduceDependencyPackagingPlugin]   [PrepareDependenciesHooker]   [dependency file]', it.path]
-                if (fileName.endsWith('.aar')) {
-                    final AarDependenceInfo aar = new AarDependenceInfo(group, name, version, it)
-                    if (hostDependencies.contains("${group}:${name}")) {
-                        stripDependencies.add(aar)
-                    } else {
-                        retainedAarLibs.add(aar)
+        final BaseVariantData variantData = (apkVariant as ApplicationVariantImpl).variantData
+        Dependencies dependencies = new ArtifactDependencyGraph().createDependencies(
+                variantData.scope,
+                false,
+                new Consumer<SyncIssue>() {
+                    @Override
+                    void accept(SyncIssue syncIssue) {
+                        printf "%-69s = %s\n",
+                                ['[ReduceDependencyPackagingPlugin]   [AppPreBuildHooker]   [syncIssue]', syncIssue]
                     }
-                } else if (fileName.endsWith('.jar')) {
-                    final JarDependenceInfo jar = new JarDependenceInfo(group, name, version, it)
-                    if (hostDependencies.contains("${group}:${name}")) {
-                        stripDependencies.add(jar)
-                    } else {
-                        retainedJarLib.add(jar)
-                    }
-                }
+                })
+
+        // android dependencies
+        dependencies.libraries.each {
+            def mavenCoordinates = it.resolvedCoordinates
+            def aar = new AarDependenceInfo(mavenCoordinates.groupId,
+                    mavenCoordinates.artifactId,
+                    mavenCoordinates.version,
+                    it)
+            if (hostDependencies.contains(
+                    "${mavenCoordinates.groupId}:${mavenCoordinates.artifactId}")) {
+                stripDependencies.add(aar)
+            } else {
+                retainedAarLibs.add(aar)
             }
         }
+
+        // java dependencies
+        dependencies.javaLibraries.each {
+            def mavenCoordinates = it.resolvedCoordinates
+            def jar = new JarDependenceInfo(mavenCoordinates.groupId,
+                    mavenCoordinates.artifactId,
+                    mavenCoordinates.version,
+                    it)
+            if (hostDependencies.contains(
+                    "${mavenCoordinates.groupId}:${mavenCoordinates.artifactId}")) {
+                stripDependencies.add(jar)
+            } else {
+                retainedJarLib.add(jar)
+            }
+        }
+
+        File hostDir = task.fakeOutputDirectory
+        FileUtil.saveFile(hostDir, "${taskName}-stripDependencies", stripDependencies)
+        FileUtil.saveFile(hostDir, "${taskName}-retainedAarLibs", retainedAarLibs)
+        FileUtil.saveFile(hostDir, "${taskName}-retainedJarLib", retainedJarLib)
+
+        printf "%-69s = %s\n",
+                ['[ReduceDependencyPackagingPlugin]   [AppPreBuildHooker]   [hostDir]', hostDir.path]
+
+        reduceDependencyPackagingExtension.variantData = variantData
+        reduceDependencyPackagingExtension.retainedAarLibs = retainedAarLibs
+        reduceDependencyPackagingExtension.stripDependencies = stripDependencies
     }
 }
