@@ -1,5 +1,6 @@
 package com.camnter.gradle.plugin.reduce.dependency.packaging.collector
 
+import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependence.AarDependenceInfo
 import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependence.DependenceInfo
 
 import java.util.zip.ZipFile
@@ -39,12 +40,11 @@ class HostClassAndResCollector {
     def flatToJarFiles(Collection<DependenceInfo> stripDependencies, Collection<File> jarFiles) {
         stripDependencies.each {
             jarFiles.add(it.jarFile)
-            // TODO 剖析 AAR 内部的 jar，暂时返回 aar
-            //            if (it in AarDependenceInfo) {
-            //                it.localJars.each {
-            //                    jarFiles.add(it)
-            //                }
-            //            }
+            if(it instanceof AarDependenceInfo){
+                it.localJars.each {
+                    jarFiles.add(i)
+                }
+            }
         }
     }
 
