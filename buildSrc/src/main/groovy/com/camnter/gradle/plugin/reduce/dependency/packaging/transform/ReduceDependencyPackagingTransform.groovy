@@ -4,10 +4,11 @@ import com.android.build.api.transform.*
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.utils.FileUtils
+import com.camnter.gradle.plugin.reduce.dependency.packaging.ReduceDependencyPackagingExtension
+import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.HostClassAndResCollector
 import groovy.io.FileType
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.Project
-
 /**
  * @author CaMnter
  */
@@ -16,10 +17,14 @@ class ReduceDependencyPackagingTransform extends Transform {
 
     Project project
     DomainObjectSet<BaseVariant> variants
+    HostClassAndResCollector classAndResCollector
+    ReduceDependencyPackagingExtension reduceDependencyPackagingExtension
 
     ReduceDependencyPackagingTransform(Project project, DomainObjectSet<BaseVariant> variants) {
         this.project = project
         this.variants = variants
+        classAndResCollector = new HostClassAndResCollector()
+        this.reduceDependencyPackagingExtension = project.reduceDependencyPackagingExtension
     }
 
     @Override
@@ -99,7 +104,7 @@ class ReduceDependencyPackagingTransform extends Transform {
                     printf "%-57s = %s\n",
                             ['[ReduceDependencyPackagingPlugin]   [copySuccess]', copySuccess]
                     printf "%-57s = %s\n",
-                            ['[ReduceDependencyPackagingPlugin]   [input name]', directoryInput.name]
+                            ['[ReduceDependencyPackagingPlugin]   [dir name]', directoryInput.name]
                     printf "%-57s = %s\n",
                             ['[ReduceDependencyPackagingPlugin]   [inputFileSuffixName]', inputFileSuffixName]
                     printf "%-57s = %s\n",
@@ -107,14 +112,37 @@ class ReduceDependencyPackagingTransform extends Transform {
                     printf "%-57s = %s\n",
                             ['[ReduceDependencyPackagingPlugin]   [outputDir]', outputDir]
                     printf "%-57s = %s\n\n",
-                            ['[ReduceDependencyPackagingPlugin]   [input]', it.path]
+                            ['[ReduceDependencyPackagingPlugin]   [dir input]', it.path]
                     printf "%-57s = %s\n\n",
-                            ['[ReduceDependencyPackagingPlugin]   [output]', output.path]
+                            ['[ReduceDependencyPackagingPlugin]   [dir output]', output.path]
                 }
             }
 
+            def stripEntries = classAndResCollector.collect(
+                    reduceDependencyPackagingExtension.stripDependencies)
+
+
             it.jarInputs.each { JarInput jarInput ->
+                Set<String> jarEntryNames = HostClassAndResCollector.unzipJar(jarInput.file)
+                def outputFile = transformInvocation.outputProvider.getContentLocation(
+                        jarInput.name,
+                        jarInput.contentTypes, jarInput.scopes, Format.JAR)
                 // TODO check condition && check bundle && check filter
+                def copySuccess = false
+                if (!stripEntries.containsAll(jarEntryNames)) {
+                    // TODO open
+                    // FileUtils.copyFile(jarInput.file, outputFile)
+                    copySuccess = outputFile.exists()
+                }
+                printf "%-57s = %s\n",
+                        ['[ReduceDependencyPackagingPlugin]   [copySuccess]', copySuccess]
+                printf "%-57s = %s\n",
+                        ['[ReduceDependencyPackagingPlugin]   [jar name]', jarInput.name]
+                printf "%-57s = %s\n\n",
+                        ['[ReduceDependencyPackagingPlugin]   [jar input]', jarInput.file.path]
+                printf "%-57s = %s\n\n",
+                        ['[ReduceDependencyPackagingPlugin]   [jar output]', outputFile.path]
+                                println "${name} jar: ${jarInput.file.absoluteFile}"
             }
         }
     }

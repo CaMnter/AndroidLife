@@ -84,6 +84,8 @@ class AppPreBuildHooker extends GradleTaskHooker<AppPreBuildTask> {
 
         // android dependencies
         dependencies.libraries.each {
+            printf "%-69s = %s\n",
+                    ['[ReduceDependencyPackagingPlugin]   [AppPreBuildHooker]   [aar]', it.jarFile.path]
             def mavenCoordinates = it.resolvedCoordinates
             def aar = new AarDependenceInfo(mavenCoordinates.groupId,
                     mavenCoordinates.artifactId,
@@ -99,6 +101,8 @@ class AppPreBuildHooker extends GradleTaskHooker<AppPreBuildTask> {
 
         // java dependencies
         dependencies.javaLibraries.each {
+            printf "%-69s = %s\n",
+                    ['[ReduceDependencyPackagingPlugin]   [AppPreBuildHooker]   [jar]', it.jarFile.path]
             def mavenCoordinates = it.resolvedCoordinates
             def jar = new JarDependenceInfo(mavenCoordinates.groupId,
                     mavenCoordinates.artifactId,
