@@ -130,8 +130,7 @@ class ReduceDependencyPackagingTransform extends Transform {
                 // TODO check condition && check bundle && check filter
                 def copySuccess = false
                 if (!stripEntries.containsAll(jarEntryNames)) {
-                    // TODO open
-                    // FileUtils.copyFile(jarInput.file, outputFile)
+                    FileUtils.copyFile(jarInput.file, outputFile)
                     copySuccess = outputFile.exists()
                 }
                 printf "%-57s = %s\n",
