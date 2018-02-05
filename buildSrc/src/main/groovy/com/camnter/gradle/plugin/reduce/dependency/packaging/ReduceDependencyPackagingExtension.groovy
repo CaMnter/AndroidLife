@@ -13,6 +13,8 @@ class ReduceDependencyPackagingExtension {
     /** Exclude dependent aar or jar **/
     Collection<String> excludes = new HashSet<>()
 
+    /**  host Symbol file - Host_R.txt */
+    File hostSymbolFile
     /**  host dependence file - version.txt*/
     File hostDependenceFile
 
@@ -21,4 +23,9 @@ class ReduceDependencyPackagingExtension {
     Collection<DependenceInfo> stripDependencies = []
     Collection<AarDependenceInfo> retainedAarLibs = []
 
+    /** Variant application id */
+    String packageName
+
+    /** Package path for java classes */
+    String packagePath
 }
