@@ -52,14 +52,18 @@ class AppPreBuildHooker extends GradleTaskHooker<AppPreBuildTask> {
      */
     @Override
     void beforeTaskExecute(AppPreBuildTask task) {
-        reduceDependencyPackagingExtension?.hostDependenceFile?.splitEachLine('\\s+',
-                { List<String> columns ->
-                    final def module = columns[0].split(':')
-                    hostDependencies.add("${module[0]}:${module[1]}")
-                })
-        reduceDependencyPackagingExtension?.excludes?.each { String artifact ->
-            final def module = artifact.split(':')
-            hostDependencies.add("${module[0]}:${module[1]}")
+        if (reduceDependencyPackagingExtension?.hostDependenceFile?.exists()) {
+            reduceDependencyPackagingExtension.hostDependenceFile.splitEachLine('\\s+',
+                    { List<String> columns ->
+                        final def module = columns[0].split(':')
+                        hostDependencies.add("${module[0]}:${module[1]}")
+                    })
+        }
+        if (!reduceDependencyPackagingExtension?.excludes?.empty) {
+            reduceDependencyPackagingExtension.excludes.each { String artifact ->
+                final def module = artifact.split(':')
+                hostDependencies.add("${module[0]}:${module[1]}")
+            }
         }
     }
 

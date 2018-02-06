@@ -9,6 +9,7 @@ import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.HostClass
 import groovy.io.FileType
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.Project
+
 /**
  * @author CaMnter
  */
@@ -55,28 +56,13 @@ class ReduceDependencyPackagingTransform extends Transform {
             transformInvocation.outputProvider.deleteAll()
         }
 
-        String applicationId = variants.first().applicationId
-
-        printf "%-57s = %s\n",
-                ['[ReduceDependencyPackagingPlugin]   [applicationId]', applicationId]
-        def manifestFile = project.file("src/main/AndroidManifest.xml")
-        printf "%-57s = %s\n",
-                ['[ReduceDependencyPackagingPlugin]   [manifestFile]', "${manifestFile.path}   [exists] = ${manifestFile.exists()}"]
-        if (manifestFile.exists()) {
-            def parsedManifest = new XmlParser().parse(
-                    new InputStreamReader(new FileInputStream(manifestFile), "utf-8"))
-            if (parsedManifest != null) {
-                def packageName = parsedManifest.attribute("package")
-                if (packageName != null) {
-                    applicationId = packageName
-                    printf "%-57s = %s\n",
-                            ['[ReduceDependencyPackagingPlugin]   [applicationId]', applicationId]
-                }
+        def packagePath = reduceDependencyPackagingExtension.packagePath
+        if (packagePath == null || packagePath.empty) {
+            reduceDependencyPackagingExtension.with {
+                it.packageName = getApplicationId(project, variants.first())
+                it.packagePath = packageName.replace('.'.charAt(0), File.separatorChar)
             }
         }
-        applicationId = applicationId.replaceAll("\\.", String.valueOf(File.separatorChar))
-        printf "%-57s = %s\n\n",
-                ['[ReduceDependencyPackagingPlugin]   [applicationId]', applicationId]
 
         transformInvocation.inputs.each {
 
@@ -93,7 +79,7 @@ class ReduceDependencyPackagingTransform extends Transform {
 
                     // TODO check condition && check bundle && check filter
                     def copySuccess = false
-                    if (inputFileSuffixName.contains(applicationId)) {
+                    if (inputFileSuffixName.contains(packagePath)) {
                         if (!output.parentFile.exists()) {
                             output.mkdirs()
                         }
@@ -141,7 +127,7 @@ class ReduceDependencyPackagingTransform extends Transform {
                         ['[ReduceDependencyPackagingPlugin]   [jar input]', jarInput.file.path]
                 printf "%-57s = %s\n\n",
                         ['[ReduceDependencyPackagingPlugin]   [jar output]', outputFile.path]
-                                println "${name} jar: ${jarInput.file.absoluteFile}"
+                println "${name} jar: ${jarInput.file.absoluteFile}"
             }
         }
     }
