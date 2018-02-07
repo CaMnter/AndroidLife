@@ -1,7 +1,10 @@
 package com.camnter.gradle.plugin.reduce.dependency.packaging
 
 import com.android.build.gradle.api.ApplicationVariant
+import com.android.build.gradle.internal.api.ApplicationVariantImpl
+import com.android.build.gradle.internal.variant.ApplicationVariantData
 import com.android.build.gradle.internal.variant.BaseVariantData
+import com.android.builder.symbols.SymbolUtils
 import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependence.AarDependenceInfo
 import com.camnter.gradle.plugin.reduce.dependency.packaging.collector.dependence.DependenceInfo
 import org.gradle.api.Project
@@ -35,23 +38,40 @@ class ReduceDependencyPackagingExtension {
         String applicationId = variant.applicationId
         printf "%-57s = %s\n",
                 ['[ReduceDependencyPackagingPlugin]   [applicationId]', applicationId]
-        def manifestFile = project.file("src/main/AndroidManifest.xml")
+
+        final ApplicationVariantData variantData = (variant as ApplicationVariantImpl).variantData
+        def manifestFile = variantData?.getVariantConfiguration()?.getMainManifest()
+        if (manifestFile == null || !manifestFile.exists()) {
+            manifestFile = project.file("src/main/AndroidManifest.xml")
+        }
         printf "%-57s = %s\n",
                 ['[ReduceDependencyPackagingPlugin]   [manifestFile]', "${manifestFile.path}   [exists] = ${manifestFile.exists()}"]
+
         if (manifestFile.exists()) {
-            def parsedManifest = new XmlParser().parse(
-                    new InputStreamReader(new FileInputStream(manifestFile), "utf-8"))
-            if (parsedManifest != null) {
-                def packageName = parsedManifest.attribute("package")
-                if (packageName != null) {
+            def packageName
+            try {
+                packageName = SymbolUtils.getPackageNameFromManifest(manifestFile)
+                if (packageName == null || packageName.empty) {
+                    packageName = parsePackageNameFromManifest(manifestFile)
                     applicationId = packageName
-                    printf "%-57s = %s\n",
-                            ['[ReduceDependencyPackagingPlugin]   [applicationId]', applicationId]
                 }
+            } catch (Exception e) {
+                packageName = parsePackageNameFromManifest(manifestFile)
+                applicationId = packageName
             }
         }
         printf "%-57s = %s\n\n",
                 ['[ReduceDependencyPackagingPlugin]   [applicationId]', applicationId]
         return applicationId
+    }
+
+    static String parsePackageNameFromManifest(File manifestFile) {
+        def packageName = ''
+        def parsedManifest = new XmlParser().parse(
+                new InputStreamReader(new FileInputStream(manifestFile), "utf-8"))
+        if (parsedManifest != null) {
+            packageName = parsedManifest.attribute("package")
+        }
+        return packageName
     }
 }
