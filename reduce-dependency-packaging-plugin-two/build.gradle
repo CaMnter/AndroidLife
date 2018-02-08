@@ -41,5 +41,5 @@ dependencies {
     compile rootProject.ext.denpendencies["support-v7"]
 }
 
-apply plugin: 'com.camnter.gradle.plugin.reduce.dependency.packaging'
+apply plugin: 'com.camnter.gradle.plugin.reduce.dependency.packaging.plugin'
 
