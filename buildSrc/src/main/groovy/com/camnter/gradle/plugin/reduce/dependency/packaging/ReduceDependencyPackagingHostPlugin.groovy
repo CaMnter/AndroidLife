@@ -98,8 +98,8 @@ class ReduceDependencyPackagingHostPlugin implements Plugin<Project> {
      * @param applicationVariantImpl variant
      */
     def backupHostR(ApplicationVariantImpl variant) {
-        final ProcessAndroidResources aaptTask = this.project.tasks
-        ["process${variant.name.capitalize()}Resources"]
+        final ProcessAndroidResources aaptTask = this.project.tasks.getByName(
+                "process${variant.name.capitalize()}Resources")
         final File textSymbolOutputFile
         if (aaptTask instanceof LinkApplicationAndroidResourcesTask) {
             textSymbolOutputFile =
@@ -118,9 +118,8 @@ class ReduceDependencyPackagingHostPlugin implements Plugin<Project> {
 
     def backupProguardMapping(ApplicationVariantImpl variant) {
         if (variant.buildType.minifyEnabled) {
-            final TransformTask proguardTask = project.tasks[
-                    "transformClassesAndResourcesWithProguardFor${variant.name.capitalize()}"
-                    ]
+            final TransformTask proguardTask = project.tasks
+            ["transformClassesAndResourcesWithProguardFor${variant.name.capitalize()}"]
 
             final ProGuardTransform proguardTransform = proguardTask.transform
             final File mappingFile = proguardTransform.mappingFile
