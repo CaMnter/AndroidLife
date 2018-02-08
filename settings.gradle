@@ -2,10 +2,10 @@ include ':app',
 
         'buildSrc',
 
-        ':reduce-dependency-packaging-plugin-host',
-        ':reduce-dependency-packaging-plugin-one',
-        ':reduce-dependency-packaging-plugin-two',
-        ':reduce-dependency-packaging-plugin-three',
+        ':plugin-life:reduce-dependency-packaging:reduce-dependency-packaging-plugin-host',
+        ':plugin-life:reduce-dependency-packaging:reduce-dependency-packaging-plugin-one',
+        ':plugin-life:reduce-dependency-packaging:reduce-dependency-packaging-plugin-two',
+        ':plugin-life:reduce-dependency-packaging:reduce-dependency-packaging-plugin-three',
 
         ':plugin-life:multi-classloader-plugin:multi-classloader-plugin-host',
         ':plugin-life:multi-classloader-plugin:multi-classloader-plugin-one',
