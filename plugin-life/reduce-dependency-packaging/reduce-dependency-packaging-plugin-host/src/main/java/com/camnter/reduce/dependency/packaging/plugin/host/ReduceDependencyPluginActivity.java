@@ -132,7 +132,7 @@ public class ReduceDependencyPluginActivity extends BaseAppCompatActivity
                     public void run() {
                         try {
                             final Class<?> clazz = Class.forName(
-                                "com.camnter.reduce.dependency.packaging.plugin.three.three.PluginThreeImplement");
+                                "com.camnter.reduce.dependency.packaging.plugin.three.PluginThreeImplement");
                             final PluginInterface pluginInterface
                                 = (PluginInterface) clazz.newInstance();
                             final String pluginInfo = pluginInterface.getInfo();

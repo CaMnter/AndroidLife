@@ -1,4 +1,4 @@
-package com.camnter.reduce.dependency.packaging.plugin.three.host.plugin;
+package com.camnter.reduce.dependency.packaging.plugin.host.plugin;
 
 /**
  * @author CaMnter
