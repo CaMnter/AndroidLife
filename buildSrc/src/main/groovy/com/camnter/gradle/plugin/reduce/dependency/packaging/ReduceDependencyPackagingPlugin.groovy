@@ -66,21 +66,20 @@ class ReduceDependencyPackagingPlugin implements Plugin<Project> {
     }
 
     def initExtension(Project project, AppExtension android) {
-        hostDir = new File(project.rootDir, "host")
+        hostDir = project.file('host')
         if (!hostDir.exists()) {
             hostDir.mkdirs()
         }
         reduceDependencyPackagingExtension = project.reduceDependencyPackagingExtension
         project.afterEvaluate {
             android.applicationVariants.each { ApplicationVariant variant ->
+                checkConfig()
                 reduceDependencyPackagingExtension.with {
                     packageName = getApplicationId(project, variant)
                     packagePath = packageName.replace('.'.charAt(0), File.separatorChar)
                     hostSymbolFile = new File(hostDir, "Host_R.txt")
                     hostDependenceFile = new File(hostDir, "versions.txt")
                 }
-
-                checkConfig()
             }
         }
     }
