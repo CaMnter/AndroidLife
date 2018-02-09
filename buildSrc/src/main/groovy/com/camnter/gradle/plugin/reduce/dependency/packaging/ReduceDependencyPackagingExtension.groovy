@@ -15,6 +15,12 @@ import org.gradle.api.Project
 
 class ReduceDependencyPackagingExtension {
 
+    /** Custom defined resource package Id **/
+    int packageId
+    /** Local host application directory or Jenkins build number, fetch config files from here **/
+    String targetHost
+    /** Apply Host Proguard Mapping or not**/
+    boolean applyHostMapping = true
     /** Exclude dependent aar or jar **/
     Collection<String> excludes = new HashSet<>()
 
