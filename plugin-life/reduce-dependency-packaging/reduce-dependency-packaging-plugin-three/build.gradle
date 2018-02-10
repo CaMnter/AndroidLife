@@ -34,7 +34,7 @@ dependencies {
 //apply plugin: 'com.camnter.gradle.plugin.reduce.dependency.packaging.plugin'
 //reduceDependencyPackagingExtension {
 //    // the package id of Resources.
-//    packageId = 0x72
+//    packageId = 0x73
 //    // the path of application module in host project.
 //    targetHost = '../reduce-dependency-packaging-plugin-host'
 //    // optional, default value: true.
