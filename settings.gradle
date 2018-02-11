@@ -1,5 +1,7 @@
 include ':app',
 
+        ':hook-ams-for-service-plugin-host',
+
         'buildSrc',
 
         ':plugin-life:reduce-dependency-packaging:reduce-dependency-packaging-plugin-host',
