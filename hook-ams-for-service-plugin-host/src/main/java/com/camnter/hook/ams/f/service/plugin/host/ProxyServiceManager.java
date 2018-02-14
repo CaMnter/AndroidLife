@@ -3,17 +3,21 @@ package com.camnter.hook.ams.f.service.plugin.host;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import com.camnter.hook.ams.f.service.plugin.host.hook.AMSHooker;
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,7 +36,7 @@ public final class ProxyServiceManager {
     // 缓存在创建好的 Service
     private Map<String, Service> serviceMap = new HashMap<>();
 
-    // 存储插件的 Service 信息
+    // 解析 apk file，存储插件的 ServiceInfo
     private Map<ComponentName, ServiceInfo> serviceInfoMap = new HashMap<>();
 
 
@@ -75,6 +79,41 @@ public final class ProxyServiceManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * 停止插件 Service
+     * 全部的插件 Service 都停止之后, ProxyService 也会停止
+     *
+     * @param targetIntent targetIntent
+     * @return int
+     */
+    public int stopService(@NonNull final Intent targetIntent) {
+        // 获取 Intent 对应的 ServiceInfo 缓存
+        final ServiceInfo serviceInfo = selectPluginService(targetIntent);
+        if (serviceInfo == null) {
+            Log.w(TAG, "[ProxyServiceManager]   [stopService]   can not found service: " +
+                targetIntent.getComponent());
+            return 0;
+        }
+        // 获取 ServiceInfo 对应的 Service 缓存
+        final Service service = this.serviceMap.get(serviceInfo.name);
+        if (service == null) {
+            Log.w(TAG,
+                "[ProxyServiceManager]   [stopService]   can not running, are you stopped it multi-times?");
+            return 0;
+        }
+        service.onDestroy();
+        // 删除 Service 缓存
+        this.serviceMap.remove(serviceInfo.name);
+        if (this.serviceMap.isEmpty()) {
+            Log.d(TAG, "[ProxyServiceManager]   [stopService]   service all stopped, stop proxy");
+            final Context appContext = SmartApplication.getContext();
+            appContext.stopService(new Intent().setComponent(
+                new ComponentName(appContext.getPackageName(), ProxyService.class.getName())));
+        }
+        return 1;
     }
 
 
@@ -208,7 +247,79 @@ public final class ProxyServiceManager {
          * 将此 Service 存储起来
          */
         serviceMap.put(serviceInfo.name, service);
+    }
 
+
+    /**
+     * 解析 Apk 文件中的 <service>
+     * 并缓存
+     *
+     * 主要 调用 PackageParser 类的 generateServiceInfo 方法
+     *
+     * @param apkFile apkFile
+     * @throws Exception exception
+     */
+    @SuppressLint("PrivateApi")
+    public void preLoadServices(@NonNull final File apkFile) throws Exception {
+
+        /**
+         * 反射 获取 PackageParser # parsePackage(File packageFile, int flags)
+         */
+        final Class<?> packageParserClass = Class.forName("android.content.pm.PackageParser");
+        final Method parsePackageMethod = packageParserClass.getDeclaredMethod("parsePackage",
+            File.class, int.class);
+
+        /**
+         * 反射创建 PackageParser 对象
+         */
+        final Object packageParser = packageParserClass.newInstance();
+
+        /**
+         * 反射 调用 PackageParser # parsePackage(File packageFile, int flags)
+         * 获取 apk 文件对应的 Package 对象
+         */
+        final Object packageObject = parsePackageMethod.invoke(packageParser, apkFile,
+            PackageManager.GET_SERVICES);
+
+        /**
+         * 读取 Package # ArrayList<Service> services
+         * 通过 ArrayList<Service> services 获取 Service 对应的 ServiceInfo
+         */
+        final Field servicesField = packageObject.getClass().getDeclaredField("services");
+        final List services = (List) servicesField.get(packageObject);
+
+        /**
+         * 反射调用 UserHandle # static @UserIdInt int getCallingUserId()
+         * 获取到 userId
+         *
+         * 反射创建 PackageUserState 对象
+         *
+         *
+         */
+        final Class<?> packageParser$ServiceClass = Class.forName(
+            "android.content.pm.PackageParser$Service");
+        final Class<?> packageUserStateClass = Class.forName("android.content.pm.PackageUserState");
+        final Class<?> userHandler = Class.forName("android.os.UserHandle");
+        final Method getCallingUserIdMethod = userHandler.getDeclaredMethod("getCallingUserId");
+        final int userId = (Integer) getCallingUserIdMethod.invoke(null);
+        final Object defaultUserState = packageUserStateClass.newInstance();
+
+        // 需要调用 android.content.pm.PackageParser#generateActivityInfo(android.content.pm.ActivityInfo, int, android.content.pm.PackageUserState, int)
+        Method generateReceiverInfo = packageParserClass.getDeclaredMethod("generateServiceInfo",
+            packageParser$ServiceClass, int.class, packageUserStateClass, int.class);
+
+        /**
+         * 反射调用 PackageParser # generateActivityInfo(android.content.pm.ActivityInfo, int, android.content.pm.PackageUserState, int)
+         * 解析出 Service 对应的 ServiceInfo
+         *
+         * 然后保存
+         */
+        for (Object service : services) {
+            final ServiceInfo info = (ServiceInfo) generateReceiverInfo.invoke(packageParser,
+                service, 0,
+                defaultUserState, userId);
+            this.serviceInfoMap.put(new ComponentName(info.packageName, info.name), info);
+        }
     }
 
 }
