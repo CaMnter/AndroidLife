@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import com.camnter.hook.ams.f.service.plugin.host.ProxyService;
+import com.camnter.hook.ams.f.service.plugin.host.ProxyServiceManager;
 import com.camnter.hook.ams.f.service.plugin.host.SmartApplication;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -81,7 +82,7 @@ public class IActivityManagerHandler implements InvocationHandler {
                 rawPackageName)) {
                 Log.v(TAG,
                     "[IActivityManagerHandler]   [stopService]   hook method stopService success");
-                // TODO ProxyServiceManager.getInstance().stopService(raw);
+                ProxyServiceManager.getInstance().stopService(rawIntent);
             }
         }
 

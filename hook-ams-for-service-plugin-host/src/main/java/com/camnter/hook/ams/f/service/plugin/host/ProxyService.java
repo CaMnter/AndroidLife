@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 /**
+ * Refer form http://weishu.me/2016/05/11/understand-plugin-framework-service/
+ *
  * @author CaMnter
  */
 
