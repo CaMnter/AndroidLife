@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme"
         android:name=".SmartApplication">
 
-        <activity>
+        <activity android:name=".HookAmsForServicePluginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -19,7 +19,7 @@
 
         <service
             android:name="com.camnter.hook.ams.f.service.plugin.host.ProxyService"
-            android:process="proxyService"/>
+            android:process="proxy.service"/>
 
     </application>
 

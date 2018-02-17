@@ -14,39 +14,39 @@
         android:textColor="#000000"/>
 
     <TextView
-        android:id="@+id/start_one_text"
+        android:id="@+id/start_first_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start one plugin activity"
+        android:text="Start first service"
         android:padding="10dp"
         android:textSize="15sp"
         android:textColor="#000000"/>
 
     <TextView
-        android:id="@+id/start_two_text"
+        android:id="@+id/start_second_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start two plugin activity"
+        android:text="Start second service"
         android:padding="10dp"
         android:textSize="15sp"
         android:textColor="#000000"/>
 
     <TextView
-        android:id="@+id/start_three_text"
+        android:id="@+id/stop_first_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start three plugin activity"
+        android:text="Stop first service"
         android:padding="10dp"
         android:textSize="15sp"
         android:textColor="#000000"/>
 
     <TextView
-        android:id="@+id/three_message_text"
+        android:id="@+id/stop_second_text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:text="Stop second service"
         android:padding="10dp"
         android:textSize="15sp"
-        android:textColor="#999999"/>
+        android:textColor="#000000"/>
 
 </LinearLayout>
