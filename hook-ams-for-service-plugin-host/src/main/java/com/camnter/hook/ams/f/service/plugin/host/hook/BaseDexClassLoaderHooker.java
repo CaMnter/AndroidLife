@@ -20,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public final class BaseDexClassLoaderHooker {
 
+    @SuppressWarnings("DanglingJavadoc")
     public static void patchClassLoader(@NonNull final ClassLoader classLoader,
                                         @NonNull final File apkFile,
                                         @NonNull final File optDexFile)
@@ -37,7 +38,7 @@ public final class BaseDexClassLoaderHooker {
         pathListField.setAccessible(true);
         final Object pathList = pathListField.get(classLoader);
 
-        // 获取 PathList # Element[] dexElements
+        // 获取 DexPathList # Element[] dexElements
         final Field dexElementArray = pathList.getClass().getDeclaredField("dexElements");
         dexElementArray.setAccessible(true);
         final Object[] dexElements = (Object[]) dexElementArray.get(pathList);
@@ -49,7 +50,26 @@ public final class BaseDexClassLoaderHooker {
         final Object[] newElements = (Object[]) Array.newInstance(elementClass,
             dexElements.length + 1);
 
-        // Element(File file, boolean isDirectory, File zip, DexFile dexFile)
+        /**
+         * <= 5.0.0
+         *
+         * Element(File file, ZipFile zipFile, DexFile dexFile)
+         *
+         * ---
+         *
+         * >= 5.0.0
+         *
+         * Element(File file, boolean isDirectory, File zip, DexFile dexFile)
+         *
+         * ---
+         *
+         * >= 8.0.0
+         *
+         * @Deprecated
+         * Element(File dir, boolean isDirectory, File zip, DexFile dexFile)
+         * Element(DexFile dexFile, File dexZipPath)
+         *
+         */
         final Constructor<?> constructor = elementClass.getConstructor(
             File.class,
             boolean.class,

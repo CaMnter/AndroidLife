@@ -61,7 +61,7 @@ public class IActivityManagerHandler implements InvocationHandler {
             // 替换掉 Intent, 欺骗 AMS
             args[integerIntentPair.first] = intent;
             Log.v(TAG,
-                "[IActivityManagerHandler]   [startService]   hook method stopService success");
+                "[IActivityManagerHandler]   [startService]   hook method startService success");
             return method.invoke(base, args);
         }
 

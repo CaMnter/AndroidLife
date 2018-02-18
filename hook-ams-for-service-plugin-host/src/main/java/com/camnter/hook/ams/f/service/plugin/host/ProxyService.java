@@ -27,6 +27,8 @@ public class ProxyService extends Service {
     @Override
     public void onStart(Intent intent, int startId) {
         Log.d(TAG, "[ProxyService]   [onStart]");
+        // 分发Service
+        ProxyServiceManager.getInstance().onStart(intent, startId);
         super.onStart(intent, startId);
     }
 

@@ -60,7 +60,7 @@ public final class ProxyServiceManager {
         // 拿到 代理 service 收到的 intent 数据
         final Intent targetIntent = proxyIntent.getParcelableExtra(AMSHooker.EXTRA_TARGET_INTENT);
         // 查询是否有 该 intent 对应的 插件 ServiceInfo 缓存
-        final ServiceInfo serviceInfo = this.selectPluginService(proxyIntent);
+        final ServiceInfo serviceInfo = this.selectPluginService(targetIntent);
 
         if (serviceInfo == null) {
             Log.w(TAG, "[ProxyServiceManager]   [onStart]   can not found service : " +
@@ -89,6 +89,7 @@ public final class ProxyServiceManager {
      * @param targetIntent targetIntent
      * @return int
      */
+    @SuppressWarnings("UnusedReturnValue")
     public int stopService(@NonNull final Intent targetIntent) {
         // 获取 Intent 对应的 ServiceInfo 缓存
         final ServiceInfo serviceInfo = selectPluginService(targetIntent);
@@ -160,6 +161,7 @@ public final class ProxyServiceManager {
          */
         final Class<?> createServiceDataClass = Class.forName(
             "android.app.ActivityThread$CreateServiceData");
+        // TODO Fix java.lang.NoSuchMethodException: <init> []
         final Constructor<?> constructor = createServiceDataClass.getConstructor();
         constructor.setAccessible(true);
         final Object createServiceData = constructor.newInstance();
@@ -293,8 +295,6 @@ public final class ProxyServiceManager {
          * 获取到 userId
          *
          * 反射创建 PackageUserState 对象
-         *
-         *
          */
         final Class<?> packageParser$ServiceClass = Class.forName(
             "android.content.pm.PackageParser$Service");
