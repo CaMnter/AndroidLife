@@ -161,8 +161,7 @@ public final class ProxyServiceManager {
          */
         final Class<?> createServiceDataClass = Class.forName(
             "android.app.ActivityThread$CreateServiceData");
-        // TODO Fix java.lang.NoSuchMethodException: <init> []
-        final Constructor<?> constructor = createServiceDataClass.getConstructor();
+        final Constructor<?> constructor = createServiceDataClass.getDeclaredConstructor();
         constructor.setAccessible(true);
         final Object createServiceData = constructor.newInstance();
 
