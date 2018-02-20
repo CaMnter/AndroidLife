@@ -78,7 +78,7 @@ public class IActivityManagerHandler implements InvocationHandler {
                                           ? ""
                                           : rawComponentName.getPackageName();
             // 是否是 插件 的 intent
-            if (TextUtils.equals(SmartApplication.getContext().getPackageName(),
+            if (!TextUtils.equals(SmartApplication.getContext().getPackageName(),
                 rawPackageName)) {
                 Log.v(TAG,
                     "[IActivityManagerHandler]   [stopService]   hook method stopService success");
