@@ -11,7 +11,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import com.camnter.hook.ams.f.service.plugin.host.hook.AMSHooker;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -52,19 +51,17 @@ public final class ProxyServiceManager {
      * 启动插件 Service
      * 如果 Service 没启动，会创建一个 new 插件 Service
      *
-     * @param proxyIntent proxyIntent
+     * @param rawIntent proxyIntent
      * @param startId startId
      */
-    public void onStart(@NonNull final Intent proxyIntent,
-                        final int startId) {
-        // 拿到 代理 service 收到的 intent 数据
-        final Intent targetIntent = proxyIntent.getParcelableExtra(AMSHooker.EXTRA_TARGET_INTENT);
+    void onStart(@NonNull final Intent rawIntent,
+                 final int startId) {
         // 查询是否有 该 intent 对应的 插件 ServiceInfo 缓存
-        final ServiceInfo serviceInfo = this.selectPluginService(targetIntent);
+        final ServiceInfo serviceInfo = this.selectPluginService(rawIntent);
 
         if (serviceInfo == null) {
             Log.w(TAG, "[ProxyServiceManager]   [onStart]   can not found service : " +
-                targetIntent.getComponent());
+                rawIntent.getComponent());
             return;
         }
 
@@ -75,7 +72,7 @@ public final class ProxyServiceManager {
             }
 
             final Service service = this.serviceMap.get(serviceInfo.name);
-            service.onStart(targetIntent, startId);
+            service.onStart(rawIntent, startId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -86,16 +83,16 @@ public final class ProxyServiceManager {
      * 停止插件 Service
      * 全部的插件 Service 都停止之后, ProxyService 也会停止
      *
-     * @param targetIntent targetIntent
+     * @param rawIntent rawIntent
      * @return int
      */
     @SuppressWarnings("UnusedReturnValue")
-    public int stopService(@NonNull final Intent targetIntent) {
+    int onStop(@NonNull final Intent rawIntent) {
         // 获取 Intent 对应的 ServiceInfo 缓存
-        final ServiceInfo serviceInfo = selectPluginService(targetIntent);
+        final ServiceInfo serviceInfo = selectPluginService(rawIntent);
         if (serviceInfo == null) {
             Log.w(TAG, "[ProxyServiceManager]   [stopService]   can not found service: " +
-                targetIntent.getComponent());
+                rawIntent.getComponent());
             return 0;
         }
         // 获取 ServiceInfo 对应的 Service 缓存

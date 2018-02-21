@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import com.camnter.hook.ams.f.service.plugin.host.ProxyService;
-import com.camnter.hook.ams.f.service.plugin.host.ProxyServiceManager;
 import com.camnter.hook.ams.f.service.plugin.host.SmartApplication;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -46,6 +45,16 @@ public class IActivityManagerHandler implements InvocationHandler {
              *                                   int userId) throws RemoteException
              */
             final Pair<Integer, Intent> integerIntentPair = foundFirstIntentOfArgs(args);
+            final Intent rawIntent = integerIntentPair.second;
+
+            /**
+             * 判断是否有 其他动作
+             * 没有默认为 start
+             */
+            if (TextUtils.isEmpty(rawIntent.getStringExtra(AMSHooker.EXTRA_TARGET_INTENT_ACTION))) {
+                rawIntent.putExtra(AMSHooker.EXTRA_TARGET_INTENT_ACTION,
+                    AMSHooker.INTENT_ACTION_START);
+            }
 
             // 代理 service 包名
             final String proxyServicePackageName = SmartApplication.getContext().getPackageName();
@@ -56,7 +65,7 @@ public class IActivityManagerHandler implements InvocationHandler {
                 ProxyService.class.getName());
             intent.setComponent(componentName);
             // 保存原始 要启动的 TargetService
-            intent.putExtra(AMSHooker.EXTRA_TARGET_INTENT, integerIntentPair.second);
+            intent.putExtra(AMSHooker.EXTRA_TARGET_INTENT, rawIntent);
 
             // 替换掉 Intent, 欺骗 AMS
             args[integerIntentPair.first] = intent;
@@ -80,9 +89,18 @@ public class IActivityManagerHandler implements InvocationHandler {
             // 是否是 插件 的 intent
             if (!TextUtils.equals(SmartApplication.getContext().getPackageName(),
                 rawPackageName)) {
+                /*
+                 * 继续走 start
+                 * 通过 start 去分发
+                 *
+                 * 底下就不调用 method.invoke(base, args) 了
+                 * 因为不让它走 stop
+                 */
+                rawIntent.putExtra(AMSHooker.EXTRA_TARGET_INTENT_ACTION,
+                    AMSHooker.INTENT_ACTION_STOP);
+                SmartApplication.getContext().startService(rawIntent);
                 Log.v(TAG,
                     "[IActivityManagerHandler]   [stopService]   hook method stopService success");
-                ProxyServiceManager.getInstance().stopService(rawIntent);
             }
         }
 

@@ -14,6 +14,10 @@ import java.lang.reflect.Proxy;
 public final class AMSHooker {
 
     public static final String EXTRA_TARGET_INTENT = "extra_target_intent";
+    public static final String EXTRA_TARGET_INTENT_ACTION = "extra_target_intent_action";
+
+    public static final String INTENT_ACTION_STOP = "intent_action_stop";
+    public static final String INTENT_ACTION_START = "intent_action_start";
 
 
     /**

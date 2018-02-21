@@ -92,6 +92,7 @@ public class HookAmsForServicePluginActivity extends BaseAppCompatActivity
                     new ComponentName("com.camnter.hook.ams.f.service.plugin.plugin",
                         "com.camnter.hook.ams.f.service.plugin.plugin.FirstService")));
                 stopFirstText.setEnabled(true);
+                break;
             case R.id.stop_second_text:
                 stopSecondText.setEnabled(false);
                 this.stopService(new Intent().setComponent(
