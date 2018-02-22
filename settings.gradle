@@ -1,7 +1,7 @@
 include ':app',
 
-        ':hook-ams-for-service-plugin-plugin',
-        ':hook-ams-for-service-plugin-host',
+        ':plugin-life:hook-ams-for-service-plugin:hook-ams-for-service-plugin-plugin',
+        ':plugin-life:hook-ams-for-service-plugin:hook-ams-for-service-plugin-host',
 
         'buildSrc',
 
