@@ -1,5 +1,6 @@
 package com.camnter.hook.ams.f.service.plugin.host.hook;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
 import dalvik.system.DexClassLoader;
 import dalvik.system.DexFile;
@@ -9,6 +10,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.zip.ZipFile;
 
 /**
  * Refer form http://weishu.me/2016/05/11/understand-plugin-framework-service/
@@ -51,7 +53,11 @@ public final class BaseDexClassLoaderHooker {
             dexElements.length + 1);
 
         /**
-         * <= 5.0.0
+         * <= 4.0.0
+         *
+         * no method
+         *
+         * >= 4.0.0
          *
          * Element(File file, ZipFile zipFile, DexFile dexFile)
          *
@@ -70,18 +76,56 @@ public final class BaseDexClassLoaderHooker {
          * Element(DexFile dexFile, File dexZipPath)
          *
          */
-        final Constructor<?> constructor = elementClass.getConstructor(
-            File.class,
-            boolean.class,
-            File.class,
-            DexFile.class
-        );
-        final Object element = constructor.newInstance(
-            apkFile,
-            false,
-            apkFile,
-            DexFile.loadDex(apkFile.getCanonicalPath(), optDexFile.getAbsolutePath(), 0)
-        );
+        final int sdkVersion = Build.VERSION.SDK_INT;
+
+        if (sdkVersion < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            throw new RuntimeException(
+                "[BaseDexClassLoaderHooker]   the sdk version must >= 14 (4.0.0)");
+        }
+
+        final Object element;
+        final Constructor<?> constructor;
+
+        if (sdkVersion >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            // >= 4.0.0
+            // File file, ZipFile zipFile, DexFile dexFile
+            constructor = elementClass.getConstructor(
+                File.class,
+                ZipFile.class,
+                DexFile.class
+            );
+            element = constructor.newInstance(
+                apkFile,
+                new ZipFile(apkFile),
+                DexFile.loadDex(apkFile.getCanonicalPath(), optDexFile.getAbsolutePath(), 0)
+            );
+        } else if (sdkVersion >= Build.VERSION_CODES.LOLLIPOP) {
+            // >= 5.0.0
+            // File file, boolean isDirectory, File zip, DexFile dexFile
+            constructor = elementClass.getConstructor(
+                File.class,
+                boolean.class,
+                File.class,
+                DexFile.class
+            );
+            element = constructor.newInstance(
+                apkFile,
+                false,
+                apkFile,
+                DexFile.loadDex(apkFile.getCanonicalPath(), optDexFile.getAbsolutePath(), 0)
+            );
+        } else {
+            // >= 8.0.0
+            // DexFile dexFile, File dexZipPath
+            constructor = elementClass.getConstructor(
+                DexFile.class,
+                File.class
+            );
+            element = constructor.newInstance(
+                DexFile.loadDex(apkFile.getCanonicalPath(), optDexFile.getAbsolutePath(), 0),
+                apkFile
+            );
+        }
 
         final Object[] toAddElementArray = new Object[] { element };
         // 把原始的 elements 复制进去

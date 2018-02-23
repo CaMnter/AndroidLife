@@ -264,6 +264,7 @@ public final class ProxyServiceManager {
          * 反射 获取 PackageParser # parsePackage(File packageFile, int flags)
          */
         final Class<?> packageParserClass = Class.forName("android.content.pm.PackageParser");
+        // TODO Fix java.lang.NoSuchMethodException: parsePackage [class java.io.File, int] - 4.1.1
         final Method parsePackageMethod = packageParserClass.getDeclaredMethod("parsePackage",
             File.class, int.class);
 
