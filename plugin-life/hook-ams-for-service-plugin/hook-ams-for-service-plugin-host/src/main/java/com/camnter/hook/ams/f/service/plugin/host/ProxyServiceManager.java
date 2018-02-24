@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -258,27 +260,81 @@ public final class ProxyServiceManager {
      * @throws Exception exception
      */
     @SuppressLint("PrivateApi")
-    public void preLoadServices(@NonNull final File apkFile) throws Exception {
+    public void preLoadServices(@NonNull final File apkFile, final Context context)
+        throws Exception {
 
         /**
          * 反射 获取 PackageParser # parsePackage(File packageFile, int flags)
          */
         final Class<?> packageParserClass = Class.forName("android.content.pm.PackageParser");
-        // TODO Fix java.lang.NoSuchMethodException: parsePackage [class java.io.File, int] - 4.1.1
-        final Method parsePackageMethod = packageParserClass.getDeclaredMethod("parsePackage",
-            File.class, int.class);
 
         /**
-         * 反射创建 PackageParser 对象
+         * <= 4.0.0
+         *
+         * Don't deal with
+         *
+         * >= 4.0.0
+         *
+         * parsePackage(File sourceFile, String destCodePath, DisplayMetrics metrics, int flags)
+         *
+         * ---
+         *
+         * >= 5.0.0
+         *
+         * parsePackage(File packageFile, int flags)
+         *
          */
-        final Object packageParser = packageParserClass.newInstance();
+        final int sdkVersion = Build.VERSION.SDK_INT;
+        if (sdkVersion < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            throw new RuntimeException(
+                "[BaseDexClassLoaderHooker]   the sdk version must >= 14 (4.0.0)");
+        }
 
-        /**
-         * 反射 调用 PackageParser # parsePackage(File packageFile, int flags)
-         * 获取 apk 文件对应的 Package 对象
-         */
-        final Object packageObject = parsePackageMethod.invoke(packageParser, apkFile,
-            PackageManager.GET_SERVICES);
+        final Object packageParser;
+        final Object packageObject;
+        final Method parsePackageMethod;
+
+        if (sdkVersion >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            // >= 4.0.0
+            // parsePackage(File sourceFile, String destCodePath, DisplayMetrics metrics, int flags)
+            /**
+             * 反射创建 PackageParser 对象，PackageParser(String archiveSourcePath)
+             *
+             * 反射 调用 PackageParser # parsePackage(File sourceFile, String destCodePath, DisplayMetrics metrics, int flags)
+             * 获取 apk 文件对应的 Package 对象
+             */
+            final String apkFileAbsolutePath = apkFile.getAbsolutePath();
+            packageParser = packageParserClass.getConstructor(String.class)
+                .newInstance(apkFileAbsolutePath);
+
+            parsePackageMethod = packageParserClass.getDeclaredMethod("parsePackage",
+                File.class, String.class, DisplayMetrics.class, int.class);
+            packageObject = parsePackageMethod.invoke(
+                packageParser,
+                apkFile,
+                apkFile.getAbsolutePath(),
+                context.getResources().getDisplayMetrics(),
+                PackageManager.GET_SERVICES
+            );
+        } else {
+            // >= 5.0.0
+            // parsePackage(File packageFile, int flags)
+            /**
+             * 反射创建 PackageParser 对象，无参数构造
+             *
+             * 反射 调用 PackageParser # parsePackage(File packageFile, int flags)
+             * 获取 apk 文件对应的 Package 对象
+             */
+            packageParser = packageParserClass.newInstance();
+
+            parsePackageMethod = packageParserClass.getDeclaredMethod("parsePackage",
+                File.class, int.class);
+            packageObject = parsePackageMethod.invoke(
+                packageParser,
+                apkFile,
+                PackageManager.GET_SERVICES
+            );
+        }
 
         /**
          * 读取 Package # ArrayList<Service> services
@@ -295,6 +351,7 @@ public final class ProxyServiceManager {
          */
         final Class<?> packageParser$ServiceClass = Class.forName(
             "android.content.pm.PackageParser$Service");
+        // TODO Fix java.lang.ClassNotFoundException: android.content.pm.PackageUserState
         final Class<?> packageUserStateClass = Class.forName("android.content.pm.PackageUserState");
         final Class<?> userHandler = Class.forName("android.os.UserHandle");
         final Method getCallingUserIdMethod = userHandler.getDeclaredMethod("getCallingUserId");

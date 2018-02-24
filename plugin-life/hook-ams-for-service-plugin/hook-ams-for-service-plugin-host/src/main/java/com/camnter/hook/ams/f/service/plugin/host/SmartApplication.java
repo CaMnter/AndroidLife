@@ -43,7 +43,7 @@ public class SmartApplication extends Application {
             // Hook ClassLoader, 让插件中的类能够被成功加载
             BaseDexClassLoaderHooker.patchClassLoader(this.getClassLoader(), apkFile, odexFile);
             // 解析插件中的 Service 组件
-            ProxyServiceManager.getInstance().preLoadServices(apkFile);
+            ProxyServiceManager.getInstance().preLoadServices(apkFile, base);
         } catch (Exception e) {
             e.printStackTrace();
         }
