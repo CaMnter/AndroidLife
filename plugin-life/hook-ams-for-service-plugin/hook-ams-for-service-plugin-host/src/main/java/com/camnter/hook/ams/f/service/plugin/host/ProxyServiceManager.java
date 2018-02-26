@@ -336,44 +336,120 @@ public final class ProxyServiceManager {
             );
         }
 
-        /**
-         * 读取 Package # ArrayList<Service> services
-         * 通过 ArrayList<Service> services 获取 Service 对应的 ServiceInfo
-         */
-        final Field servicesField = packageObject.getClass().getDeclaredField("services");
-        final List services = (List) servicesField.get(packageObject);
+        if (sdkVersion >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            // >= 4.2.0
+            // generateServiceInfo(Service s, int flags, PackageUserState state, int userId)
+            /**
+             * 读取 Package # ArrayList<Service> services
+             * 通过 ArrayList<Service> services 获取 Service 对应的 ServiceInfo
+             */
+            final Field servicesField = packageObject.getClass().getDeclaredField("services");
+            final List services = (List) servicesField.get(packageObject);
 
-        /**
-         * 反射调用 UserHandle # static @UserIdInt int getCallingUserId()
-         * 获取到 userId
-         *
-         * 反射创建 PackageUserState 对象
-         */
-        final Class<?> packageParser$ServiceClass = Class.forName(
-            "android.content.pm.PackageParser$Service");
-        // TODO Fix java.lang.ClassNotFoundException: android.content.pm.PackageUserState
-        final Class<?> packageUserStateClass = Class.forName("android.content.pm.PackageUserState");
-        final Class<?> userHandler = Class.forName("android.os.UserHandle");
-        final Method getCallingUserIdMethod = userHandler.getDeclaredMethod("getCallingUserId");
-        final int userId = (Integer) getCallingUserIdMethod.invoke(null);
-        final Object defaultUserState = packageUserStateClass.newInstance();
+            /**
+             * 反射调用 UserHandle # static @UserIdInt int getCallingUserId()
+             * 获取到 userId
+             *
+             * 反射创建 PackageUserState 对象
+             */
+            final Class<?> packageParser$ServiceClass = Class.forName(
+                "android.content.pm.PackageParser$Service");
+            final Class<?> packageUserStateClass = Class.forName(
+                "android.content.pm.PackageUserState");
+            final Class<?> userHandler = Class.forName("android.os.UserHandle");
+            final Method getCallingUserIdMethod = userHandler.getDeclaredMethod("getCallingUserId");
+            final int userId = (Integer) getCallingUserIdMethod.invoke(null);
+            final Object defaultUserState = packageUserStateClass.newInstance();
 
-        // 需要调用 android.content.pm.PackageParser#generateActivityInfo(android.content.pm.ActivityInfo, int, android.content.pm.PackageUserState, int)
-        Method generateReceiverInfo = packageParserClass.getDeclaredMethod("generateServiceInfo",
-            packageParser$ServiceClass, int.class, packageUserStateClass, int.class);
+            // 需要调用 android.content.pm.PackageParser#generateServiceInfo(Service s, int flags, PackageUserState state, int userId)
+            Method generateReceiverInfo = packageParserClass.getDeclaredMethod(
+                "generateServiceInfo",
+                packageParser$ServiceClass, int.class, packageUserStateClass, int.class);
 
-        /**
-         * 反射调用 PackageParser # generateActivityInfo(android.content.pm.ActivityInfo, int, android.content.pm.PackageUserState, int)
-         * 解析出 Service 对应的 ServiceInfo
-         *
-         * 然后保存
-         */
-        for (Object service : services) {
-            final ServiceInfo info = (ServiceInfo) generateReceiverInfo.invoke(packageParser,
-                service, 0,
-                defaultUserState, userId);
-            this.serviceInfoMap.put(new ComponentName(info.packageName, info.name), info);
+            /**
+             * 反射调用 PackageParser # generateServiceInfo(Service s, int flags, PackageUserState state, int userId)
+             * 解析出 Service 对应的 ServiceInfo
+             *
+             * 然后保存
+             */
+            for (Object service : services) {
+                final ServiceInfo info = (ServiceInfo) generateReceiverInfo.invoke(packageParser,
+                    service, 0,
+                    defaultUserState, userId);
+                this.serviceInfoMap.put(new ComponentName(info.packageName, info.name), info);
+            }
+        } else if (sdkVersion >= Build.VERSION_CODES.JELLY_BEAN) {
+            // >= 4.1.0
+            // generateServiceInfo(Service s, int flags, boolean stopped, int enabledState, int userId)
+            /**
+             * 读取 Package # ArrayList<Service> services
+             * 通过 ArrayList<Service> services 获取 Service 对应的 ServiceInfo
+             */
+            final Field servicesField = packageObject.getClass().getDeclaredField("services");
+            final List services = (List) servicesField.get(packageObject);
+
+            // 需要调用 android.content.pm.PackageParser#generateServiceInfo(Service s, int flags, boolean stopped, int enabledState, int userId)
+            final Class<?> packageParser$ServiceClass = Class.forName(
+                "android.content.pm.PackageParser$Service");
+            final Class<?> userHandler = Class.forName("android.os.UserId");
+            final Method getCallingUserIdMethod = userHandler.getDeclaredMethod("getCallingUserId");
+            final int userId = (Integer) getCallingUserIdMethod.invoke(null);
+            Method generateReceiverInfo = packageParserClass.getDeclaredMethod(
+                "generateServiceInfo",
+                packageParser$ServiceClass, int.class, boolean.class, int.class, int.class);
+
+            /**
+             * 反射调用 PackageParser # generateServiceInfo(Service s, int flags, boolean stopped, int enabledState, int userId)
+             * 解析出 Service 对应的 ServiceInfo
+             *
+             * 在之前版本的 4.0.0 中 存在着
+             * public class PackageParser {
+             *     public final static class Package {
+             *         // User set enabled state.
+             *         public int mSetEnabled = PackageManager.COMPONENT_ENABLED_STATE_DEFAULT;
+             *
+             *         // Whether the package has been stopped.
+             *         public boolean mSetStopped = false;
+             *     }
+             * }
+             *
+             * 然后保存
+             */
+            for (Object service : services) {
+                final ServiceInfo info = (ServiceInfo) generateReceiverInfo.invoke(packageParser,
+                    service, 0, false, PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, userId);
+                this.serviceInfoMap.put(new ComponentName(info.packageName, info.name), info);
+            }
+        } else if (sdkVersion >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            // >= 4.0.0
+            // generateServiceInfo(Service s, int flags)
+            /**
+             * 读取 Package # ArrayList<Service> services
+             * 通过 ArrayList<Service> services 获取 Service 对应的 ServiceInfo
+             */
+            final Field servicesField = packageObject.getClass().getDeclaredField("services");
+            final List services = (List) servicesField.get(packageObject);
+
+            // 需要调用 android.content.pm.PackageParser#generateServiceInfo(Service s, int flags)
+            final Class<?> packageParser$ServiceClass = Class.forName(
+                "android.content.pm.PackageParser$Service");
+            Method generateReceiverInfo = packageParserClass.getDeclaredMethod(
+                "generateServiceInfo",
+                packageParser$ServiceClass, int.class);
+
+            /**
+             * 反射调用 PackageParser # generateServiceInfo(Activity a, int flags)
+             * 解析出 Service 对应的 ServiceInfo
+             *
+             * 然后保存
+             */
+            for (Object service : services) {
+                final ServiceInfo info = (ServiceInfo) generateReceiverInfo.invoke(packageParser,
+                    service, 0);
+                this.serviceInfoMap.put(new ComponentName(info.packageName, info.name), info);
+            }
         }
+
     }
 
 }
