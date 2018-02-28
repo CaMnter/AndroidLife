@@ -86,18 +86,16 @@ public final class BaseDexClassLoaderHooker {
         final Object element;
         final Constructor<?> constructor;
 
-        if (sdkVersion >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            // >= 4.0.0
-            // File file, ZipFile zipFile, DexFile dexFile
+        if (sdkVersion >= Build.VERSION_CODES.O) {
+            // >= 8.0.0
+            // DexFile dexFile, File dexZipPath
             constructor = elementClass.getConstructor(
-                File.class,
-                ZipFile.class,
-                DexFile.class
+                DexFile.class,
+                File.class
             );
             element = constructor.newInstance(
-                apkFile,
-                new ZipFile(apkFile),
-                DexFile.loadDex(apkFile.getCanonicalPath(), optDexFile.getAbsolutePath(), 0)
+                DexFile.loadDex(apkFile.getCanonicalPath(), optDexFile.getAbsolutePath(), 0),
+                apkFile
             );
         } else if (sdkVersion >= Build.VERSION_CODES.LOLLIPOP) {
             // >= 5.0.0
@@ -115,15 +113,17 @@ public final class BaseDexClassLoaderHooker {
                 DexFile.loadDex(apkFile.getCanonicalPath(), optDexFile.getAbsolutePath(), 0)
             );
         } else {
-            // >= 8.0.0
-            // DexFile dexFile, File dexZipPath
+            // >= 4.0.0
+            // File file, ZipFile zipFile, DexFile dexFile
             constructor = elementClass.getConstructor(
-                DexFile.class,
-                File.class
+                File.class,
+                ZipFile.class,
+                DexFile.class
             );
             element = constructor.newInstance(
-                DexFile.loadDex(apkFile.getCanonicalPath(), optDexFile.getAbsolutePath(), 0),
-                apkFile
+                apkFile,
+                new ZipFile(apkFile),
+                DexFile.loadDex(apkFile.getCanonicalPath(), optDexFile.getAbsolutePath(), 0)
             );
         }
 

@@ -294,7 +294,25 @@ public final class ProxyServiceManager {
         final Object packageObject;
         final Method parsePackageMethod;
 
-        if (sdkVersion >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+        if (sdkVersion >= Build.VERSION_CODES.LOLLIPOP) {
+            // >= 5.0.0
+            // parsePackage(File packageFile, int flags)
+            /**
+             * 反射创建 PackageParser 对象，无参数构造
+             *
+             * 反射 调用 PackageParser # parsePackage(File packageFile, int flags)
+             * 获取 apk 文件对应的 Package 对象
+             */
+            packageParser = packageParserClass.newInstance();
+
+            parsePackageMethod = packageParserClass.getDeclaredMethod("parsePackage",
+                File.class, int.class);
+            packageObject = parsePackageMethod.invoke(
+                packageParser,
+                apkFile,
+                PackageManager.GET_SERVICES
+            );
+        } else {
             // >= 4.0.0
             // parsePackage(File sourceFile, String destCodePath, DisplayMetrics metrics, int flags)
             /**
@@ -314,24 +332,6 @@ public final class ProxyServiceManager {
                 apkFile,
                 apkFile.getAbsolutePath(),
                 context.getResources().getDisplayMetrics(),
-                PackageManager.GET_SERVICES
-            );
-        } else {
-            // >= 5.0.0
-            // parsePackage(File packageFile, int flags)
-            /**
-             * 反射创建 PackageParser 对象，无参数构造
-             *
-             * 反射 调用 PackageParser # parsePackage(File packageFile, int flags)
-             * 获取 apk 文件对应的 Package 对象
-             */
-            packageParser = packageParserClass.newInstance();
-
-            parsePackageMethod = packageParserClass.getDeclaredMethod("parsePackage",
-                File.class, int.class);
-            packageObject = parsePackageMethod.invoke(
-                packageParser,
-                apkFile,
                 PackageManager.GET_SERVICES
             );
         }
