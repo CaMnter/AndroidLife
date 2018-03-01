@@ -1,6 +1,9 @@
 package com.camnter.hook.ams.f.service.plugin.host.hook;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManagerNative;
+import android.app.IActivityManager;
+import android.util.Singleton;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
@@ -97,31 +100,24 @@ public final class AMSHooker {
          *
          * *****************************************************************************************
          */
-
-        final Class<?> activityManagerNativeClass = Class.forName(
-            "android.app.ActivityManagerNative"
-        );
-
         // static public IActivityManager getDefault()
-        final Field gDefaultField = activityManagerNativeClass.getDeclaredField("gDefault");
+        final Field gDefaultField = ActivityManagerNative.class.getDeclaredField("gDefault");
         gDefaultField.setAccessible(true);
 
         // IActivityManager
         final Object gDefault = gDefaultField.get(null);
 
         // 反射获取 IActivityManager # android.util.Singleton 的实例
-        final Class<?> singletonClass = Class.forName("android.util.Singleton");
-        final Field mInstanceField = singletonClass.getDeclaredField("mInstance");
+        final Field mInstanceField = Singleton.class.getDeclaredField("mInstance");
         mInstanceField.setAccessible(true);
 
         // 获取 ActivityManagerNative 中的 gDefault 对象里面原始的 IActivityManager 实例
         final Object rawIActivityManager = mInstanceField.get(gDefault);
 
         // 动态代理 创建一个 IActivityManager 实现类
-        final Class<?> iActivityManagerInterface = Class.forName("android.app.IActivityManager");
         final Object proxy = Proxy.newProxyInstance(
             Thread.currentThread().getContextClassLoader(),
-            new Class<?>[] { iActivityManagerInterface },
+            new Class<?>[] { IActivityManager.class },
             new IActivityManagerHandler(rawIActivityManager)
         );
 
