@@ -1,5 +1,6 @@
 include ':app',
 
+        ':virtualapk-core-library',
         ':android-hide-api-library',
 
         ':plugin-life:hook-ams-for-service-plugin:hook-ams-for-service-plugin-plugin',
