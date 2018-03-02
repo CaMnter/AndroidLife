@@ -3,8 +3,11 @@ package android.content.pm;
 import android.util.ArraySet;
 
 /**
- * @author johnsonlee
+ * Refer from VirtualAPK
+ *
+ * @author CaMnter
  */
+
 public class PackageUserState {
 
     public boolean stopped;

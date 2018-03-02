@@ -1,8 +1,11 @@
 package com.android.internal;
 
 /**
- * @author johnsonlee
+ * Refer from VirtualAPK
+ *
+ * @author CaMnter
  */
+
 public final class R {
 
     public static final class id {

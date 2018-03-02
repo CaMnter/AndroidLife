@@ -13,12 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package android.app;
 import android.app.Notification;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
+/**
+ * Refer from VirtualAPK
+ *
+ * @author CaMnter
+ */
 
 interface INotificationManager{
 

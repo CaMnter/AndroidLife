@@ -19,7 +19,12 @@ package android.app;
 
 import android.content.ComponentName;
 
-/** @hide */
+/**
+ * Refer from VirtualAPK
+ *
+ * @author CaMnter
+ */
+
 oneway interface IServiceConnection {
 
     void connected(in ComponentName name, IBinder service);

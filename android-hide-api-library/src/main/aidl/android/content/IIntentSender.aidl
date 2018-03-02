@@ -20,6 +20,12 @@ import android.content.IIntentReceiver;
 import android.content.Intent;
 import android.os.Bundle;
 
+/**
+ * Refer from VirtualAPK
+ *
+ * @author CaMnter
+ */
+
 oneway interface IIntentSender {
 
     void send(int code, in Intent intent, String resolvedType, IIntentReceiver finishedReceiver, String requiredPermission, in Bundle options);

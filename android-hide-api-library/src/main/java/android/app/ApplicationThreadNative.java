@@ -4,8 +4,11 @@ import android.os.Binder;
 import android.os.IBinder;
 
 /**
- * @author johnsonlee
+ * Refer from VirtualAPK
+ *
+ * @author CaMnter
  */
+
 public abstract class ApplicationThreadNative extends Binder implements IApplicationThread {
 
     @Override

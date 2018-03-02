@@ -9,8 +9,11 @@ import android.os.IBinder;
 import android.os.IInterface;
 
 /**
- * @author johnsonlee
+ * Refer from VirtualAPK
+ *
+ * @author CaMnter
  */
+
 interface IActivityManager {
 
     ComponentName startService(in IApplicationThread caller, in Intent service, in String resolvedType, in String callingPackage, in int userId);

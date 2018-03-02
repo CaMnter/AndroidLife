@@ -20,7 +20,10 @@ import android.os.IInterface;
 
 /**
  * The ipc interface to talk to a content provider.
+ *
+ * @author CaMnter
  * @hide
  */
 public interface IContentProvider extends IInterface {
+
 }
