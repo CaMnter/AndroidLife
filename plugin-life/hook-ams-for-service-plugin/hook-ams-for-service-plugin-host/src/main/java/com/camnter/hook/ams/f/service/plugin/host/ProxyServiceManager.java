@@ -1,15 +1,21 @@
 package com.camnter.hook.ams.f.service.plugin.host;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityThread;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageParser;
+import android.content.pm.PackageUserState;
 import android.content.pm.ServiceInfo;
+import android.content.res.CompatibilityInfo;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.UserHandle;
+import android.os.UserId;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -198,26 +204,21 @@ public final class ProxyServiceManager {
          *
          * 获取默认的 CompatibilityInfo 配置
          */
-        final Class<?> compatibilityClass = Class.forName("android.content.res.CompatibilityInfo");
-        final Field defaultCompatibilityField = compatibilityClass.getDeclaredField(
-            "DEFAULT_COMPATIBILITY_INFO");
-        final Object defaultCompatibility = defaultCompatibilityField.get(null);
         final Field compatInfoField = createServiceDataClass.getDeclaredField("compatInfo");
         compatInfoField.setAccessible(true);
-        compatInfoField.set(createServiceData, defaultCompatibility);
+        compatInfoField.set(createServiceData, CompatibilityInfo.DEFAULT_COMPATIBILITY_INFO);
 
         /**
          * 反射获取 ActivityThread
          */
-        final Class<?> activityThreadClass = Class.forName("android.app.ActivityThread");
-        final Method currentActivityThreadMethod = activityThreadClass.getDeclaredMethod(
+        final Method currentActivityThreadMethod = ActivityThread.class.getDeclaredMethod(
             "currentActivityThread");
         final Object currentActivityThread = currentActivityThreadMethod.invoke(null);
 
         /**
          * 反射调用 ActivityThread # handleCreateService(CreateServiceData data)
          */
-        final Method handleCreateServiceMethod = activityThreadClass.getDeclaredMethod(
+        final Method handleCreateServiceMethod = ActivityThread.class.getDeclaredMethod(
             "handleCreateService", createServiceDataClass);
         handleCreateServiceMethod.setAccessible(true);
         handleCreateServiceMethod.invoke(currentActivityThread, createServiceData);
@@ -228,7 +229,7 @@ public final class ProxyServiceManager {
          *
          * 可以根据 CreateServiceData # IBinder token 获取该 Service
          */
-        final Field mServicesField = activityThreadClass.getDeclaredField("mServices");
+        final Field mServicesField = ActivityThread.class.getDeclaredField("mServices");
         mServicesField.setAccessible(true);
         final Map mServices = (Map) mServicesField.get(currentActivityThread);
         final Service service = (Service) mServices.get(token);
@@ -266,7 +267,6 @@ public final class ProxyServiceManager {
         /**
          * 反射 获取 PackageParser # parsePackage(File packageFile, int flags)
          */
-        final Class<?> packageParserClass = Class.forName("android.content.pm.PackageParser");
 
         /**
          * <= 4.0.0
@@ -303,9 +303,9 @@ public final class ProxyServiceManager {
              * 反射 调用 PackageParser # parsePackage(File packageFile, int flags)
              * 获取 apk 文件对应的 Package 对象
              */
-            packageParser = packageParserClass.newInstance();
+            packageParser = PackageParser.class.newInstance();
 
-            parsePackageMethod = packageParserClass.getDeclaredMethod("parsePackage",
+            parsePackageMethod = PackageParser.class.getDeclaredMethod("parsePackage",
                 File.class, int.class);
             packageObject = parsePackageMethod.invoke(
                 packageParser,
@@ -322,10 +322,10 @@ public final class ProxyServiceManager {
              * 获取 apk 文件对应的 Package 对象
              */
             final String apkFileAbsolutePath = apkFile.getAbsolutePath();
-            packageParser = packageParserClass.getConstructor(String.class)
+            packageParser = PackageParser.class.getConstructor(String.class)
                 .newInstance(apkFileAbsolutePath);
 
-            parsePackageMethod = packageParserClass.getDeclaredMethod("parsePackage",
+            parsePackageMethod = PackageParser.class.getDeclaredMethod("parsePackage",
                 File.class, String.class, DisplayMetrics.class, int.class);
             packageObject = parsePackageMethod.invoke(
                 packageParser,
@@ -352,19 +352,15 @@ public final class ProxyServiceManager {
              *
              * 反射创建 PackageUserState 对象
              */
-            final Class<?> packageParser$ServiceClass = Class.forName(
-                "android.content.pm.PackageParser$Service");
-            final Class<?> packageUserStateClass = Class.forName(
-                "android.content.pm.PackageUserState");
-            final Class<?> userHandler = Class.forName("android.os.UserHandle");
-            final Method getCallingUserIdMethod = userHandler.getDeclaredMethod("getCallingUserId");
+            final Method getCallingUserIdMethod = UserHandle.class.getDeclaredMethod(
+                "getCallingUserId");
             final int userId = (Integer) getCallingUserIdMethod.invoke(null);
-            final Object defaultUserState = packageUserStateClass.newInstance();
+            final Object defaultUserState = PackageUserState.class.newInstance();
 
             // 需要调用 android.content.pm.PackageParser#generateServiceInfo(Service s, int flags, PackageUserState state, int userId)
-            Method generateReceiverInfo = packageParserClass.getDeclaredMethod(
+            Method generateReceiverInfo = PackageParser.class.getDeclaredMethod(
                 "generateServiceInfo",
-                packageParser$ServiceClass, int.class, packageUserStateClass, int.class);
+                PackageParser.Service.class, int.class, PackageUserState.class, int.class);
 
             /**
              * 反射调用 PackageParser # generateServiceInfo(Service s, int flags, PackageUserState state, int userId)
@@ -389,14 +385,12 @@ public final class ProxyServiceManager {
             final List services = (List) servicesField.get(packageObject);
 
             // 需要调用 android.content.pm.PackageParser#generateServiceInfo(Service s, int flags, boolean stopped, int enabledState, int userId)
-            final Class<?> packageParser$ServiceClass = Class.forName(
-                "android.content.pm.PackageParser$Service");
-            final Class<?> userHandler = Class.forName("android.os.UserId");
-            final Method getCallingUserIdMethod = userHandler.getDeclaredMethod("getCallingUserId");
+            final Method getCallingUserIdMethod = UserId.class.getDeclaredMethod(
+                "getCallingUserId");
             final int userId = (Integer) getCallingUserIdMethod.invoke(null);
-            Method generateReceiverInfo = packageParserClass.getDeclaredMethod(
+            Method generateReceiverInfo = PackageParser.class.getDeclaredMethod(
                 "generateServiceInfo",
-                packageParser$ServiceClass, int.class, boolean.class, int.class, int.class);
+                PackageParser.Service.class, int.class, boolean.class, int.class, int.class);
 
             /**
              * 反射调用 PackageParser # generateServiceInfo(Service s, int flags, boolean stopped, int enabledState, int userId)
@@ -431,11 +425,9 @@ public final class ProxyServiceManager {
             final List services = (List) servicesField.get(packageObject);
 
             // 需要调用 android.content.pm.PackageParser#generateServiceInfo(Service s, int flags)
-            final Class<?> packageParser$ServiceClass = Class.forName(
-                "android.content.pm.PackageParser$Service");
-            Method generateReceiverInfo = packageParserClass.getDeclaredMethod(
+            Method generateReceiverInfo = PackageParser.class.getDeclaredMethod(
                 "generateServiceInfo",
-                packageParser$ServiceClass, int.class);
+                PackageParser.Service.class, int.class);
 
             /**
              * 反射调用 PackageParser # generateServiceInfo(Activity a, int flags)

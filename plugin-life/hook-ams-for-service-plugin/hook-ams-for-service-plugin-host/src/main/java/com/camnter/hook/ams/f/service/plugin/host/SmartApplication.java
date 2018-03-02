@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.camnter.hook.ams.f.service.plugin.host.hook.AMSHooker;
 import com.camnter.hook.ams.f.service.plugin.host.hook.BaseDexClassLoaderHooker;
+import dalvik.system.BaseDexClassLoader;
 import dalvik.system.DexClassLoader;
 import dalvik.system.PathClassLoader;
 import java.io.File;
@@ -109,7 +110,7 @@ public class SmartApplication extends Application {
     private static Object getPathList(@NonNull  final Object baseDexClassLoader)
         throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException,
                ClassNotFoundException {
-        return getField(baseDexClassLoader, Class.forName("dalvik.system.BaseDexClassLoader"),
+        return getField(baseDexClassLoader, BaseDexClassLoader.class,
             "pathList");
     }
 
