@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.ChangedPackages;
 import android.content.pm.FeatureInfo;
 import android.content.pm.InstrumentationInfo;
 import android.content.pm.PackageInfo;
@@ -38,6 +39,8 @@ import android.content.pm.PermissionInfo;
 import android.content.pm.ProviderInfo;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
+import android.content.pm.SharedLibraryInfo;
+import android.content.pm.VersionedPackage;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
@@ -47,6 +50,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.os.UserHandle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.WorkerThread;
 import com.didi.virtualapk.PluginManager;
 import com.didi.virtualapk.utils.DexUtil;
@@ -1147,6 +1154,7 @@ public final class LoadedPlugin {
         }
 
 
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
         public Drawable getUserBadgeForDensity(UserHandle user, int density) {
             try {
                 Method method = PackageManager.class.getMethod("getUserBadgeForDensity",
@@ -1384,6 +1392,220 @@ public final class LoadedPlugin {
         public boolean hasSystemFeature(String s, int i) {
             return mHostPackageManager.hasSystemFeature(s);
         }
+
+
+        /**
+         * Retrieve overall information about an application package that is
+         * installed on the system. This method can be used for retrieving
+         * information about packages for which multiple versions can be installed
+         * at the time. Currently only packages hosting static shared libraries can
+         * have multiple installed versions. The method can also be used to get info
+         * for a package that has a single version installed by passing
+         * {@link #VERSION_CODE_HIGHEST} in the {@link VersionedPackage}
+         * constructor.
+         *
+         * @param versionedPackage The versioned package for which to query.
+         * @param flags Additional option flags to modify the data returned.
+         * @return A PackageInfo object containing information about the package. If
+         * flag {@code MATCH_UNINSTALLED_PACKAGES} is set and if the package
+         * is not found in the list of installed applications, the package
+         * information is retrieved from the list of uninstalled
+         * applications (which includes installed applications as well as
+         * applications with data directory i.e. applications which had been
+         * deleted with {@code DONT_DELETE_DATA} flag set).
+         * @throws NameNotFoundException if a package with the given name cannot be
+         * found on the system.
+         */
+        @Override
+        public PackageInfo getPackageInfo(VersionedPackage versionedPackage, int flags)
+            throws NameNotFoundException {
+            return null;
+        }
+
+
+        /**
+         * Gets whether this application is an instant app.
+         *
+         * @return Whether caller is an instant app.
+         * @see #isInstantApp(String)
+         * @see #updateInstantAppCookie(byte[])
+         * @see #getInstantAppCookie()
+         * @see #getInstantAppCookieMaxBytes()
+         */
+        @Override
+        public boolean isInstantApp() {
+            return false;
+        }
+
+
+        /**
+         * Gets whether the given package is an instant app.
+         *
+         * @param packageName The package to check
+         * @return Whether the given package is an instant app.
+         * @see #isInstantApp()
+         * @see #updateInstantAppCookie(byte[])
+         * @see #getInstantAppCookie()
+         * @see #getInstantAppCookieMaxBytes()
+         * @see #clearInstantAppCookie()
+         */
+        @Override
+        public boolean isInstantApp(String packageName) {
+            return false;
+        }
+
+
+        /**
+         * Gets the maximum size in bytes of the cookie data an instant app
+         * can store on the device.
+         *
+         * @return The max cookie size in bytes.
+         * @see #isInstantApp()
+         * @see #isInstantApp(String)
+         * @see #updateInstantAppCookie(byte[])
+         * @see #getInstantAppCookie()
+         * @see #clearInstantAppCookie()
+         */
+        @Override
+        public int getInstantAppCookieMaxBytes() {
+            return 0;
+        }
+
+
+        /**
+         * Gets the instant application cookie for this app. Non
+         * instant apps and apps that were instant but were upgraded
+         * to normal apps can still access this API. For instant apps
+         * this cookie is cached for some time after uninstall while for
+         * normal apps the cookie is deleted after the app is uninstalled.
+         * The cookie is always present while the app is installed.
+         *
+         * @return The cookie.
+         * @see #isInstantApp()
+         * @see #isInstantApp(String)
+         * @see #updateInstantAppCookie(byte[])
+         * @see #getInstantAppCookieMaxBytes()
+         * @see #clearInstantAppCookie()
+         */
+        @NonNull
+        @Override
+        public byte[] getInstantAppCookie() {
+            return new byte[0];
+        }
+
+
+        /**
+         * Clears the instant application cookie for the calling app.
+         *
+         * @see #isInstantApp()
+         * @see #isInstantApp(String)
+         * @see #getInstantAppCookieMaxBytes()
+         * @see #getInstantAppCookie()
+         * @see #clearInstantAppCookie()
+         */
+        @Override
+        public void clearInstantAppCookie() {
+
+        }
+
+
+        /**
+         * Updates the instant application cookie for the calling app. Non
+         * instant apps and apps that were instant but were upgraded
+         * to normal apps can still access this API. For instant apps
+         * this cookie is cached for some time after uninstall while for
+         * normal apps the cookie is deleted after the app is uninstalled.
+         * The cookie is always present while the app is installed. The
+         * cookie size is limited by {@link #getInstantAppCookieMaxBytes()}.
+         * Passing <code>null</code> or an empty array clears the cookie.
+         * </p>
+         *
+         * @param cookie The cookie data.
+         * @throws IllegalArgumentException if the array exceeds max cookie size.
+         * @see #isInstantApp()
+         * @see #isInstantApp(String)
+         * @see #getInstantAppCookieMaxBytes()
+         * @see #getInstantAppCookie()
+         * @see #clearInstantAppCookie()
+         */
+        @Override
+        public void updateInstantAppCookie(@Nullable byte[] cookie) {
+
+        }
+
+
+        /**
+         * Get a list of shared libraries on the device.
+         *
+         * @param flags To filter the libraries to return.
+         * @return The shared library list.
+         * @see #MATCH_UNINSTALLED_PACKAGES
+         */
+        @NonNull
+        @Override
+        public List<SharedLibraryInfo> getSharedLibraries(int flags) {
+            return null;
+        }
+
+
+        /**
+         * Returns the names of the packages that have been changed
+         * [eg. added, removed or updated] since the given sequence
+         * number.
+         * <p>If no packages have been changed, returns <code>null</code>.
+         * <p>The sequence number starts at <code>0</code> and is
+         * reset every boot.
+         *
+         * @param sequenceNumber The first sequence number for which to retrieve package changes.
+         * @see Settings.Global#BOOT_COUNT
+         */
+        @Nullable
+        @Override
+        public ChangedPackages getChangedPackages(int sequenceNumber) {
+            return null;
+        }
+
+
+        /**
+         * Provide a hint of what the {@link ApplicationInfo#category} value should
+         * be for the given package.
+         * <p>
+         * This hint can only be set by the app which installed this package, as
+         * determined by {@link #getInstallerPackageName(String)}.
+         *
+         * @param packageName the package to change the category hint for.
+         * @param categoryHint the category hint to set.
+         */
+        @Override
+        public void setApplicationCategoryHint(@NonNull String packageName, int categoryHint) {
+
+        }
+
+
+        /**
+         * Checks whether the calling package is allowed to request package installs through
+         * package
+         * installer. Apps are encouraged to call this API before launching the package installer
+         * via
+         * intent {@link Intent#ACTION_INSTALL_PACKAGE}. Starting from Android O, the
+         * user can explicitly choose what external sources they trust to install apps on the
+         * device.
+         * If this API returns false, the install request will be blocked by the package installer
+         * and
+         * a dialog will be shown to the user with an option to launch settings to change their
+         * preference. An application must target Android O or higher and declare permission
+         * {link Manifest.permission#REQUEST_INSTALL_PACKAGES} in order to use this API.
+         *
+         * @return true if the calling package is trusted by the user to request install packages on
+         * the device, false otherwise.
+         * @see Intent#ACTION_INSTALL_PACKAGE
+         * @see Settings#ACTION_MANAGE_UNKNOWN_APP_SOURCES
+         */
+        @Override
+        public boolean canRequestPackageInstalls() {
+            return false;
+        }
+
     }
 
 }
