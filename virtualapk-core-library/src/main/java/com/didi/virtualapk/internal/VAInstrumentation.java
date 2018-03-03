@@ -182,6 +182,21 @@ public class VAInstrumentation extends Instrumentation implements Handler.Callba
     }
 
 
+    /**
+     * 重写 newActivity 方法，适配了 new 插件 Activity
+     *
+     * 1. 如果当前 classloader 找不到 classname
+     * 2. 通过 插件 classloader 去实现 newActivity
+     * 3. 兼容 4.1 以上的 Resources mResources 适配，hook 掉 activity 的 mResources，替换为 插件 resources
+     *
+     * @param cl ClassLoader
+     * @param className className
+     * @param intent intent
+     * @return Activity
+     * @throws InstantiationException InstantiationException
+     * @throws IllegalAccessException IllegalAccessException
+     * @throws ClassNotFoundException ClassNotFoundException
+     */
     @Override
     public Activity newActivity(ClassLoader cl, String className, Intent intent)
         throws InstantiationException, IllegalAccessException, ClassNotFoundException {
@@ -214,6 +229,74 @@ public class VAInstrumentation extends Instrumentation implements Handler.Callba
     }
 
 
+    /**
+     * 在 ActivityThread # performLaunchActivity 会调用该方法
+     *
+     * private Activity performLaunchActivity(ActivityClientRecord r, Intent customIntent) {
+     *
+     * -    ActivityInfo aInfo = r.activityInfo;
+     *
+     * -    ...
+     *
+     * -   ComponentName component = r.intent.getComponent();
+     *
+     * -   ...
+     *
+     * -   ContextImpl appContext = createBaseContextForActivity(r);
+     * -   Activity activity = null;
+     * -   try {
+     * -       java.lang.ClassLoader cl = appContext.getClassLoader();
+     * -       activity = mInstrumentation.newActivity(
+     * -               cl, component.getClassName(), r.intent);
+     * -       StrictMode.incrementExpectedActivityCount(activity.getClass());
+     * -       r.intent.setExtrasClassLoader(cl);
+     * -       r.intent.prepareToEnterProcess();
+     * -       if (r.state != null) {
+     * -           r.state.setClassLoader(cl);
+     * -       }
+     * -   } catch (Exception e) {
+     * -       ...
+     * -   }
+     *
+     * -   ...
+     *
+     * -   Application app = r.packageInfo.makeApplication(false, mInstrumentation);
+     *
+     * -   activity.attach(appContext, this, getInstrumentation(), r.token,...)
+     *
+     * -   if (r.isPersistable()) {
+     * -       mInstrumentation.callActivityOnCreate(activity, r.state, r.persistentState);
+     * -   } else {
+     * -       mInstrumentation.callActivityOnCreate(activity, r.state);
+     * -   }
+     *
+     * -   ...
+     *
+     * -   r.activity = activity;
+     *
+     * -   ...
+     *
+     * -   mActivities.put(r.token, r);
+     *
+     * -   ...
+     *
+     * -   return activity;
+     * }
+     *
+     *
+     * 1. Activity 的 intent 信息
+     * 2. 根据 intent 信息，判断是否是 插件 Activity
+     * 3. 根据 intent 信息，获取对应的 LoadedPlugin
+     * 4. 根据 LoadedPlugin 内的信息
+     * 4.1   hook 掉 base context 的 Resources mResources
+     * 4.2   hook 掉 activity 的 Context mBase（ 视为 ContextWrapper class 进行 hook ）
+     * 4.3   hook 掉 activity 的 Application mApplication
+     * 4.4   hook 掉 activity 的 Context mBase（ 视为 ContextThemeWrapper class 进行 hook ）
+     * 5. 设置 垂直 或者 水平 显示
+     *
+     * @param activity activity
+     * @param icicle icicle
+     */
     @Override
     public void callActivityOnCreate(Activity activity, Bundle icicle) {
         final Intent intent = activity.getIntent();
@@ -244,6 +327,73 @@ public class VAInstrumentation extends Instrumentation implements Handler.Callba
     }
 
 
+    /**
+     * 同步 H 的 LAUNCH_ACTIVITY 监听
+     *
+     * ActivityThread # scheduleLaunchActivity(...) {
+     *
+     * -    ...
+     *
+     * -    ActivityClientRecord r = new ActivityClientRecord();
+     * -    r.token = token;
+     * -    r.ident = ident;
+     * -    r.intent = intent;
+     * -    r.referrer = referrer;
+     * -    r.voiceInteractor = voiceInteractor;
+     * -    r.activityInfo = info;
+     * -    r.compatInfo = compatInfo;
+     * -    r.state = state;
+     * -    r.persistentState = persistentState;
+     * -    r.pendingResults = pendingResults;
+     * -    r.pendingIntents = pendingNewIntents;
+     * -    r.startsNotResumed = notResumed;
+     * -    r.isForward = isForward;
+     * -    r.profilerInfo = profilerInfo;
+     * -    r.overrideConfig = overrideConfig;
+     *
+     * -    ...
+     *
+     * -    sendMessage(H.LAUNCH_ACTIVITY, r);
+     *
+     * }
+     *
+     * ActivityThread # H
+     * private class H extends Handler {
+     *
+     * -    public static final int LAUNCH_ACTIVITY         = 100;
+     *
+     * -    ...
+     *
+     * -    public void handleMessage(Message msg) {
+     * -        switch (msg.what) {
+     * -                case LAUNCH_ACTIVITY: {
+     * -                    Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, "activityStart");
+     * -                    final ActivityClientRecord r = (ActivityClientRecord) msg.obj;
+     * -                    r.packageInfo = getPackageInfoNoCheck(
+     * -                            r.activityInfo.applicationInfo, r.compatInfo);
+     * -                    handleLaunchActivity(r, null, "LAUNCH_ACTIVITY");
+     * -                    Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);
+     * -                } break;
+     *
+     * -                ...
+     *
+     * -    ...
+     *
+     * -    }
+     *
+     * }
+     *
+     * 在 H 的 LAUNCH_ACTIVITY 收到 LAUNCH_ACTIVITY 的时候，这里也会收到
+     *
+     * 1. 用 H 类的方式，获取了 ActivityClientRecord
+     * 2. 反射获取 ActivityClientRecord 内的 Intent intent
+     * 3. 设置 intent 的 setExtrasClassLoader
+     * 4. 反射获取 ActivityClientRecord 内的 ActivityInfo activityInfo
+     * 5. 获取插件主题，设置在 activityInfo 上
+     *
+     * @param msg msg
+     * @return boolean
+     */
     @Override
     public boolean handleMessage(Message msg) {
         if (msg.what == LAUNCH_ACTIVITY) {
