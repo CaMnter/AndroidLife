@@ -1416,10 +1416,15 @@ public final class LoadedPlugin {
          * @throws NameNotFoundException if a package with the given name cannot be
          * found on the system.
          */
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public PackageInfo getPackageInfo(VersionedPackage versionedPackage, int flags)
             throws NameNotFoundException {
-            return null;
+            LoadedPlugin plugin = mPluginManager.getLoadedPlugin(versionedPackage.getPackageName());
+            if (null != plugin) {
+                return plugin.mPackageInfo;
+            }
+            return this.mHostPackageManager.getPackageInfo(versionedPackage, flags);
         }
 
 
@@ -1432,9 +1437,10 @@ public final class LoadedPlugin {
          * @see #getInstantAppCookie()
          * @see #getInstantAppCookieMaxBytes()
          */
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public boolean isInstantApp() {
-            return false;
+            return this.mHostPackageManager.isInstantApp();
         }
 
 
@@ -1449,9 +1455,10 @@ public final class LoadedPlugin {
          * @see #getInstantAppCookieMaxBytes()
          * @see #clearInstantAppCookie()
          */
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public boolean isInstantApp(String packageName) {
-            return false;
+            return this.mHostPackageManager.isInstantApp(packageName);
         }
 
 
@@ -1466,9 +1473,10 @@ public final class LoadedPlugin {
          * @see #getInstantAppCookie()
          * @see #clearInstantAppCookie()
          */
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public int getInstantAppCookieMaxBytes() {
-            return 0;
+            return this.mHostPackageManager.getInstantAppCookieMaxBytes();
         }
 
 
@@ -1487,10 +1495,11 @@ public final class LoadedPlugin {
          * @see #getInstantAppCookieMaxBytes()
          * @see #clearInstantAppCookie()
          */
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @NonNull
         @Override
         public byte[] getInstantAppCookie() {
-            return new byte[0];
+            return this.mHostPackageManager.getInstantAppCookie();
         }
 
 
@@ -1503,9 +1512,10 @@ public final class LoadedPlugin {
          * @see #getInstantAppCookie()
          * @see #clearInstantAppCookie()
          */
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void clearInstantAppCookie() {
-
+            this.mHostPackageManager.clearInstantAppCookie();
         }
 
 
@@ -1530,7 +1540,7 @@ public final class LoadedPlugin {
          */
         @Override
         public void updateInstantAppCookie(@Nullable byte[] cookie) {
-
+            this.mHostPackageManager.updateInstantAppCookie(cookie);
         }
 
 
@@ -1541,10 +1551,11 @@ public final class LoadedPlugin {
          * @return The shared library list.
          * @see #MATCH_UNINSTALLED_PACKAGES
          */
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @NonNull
         @Override
         public List<SharedLibraryInfo> getSharedLibraries(int flags) {
-            return null;
+            return this.mHostPackageManager.getSharedLibraries(flags);
         }
 
 
@@ -1559,10 +1570,11 @@ public final class LoadedPlugin {
          * @param sequenceNumber The first sequence number for which to retrieve package changes.
          * @see Settings.Global#BOOT_COUNT
          */
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Nullable
         @Override
         public ChangedPackages getChangedPackages(int sequenceNumber) {
-            return null;
+            return this.mHostPackageManager.getChangedPackages(sequenceNumber);
         }
 
 
@@ -1576,9 +1588,10 @@ public final class LoadedPlugin {
          * @param packageName the package to change the category hint for.
          * @param categoryHint the category hint to set.
          */
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void setApplicationCategoryHint(@NonNull String packageName, int categoryHint) {
-
+            this.mHostPackageManager.setApplicationCategoryHint(packageName, categoryHint);
         }
 
 
@@ -1601,9 +1614,10 @@ public final class LoadedPlugin {
          * @see Intent#ACTION_INSTALL_PACKAGE
          * @see Settings#ACTION_MANAGE_UNKNOWN_APP_SOURCES
          */
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public boolean canRequestPackageInstalls() {
-            return false;
+            return this.mHostPackageManager.canRequestPackageInstalls();
         }
 
     }
