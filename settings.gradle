@@ -1,5 +1,7 @@
 include ':app',
 
+        ':hook-binder',
+
         ':virtualapk-core-library',
         ':android-hide-api-library',
 
