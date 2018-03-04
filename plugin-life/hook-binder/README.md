@@ -76,10 +76,14 @@ public interface IClipboard extends android.os.IInterface {
 
 ## Hook 点
 
-**1.** `android.os.IInterface iin = obj.queryLocalInterface(DESCRIPTOR);` 让这里的 `queryLocalInterface` 永远返回 动态代理对象（ **BinderHookHandler** ）。   
+**1.** `android.os.IInterface iin = obj.queryLocalInterface(DESCRIPTOR);` 让这里的 `queryLocalInterface` 永远返回 动态代理对象（ **BinderHookHandler** ）。
+   
 **2.** 这样，永远走到 `if` 内，`asInterface(android.os.IBinder obj)` 方法永远返回 动态代理对象（ **BinderHookHandler** ）。   
+   
 **3.** 为了完成 **1** 和 **2**，需要在 `obj.queryLocalInterface(DESCRIPTOR)` 里，构造这个 `obj` 的 动态代理对象（ **BinderProxyHookHandler** ）。   
+   
 **4.** `obj.queryLocalInterface(DESCRIPTOR)` 中的 `obj` 是 **IBinder** 类型。即，**sCache** 内的缓存数据。   
+   
 **5.** 由于  **IBinder** 都会缓存在 **sCache** 内。所以，将 `obj` 的 动态代理对象（ **BinderProxyHookHandler** ）覆盖掉 `sCache` 内的对应缓存。   
 
 <br>
@@ -244,6 +248,9 @@ public class BinderProxyHookHandler implements InvocationHandler {
 
 ```java
 /**
+ * 替换 ServiceManager # HashMap<String, IBinder> sCache 内的缓存内容
+ * 替换为 动态代理对象
+ *
  * @author CaMnter
  */
 

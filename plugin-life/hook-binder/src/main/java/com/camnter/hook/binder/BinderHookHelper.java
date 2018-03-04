@@ -7,6 +7,9 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 
 /**
+ * 替换 ServiceManager # HashMap<String, IBinder> sCache 内的缓存内容
+ * 替换为 动态代理对象
+ *
  * @author CaMnter
  */
 

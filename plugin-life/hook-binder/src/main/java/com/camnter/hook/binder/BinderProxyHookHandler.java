@@ -29,19 +29,24 @@ import java.lang.reflect.Proxy;
  * -    return null;
  * }
  *
- * public interface IBinder {
+ * public interface IClipboard extends android.os.IInterface {
  *
  * -    ...
  *
- * -    public static android.content.IClipboard asInterface(android.os.IBinder obj) {
- * -        if ((obj == null)) {
- * -            return null;
+ * -    public static abstract class Stub extends android.os.Binder
+ * -        implements android.app.IApplicationThread {
+ *
+ * -        public static android.content.IClipboard asInterface(android.os.IBinder obj) {
+ * -            if ((obj == null)) {
+ * -               return null;
+ * -            }
+ * -            android.os.IInterface iin = obj.queryLocalInterface(DESCRIPTOR);
+ * -            if (((iin != null) && (iin instanceof android.content.IClipboard))) {
+ * -                return ((android.content.IClipboard) iin);
+ * -            }
+ * -            return new android.content.IClipboard.Stub.Proxy(obj);
  * -        }
- * -        android.os.IInterface iin = obj.queryLocalInterface(DESCRIPTOR);
- * -        if (((iin != null) && (iin instanceof android.content.IClipboard))) {
- * -            return ((android.content.IClipboard) iin);
- * -        }
- * -        return new android.content.IClipboard.Stub.Proxy(obj);
+ *
  * -    }
  *
  * -    ...
