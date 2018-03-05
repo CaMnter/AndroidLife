@@ -1,14 +1,13 @@
 include ':app',
 
-        ':hook-ams-and-pms',
-
 //        ':virtualapk-core-library',
         ':android-hide-api-library',
 
         ':plugin-life:hook-binder',
+        ':plugin-life:hook-ams-and-pms',
 
-        ':plugin-life:hook-ams-for-service-plugin:hook-ams-for-service-plugin-plugin',
         ':plugin-life:hook-ams-for-service-plugin:hook-ams-for-service-plugin-host',
+        ':plugin-life:hook-ams-for-service-plugin:hook-ams-for-service-plugin-plugin',
 
         'buildSrc',
 
