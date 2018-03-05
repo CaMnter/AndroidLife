@@ -1,5 +1,7 @@
 include ':app',
 
+        ':hook-ams-for-activity-plugin-plugin',
+
 //        ':virtualapk-core-library',
         ':android-hide-api-library',
 
