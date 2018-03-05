@@ -13,7 +13,7 @@ import java.lang.reflect.Proxy;
  * @author CaMnter
  */
 
-public class PMSHooker {
+public final class PMSHooker {
 
     /**
      * 1. Hook ActivityThread 中的 sPackageManager
