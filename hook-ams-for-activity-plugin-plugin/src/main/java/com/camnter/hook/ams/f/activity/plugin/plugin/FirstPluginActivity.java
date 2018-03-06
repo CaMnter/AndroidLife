@@ -3,7 +3,6 @@ package com.camnter.hook.ams.f.activity.plugin.plugin;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,7 +14,7 @@ public class FirstPluginActivity extends Activity {
 
     @SuppressLint("SetTextI18n")
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         final LinearLayout rootLayout = new LinearLayout(this);
