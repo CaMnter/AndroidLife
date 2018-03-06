@@ -36,6 +36,10 @@ import com.didi.virtualapk.utils.PluginUtil;
 import com.didi.virtualapk.utils.ReflectUtil;
 
 /**
+ * 1. Hook Instrumentation，主要为了 newActivity，加载插件 Activity
+ * -  以及，在插件 Activity onCreate 之前，完成 Activity 内 Resources、Context 和 Application 的替换
+ * 2. Hook H # Callback mCallback，拦截 H 中 插件 Activity 的 LAUNCH_ACTIVITY 消息
+ *
  * Created by renyugang on 16/8/10.
  */
 
@@ -328,34 +332,43 @@ public class VAInstrumentation extends Instrumentation implements Handler.Callba
 
 
     /**
-     * 同步 H 的 LAUNCH_ACTIVITY 监听
+     * 拦截 H 中 插件 Activity 的 LAUNCH_ACTIVITY 消息
      *
-     * ActivityThread # scheduleLaunchActivity(...) {
+     * *********************************************************************************************
      *
-     * -    ...
+     * ActivityThread #
      *
-     * -    ActivityClientRecord r = new ActivityClientRecord();
-     * -    r.token = token;
-     * -    r.ident = ident;
-     * -    r.intent = intent;
-     * -    r.referrer = referrer;
-     * -    r.voiceInteractor = voiceInteractor;
-     * -    r.activityInfo = info;
-     * -    r.compatInfo = compatInfo;
-     * -    r.state = state;
-     * -    r.persistentState = persistentState;
-     * -    r.pendingResults = pendingResults;
-     * -    r.pendingIntents = pendingNewIntents;
-     * -    r.startsNotResumed = notResumed;
-     * -    r.isForward = isForward;
-     * -    r.profilerInfo = profilerInfo;
-     * -    r.overrideConfig = overrideConfig;
+     * private class ApplicationThread extends IApplicationThread.Stub {
      *
-     * -    ...
+     * -    public final void  scheduleLaunchActivity(...) {
      *
-     * -    sendMessage(H.LAUNCH_ACTIVITY, r);
+     * -        ...
      *
+     * -        ActivityClientRecord r = new ActivityClientRecord();
+     * -        r.token = token;
+     * -        r.ident = ident;
+     * -        r.intent = intent;
+     * -        r.referrer = referrer;
+     * -        r.voiceInteractor = voiceInteractor;
+     * -        r.activityInfo = info;
+     * -        r.compatInfo = compatInfo;
+     * -        r.state = state;
+     * -        r.persistentState = persistentState;
+     * -        r.pendingResults = pendingResults;
+     * -        r.pendingIntents = pendingNewIntents;
+     * -        r.startsNotResumed = notResumed;
+     * -        r.isForward = isForward;
+     * -        r.profilerInfo = profilerInfo;
+     * -        r.overrideConfig = overrideConfig;
+     *
+     * -        ...
+     *
+     * -        sendMessage(H.LAUNCH_ACTIVITY, r);
+     *
+     * -    }
      * }
+     *
+     * *********************************************************************************************
      *
      * ActivityThread # H
      * private class H extends Handler {
@@ -383,9 +396,33 @@ public class VAInstrumentation extends Instrumentation implements Handler.Callba
      *
      * }
      *
-     * 在 H 的 LAUNCH_ACTIVITY 收到 LAUNCH_ACTIVITY 的时候，这里也会收到
+     * *********************************************************************************************
      *
-     * 1. 用 H 类的方式，获取了 ActivityClientRecord
+     * public class Handler {
+     *
+     *      ...
+     *
+     *      final Callback mCallback;
+     *
+     *      public void dispatchMessage(Message msg) {
+     *          if (msg.callback != null) {
+     *              handleCallback(msg);
+     *          } else {
+     *              if (mCallback != null) {
+     *                  if (mCallback.handleMessage(msg)) {
+     *                      return;
+     *                  }
+     *              }
+     *          }
+     *      }
+     *
+     * }
+     *
+     * *********************************************************************************************
+     *
+     *  Hook H 的 Callback mCallback，拦截 插件 activity 对应的 LAUNCH_ACTIVITY 消息
+     *
+     * 1. 用 Hook H # Callback mCallback 的方式，获取了 ActivityClientRecord
      * 2. 反射获取 ActivityClientRecord 内的 Intent intent
      * 3. 设置 intent 的 setExtrasClassLoader
      * 4. 反射获取 ActivityClientRecord 内的 ActivityInfo activityInfo
