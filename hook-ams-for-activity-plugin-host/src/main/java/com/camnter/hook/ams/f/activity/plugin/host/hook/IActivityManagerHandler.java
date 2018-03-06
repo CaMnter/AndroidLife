@@ -2,6 +2,7 @@ package com.camnter.hook.ams.f.activity.plugin.host.hook;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.util.Log;
 import android.util.Pair;
 import com.camnter.hook.ams.f.activity.plugin.host.SmartApplication;
@@ -46,26 +47,36 @@ public class IActivityManagerHandler implements InvocationHandler {
          * }
          */
         if ("startActivity".equals(method.getName())) {
-
             final Pair<Integer, Intent> integerIntentPair = foundFirstIntentOfArgs(args);
             final Intent rawIntent = integerIntentPair.second;
 
-            // 代理 StubActivity 包名
-            final String proxyServicePackageName = SmartApplication.getContext().getPackageName();
+            /**
+             * 判断是否是插件 Activity
+             */
+            if (rawIntent != null) {
+                final ActivityInfo activityInfo = ActivityInfoUtils.selectPluginActivity(
+                    SmartApplication.getActivityInfoMap(), rawIntent);
+                if (activityInfo != null) {
+                    // 插件 Activity
+                    // 代理 StubActivity 包名
+                    final String proxyServicePackageName = SmartApplication.getContext()
+                        .getPackageName();
 
-            // 启动的 Activity 替换为 StubActivity
-            final Intent intent = new Intent();
-            final ComponentName componentName = new ComponentName(proxyServicePackageName,
-                StubActivity.class.getName());
-            intent.setComponent(componentName);
+                    // 启动的 Activity 替换为 StubActivity
+                    final Intent intent = new Intent();
+                    final ComponentName componentName = new ComponentName(proxyServicePackageName,
+                        StubActivity.class.getName());
+                    intent.setComponent(componentName);
 
-            // 保存原始 启动插件的 Activity Intent
-            intent.putExtra(AMSHooker.EXTRA_TARGET_INTENT, rawIntent);
+                    // 保存原始 启动插件的 Activity Intent
+                    intent.putExtra(AMSHooker.EXTRA_TARGET_INTENT, rawIntent);
 
-            // 替换掉 Intent, 欺骗 AMS
-            args[integerIntentPair.first] = intent;
-            Log.v(TAG,
-                "[IActivityManagerHandler]   [startActivity]   hook method startActivity success");
+                    // 替换掉 Intent, 欺骗 AMS
+                    args[integerIntentPair.first] = intent;
+                    Log.v(TAG,
+                        "[IActivityManagerHandler]   [startActivity]   hook method startActivity success");
+                }
+            }
             return method.invoke(this.base, args);
         }
         return method.invoke(this.base, args);

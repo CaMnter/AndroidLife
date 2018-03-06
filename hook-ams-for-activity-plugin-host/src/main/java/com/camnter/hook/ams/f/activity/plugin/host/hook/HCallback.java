@@ -1,9 +1,11 @@
 package com.camnter.hook.ams.f.activity.plugin.host.hook;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import com.camnter.hook.ams.f.activity.plugin.host.SmartApplication;
 import java.lang.reflect.Field;
 
 /**
@@ -176,16 +178,26 @@ public class HCallback implements Handler.Callback {
             final Intent rawIntent = intent.getParcelableExtra(AMSHooker.EXTRA_TARGET_INTENT);
 
             /**
-             * 替换启动的插件 Activity
-             *
-             * system_server 那边只知道的是 StubActivity
-             * 回到 App 进程时，附带的信息也是 StubActivity
-             *
-             * 这里将 StubActivity 换为 插件 Activity
-             *
-             * 保证了 App 进程这边一直都是 插件 Activity
+             * 判断是否是插件 Activity
              */
-            intent.setComponent(rawIntent.getComponent());
+            if (rawIntent != null) {
+                final ActivityInfo activityInfo = ActivityInfoUtils.selectPluginActivity(
+                    SmartApplication.getActivityInfoMap(), rawIntent);
+                if (activityInfo != null) {
+                    /**
+                     * 替换启动的插件 Activity
+                     *
+                     * system_server 那边只知道的是 StubActivity
+                     * 回到 App 进程时，附带的信息也是 StubActivity
+                     *
+                     * 这里将 StubActivity 换为 插件 Activity
+                     *
+                     * 保证了 App 进程这边一直都是 插件 Activity
+                     */
+                    intent.setComponent(rawIntent.getComponent());
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

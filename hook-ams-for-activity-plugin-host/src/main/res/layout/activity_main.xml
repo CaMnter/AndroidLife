@@ -17,7 +17,7 @@
         android:id="@+id/start_first_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start first service"
+        android:text="Start first activity"
         android:padding="10dp"
         android:textSize="15sp"
         android:textColor="#000000"/>
@@ -26,7 +26,7 @@
         android:id="@+id/start_second_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start second service"
+        android:text="Start second activity"
         android:padding="10dp"
         android:textSize="15sp"
         android:textColor="#000000"/>
