@@ -160,8 +160,8 @@ public final class ActivityInfoUtils {
                 packageParser$ActivityClass, int.class, packageUserStateClass, int.class);
 
             /**
-             * 反射调用 PackageParser # generateServiceInfo(Service s, int flags, PackageUserState state, int userId)
-             * 解析出 Service 对应的 ServiceInfo
+             * 反射调用 PackageParser # generateActivityInfo(Activity a, int flags, PackageUserState state, int userId)
+             * 解析出 Activity 对应的 ActivityInfo
              *
              * 然后保存
              */
@@ -241,8 +241,8 @@ public final class ActivityInfoUtils {
                 packageParser$ActivityClass, int.class);
 
             /**
-             * 反射调用 PackageParser # generateServiceInfo(Activity a, int flags)
-             * 解析出 Service 对应的 ServiceInfo
+             * 反射调用 PackageParser # generateActivityInfo(Activity a, int flags)
+             * 解析出 Activity 对应的 ActivityInfo
              *
              * 然后保存
              */
