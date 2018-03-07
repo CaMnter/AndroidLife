@@ -101,10 +101,6 @@ public abstract class Singleton<T> {
 **IActivityManagerHandler**   
 
 ```java
-import android.util.Log;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-
 /**
  * 动态代理 AMS
  *
@@ -140,11 +136,6 @@ public class IActivityManagerHandler implements InvocationHandler {
 **AMSHooker**   
 
 ```java
-import android.annotation.SuppressLint;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Proxy;
-
 /**
  * @author CaMnter
  */
