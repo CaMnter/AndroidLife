@@ -1,4 +1,4 @@
-package com.camnter.hook.loadedapk.classloader.hook.loadedapk;
+package com.camnter.hook.loadedapk.classloader.hook.host.loadedapk;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
-import com.camnter.hook.loadedapk.classloader.hook.AssetsUtils;
+import com.camnter.hook.loadedapk.classloader.hook.host.AssetsUtils;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;

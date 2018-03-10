@@ -1,4 +1,4 @@
-package com.camnter.hook.loadedapk.classloader.hook;
+package com.camnter.hook.loadedapk.classloader.hook.host;
 
 import android.content.Context;
 import android.content.res.AssetManager;
