@@ -85,9 +85,30 @@ public class IPackageManagerHandler implements InvocationHandler {
          * *****************************************************************************************
          */
 
+        /**
+         * LoadedApk # initializeJavaContextClassLoader 中的 IPackageManager # getPackageInfo
+         *
+         * 如果是插件 LoadedApk
+         * 那么是我们通过 hook 和 反射创建出来的，内部的 PMS 也是取 ActivityThread 中的 PMS
+         * 就是宿主 PMS
+         *
+         * 这里开始就是加载非 android 开头的 package
+         * 如果用宿主的 PMS 去加载自己的 PackageInfo 是 OK 的
+         *
+         * 但是加载 插件的 PackageInfo 是 null
+         *
+         * 为了欺骗 PMS，为了不抛出上述源码中的 "package not installed?" 异常
+         *
+         * 选择 检查 IPackageManager # getPackageInfo 的值
+         * 如果为 null，暂且视为 宿主 PMS 加载插件 PackageInfo
+         * 强行 new 一个 PackageInfo
+         *
+         * 骗过 PMS，跳过验证
+         */
+
         if ("getPackageInfo".equals(method.getName())) {
-            // IPackageManager # getPackageInfo 永远不为 null
-            return new PackageInfo();
+            final Object tryToValue = method.invoke(this.base, args);
+            return null == tryToValue ? new PackageInfo() : tryToValue;
         }
         return method.invoke(this.base, args);
     }
