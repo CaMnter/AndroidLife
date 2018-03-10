@@ -1,4 +1,4 @@
-package com.camnter.hook.loadedapk.classloader.hook.host.pms;
+package com.camnter.hook.loadedapk.classloader.hook.pms;
 
 import android.content.pm.PackageInfo;
 import android.support.annotation.NonNull;

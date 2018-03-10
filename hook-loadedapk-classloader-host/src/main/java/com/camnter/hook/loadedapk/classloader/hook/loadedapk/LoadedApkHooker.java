@@ -1,4 +1,4 @@
-package com.camnter.hook.loadedapk.classloader.hook.host.loadedapk;
+package com.camnter.hook.loadedapk.classloader.hook.loadedapk;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
-import com.camnter.hook.loadedapk.classloader.hook.host.AssetsUtils;
+import com.camnter.hook.loadedapk.classloader.host.AssetsUtils;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -89,6 +89,8 @@ public final class LoadedApkHooker {
          *
          * *****************************************************************************************
          *
+         * LoadedApk 部分源码
+         *
          * public final class LoadedApk {
          *
          *     ...
@@ -99,6 +101,7 @@ public final class LoadedApkHooker {
          *
          * }
          *
+         * *****************************************************************************************
          */
 
         /**

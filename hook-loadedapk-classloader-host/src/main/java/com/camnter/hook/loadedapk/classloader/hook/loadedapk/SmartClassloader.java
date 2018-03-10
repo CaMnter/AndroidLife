@@ -1,4 +1,4 @@
-package com.camnter.hook.loadedapk.classloader.hook.host.loadedapk;
+package com.camnter.hook.loadedapk.classloader.hook.loadedapk;
 
 import dalvik.system.DexClassLoader;
 

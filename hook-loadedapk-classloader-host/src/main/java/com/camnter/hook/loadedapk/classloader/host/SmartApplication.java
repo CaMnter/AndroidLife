@@ -4,9 +4,9 @@ import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import com.camnter.hook.loadedapk.classloader.hook.host.ams.AMSHooker;
-import com.camnter.hook.loadedapk.classloader.hook.host.loadedapk.LoadedApkHooker;
-import com.camnter.hook.loadedapk.classloader.hook.host.pms.PMSHooker;
+import com.camnter.hook.loadedapk.classloader.hook.ams.AMSHooker;
+import com.camnter.hook.loadedapk.classloader.hook.loadedapk.LoadedApkHooker;
+import com.camnter.hook.loadedapk.classloader.hook.pms.PMSHooker;
 import java.io.File;
 import java.util.Map;
 

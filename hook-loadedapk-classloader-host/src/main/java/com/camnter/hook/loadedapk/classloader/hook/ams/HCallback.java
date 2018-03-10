@@ -1,4 +1,4 @@
-package com.camnter.hook.loadedapk.classloader.hook.host.ams;
+package com.camnter.hook.loadedapk.classloader.hook.ams;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
