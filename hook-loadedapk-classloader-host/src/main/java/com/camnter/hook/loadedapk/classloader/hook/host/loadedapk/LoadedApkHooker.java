@@ -34,10 +34,72 @@ public final class LoadedApkHooker {
     public static Map<String, Object> LOADEDAPK_MAP = new HashMap<>();
 
 
+    /**
+     * Hook ActivityThread # ArrayMap<String, WeakReference<LoadedApk>> mPackages
+     *
+     * @param apkFile apkFile
+     * @param context context
+     * @throws Exception Exception
+     */
     @SuppressWarnings("unchecked")
     public static void hookLoadedApkForActivityThread(@NonNull final File apkFile,
                                                       @NonNull final Context context)
         throws Exception {
+
+        /**
+         * *****************************************************************************************
+         *
+         * ActivityThread 部分源码
+         *
+         * public final class ActivityThread {
+         *
+         *      ...
+         *
+         *      private static volatile ActivityThread sCurrentActivityThread;
+         *
+         *      ...
+         *
+         *      final ArrayMap<String, WeakReference<LoadedApk>> mPackages = new ArrayMap<String, WeakReference<LoadedApk>>();
+         *
+         *      ...
+         *
+         *      public final LoadedApk getPackageInfoNoCheck(ApplicationInfo ai, CompatibilityInfo compatInfo){
+         *
+         *          return getPackageInfo(ai, compatInfo, null, false, true, false);
+         *
+         *      }
+         *
+         *      ...
+         *
+         * }
+         *
+         * *****************************************************************************************
+         *
+         * CompatibilityInfo 部分源码
+         *
+         * public class CompatibilityInfo implements Parcelable {
+         *
+         *     ...
+         *
+         *     public static final CompatibilityInfo DEFAULT_COMPATIBILITY_INFO = new CompatibilityInfo() {};
+         *
+         *     ...
+         *
+         * }
+         *
+         * *****************************************************************************************
+         *
+         * public final class LoadedApk {
+         *
+         *     ...
+         *
+         *     private ClassLoader mClassLoader;
+         *
+         *     ...
+         *
+         * }
+         *
+         */
 
         /**
          * 获取 ActivityThread 实例
@@ -103,13 +165,13 @@ public final class LoadedApkHooker {
         /**
          * 强引用缓存一份 插件 LoadedApk
          */
-        LOADEDAPK_MAP.put(applicationInfo.packageName,loadedApk);
+        LOADEDAPK_MAP.put(applicationInfo.packageName, loadedApk);
 
         /**
          * Hook ActivityThread # ArrayMap<String, WeakReference<LoadedApk>> mPackages
          */
         final WeakReference<Object> weakReference = new WeakReference<>(loadedApk);
-        mPackages.put(applicationInfo.packageName,weakReference);
+        mPackages.put(applicationInfo.packageName, weakReference);
     }
 
 
