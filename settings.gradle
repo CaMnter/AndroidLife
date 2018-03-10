@@ -1,6 +1,7 @@
 include ':app',
 
         ':hook-loadedapk-classloader-host',
+        ':hook-loadedapk-classloader-plugin',
 
         ':plugin-life:hook-ams-for-activity-plugin:hook-ams-for-activity-plugin-host',
         ':plugin-life:hook-ams-for-activity-plugin:hook-ams-for-activity-plugin-plugin',
