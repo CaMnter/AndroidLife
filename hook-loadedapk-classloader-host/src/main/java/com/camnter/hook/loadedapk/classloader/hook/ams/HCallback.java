@@ -185,6 +185,20 @@ public class HCallback implements Handler.Callback {
                 final ActivityInfo activityInfo = ActivityInfoUtils.selectPluginActivity(
                     SmartApplication.getActivityInfoMap(), rawIntent);
                 if (activityInfo != null) {
+
+                    /**
+                     * 替换 ActivityThread # ActivityClientRecord # ActivityInfo activityInfo
+                     * 不然在生成 获取 LoadedApk 缓存的时候，误拿了 插桩 Activity 的 LoadedApk
+                     * 导致 LoadedApk 内的 classloader 加载不到 插件 activity
+                     *
+                     * r.packageInfo = getPackageInfoNoCheck(r.activityInfo.applicationInfo, r.compatInfo);
+                     *
+                     * 这里导致，会拿错 LoadedApk 缓存
+                     */
+                    final Field activityInfoField = r.getClass().getDeclaredField("activityInfo");
+                    activityInfoField.setAccessible(true);
+                    activityInfoField.set(r, activityInfo);
+
                     /**
                      * 替换启动的插件 Activity
                      *
