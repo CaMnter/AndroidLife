@@ -70,8 +70,8 @@ public class HookLoadedApkForActivityPluginActivity extends BaseAppCompatActivit
                 this.startFirstText.setEnabled(false);
                 try {
                     this.startActivity(new Intent().setComponent(
-                        new ComponentName("com.camnter.hook.ams.f.activity.plugin.plugin",
-                            "com.camnter.hook.ams.f.activity.plugin.plugin.FirstPluginActivity")));
+                        new ComponentName("com.camnter.hook.loadedapk.classloader.plugin",
+                            "com.camnter.hook.loadedapk.classloader.plugin.FirstPluginActivity")));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -81,8 +81,8 @@ public class HookLoadedApkForActivityPluginActivity extends BaseAppCompatActivit
                 this.startSecondText.setEnabled(false);
                 try {
                     this.startActivity(new Intent().setComponent(
-                        new ComponentName("com.camnter.hook.ams.f.activity.plugin.plugin",
-                            "com.camnter.hook.ams.f.activity.plugin.plugin.SecondPluginActivity")));
+                        new ComponentName("com.camnter.hook.loadedapk.classloader.plugin",
+                            "com.camnter.hook.loadedapk.classloader.plugin.SecondPluginActivity")));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
