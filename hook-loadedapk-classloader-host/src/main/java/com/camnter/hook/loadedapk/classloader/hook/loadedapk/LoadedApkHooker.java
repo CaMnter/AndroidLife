@@ -218,7 +218,7 @@ public final class LoadedApkHooker {
         final int sdkVersion = Build.VERSION.SDK_INT;
         if (sdkVersion < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             throw new RuntimeException(
-                "[ApkUtils]   the sdk version must >= 14 (4.0.0)");
+                "[LoadedApkHooker]   the sdk version must >= 14 (4.0.0)");
         }
 
         final Object packageParser;
