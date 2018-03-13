@@ -97,7 +97,7 @@ public final class ApkUtils {
         final int sdkVersion = Build.VERSION.SDK_INT;
         if (sdkVersion < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             throw new RuntimeException(
-                "[ActivityInfoUtils]   the sdk version must >= 14 (4.0.0)");
+                "[ApkUtils]   the sdk version must >= 14 (4.0.0)");
         }
 
         final Object packageParser;
@@ -318,7 +318,7 @@ public final class ApkUtils {
         final int sdkVersion = Build.VERSION.SDK_INT;
         if (sdkVersion < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             throw new RuntimeException(
-                "[BaseDexClassLoaderHooker]   the sdk version must >= 14 (4.0.0)");
+                "[ApkUtils]   the sdk version must >= 14 (4.0.0)");
         }
 
         final Object packageParser;
@@ -393,7 +393,7 @@ public final class ApkUtils {
             final Object defaultUserState = packageUserStateClass.newInstance();
 
             // 需要调用 android.content.pm.PackageParser#generateServiceInfo(Service s, int flags, PackageUserState state, int userId)
-            Method generateReceiverInfo = packageParserClass.getDeclaredMethod(
+            Method generateServiceInfo = packageParserClass.getDeclaredMethod(
                 "generateServiceInfo",
                 packageParser$ServiceClass, int.class, packageUserStateClass, int.class);
 
@@ -404,7 +404,7 @@ public final class ApkUtils {
              * 然后保存
              */
             for (Object service : services) {
-                final ServiceInfo info = (ServiceInfo) generateReceiverInfo.invoke(packageParser,
+                final ServiceInfo info = (ServiceInfo) generateServiceInfo.invoke(packageParser,
                     service, 0,
                     defaultUserState, userId);
                 serviceInfoMap.put(new ComponentName(info.packageName, info.name), info);
@@ -425,7 +425,7 @@ public final class ApkUtils {
             final Class<?> userHandler = Class.forName("android.os.UserId");
             final Method getCallingUserIdMethod = userHandler.getDeclaredMethod("getCallingUserId");
             final int userId = (Integer) getCallingUserIdMethod.invoke(null);
-            Method generateReceiverInfo = packageParserClass.getDeclaredMethod(
+            Method generateServiceInfo = packageParserClass.getDeclaredMethod(
                 "generateServiceInfo",
                 packageParser$ServiceClass, int.class, boolean.class, int.class, int.class);
 
@@ -447,7 +447,7 @@ public final class ApkUtils {
              * 然后保存
              */
             for (Object service : services) {
-                final ServiceInfo info = (ServiceInfo) generateReceiverInfo.invoke(packageParser,
+                final ServiceInfo info = (ServiceInfo) generateServiceInfo.invoke(packageParser,
                     service, 0, false, PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, userId);
                 serviceInfoMap.put(new ComponentName(info.packageName, info.name), info);
             }
@@ -464,7 +464,7 @@ public final class ApkUtils {
             // 需要调用 android.content.pm.PackageParser#generateServiceInfo(Service s, int flags)
             final Class<?> packageParser$ServiceClass = Class.forName(
                 "android.content.pm.PackageParser$Service");
-            Method generateReceiverInfo = packageParserClass.getDeclaredMethod(
+            Method generateServiceInfo = packageParserClass.getDeclaredMethod(
                 "generateServiceInfo",
                 packageParser$ServiceClass, int.class);
 
@@ -475,7 +475,7 @@ public final class ApkUtils {
              * 然后保存
              */
             for (Object service : services) {
-                final ServiceInfo info = (ServiceInfo) generateReceiverInfo.invoke(packageParser,
+                final ServiceInfo info = (ServiceInfo) generateServiceInfo.invoke(packageParser,
                     service, 0);
                 serviceInfoMap.put(new ComponentName(info.packageName, info.name), info);
             }
@@ -526,7 +526,7 @@ public final class ApkUtils {
         final int sdkVersion = Build.VERSION.SDK_INT;
         if (sdkVersion < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             throw new RuntimeException(
-                "[BaseDexClassLoaderHooker]   the sdk version must >= 14 (4.0.0)");
+                "[ApkUtils]   the sdk version must >= 14 (4.0.0)");
         }
 
         final Object packageParser;
