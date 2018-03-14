@@ -1,7 +1,7 @@
 include ':app',
 
-        ':broadcast-receiver-plugin-host',
-        ':broadcast-receiver-plugin-plugin',
+        ':plugin-life:broadcast-receiver-plugin:broadcast-receiver-plugin-host',
+        ':plugin-life:broadcast-receiver-plugin:broadcast-receiver-plugin-plugin',
 
         ':plugin-life:hook-loadedapk-classloader:hook-loadedapk-classloader-host',
         ':plugin-life:hook-loadedapk-classloader:hook-loadedapk-classloader-plugin',
