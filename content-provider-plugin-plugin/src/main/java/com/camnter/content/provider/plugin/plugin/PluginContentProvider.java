@@ -57,7 +57,14 @@ public class PluginContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        final SQLiteDatabase database = this.messageSQLiteHelper.getWritableDatabase();
+
+        final int count = database.delete(MessageSQLiteHelper.TB_MESSAGE, selection, selectionArgs);
+        final Context context = this.getContext();
+        if (null != context) {
+            context.getContentResolver().notifyChange(uri, null);
+        }
+        return count;
     }
 
 
