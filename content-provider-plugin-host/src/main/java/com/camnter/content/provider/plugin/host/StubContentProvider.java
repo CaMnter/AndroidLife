@@ -73,10 +73,10 @@ public class StubContentProvider extends ContentProvider {
 
     /**
      * 插件 uri
-     * content.provider.plugin.PluginContentProvider
+     * com.camnter.content.provider.plugin.plugin.PluginContentProvider
      *
      * 实际 uri 得写成
-     * com.camnter.content.provider.plugin.host.StubContentProvider/content.provider.plugin.PluginContentProvider
+     * com.camnter.content.provider.plugin.host.StubContentProvider/com.camnter.content.provider.plugin.plugin.PluginContentProvider
      *
      * 发给插桩 ContentProvider
      *

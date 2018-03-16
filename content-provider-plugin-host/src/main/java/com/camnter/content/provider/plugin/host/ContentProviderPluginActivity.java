@@ -40,7 +40,7 @@ public class ContentProviderPluginActivity extends BaseAppCompatActivity
          * com.camnter.content.provider.plugin.host.StubContentProvider/content.provider.plugin
          */
         this.pluginUri = Uri.parse(StubContentProvider.STUB_URI.toString() + '/' +
-            "content.provider.plugin.PluginContentProvider");
+            "com.camnter.content.provider.plugin.plugin.PluginContentProvider");
         this.resolver = this.getContentResolver();
     }
 
@@ -81,7 +81,7 @@ public class ContentProviderPluginActivity extends BaseAppCompatActivity
                 break;
             case R.id.insert_plugin_content_provider:
                 final ContentValues values = new ContentValues();
-                values.put("content - " + ++this.count, "Save you from anything - " + count);
+                values.put("content", "Save you from anything - " + ++this.count);
                 this.resolver.insert(this.pluginUri, values);
                 break;
         }
