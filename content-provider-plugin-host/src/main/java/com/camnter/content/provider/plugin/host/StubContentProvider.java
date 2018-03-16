@@ -15,7 +15,7 @@ import android.support.annotation.Nullable;
 public class StubContentProvider extends ContentProvider {
 
     public static final Uri STUB_URI = Uri.parse(
-        "com.camnter.content.provider.plugin.host.StubContentProvider");
+        "content://com.camnter.content.provider.plugin.host.StubContentProvider");
 
     public static final String AUTHORITY
         = "com.camnter.content.provider.plugin.host.StubContentProvider";
@@ -61,7 +61,12 @@ public class StubContentProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        final Uri pluginUri = this.getPluginUri(uri);
+        final Context context = this.getContext();
+        if (pluginUri == null || context == null) {
+            return 0;
+        }
+        return context.getContentResolver().delete(pluginUri, selection, selectionArgs);
     }
 
 
@@ -73,10 +78,10 @@ public class StubContentProvider extends ContentProvider {
 
     /**
      * 插件 uri
-     * com.camnter.content.provider.plugin.plugin.PluginContentProvider
+     * content://com.camnter.content.provider.plugin.plugin.PluginContentProvider
      *
      * 实际 uri 得写成
-     * com.camnter.content.provider.plugin.host.StubContentProvider/com.camnter.content.provider.plugin.plugin.PluginContentProvider
+     * content://com.camnter.content.provider.plugin.host.StubContentProvider/com.camnter.content.provider.plugin.plugin.PluginContentProvider
      *
      * 发给插桩 ContentProvider
      *

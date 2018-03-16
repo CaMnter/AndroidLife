@@ -31,13 +31,14 @@ public class ContentProviderPluginActivity extends BaseAppCompatActivity
     protected void initViews(Bundle savedInstanceState) {
         this.findView(R.id.query_plugin_content_provider).setOnClickListener(this);
         this.findView(R.id.insert_plugin_content_provider).setOnClickListener(this);
+        this.findView(R.id.delete_plugin_content_provider).setOnClickListener(this);
 
         /**
          * 插件 Uri
-         * content.provider.plugin.PluginContentProvider
+         * content://content.provider.plugin.PluginContentProvider
          *
          * 实际 uri 得写成
-         * com.camnter.content.provider.plugin.host.StubContentProvider/content.provider.plugin
+         * content://com.camnter.content.provider.plugin.host.StubContentProvider/content.provider.plugin
          */
         this.pluginUri = Uri.parse(StubContentProvider.STUB_URI.toString() + '/' +
             "com.camnter.content.provider.plugin.plugin.PluginContentProvider");
@@ -83,6 +84,11 @@ public class ContentProviderPluginActivity extends BaseAppCompatActivity
                 final ContentValues values = new ContentValues();
                 values.put("content", "Save you from anything - " + ++this.count);
                 this.resolver.insert(this.pluginUri, values);
+                ToastUtils.show(this, "insert successfully", Toast.LENGTH_LONG);
+                break;
+            case R.id.delete_plugin_content_provider:
+                this.resolver.delete(this.pluginUri, null, null);
+                ToastUtils.show(this, "delete successfully", Toast.LENGTH_LONG);
                 break;
         }
     }
