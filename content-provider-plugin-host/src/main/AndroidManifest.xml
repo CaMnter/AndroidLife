@@ -1,0 +1,28 @@
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.camnter.content.provider.plugin.host">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_camnter_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:name=".SmartApplication">
+
+        <activity android:name=".ContentProviderPluginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="com.camnter.content.provider.plugin.host.StubContentProvider"
+            android:authorities="com.camnter.content.provider.plugin.host.StubContentProvider"
+            android:process=":stub_content_provider"
+            android:exported="true"/>
+
+    </application>
+
+</manifest>
