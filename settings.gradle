@@ -1,7 +1,7 @@
 include ':app',
 
-        ':content-provider-plugin-host',
-        ':content-provider-plugin-plugin',
+        ':plugin-life:content-provider-plugin:content-provider-plugin-host',
+        ':plugin-life:content-provider-plugin:content-provider-plugin-plugin',
 
         ':plugin-life:broadcast-receiver-plugin:broadcast-receiver-plugin-host',
         ':plugin-life:broadcast-receiver-plugin:broadcast-receiver-plugin-plugin',
