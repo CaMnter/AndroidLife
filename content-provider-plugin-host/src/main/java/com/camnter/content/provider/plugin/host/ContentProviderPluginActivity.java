@@ -34,11 +34,11 @@ public class ContentProviderPluginActivity extends BaseAppCompatActivity
         this.findView(R.id.delete_plugin_content_provider).setOnClickListener(this);
 
         /**
-         * 插件 Uri
-         * content://content.provider.plugin.PluginContentProvider
+         * 插件 uri
+         * content://com.camnter.content.provider.plugin.plugin.PluginContentProvider
          *
          * 实际 uri 得写成
-         * content://com.camnter.content.provider.plugin.host.StubContentProvider/content.provider.plugin
+         * content://com.camnter.content.provider.plugin.host.StubContentProvider/com.camnter.content.provider.plugin.plugin.PluginContentProvider
          */
         this.pluginUri = Uri.parse(StubContentProvider.STUB_URI.toString() + '/' +
             "com.camnter.content.provider.plugin.plugin.PluginContentProvider");
