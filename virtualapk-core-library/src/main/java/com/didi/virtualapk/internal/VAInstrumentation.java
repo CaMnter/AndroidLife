@@ -59,6 +59,22 @@ public class VAInstrumentation extends Instrumentation implements Handler.Callba
     }
 
 
+    /**
+     * 进入 AMS 所在的进程前
+     *
+     * 覆写 Instrumentation # execStartActivity
+     *
+     * 在这里完成替换 intent 内部信息，替换为合适的插桩 Activity 信息
+     *
+     * @param who Context
+     * @param contextThread IApplicationThread
+     * @param token null
+     * @param target null
+     * @param intent intent
+     * @param requestCode -1
+     * @param options Bundle
+     * @return ActivityResult
+     */
     public ActivityResult execStartActivity(
         Context who, IBinder contextThread, IBinder token, Activity target,
         Intent intent, int requestCode, Bundle options) {
@@ -80,6 +96,22 @@ public class VAInstrumentation extends Instrumentation implements Handler.Callba
     }
 
 
+    /**
+     * 进入 AMS 所在的进程前
+     *
+     * 真正调用 反射调用 原声 Instrumentation # execStartActivity 方法
+     *
+     * 去访问 AMS 所在进程
+     *
+     * @param who Context
+     * @param contextThread IApplicationThread
+     * @param token null
+     * @param target null
+     * @param intent intent
+     * @param requestCode -1
+     * @param options Bundle
+     * @return ActivityResult
+     */
     private ActivityResult realExecStartActivity(
         Context who, IBinder contextThread, IBinder token, Activity target,
         Intent intent, int requestCode, Bundle options) {
@@ -101,7 +133,25 @@ public class VAInstrumentation extends Instrumentation implements Handler.Callba
         return result;
     }
 
-
+    /**
+     * 5.0.0 以下才有 关于 fragment 的 execStartActivity
+     * 适配 5.0.0 以下
+     *
+     * 进入 AMS 所在的进程前
+     *
+     * 覆写 Instrumentation # execStartActivity
+     *
+     * 在这里完成替换 intent 内部信息，替换为合适的插桩 Activity 信息
+     *
+     * @param who Context
+     * @param contextThread IApplicationThread
+     * @param token null
+     * @param target null
+     * @param intent intent
+     * @param requestCode -1
+     * @param options Bundle
+     * @return ActivityResult
+     */
     public ActivityResult execStartActivity(
         Context who, IBinder contextThread, IBinder token, Fragment target,
         Intent intent, int requestCode, Bundle options) {
@@ -123,6 +173,25 @@ public class VAInstrumentation extends Instrumentation implements Handler.Callba
     }
 
 
+    /**
+     * 5.0.0 以下才有 关于 fragment 的 execStartActivity
+     * 适配 5.0.0 以下
+     *
+     * 进入 AMS 所在的进程前
+     *
+     * 真正调用 反射调用 原声 Instrumentation # execStartActivity 方法
+     *
+     * 去访问 AMS 所在进程
+     *
+     * @param who Context
+     * @param contextThread IApplicationThread
+     * @param token null
+     * @param target null
+     * @param intent intent
+     * @param requestCode -1
+     * @param options Bundle
+     * @return ActivityResult
+     */
     private ActivityResult realExecStartActivity(
         Context who, IBinder contextThread, IBinder token, Fragment target,
         Intent intent, int requestCode, Bundle options) {
@@ -145,6 +214,22 @@ public class VAInstrumentation extends Instrumentation implements Handler.Callba
     }
 
 
+    /**
+     * 进入 AMS 所在的进程前
+     *
+     * 真正调用 反射调用 原声 Instrumentation # execStartActivity 方法
+     *
+     * 去访问 AMS 所在进程
+     *
+     * @param who Context
+     * @param contextThread IApplicationThread
+     * @param token null
+     * @param target null
+     * @param intent intent
+     * @param requestCode -1
+     * @param options Bundle
+     * @return ActivityResult
+     */
     private ActivityResult realExecStartActivity(
         Context who, IBinder contextThread, IBinder token, String target,
         Intent intent, int requestCode, Bundle options) {
@@ -167,6 +252,22 @@ public class VAInstrumentation extends Instrumentation implements Handler.Callba
     }
 
 
+    /**
+     * 进入 AMS 所在的进程前
+     *
+     * 覆写 Instrumentation # execStartActivity
+     *
+     * 在这里完成替换 intent 内部信息，替换为合适的插桩 Activity 信息
+     *
+     * @param who Context
+     * @param contextThread IApplicationThread
+     * @param token null
+     * @param target null
+     * @param intent intent
+     * @param requestCode -1
+     * @param options Bundle
+     * @return ActivityResult
+     */
     public ActivityResult execStartActivity(
         Context who, IBinder contextThread, IBinder token, String target,
         Intent intent, int requestCode, Bundle options) {
@@ -400,27 +501,27 @@ public class VAInstrumentation extends Instrumentation implements Handler.Callba
      *
      * public class Handler {
      *
-     *      ...
+     * ...
      *
-     *      final Callback mCallback;
+     * final Callback mCallback;
      *
-     *      public void dispatchMessage(Message msg) {
-     *          if (msg.callback != null) {
-     *              handleCallback(msg);
-     *          } else {
-     *              if (mCallback != null) {
-     *                  if (mCallback.handleMessage(msg)) {
-     *                      return;
-     *                  }
-     *              }
-     *          }
-     *      }
+     * public void dispatchMessage(Message msg) {
+     * if (msg.callback != null) {
+     * handleCallback(msg);
+     * } else {
+     * if (mCallback != null) {
+     * if (mCallback.handleMessage(msg)) {
+     * return;
+     * }
+     * }
+     * }
+     * }
      *
      * }
      *
      * *********************************************************************************************
      *
-     *  Hook H 的 Callback mCallback，拦截 插件 activity 对应的 LAUNCH_ACTIVITY 消息
+     * Hook H 的 Callback mCallback，拦截 插件 activity 对应的 LAUNCH_ACTIVITY 消息
      *
      * 1. 用 Hook H # Callback mCallback 的方式，获取了 ActivityClientRecord
      * 2. 反射获取 ActivityClientRecord 内的 Intent intent
