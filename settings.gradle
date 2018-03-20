@@ -12,7 +12,7 @@ include ':app',
         ':plugin-life:hook-ams-for-activity-plugin:hook-ams-for-activity-plugin-host',
         ':plugin-life:hook-ams-for-activity-plugin:hook-ams-for-activity-plugin-plugin',
 
-//        ':virtualapk-core-library',
+        ':virtualapk-core-library',
         ':android-hide-api-library',
 
         ':plugin-life:hook-binder',

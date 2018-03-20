@@ -24,6 +24,16 @@ import com.didi.virtualapk.internal.LoadedPlugin;
 import java.io.File;
 
 /**
+ * 插桩 独立进程 Service
+ *
+ * 抽取 intent 中放入的 插件 service 信息
+ * 读取对应的 插件 LoadedPlugin 缓存
+ *
+ * 然后分发 插件 service action
+ * 到对应的 插件 service 上
+ *
+ * 插件 service 的 create, onStart, onStop 都通过反射 ActivityThread 上的相关方法去完成
+ *
  * @author johnsonlee
  */
 public class RemoteService extends LocalService {
