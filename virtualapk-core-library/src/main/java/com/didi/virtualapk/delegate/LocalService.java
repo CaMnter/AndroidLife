@@ -36,6 +36,17 @@ import com.didi.virtualapk.utils.ReflectUtil;
 import java.lang.reflect.Method;
 
 /**
+ * 插桩 Service
+ * 一般用于 App 进程，意味着不是独立进程 插桩 Service
+ *
+ * 但是由于独立进程 和 非独立进程的 插件 Service ，在 create, onStart, onStop 方面的 反射逻辑
+ * 都是一样的
+ *
+ * 只是在哪个进程进行 Service 的 create, onStart, onStop
+ * 造就了插件 Service 所在进程是 独立进程 或 非独立进程
+ *
+ * 所以，RemoteService 也调用 LocalService 内的写的全部 反射代码
+ *
  * @author johnsonlee
  */
 public class LocalService extends Service {
@@ -69,6 +80,30 @@ public class LocalService extends Service {
     }
 
 
+    /**
+     * 分发插件 service action
+     *
+     * 1. 先处理 Service START_STICKY 的情况
+     * 2. 插桩 service intent 中抽出 插件 service intent
+     * 3. 根据 插件 service intent 获取到对应的 LoadedPlugin
+     * 4. 替换 插件 service intent 中的 classloader
+     * 5. 分发插件 service action
+     * 6. 分发插件 service action 前，都得检查是否要 反射创建 service
+     *
+     * 关于 start  插件 service: 需要反射调用 Service # attach(...)，然后手动调用插件 Service # onCreate(...)
+     * 关于 bind   插件 service: 同 start，还需要反射调用插件 Service # onBind(...) 和 service 对应的
+     * -           IServiceConnection # connected(...)
+     * 关于 stop   插件 service: 手动调用插件 Service # onDestroy()
+     * 关于 unbind 插件 service: 手动调用插件 Service # onUnbind(...) 和 Service # onDestroy()
+     *
+     * start 和 bind，  都得考虑是否要添加 插件 service 缓存
+     * stop  和 unbind，都得考虑是否要删除 插件 service 缓存
+     *
+     * @param intent intent
+     * @param flags flags
+     * @param startId startId
+     * @return int
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (null == intent || !intent.hasExtra(EXTRA_TARGET) || !intent.hasExtra(EXTRA_COMMAND)) {
