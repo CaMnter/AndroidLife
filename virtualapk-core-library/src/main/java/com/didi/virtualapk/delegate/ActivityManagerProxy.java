@@ -38,6 +38,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
+ * 动态代理 AMS
+ *
  * @author johnsonlee
  */
 public class ActivityManagerProxy implements InvocationHandler {
@@ -67,6 +69,23 @@ public class ActivityManagerProxy implements InvocationHandler {
     }
 
 
+    /**
+     * 动态代理
+     *
+     * IActivityManager # startService
+     * IActivityManager # stopService
+     * IActivityManager # stopServiceToken
+     * IActivityManager # bindService
+     * IActivityManager # unbindService
+     * IActivityManager # getIntentSender
+     * IActivityManager # overridePendingTransition
+     *
+     * @param proxy proxy
+     * @param method method
+     * @param args args
+     * @return 返回值
+     * @throws Throwable Throwable
+     */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if ("startService".equals(method.getName())) {
@@ -140,6 +159,28 @@ public class ActivityManagerProxy implements InvocationHandler {
     }
 
 
+    /**
+     * 动态代理 IActivityManager # startService
+     *
+     * 根据 intent 内的 Component
+     * 查询是否存在对应的 插件 Service 信息
+     *
+     * 没的话，正常调用 IActivityManager # startService
+     *
+     * 有的话，得修改 intent 内的信息
+     * 将插件 Service Intent 替换为 插桩 Service Intent
+     * 然后 插件 Service Intent  作为 插桩 Service Intent 的数据存放
+     *
+     * 存放的插件 Service 行为记录为 startService
+     *
+     * 去启动 插桩 Service
+     *
+     * @param proxy proxy
+     * @param method method
+     * @param args args
+     * @return 返回值
+     * @throws Throwable Throwable
+     */
     private Object startService(Object proxy, Method method, Object[] args) throws Throwable {
         IApplicationThread appThread = (IApplicationThread) args[0];
         Intent target = (Intent) args[1];
@@ -154,6 +195,28 @@ public class ActivityManagerProxy implements InvocationHandler {
     }
 
 
+    /**
+     * 动态代理 IActivityManager # stopService
+     *
+     * 根据 intent 内的 Component
+     * 查询是否存在对应的 插件 Service 信息
+     *
+     * 没的话，正常调用 IActivityManager # startService
+     *
+     * 有的话，得修改 intent 内的信息
+     * 将插件 Service Intent 替换为 插桩 Service Intent
+     * 然后 插件 Service Intent  作为 插桩 Service Intent 的数据存放
+     *
+     * 存放的插件 Service 行为记录为 stopService
+     *
+     * 去启动 插桩 Service
+     *
+     * @param proxy proxy
+     * @param method method
+     * @param args args
+     * @return 返回值
+     * @throws Throwable Throwable
+     */
     private Object stopService(Object proxy, Method method, Object[] args) throws Throwable {
         Intent target = (Intent) args[1];
         ResolveInfo resolveInfo = this.mPluginManager.resolveService(target, 0);
@@ -168,6 +231,28 @@ public class ActivityManagerProxy implements InvocationHandler {
     }
 
 
+    /**
+     * 动态代理 IActivityManager # stopServiceToken
+     *
+     * 根据 intent 内的 Component
+     * 查询是否存在对应的 插件 Service 信息
+     *
+     * 没的话，正常调用 IActivityManager # startService
+     *
+     * 有的话，得修改 intent 内的信息
+     * 将插件 Service Intent 替换为 插桩 Service Intent
+     * 然后 插件 Service Intent  作为 插桩 Service Intent 的数据存放
+     *
+     * 存放的插件 Service 行为记录为 stopServiceToken
+     *
+     * 去启动 插桩 Service
+     *
+     * @param proxy proxy
+     * @param method method
+     * @param args args
+     * @return 返回值
+     * @throws Throwable Throwable
+     */
     private Object stopServiceToken(Object proxy, Method method, Object[] args) throws Throwable {
         ComponentName component = (ComponentName) args[0];
         Intent target = new Intent().setComponent(component);
@@ -183,6 +268,28 @@ public class ActivityManagerProxy implements InvocationHandler {
     }
 
 
+    /**
+     * 动态代理 IActivityManager # bindService
+     *
+     * 根据 intent 内的 Component
+     * 查询是否存在对应的 插件 Service 信息
+     *
+     * 没的话，正常调用 IActivityManager # startService
+     *
+     * 有的话，得修改 intent 内的信息
+     * 将插件 Service Intent 替换为 插桩 Service Intent
+     * 然后 插件 Service Intent  作为 插桩 Service Intent 的数据存放
+     *
+     * 存放的插件 Service 行为记录为 bindService
+     *
+     * 去启动 插桩 Service
+     *
+     * @param proxy proxy
+     * @param method method
+     * @param args args
+     * @return 返回值
+     * @throws Throwable Throwable
+     */
     private Object bindService(Object proxy, Method method, Object[] args) throws Throwable {
         Intent target = (Intent) args[2];
         ResolveInfo resolveInfo = this.mPluginManager.resolveService(target, 0);
@@ -200,6 +307,28 @@ public class ActivityManagerProxy implements InvocationHandler {
     }
 
 
+    /**
+     * 动态代理 IActivityManager # unbindService
+     *
+     * 根据 intent 内的 Component
+     * 查询是否存在对应的 插件 Service 信息
+     *
+     * 没的话，正常调用 IActivityManager # startService
+     *
+     * 有的话，得修改 intent 内的信息
+     * 将插件 Service Intent 替换为 插桩 Service Intent
+     * 然后 插件 Service Intent  作为 插桩 Service Intent 的数据存放
+     *
+     * 存放的插件 Service 行为记录为 unbindService
+     *
+     * 去启动 插桩 Service
+     *
+     * @param proxy proxy
+     * @param method method
+     * @param args args
+     * @return 返回值
+     * @throws Throwable Throwable
+     */
     private Object unbindService(Object proxy, Method method, Object[] args) throws Throwable {
         IBinder iServiceConnection = (IBinder) args[0];
         Intent target = mPluginManager.getComponentsHandler()
@@ -216,12 +345,41 @@ public class ActivityManagerProxy implements InvocationHandler {
     }
 
 
+    /**
+     * 主要完成
+     *
+     * wrapperTargetIntent(...) 修改完 Intent 信息后
+     * 启动插桩 Service
+     *
+     * @param target target
+     * @param serviceInfo serviceInfo
+     * @param extras extras
+     * @param command command
+     * @return ComponentName
+     */
     private ComponentName startDelegateServiceForTarget(Intent target, ServiceInfo serviceInfo, Bundle extras, int command) {
         Intent wrapperIntent = wrapperTargetIntent(target, serviceInfo, extras, command);
         return mPluginManager.getHostContext().startService(wrapperIntent);
     }
 
 
+    /**
+     * 主要完成
+     *
+     * 将插件 Service Intent 替换为 插桩 Service Intent
+     * 然后 插件 Service Intent  作为 插桩 Service Intent 的数据存放
+     *
+     * 还有存放
+     * 插件 Service 的 行为（ start, stop 等 ）
+     * 插件 Service 所属 apk 的绝对路径
+     * 插件 Service Intent 的全部数据
+     *
+     * @param target target
+     * @param serviceInfo serviceInfo
+     * @param extras extras
+     * @param command command
+     * @return Intent
+     */
     private Intent wrapperTargetIntent(Intent target, ServiceInfo serviceInfo, Bundle extras, int command) {
         // fill in service with ComponentName
         target.setComponent(new ComponentName(serviceInfo.packageName, serviceInfo.name));
@@ -243,6 +401,17 @@ public class ActivityManagerProxy implements InvocationHandler {
     }
 
 
+    /**
+     * 动态代理 IActivityManager # getIntentSender
+     *
+     * PendingIntent 内，有不少方法调用 IActivityManager # getIntentSender
+     * 不动态代理的话，拿不到插件 Service 或者 插件 Activity 的相关信息
+     *
+     * 当然不止 PendingIntent 内，其他地方的 IActivityManager # getIntentSender 也会有问题
+     *
+     * @param method method
+     * @param args args
+     */
     private void getIntentSender(Method method, Object[] args) {
         String hostPackageName = mPluginManager.getHostContext().getPackageName();
         args[1] = hostPackageName;
@@ -266,6 +435,15 @@ public class ActivityManagerProxy implements InvocationHandler {
     }
 
 
+    /**
+     * 动态代理 IActivityManager # overridePendingTransition
+     *
+     * 替换 参数 (IBinder token, String packageName, int enterAnim, int exitAnim)
+     * 中的 packageName
+     *
+     * @param method method
+     * @param args args
+     */
     private void overridePendingTransition(Method method, Object[] args) {
         String hostPackageName = mPluginManager.getHostContext().getPackageName();
         args[1] = hostPackageName;
