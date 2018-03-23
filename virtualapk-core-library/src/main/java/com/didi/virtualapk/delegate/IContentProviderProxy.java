@@ -34,6 +34,16 @@ import java.util.Arrays;
 import static com.didi.virtualapk.delegate.RemoteContentProvider.KEY_WRAPPER_URI;
 
 /**
+ * 动态代理 每个 ContentProvider 的远程 Binder proxy
+ *
+ * hook 点是
+ *
+ * ActivityThread # ArrayMap<ProviderKey, ProviderClientRecord> mProviderMap
+ * ActivityThread # ProviderClientRecord # IContentProvider mProvider
+ *
+ * 这里包含了 宿主中 的 插桩 ContentProvider 的 IContentProvider
+ * 还有 插件 ContentProvider 的 IContentProvider
+ *
  * Created by renyugang on 16/12/8.
  */
 
@@ -58,6 +68,22 @@ public class IContentProviderProxy implements InvocationHandler {
     }
 
 
+    /**
+     * IContentProvider 的全局方法 hook
+     *
+     * 1. 所有方法中的 Uri，如果是插件 ContentProvider 的 Uri，就会 hook 成指向 插桩 ContentProvider
+     * -  的复合 Uri 协议
+     *
+     * 2. 当 IContentProvider # call(...) 的时候，先抽出 Bundle，再寻找其中的 Uri
+     * -  再判断是否是插件 ContentProvider 的 Uri，就会 hook 成指向 插桩 ContentProvider
+     * -  的复合 Uri 协议
+     *
+     * @param proxy proxy
+     * @param method method
+     * @param args args
+     * @return Object
+     * @throws Throwable Throwable
+     */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Log.v(TAG, method.toGenericString() + " : " + Arrays.toString(args));
@@ -71,6 +97,19 @@ public class IContentProviderProxy implements InvocationHandler {
     }
 
 
+    /**
+     * 1. 在 IContentProvider 调用任何方法的时候，都去找这个方法中的 Uri 参数
+     * -  当 IContentProvider # call(...) 的时候，先抽出 Bundle，再寻找其中的 Uri
+     * 2. 校验 url 是否是插件 ContentProvider
+     * 3. 是的话，获取 插件 ContentProvider 对应的 ProviderInfo 和 LoadedPlugin
+     * -  构造 插桩 ContentProvider 的 Uri
+     * -  该协议是复合 Uri 协议，包含了最初的 插件 ContentProvider Uri 信息
+     * 4. 根据 复合 Uri 协议，会 call 向 插桩 ContentProvider，在 插桩 ContentProvider
+     * -  内，再次分发 插件 ContentProvider Uri
+     *
+     * 5. 将复合 Uri 协议，替换 1. 中找到的 Uri 参数，IContentProvider # call(...) 的时
+     * -  候，先抽出 Bundle，替换其中的 Uri
+     */
     private void wrapperUri(Method method, Object[] args) {
         Uri uri = null;
         int index = 0;
@@ -119,6 +158,19 @@ public class IContentProviderProxy implements InvocationHandler {
     }
 
 
+    /**
+     * 寻找方法中的 Bundle 参数
+     *
+     * 这里，主要用于搜寻
+     *
+     * IContentProvider # call(String callingPkg, String method, @Nullable String arg, @Nullable
+     * -                       Bundle extras)
+     *
+     * 中的 Bundle extras
+     *
+     * @param args 方法参数组
+     * @return Bundle 参数
+     */
     private Bundle getBundleParameter(Object[] args) {
         Bundle bundle = null;
         if (args != null) {
