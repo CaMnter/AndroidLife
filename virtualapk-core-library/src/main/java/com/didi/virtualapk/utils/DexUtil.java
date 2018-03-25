@@ -27,10 +27,32 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.List;
 
+/**
+ * 抽取自 MultiDex 内的代码
+ *
+ * 对 DexPathList # Element[] dexElements
+ *
+ * 进行 hook
+ *
+ * 插入 插件 dex 的 Element
+ *
+ * -------------------------------------------------------------------------------------------------
+ *
+ * 这样，宿主的 classloader 就能加载到 插件 dex 中的 class
+ */
 public class DexUtil {
     private static boolean sHasInsertedNativeLibrary = false;
 
 
+    /**
+     * 1. 获取宿主原来的 Element[] dexElements
+     * 2. 获取插件原来的 Element[] dexElements
+     * 3. 合并两个 Element[] dexElements
+     * 4. hook 掉宿主中的 Element[] dexElements
+     *
+     * @param dexClassLoader dexClassLoader
+     * @throws Exception Exception
+     */
     public static void insertDex(DexClassLoader dexClassLoader) throws Exception {
         Object baseDexElements = getDexElements(getPathList(getPathClassLoader()));
         Object newDexElements = getDexElements(getPathList(dexClassLoader));
@@ -76,6 +98,14 @@ public class DexUtil {
     }
 
 
+    /**
+     * 合并 宿主 和 插件 中的 DexPathList # File[] nativeLibraryDirectories
+     *
+     * 对 5.1 和 8.0 版本进行适配
+     *
+     * @param dexClassLoader dexClassLoader
+     * @throws Exception Exception
+     */
     private static synchronized void insertNativeLibrary(DexClassLoader dexClassLoader)
         throws Exception {
         if (sHasInsertedNativeLibrary) {

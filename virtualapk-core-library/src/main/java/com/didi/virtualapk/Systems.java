@@ -25,6 +25,15 @@ import android.content.Context;
 
 /**
  * This is God class, you should not know where it's from and any details.
+ *
+ * 用于静态缓存 宿主 context
+ *
+ * 但是，VA 中仅用于 合并 宿主 和 插件的 native lib 时
+ * 即，DexPathList # File[] nativeLibraryDirectories
+ *
+ * Systems.getContext().getDir(Constants.NATIVE_DIR, Context.MODE_PRIVATE) 的方式
+ *
+ * 获取 宿主 和 插件的 native lib
  */
 public class Systems {
 
