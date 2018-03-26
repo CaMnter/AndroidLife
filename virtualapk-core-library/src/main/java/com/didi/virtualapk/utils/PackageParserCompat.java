@@ -22,6 +22,17 @@ import android.os.Build;
 import java.io.File;
 
 /**
+ * 适配全部版本的 PackageParser # collectCertificates(...)
+ *
+ * 用于获取 PackageParser # Package
+ *
+ * 这样就可以获取到 插件 apk 的
+ * ApplicationInfo
+ * ActivityInfo（ Activity ）
+ * ActivityInfo（ BroadcastReceiver ）
+ * ServiceInfo
+ * ProviderInfo
+ *
  * @author johnsonlee
  */
 public final class PackageParserCompat {
@@ -38,6 +49,13 @@ public final class PackageParserCompat {
     }
 
 
+    /**
+     * 高于 7.0.0 的适配
+     *
+     * private static void collectCertificates(Package pkg, File apkFile, int parseFlags)
+     *
+     * 需要反射
+     */
     private static final class PackageParserV24 {
 
         static final PackageParser.Package parsePackage(Context context, File apk, int flags)
@@ -51,6 +69,13 @@ public final class PackageParserCompat {
     }
 
 
+    /**
+     * 5.0.0 - 6.0.0 的适配
+     *
+     * public void collectCertificates(Package pkg, int flags)
+     *
+     * 不需要反射
+     */
     private static final class PackageParserLollipop {
 
         static final PackageParser.Package parsePackage(final Context context, final File apk, final int flags)
@@ -68,6 +93,13 @@ public final class PackageParserCompat {
     }
 
 
+    /**
+     * 低于 5.0.0 的适配
+     *
+     * public boolean collectCertificates(Package pkg, int flags)
+     *
+     * 可能版本太多，用反射调用有备无患
+     */
     private static final class PackageParserLegacy {
 
         static final PackageParser.Package parsePackage(Context context, File apk, int flags) {
