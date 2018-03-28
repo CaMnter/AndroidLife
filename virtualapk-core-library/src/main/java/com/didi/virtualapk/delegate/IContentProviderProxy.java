@@ -34,15 +34,14 @@ import java.util.Arrays;
 import static com.didi.virtualapk.delegate.RemoteContentProvider.KEY_WRAPPER_URI;
 
 /**
- * 动态代理 每个 ContentProvider 的远程 Binder proxy
+ * 用于动态代理 RemoteContentProvider 的远程 Binder proxy
  *
  * hook 点是
  *
  * ActivityThread # ArrayMap<ProviderKey, ProviderClientRecord> mProviderMap
  * ActivityThread # ProviderClientRecord # IContentProvider mProvider
  *
- * 这里包含了 宿主中 的 插桩 ContentProvider 的 IContentProvider
- * 还有 插件 ContentProvider 的 IContentProvider
+ * 中寻找 RemoteContentProvider
  *
  * Created by renyugang on 16/12/8.
  */
