@@ -41,6 +41,11 @@ public class ComponentsHandler {
     private PluginManager mPluginManager;
     private StubActivityInfo mStubActivityInfo = new StubActivityInfo();
 
+    /**
+     * 缓存 插件 Service 缓存
+     * 缓存 插件 Service 对应的 IServiceConnection 缓存
+     * 缓存 插件 Service 数量
+     */
     private ArrayMap<ComponentName, Service> mServices = new ArrayMap<ComponentName, Service>();
     private ArrayMap<IBinder, Intent> mBoundServices = new ArrayMap<IBinder, Intent>();
     private ArrayMap<Service, AtomicInteger> mServiceCounters
@@ -55,6 +60,10 @@ public class ComponentsHandler {
 
     /**
      * transform intent from implicit to explicit
+     *
+     * package name 和 宿主 package name 相同
+     * 并且属于插件 activity 的 intent
+     * 需要手动设置 intent 的 ComponentName
      */
     public Intent transformIntentToExplicitAsNeeded(Intent intent) {
         ComponentName component = intent.getComponent();
@@ -72,6 +81,12 @@ public class ComponentsHandler {
     }
 
 
+    /**
+     * 在进入 AMS 所在的进程 system_server 前
+     * 需要将插件 intent 的信息，放入 插桩 intent 的信息内
+     *
+     * @param intent intent
+     */
     public void markIntentIfNeeded(Intent intent) {
         if (intent.getComponent() == null) {
             return;
@@ -90,6 +105,14 @@ public class ComponentsHandler {
     }
 
 
+    /**
+     * 服务于 markIntentIfNeeded(...)
+     *
+     * 放置 各种插件 Activity 的信息
+     * 选择一个 插桩 Activity
+     *
+     * @param intent intent
+     */
     private void dispatchStubActivity(Intent intent) {
         ComponentName component = intent.getComponent();
         String targetClassName = intent.getComponent().getClassName();
@@ -108,6 +131,12 @@ public class ComponentsHandler {
     }
 
 
+    /**
+     * 获取 插件 Service 缓存 个数
+     *
+     * @param service service
+     * @return AtomicInteger
+     */
     public AtomicInteger getServiceCounter(Service service) {
         return this.mServiceCounters.get(service);
     }
@@ -115,6 +144,9 @@ public class ComponentsHandler {
 
     /**
      * Retrieve the started service by component name
+     *
+     * 根据 ComponentName
+     * 获取对应的 插件 Service 缓存
      */
     public Service getService(ComponentName component) {
         return this.mServices.get(component);
@@ -124,6 +156,8 @@ public class ComponentsHandler {
     /**
      * Put the started service into service registry, and then increase the counter associate with
      * the service
+     *
+     * 添加 插件 Service 缓存
      */
     public void rememberService(ComponentName component, Service service) {
         synchronized (this.mServices) {
@@ -135,6 +169,8 @@ public class ComponentsHandler {
 
     /**
      * Remove the service from service registry
+     *
+     * 删除 插件 Service 缓存
      */
     public Service forgetService(ComponentName component) {
         synchronized (this.mServices) {
@@ -147,6 +183,8 @@ public class ComponentsHandler {
 
     /**
      * Remove the bound service from service registry
+     *
+     * 删除 插件 Service 对应的 IServiceConnection 缓存
      *
      * @param iServiceConnection IServiceConnection binder when unbindService
      */
@@ -161,6 +199,8 @@ public class ComponentsHandler {
     /**
      * save the bound service
      *
+     * 添加 插件 Service 对应的 IServiceConnection 缓存
+     *
      * @param iServiceConnection IServiceConnection binder when bindService
      */
     public void remberIServiceConnection(IBinder iServiceConnection, Intent intent) {
@@ -172,6 +212,8 @@ public class ComponentsHandler {
 
     /**
      * Check if a started service with the specified component exists in the registry
+     *
+     * 查询 插件 Service 对应的 IServiceConnection 缓存
      */
     public boolean isServiceAvailable(ComponentName component) {
         return this.mServices.containsKey(component);
