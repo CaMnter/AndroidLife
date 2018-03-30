@@ -33,6 +33,32 @@ import java.util.Map;
  */
 class ResourcesManager {
 
+    /**
+     * 反射创建 一个 复合资源
+     *
+     * --------------------------------------------------------------------------------------------
+     *
+     * 通过反射调用
+     * AssetManager # addAssetPath(String path)
+     *
+     * 然后得到的 AssetManager
+     * 直接 new Resources
+     *
+     * --------------------------------------------------------------------------------------------
+     *
+     * 1. 拿到宿主上的 AssetManager，低与 5.0.0 直接反射创建出来
+     * 2. 反射调用 AssetManager # addAssetPath(String path)，添加 当前插件 Apk
+     * -  这样 AssetManager 生成的 Resources 就有 当前插件 和 宿主 的资源
+     * 3. 获取之前加载过的 Apk 内存形式 - LoadedPlugin，然后循环调用 AssetManager # addAssetPath(String path)
+     * -  这样 AssetManager 生成的 Resources 就有 当前插件 、之前加载过的插件 和 宿主 的资源
+     * 4. 由于 MiUi, Vivo, Nubia 等的资源实现类不一样，在进行 new Resources 的时候，需要适配
+     *
+     * --------------------------------------------------------------------------------------------
+     *
+     * @param hostContext hostContext
+     * @param apk apk
+     * @return Resources
+     */
     public static synchronized Resources createResources(Context hostContext, String apk) {
         Resources hostResources = hostContext.getResources();
         Resources newResources = null;
@@ -80,6 +106,26 @@ class ResourcesManager {
     }
 
 
+    /**
+     * Hook 掉宿主内的 Resources
+     *
+     * 用 createResources(Context hostContext, String apk) 生成的 复合资源
+     *
+     * 这样的话，插件 class 和 宿主 class 都访问这个 复合资源话，就没问题了
+     *
+     * Hook 点
+     *
+     * ContextImpl # Resources mResources
+     * LoadedApk # Resources mResources
+     *
+     * >=7.0.0
+     * ResourcesManager # ArrayMap<ResourcesKey, WeakReference<ResourcesImpl>> mResourceImpls
+     * <7.0.0
+     * ResourcesManager # ArrayMap<ResourcesKey, WeakReference<Resources> > mActiveResources
+     *
+     * @param base base
+     * @param resources resources
+     */
     public static void hookResources(Context base, Resources resources) {
         try {
             ReflectUtil.setField(base.getClass(), base, "mResources", resources);
@@ -110,26 +156,55 @@ class ResourcesManager {
     }
 
 
+    /**
+     * 判断 小米 机型
+     *
+     * @param resources resources
+     * @return boolean
+     */
     private static boolean isMiUi(Resources resources) {
         return resources.getClass().getName().equals("android.content.res.MiuiResources");
     }
 
 
+    /**
+     * 判断 Vivo 机型
+     *
+     * @param resources resources
+     * @return boolean
+     */
     private static boolean isVivo(Resources resources) {
         return resources.getClass().getName().equals("android.content.res.VivoResources");
     }
 
 
+    /**
+     * 判断 Nubia 机型
+     *
+     * @param resources resources
+     * @return boolean
+     */
     private static boolean isNubia(Resources resources) {
         return resources.getClass().getName().equals("android.content.res.NubiaResources");
     }
 
 
+    /**
+     * 判断其他机型
+     *
+     * @param resources resources
+     * @return boolean
+     */
     private static boolean isNotRawResources(Resources resources) {
         return !resources.getClass().getName().equals("android.content.res.Resources");
     }
 
 
+    /**
+     * 适配 小米 机型
+     *
+     * 反射 android.content.res.MiuiResources 创建 Resources
+     */
     private static final class MiUiResourcesCompat {
         private static Resources createResources(Resources hostResources, AssetManager assetManager)
             throws Exception {
@@ -143,6 +218,11 @@ class ResourcesManager {
     }
 
 
+    /**
+     * 适配 Vivo 机型
+     *
+     * 反射 android.content.res.VivoResources 创建 Resources
+     */
     private static final class VivoResourcesCompat {
         private static Resources createResources(Context hostContext, Resources hostResources, AssetManager assetManager)
             throws Exception {
@@ -162,6 +242,11 @@ class ResourcesManager {
     }
 
 
+    /**
+     * 适配 Nubia 机型
+     *
+     * 反射 android.content.res.NubiaResources 创建 Resources
+     */
     private static final class NubiaResourcesCompat {
         private static Resources createResources(Resources hostResources, AssetManager assetManager)
             throws Exception {
@@ -175,6 +260,12 @@ class ResourcesManager {
     }
 
 
+    /**
+     * 其他类型
+     *
+     * 尝试反射调用其 具体类型 的构造方法
+     * 不行，就用 new Resources
+     */
     private static final class AdaptationResourcesCompat {
         private static Resources createResources(Resources hostResources, AssetManager assetManager)
             throws Exception {
