@@ -25,61 +25,132 @@ import android.content.res.AssetManager;
 import android.content.res.Resources;
 
 /**
+ * 自定义一个 Context，用于存放在 LoadedPlugin
+ *
+ * 但是，这个 Context 的 base 是 宿主
+ * 意味着这个 Context 的环境属于 宿主
+ *
+ * 唯一不同的地方在于
+ *
+ * 从 宿主 中获取
+ * getApplicationContext()
+ * getHostContext()
+ * getContentResolver()
+ * getSystemService(String name)
+ *
+ * 非宿主 中获取
+ *
+ * 插件 Classloader
+ * getClassLoader()
+ *
+ * 插件 PackageManager，用的是 LoadedPlugin 内的自定义 PackageManager
+ * getPackageManager()
+ *
+ * 插件 Resources
+ * getResources()
+ *
+ * 插件 AssetManager
+ * getAssets()
+ *
+ * 插件 Theme
+ * getTheme()
+ *
+ * Hook 了 startActivity(Intent intent)
+ * 手动设置 intent 的 ComponentName
+ *
  * Created by renyugang on 16/8/12.
  */
 class PluginContext extends ContextWrapper {
 
     private final LoadedPlugin mPlugin;
 
+
     public PluginContext(LoadedPlugin plugin) {
         super(plugin.getPluginManager().getHostContext());
         this.mPlugin = plugin;
     }
 
+
+    /**
+     * 从 宿主 中获取 Application
+     *
+     * @return Context
+     */
     @Override
     public Context getApplicationContext() {
         return this.mPlugin.getApplication();
     }
 
-//    @Override
-//    public ApplicationInfo getApplicationInfo() {
-//        return this.mPlugin.getApplicationInfo();
-//    }
+    //    @Override
+    //    public ApplicationInfo getApplicationInfo() {
+    //        return this.mPlugin.getApplicationInfo();
+    //    }
 
+
+    /**
+     * 从 宿主 中获取 Context
+     *
+     * @return Context
+     */
     private Context getHostContext() {
         return getBaseContext();
     }
 
+
+    /**
+     * 从 宿主 中获取 ContentResolver
+     *
+     * @return ContentResolver
+     */
     @Override
     public ContentResolver getContentResolver() {
         return new PluginContentResolver(getHostContext());
     }
 
+
+    /**
+     * 从 插件 中获取 插件 Classloader
+     *
+     * @return ClassLoader
+     */
     @Override
     public ClassLoader getClassLoader() {
         return this.mPlugin.getClassLoader();
     }
 
-//    @Override
-//    public String getPackageName() {
-//        return this.mPlugin.getPackageName();
-//    }
+    //    @Override
+    //    public String getPackageName() {
+    //        return this.mPlugin.getPackageName();
+    //    }
 
-//    @Override
-//    public String getPackageResourcePath() {
-//        return this.mPlugin.getPackageResourcePath();
-//    }
+    //    @Override
+    //    public String getPackageResourcePath() {
+    //        return this.mPlugin.getPackageResourcePath();
+    //    }
 
-//    @Override
-//    public String getPackageCodePath() {
-//        return this.mPlugin.getCodePath();
-//    }
+    //    @Override
+    //    public String getPackageCodePath() {
+    //        return this.mPlugin.getCodePath();
+    //    }
 
+
+    /**
+     * 从 插件 中获取 插件 PackageManager
+     *
+     * @return PackageManager
+     */
     @Override
     public PackageManager getPackageManager() {
         return this.mPlugin.getPackageManager();
     }
 
+
+    /**
+     * 从 宿主 中获取 SystemService
+     *
+     * @param name name
+     * @return Object
+     */
     @Override
     public Object getSystemService(String name) {
         // intercept CLIPBOARD_SERVICE,NOTIFICATION_SERVICE
@@ -92,21 +163,46 @@ class PluginContext extends ContextWrapper {
         return super.getSystemService(name);
     }
 
+
+    /**
+     * 从 插件 中获取 插件 Resources
+     *
+     * @return Resources
+     */
     @Override
     public Resources getResources() {
         return this.mPlugin.getResources();
     }
 
+
+    /**
+     * 从 插件 中获取 插件 AssetManager
+     *
+     * @return AssetManager
+     */
     @Override
     public AssetManager getAssets() {
         return this.mPlugin.getAssets();
     }
 
+
+    /**
+     * 从 插件 中获取 插件 Theme
+     *
+     * @return Theme
+     */
     @Override
     public Resources.Theme getTheme() {
         return this.mPlugin.getTheme();
     }
 
+
+    /**
+     * Hook 了 startActivity(Intent intent)
+     * 手动设置 intent 的 ComponentName
+     *
+     * @param intent intent
+     */
     @Override
     public void startActivity(Intent intent) {
         ComponentsHandler componentsHandler = mPlugin.getPluginManager().getComponentsHandler();
