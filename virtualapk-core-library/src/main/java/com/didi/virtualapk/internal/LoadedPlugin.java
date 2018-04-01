@@ -72,6 +72,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Apk 文件在 VirtualApk 中的内存格式
+ *
  * Created by renyugang on 16/8/9.
  */
 public final class LoadedPlugin {
@@ -85,6 +87,18 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 构造一个加载该 Apk 的 classloader
+     *
+     * 然后把这个 classloader 的 Element 插入宿主的 DexPathList # Element[] dexElements 中
+     * 宿主 classloader 也可以访问该 Apk 内的 class
+     *
+     * @param context context
+     * @param apk apk
+     * @param libsDir libsDir
+     * @param parent parent
+     * @return ClassLoader
+     */
     private static ClassLoader createClassLoader(Context context, File apk, File libsDir, ClassLoader parent) {
         File dexOutputDir = context.getDir(Constants.OPTIMIZE_DIR, Context.MODE_PRIVATE);
         String dexOutputPath = dexOutputDir.getAbsolutePath();
@@ -103,6 +117,13 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 反射创建一个 插件 AssetManager
+     *
+     * @param context context
+     * @param apk apk
+     * @return AssetManager
+     */
     private static AssetManager createAssetManager(Context context, File apk) {
         try {
             AssetManager am = AssetManager.class.newInstance();
@@ -115,6 +136,16 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 根据需要 反射创建 Resources
+     *
+     * 可以选择反射创建 复合资源，就是 Resources 包含和 所有插件 Resources + 宿主 Resources
+     * 还可悬着反射创建 单一资源，就是仅仅是该插件的 Resources
+     *
+     * @param context context
+     * @param apk apk
+     * @return Resources
+     */
     @WorkerThread
     private static Resources createResources(Context context, File apk) {
         if (Constants.COMBINE_RESOURCES) {
@@ -135,27 +166,109 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * Apk 的 绝对路径
+     */
     private final String mLocation;
+    /**
+     * Apk 的 对应 PluginManager
+     * 里面有被 hook 掉的 原数据缓存
+     */
     private PluginManager mPluginManager;
+    /**
+     * 宿主 context
+     */
     private Context mHostContext;
+    /**
+     * 自定义的 插件 context
+     * 内部有部分功能是选择用宿主 context 调用的
+     * 可以认为是访问宿主的信息
+     *
+     * 还有部分是用插件 context 去调用的
+     * 就是访问插件的信息
+     */
     private Context mPluginContext;
+    /**
+     * native lib 文件夹路径
+     * so lib 文件夹路径
+     */
     private final File mNativeLibDir;
+    /**
+     * Apk 文件解析后的 PackageParser.Package
+     * 可以拿到插件 activity, service, content provider, broadcast receiver 等信息
+     */
     private final PackageParser.Package mPackage;
+    /**
+     * 新建的一个 PackageInfo
+     * 里面的信息从 PackageParser.Package 中搬取
+     */
     private final PackageInfo mPackageInfo;
+    /**
+     * 该 Apk 内存形式上 所持有的资源
+     * 可能是 复合资源（ 所以插件资源 + 宿主资源 ）
+     * 可能是 插件单一资源
+     * 根据配置
+     */
     private Resources mResources;
+    /**
+     * new 的一个 DexClassloader
+     * 用于加载插件
+     *
+     * 同时，将该 classloader 的 Element 也插入到宿主 的 DexPathList # Element[] dexElements 中
+     * 宿主的 classloader 就整合成了 可以访问该插件 class 的 classloader
+     */
     private ClassLoader mClassLoader;
+    /**
+     * 自定义的插件 PluginPackageManager
+     */
     private PluginPackageManager mPackageManager;
 
+    /**
+     * 插件的 activity 信息
+     * 需要在 插件 apk 的 AndManifest 内配置了 才生效
+     */
     private Map<ComponentName, ActivityInfo> mActivityInfos;
+    /**
+     * 插件的 service 信息
+     * 需要在 插件 apk 的 AndManifest 内配置了 才生效
+     */
     private Map<ComponentName, ServiceInfo> mServiceInfos;
+    /**
+     * 插件的 receiver 信息
+     * 需要在 插件 apk 的 AndManifest 内配置了 才生效
+     */
     private Map<ComponentName, ActivityInfo> mReceiverInfos;
+    /**
+     * 插件的 provider 信息
+     * 需要在 插件 apk 的 AndManifest 内配置了 才生效
+     */
     private Map<ComponentName, ProviderInfo> mProviderInfos;
+    /**
+     * 根据 协议 缓存插件 Provider
+     */
     private Map<String, ProviderInfo> mProviders; // key is authorities of provider
+
+    /**
+     * Apk 解析出来的 PackageParser.Instrumentation 缓存
+     */
     private Map<ComponentName, InstrumentationInfo> mInstrumentationInfos;
 
+    /**
+     * 反射创建出来的 Application
+     * 这个 Application
+     * 用的是被 hook Instrumentation 去反射创建
+     */
     private Application mApplication;
 
 
+    /**
+     * 初始化 关于 Apk 的很多信息
+     *
+     * @param pluginManager pluginManager
+     * @param context context
+     * @param apk apk
+     * @throws PackageParser.PackageParserException
+     */
     LoadedPlugin(PluginManager pluginManager, Context context, File apk)
         throws PackageParser.PackageParserException {
         this.mPluginManager = pluginManager;
@@ -247,6 +360,11 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 尝试复制 native lib
+     *
+     * @param apk apk
+     */
     private void tryToCopyNativeLib(File apk) {
         Bundle metaData = this.mPackageInfo.applicationInfo.metaData;
         if (metaData != null && metaData.getBoolean("VA_IS_HAVE_LIB")) {
@@ -310,6 +428,11 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 初始化 Application
+     * 这个 Application
+     * 用的是被 hook Instrumentation 去反射创建
+     */
     public void invokeApplication() {
         if (mApplication != null) {
             return;
@@ -337,6 +460,11 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 获取插件 Apk 中的 launch activity 的 intent
+     *
+     * @return Intent
+     */
     public Intent getLaunchIntent() {
         ContentResolver resolver = this.mPluginContext.getContentResolver();
         Intent launcher = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
@@ -353,6 +481,11 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 获取插件 Apk 中的 leanback launch activity 的 intent
+     *
+     * @return Intent
+     */
     public Intent getLeanbackLaunchIntent() {
         ContentResolver resolver = this.mPluginContext.getContentResolver();
         Intent launcher = new Intent(Intent.ACTION_MAIN).addCategory(
@@ -373,6 +506,12 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 获取 插件 apk 的 ApplicationInfo
+     * 从 PackageParser.Package 中抽取
+     *
+     * @return ApplicationInfo
+     */
     public ApplicationInfo getApplicationInfo() {
         return this.mPackage.applicationInfo;
     }
@@ -383,26 +522,55 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 根据 ComponentName 获取插件 Apk 中的对应的 ActivityInfo
+     *
+     * @param componentName componentName
+     * @return ActivityInfo
+     */
     public ActivityInfo getActivityInfo(ComponentName componentName) {
         return this.mActivityInfos.get(componentName);
     }
 
 
+    /**
+     * 根据 ComponentName 获取插件 Apk 中的对应的 ServiceInfo
+     *
+     * @param componentName componentName
+     * @return ServiceInfo
+     */
     public ServiceInfo getServiceInfo(ComponentName componentName) {
         return this.mServiceInfos.get(componentName);
     }
 
 
+    /**
+     * 根据 ComponentName 获取插件 Apk 中的对应的 ReceiverInfo ( ActivityInfo )
+     *
+     * @param componentName componentName
+     * @return ActivityInfo
+     */
     public ActivityInfo getReceiverInfo(ComponentName componentName) {
         return this.mReceiverInfos.get(componentName);
     }
 
 
+    /**
+     * 根据 ComponentName 获取插件 Apk 中的对应的 ProviderInfo
+     *
+     * @param componentName componentName
+     * @return ProviderInfo
+     */
     public ProviderInfo getProviderInfo(ComponentName componentName) {
         return this.mProviderInfos.get(componentName);
     }
 
 
+    /**
+     * 获取插件 Theme
+     *
+     * @return Resources.Theme
+     */
     public Resources.Theme getTheme() {
         Resources.Theme theme = this.mResources.newTheme();
         theme.applyStyle(PluginUtil.selectDefaultTheme(this.mPackage.applicationInfo.theme,
@@ -411,6 +579,11 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * hook 插件 Resources 中的 Theme res id
+     *
+     * @param resid resid
+     */
     public void setTheme(int resid) {
         try {
             ReflectUtil.setField(Resources.class, this.mResources, "mThemeResId", resid);
@@ -420,6 +593,21 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 反射 创建 Application
+     *
+     * 这个 Application
+     * 用的是被 hook Instrumentation 去反射创建
+     *
+     * 这的 Instrumentation，就是被 VAInstrumentation hook 后，替换下来的 原生
+     * Instrumentation
+     *
+     * 还得手动回调一次 Instrumentation # callApplicationOnCreate(Application app)
+     *
+     * @param forceDefaultAppClass forceDefaultAppClass
+     * @param instrumentation instrumentation
+     * @return Application
+     */
     private Application makeApplication(boolean forceDefaultAppClass, Instrumentation instrumentation) {
         if (null != this.mApplication) {
             return this.mApplication;
@@ -442,6 +630,14 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 根据 Intent 和 flag
+     * 获取 Apk 中对应的插件 Activity 信息
+     *
+     * @param intent intent
+     * @param flags flags
+     * @return ResolveInfo
+     */
     public ResolveInfo resolveActivity(Intent intent, int flags) {
         List<ResolveInfo> query = this.queryIntentActivities(intent, flags);
         if (null == query || query.isEmpty()) {
@@ -453,6 +649,14 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 根据 Intent 和 flag
+     * 查询该 Apk 中是否有对应的插件 Activity 信息
+     *
+     * @param intent intent
+     * @param flags flags
+     * @return List<ResolveInfo>
+     */
     public List<ResolveInfo> queryIntentActivities(Intent intent, int flags) {
         ComponentName component = intent.getComponent();
         List<ResolveInfo> resolveInfos = new ArrayList<ResolveInfo>();
@@ -480,6 +684,14 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 根据 Intent 和 flag
+     * 获取 Apk 中对应的插件 Service 信息
+     *
+     * @param intent intent
+     * @param flags flags
+     * @return ResolveInfo
+     */
     public ResolveInfo resolveService(Intent intent, int flags) {
         List<ResolveInfo> query = this.queryIntentServices(intent, flags);
         if (null == query || query.isEmpty()) {
@@ -491,6 +703,14 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 根据 Intent 和 flag
+     * 查询该 Apk 中是否有对应的插件 Service 信息
+     *
+     * @param intent intent
+     * @param flags flags
+     * @return List<ResolveInfo>
+     */
     public List<ResolveInfo> queryIntentServices(Intent intent, int flags) {
         ComponentName component = intent.getComponent();
         List<ResolveInfo> resolveInfos = new ArrayList<ResolveInfo>();
@@ -518,6 +738,14 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 根据 Intent 和 flag
+     * 查询该 Apk 中是否有对应的插件 BroadcastReceiver 信息
+     *
+     * @param intent intent
+     * @param flags flags
+     * @return List<ResolveInfo>
+     */
     public List<ResolveInfo> queryBroadcastReceivers(Intent intent, int flags) {
         ComponentName component = intent.getComponent();
         List<ResolveInfo> resolveInfos = new ArrayList<ResolveInfo>();
@@ -545,11 +773,28 @@ public final class LoadedPlugin {
     }
 
 
+    /**
+     * 根据 name，查询对应的 Apk ContentProvider 缓存信息 ProviderInfo
+     *
+     * @param name name
+     * @param flags flags
+     * @return ProviderInfo
+     */
     public ProviderInfo resolveContentProvider(String name, int flags) {
         return this.mProviders.get(name);
     }
 
 
+    /**
+     * 用于匹配 PackageParser.Component 对应的 ComponentName
+     * PackageParser.Component 的子类有
+     * PackageParser.Activity
+     * PackageParser.Service
+     *
+     * @param component component
+     * @param target target
+     * @return boolean
+     */
     private boolean match(PackageParser.Component component, ComponentName target) {
         ComponentName source = component.getComponentName();
         if (source == target) return true;
