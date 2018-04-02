@@ -2327,6 +2327,7 @@ public final class LoadedPlugin {
          *
          * @param cookie cookie
          */
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void updateInstantAppCookie(@Nullable byte[] cookie) {
             this.mHostPackageManager.updateInstantAppCookie(cookie);
