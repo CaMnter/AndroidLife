@@ -50,7 +50,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.os.UserHandle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -809,6 +808,12 @@ public final class LoadedPlugin {
 
 
     /**
+     * 自定义的 插件 PackageManager
+     *
+     * 因为
+     * 有些 Api 得通过 插件 数据调用
+     * 也有 Api 得通过 宿主 数据条用
+     *
      * @author johnsonlee
      */
     private class PluginPackageManager extends PackageManager {
@@ -816,6 +821,16 @@ public final class LoadedPlugin {
         private PackageManager mHostPackageManager = mHostContext.getPackageManager();
 
 
+        /**
+         * 获取 PackageInfo
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param packageName packageName
+         * @param flags flags
+         * @return PackageInfo
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public PackageInfo getPackageInfo(String packageName, int flags)
             throws NameNotFoundException {
@@ -829,18 +844,37 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param names names
+         * @return String[]
+         */
         @Override
         public String[] currentToCanonicalPackageNames(String[] names) {
             return this.mHostPackageManager.currentToCanonicalPackageNames(names);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param names names
+         * @return String[]
+         */
         @Override
         public String[] canonicalToCurrentPackageNames(String[] names) {
             return this.mHostPackageManager.canonicalToCurrentPackageNames(names);
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param packageName packageName
+         * @return Intent
+         */
         @Override
         public Intent getLaunchIntentForPackage(String packageName) {
             LoadedPlugin plugin = mPluginManager.getLoadedPlugin(packageName);
@@ -852,6 +886,13 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param packageName packageName
+         * @return Intent
+         */
         @Override
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         public Intent getLeanbackLaunchIntentForPackage(String packageName) {
@@ -864,12 +905,26 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param packageName packageName
+         * @return int[]
+         */
         @Override
         public int[] getPackageGids(String packageName) throws NameNotFoundException {
             return this.mHostPackageManager.getPackageGids(packageName);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param name name
+         * @param flags flags
+         * @return PermissionInfo
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public PermissionInfo getPermissionInfo(String name, int flags)
             throws NameNotFoundException {
@@ -877,6 +932,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param group group
+         * @param flags flags
+         * @return List<PermissionInfo>
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public List<PermissionInfo> queryPermissionsByGroup(String group, int flags)
             throws NameNotFoundException {
@@ -884,6 +947,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param name name
+         * @param flags flags
+         * @return PermissionGroupInfo
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public PermissionGroupInfo getPermissionGroupInfo(String name, int flags)
             throws NameNotFoundException {
@@ -891,12 +962,27 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param flags flags
+         * @return List<PermissionGroupInfo>
+         */
         @Override
         public List<PermissionGroupInfo> getAllPermissionGroups(int flags) {
             return this.mHostPackageManager.getAllPermissionGroups(flags);
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param packageName packageName
+         * @param flags flags
+         * @return ApplicationInfo
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public ApplicationInfo getApplicationInfo(String packageName, int flags)
             throws NameNotFoundException {
@@ -909,6 +995,15 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param component component
+         * @param flags flags
+         * @return ActivityInfo
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public ActivityInfo getActivityInfo(ComponentName component, int flags)
             throws NameNotFoundException {
@@ -921,6 +1016,15 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param component component
+         * @param flags flags
+         * @return ActivityInfo
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public ActivityInfo getReceiverInfo(ComponentName component, int flags)
             throws NameNotFoundException {
@@ -933,6 +1037,15 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param component component
+         * @param flags flags
+         * @return ActivityInfo
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public ServiceInfo getServiceInfo(ComponentName component, int flags)
             throws NameNotFoundException {
@@ -945,6 +1058,15 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param component component
+         * @param flags flags
+         * @return ActivityInfo
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public ProviderInfo getProviderInfo(ComponentName component, int flags)
             throws NameNotFoundException {
@@ -957,12 +1079,25 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param flags flags
+         * @return List<PackageInfo>
+         */
         @Override
         public List<PackageInfo> getInstalledPackages(int flags) {
             return this.mHostPackageManager.getInstalledPackages(flags);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param permissions permissions
+         * @param flags flags
+         * @return List<PackageInfo>
+         */
         @Override
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
         public List<PackageInfo> getPackagesHoldingPermissions(String[] permissions, int flags) {
@@ -970,78 +1105,158 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param permName permName
+         * @param pkgName pkgName
+         * @return int
+         */
         @Override
         public int checkPermission(String permName, String pkgName) {
             return this.mHostPackageManager.checkPermission(permName, pkgName);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param info info
+         * @return boolean
+         */
         @Override
         public boolean addPermission(PermissionInfo info) {
             return this.mHostPackageManager.addPermission(info);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param info info
+         * @return boolean
+         */
         @Override
         public boolean addPermissionAsync(PermissionInfo info) {
             return this.mHostPackageManager.addPermissionAsync(info);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param name name
+         */
         @Override
         public void removePermission(String name) {
             this.mHostPackageManager.removePermission(name);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param pkg1 pkg1
+         * @param pkg2 pkg2
+         * @return int
+         */
         @Override
         public int checkSignatures(String pkg1, String pkg2) {
             return this.mHostPackageManager.checkSignatures(pkg1, pkg2);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param uid1 uid1
+         * @param uid2 uid2
+         * @return int
+         */
         @Override
         public int checkSignatures(int uid1, int uid2) {
             return this.mHostPackageManager.checkSignatures(uid1, uid2);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param uid uid
+         * @return String[]
+         */
         @Override
         public String[] getPackagesForUid(int uid) {
             return this.mHostPackageManager.getPackagesForUid(uid);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param uid uid
+         * @return String
+         */
         @Override
         public String getNameForUid(int uid) {
             return this.mHostPackageManager.getNameForUid(uid);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param flags flags
+         * @return List<ApplicationInfo>
+         */
         @Override
         public List<ApplicationInfo> getInstalledApplications(int flags) {
             return this.mHostPackageManager.getInstalledApplications(flags);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @return String[]
+         */
         @Override
         public String[] getSystemSharedLibraryNames() {
             return this.mHostPackageManager.getSystemSharedLibraryNames();
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @return FeatureInfo[]
+         */
         @Override
         public FeatureInfo[] getSystemAvailableFeatures() {
             return this.mHostPackageManager.getSystemAvailableFeatures();
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param name name
+         * @return boolean
+         */
         @Override
         public boolean hasSystemFeature(String name) {
             return this.mHostPackageManager.hasSystemFeature(name);
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param intent intent
+         * @param flags flags
+         * @return ResolveInfo
+         */
         @Override
         public ResolveInfo resolveActivity(Intent intent, int flags) {
             ResolveInfo resolveInfo = mPluginManager.resolveActivity(intent, flags);
@@ -1053,6 +1268,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param intent intent
+         * @param flags flags
+         * @return List<ResolveInfo>
+         */
         @Override
         public List<ResolveInfo> queryIntentActivities(Intent intent, int flags) {
             ComponentName component = intent.getComponent();
@@ -1093,6 +1316,15 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param caller caller
+         * @param specifics specifics
+         * @param intent intent
+         * @param flags flags
+         * @return List<ResolveInfo>
+         */
         @Override
         public List<ResolveInfo> queryIntentActivityOptions(ComponentName caller, Intent[] specifics, Intent intent, int flags) {
             return this.mHostPackageManager.queryIntentActivityOptions(caller, specifics, intent,
@@ -1100,6 +1332,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param intent intent
+         * @param flags flags
+         * @return List<ResolveInfo>
+         */
         @Override
         public List<ResolveInfo> queryBroadcastReceivers(Intent intent, int flags) {
             ComponentName component = intent.getComponent();
@@ -1140,6 +1380,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param intent intent
+         * @param flags flags
+         * @return ResolveInfo
+         */
         @Override
         public ResolveInfo resolveService(Intent intent, int flags) {
             ResolveInfo resolveInfo = mPluginManager.resolveService(intent, flags);
@@ -1151,6 +1399,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param intent intent
+         * @param flags flags
+         * @return List<ResolveInfo>
+         */
         @Override
         public List<ResolveInfo> queryIntentServices(Intent intent, int flags) {
             ComponentName component = intent.getComponent();
@@ -1191,6 +1447,13 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param intent intent
+         * @param flags flags
+         * @return List<ResolveInfo>
+         */
         @Override
         @TargetApi(Build.VERSION_CODES.KITKAT)
         public List<ResolveInfo> queryIntentContentProviders(Intent intent, int flags) {
@@ -1198,6 +1461,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param name name
+         * @param flags flags
+         * @return ProviderInfo
+         */
         @Override
         public ProviderInfo resolveContentProvider(String name, int flags) {
             ProviderInfo providerInfo = mPluginManager.resolveContentProvider(name, flags);
@@ -1209,12 +1480,29 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param processName processName
+         * @param uid uid
+         * @param flags flags
+         * @return List<ProviderInfo>
+         */
         @Override
         public List<ProviderInfo> queryContentProviders(String processName, int uid, int flags) {
             return this.mHostPackageManager.queryContentProviders(processName, uid, flags);
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param component component
+         * @param flags flags
+         * @return InstrumentationInfo
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public InstrumentationInfo getInstrumentationInfo(ComponentName component, int flags)
             throws NameNotFoundException {
@@ -1227,12 +1515,28 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param targetPackage targetPackage
+         * @param flags flags
+         * @return List<InstrumentationInfo>
+         */
         @Override
         public List<InstrumentationInfo> queryInstrumentation(String targetPackage, int flags) {
             return this.mHostPackageManager.queryInstrumentation(targetPackage, flags);
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param packageName packageName
+         * @param resid resid
+         * @param appInfo appInfo
+         * @return Drawable
+         */
         @Override
         public Drawable getDrawable(String packageName, int resid, ApplicationInfo appInfo) {
             LoadedPlugin plugin = mPluginManager.getLoadedPlugin(packageName);
@@ -1244,6 +1548,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param component component
+         * @return Drawable
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public Drawable getActivityIcon(ComponentName component) throws NameNotFoundException {
             LoadedPlugin plugin = mPluginManager.getLoadedPlugin(component);
@@ -1255,6 +1567,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param intent intent
+         * @return Drawable
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public Drawable getActivityIcon(Intent intent) throws NameNotFoundException {
             ResolveInfo ri = mPluginManager.resolveActivity(intent);
@@ -1267,6 +1587,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param component component
+         * @return Drawable
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         @TargetApi(Build.VERSION_CODES.KITKAT_WATCH)
         public Drawable getActivityBanner(ComponentName component) throws NameNotFoundException {
@@ -1279,6 +1607,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param intent intent
+         * @return Drawable
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         @TargetApi(Build.VERSION_CODES.KITKAT_WATCH)
         public Drawable getActivityBanner(Intent intent) throws NameNotFoundException {
@@ -1292,12 +1628,24 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @return Drawable
+         */
         @Override
         public Drawable getDefaultActivityIcon() {
             return this.mHostPackageManager.getDefaultActivityIcon();
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param info info
+         * @return Drawable
+         */
         @Override
         public Drawable getApplicationIcon(ApplicationInfo info) {
             LoadedPlugin plugin = mPluginManager.getLoadedPlugin(info.packageName);
@@ -1309,6 +1657,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param packageName packageName
+         * @return Drawable
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public Drawable getApplicationIcon(String packageName) throws NameNotFoundException {
             LoadedPlugin plugin = mPluginManager.getLoadedPlugin(packageName);
@@ -1320,6 +1676,13 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param info info
+         * @return Drawable
+         */
         @Override
         @TargetApi(Build.VERSION_CODES.KITKAT_WATCH)
         public Drawable getApplicationBanner(ApplicationInfo info) {
@@ -1332,6 +1695,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param packageName packageName
+         * @return Drawable
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         @TargetApi(Build.VERSION_CODES.KITKAT_WATCH)
         public Drawable getApplicationBanner(String packageName) throws NameNotFoundException {
@@ -1344,6 +1715,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param component component
+         * @return Drawable
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public Drawable getActivityLogo(ComponentName component) throws NameNotFoundException {
             LoadedPlugin plugin = mPluginManager.getLoadedPlugin(component);
@@ -1355,6 +1734,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param intent intent
+         * @return Drawable
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public Drawable getActivityLogo(Intent intent) throws NameNotFoundException {
             ResolveInfo ri = mPluginManager.resolveActivity(intent);
@@ -1367,6 +1754,13 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param info info
+         * @return Drawable
+         */
         @Override
         public Drawable getApplicationLogo(ApplicationInfo info) {
             LoadedPlugin plugin = mPluginManager.getLoadedPlugin(info.packageName);
@@ -1379,6 +1773,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param packageName packageName
+         * @return Drawable
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public Drawable getApplicationLogo(String packageName) throws NameNotFoundException {
             LoadedPlugin plugin = mPluginManager.getLoadedPlugin(packageName);
@@ -1392,6 +1794,13 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param icon icon
+         * @param user user
+         * @return Drawable
+         */
         @Override
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         public Drawable getUserBadgedIcon(Drawable icon, UserHandle user) {
@@ -1399,6 +1808,13 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param user user
+         * @param density density
+         * @return Drawable
+         */
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
         public Drawable getUserBadgeForDensity(UserHandle user, int density) {
             try {
@@ -1411,6 +1827,15 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param drawable drawable
+         * @param user user
+         * @param badgeLocation badgeLocation
+         * @param badgeDensity badgeDensity
+         * @return Drawable
+         */
         @Override
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         public Drawable getUserBadgedDrawableForDensity(Drawable drawable, UserHandle user, Rect badgeLocation, int badgeDensity) {
@@ -1419,6 +1844,13 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param label label
+         * @param user user
+         * @return CharSequence
+         */
         @Override
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         public CharSequence getUserBadgedLabel(CharSequence label, UserHandle user) {
@@ -1426,6 +1858,15 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param packageName packageName
+         * @param resid resid
+         * @param appInfo appInfo
+         * @return CharSequence
+         */
         @Override
         public CharSequence getText(String packageName, int resid, ApplicationInfo appInfo) {
             LoadedPlugin plugin = mPluginManager.getLoadedPlugin(packageName);
@@ -1437,6 +1878,15 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param packageName packageName
+         * @param resid resid
+         * @param appInfo appInfo
+         * @return XmlResourceParser
+         */
         @Override
         public XmlResourceParser getXml(String packageName, int resid, ApplicationInfo appInfo) {
             LoadedPlugin plugin = mPluginManager.getLoadedPlugin(packageName);
@@ -1448,6 +1898,13 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param info info
+         * @return CharSequence
+         */
         @Override
         public CharSequence getApplicationLabel(ApplicationInfo info) {
             LoadedPlugin plugin = mPluginManager.getLoadedPlugin(info.packageName);
@@ -1463,6 +1920,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param component component
+         * @return Resources
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public Resources getResourcesForActivity(ComponentName component)
             throws NameNotFoundException {
@@ -1475,6 +1940,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param app app
+         * @return Resources
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public Resources getResourcesForApplication(ApplicationInfo app)
             throws NameNotFoundException {
@@ -1487,6 +1960,14 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param appPackageName appPackageName
+         * @return Resources
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @Override
         public Resources getResourcesForApplication(String appPackageName)
             throws NameNotFoundException {
@@ -1499,12 +1980,25 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param id id
+         * @param verificationCode verificationCode
+         */
         @Override
         public void verifyPendingInstall(int id, int verificationCode) {
             this.mHostPackageManager.verifyPendingInstall(id, verificationCode);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param id id
+         * @param verificationCodeAtTimeout verificationCodeAtTimeout
+         * @param millisecondsToDelay millisecondsToDelay
+         */
         @Override
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
         public void extendVerificationTimeout(int id, int verificationCodeAtTimeout, long millisecondsToDelay) {
@@ -1513,6 +2007,13 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param targetPackage targetPackage
+         * @param installerPackageName installerPackageName
+         */
         @Override
         public void setInstallerPackageName(String targetPackage, String installerPackageName) {
             LoadedPlugin plugin = mPluginManager.getLoadedPlugin(targetPackage);
@@ -1524,6 +2025,13 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
+         *
+         * @param packageName packageName
+         * @return String
+         */
         @Override
         public String getInstallerPackageName(String packageName) {
             LoadedPlugin plugin = mPluginManager.getLoadedPlugin(packageName);
@@ -1535,36 +2043,72 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param packageName packageName
+         */
         @Override
         public void addPackageToPreferred(String packageName) {
             this.mHostPackageManager.addPackageToPreferred(packageName);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param packageName packageName
+         */
         @Override
         public void removePackageFromPreferred(String packageName) {
             this.mHostPackageManager.removePackageFromPreferred(packageName);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param flags flags
+         */
         @Override
         public List<PackageInfo> getPreferredPackages(int flags) {
             return this.mHostPackageManager.getPreferredPackages(flags);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param filter filter
+         * @param match match
+         * @param set set
+         * @param activity activity
+         */
         @Override
         public void addPreferredActivity(IntentFilter filter, int match, ComponentName[] set, ComponentName activity) {
             this.mHostPackageManager.addPreferredActivity(filter, match, set, activity);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param packageName packageName
+         */
         @Override
         public void clearPackagePreferredActivities(String packageName) {
             this.mHostPackageManager.clearPackagePreferredActivities(packageName);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param outFilters outFilters
+         * @param outActivities outActivities
+         * @param packageName packageName
+         * @return int
+         */
         @Override
         public int getPreferredActivities(List<IntentFilter> outFilters, List<ComponentName> outActivities, String packageName) {
             return this.mHostPackageManager.getPreferredActivities(outFilters, outActivities,
@@ -1572,36 +2116,71 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param component component
+         * @param newState newState
+         * @param flags flags
+         */
         @Override
         public void setComponentEnabledSetting(ComponentName component, int newState, int flags) {
             this.mHostPackageManager.setComponentEnabledSetting(component, newState, flags);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param component component
+         */
         @Override
         public int getComponentEnabledSetting(ComponentName component) {
             return this.mHostPackageManager.getComponentEnabledSetting(component);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param packageName packageName
+         * @param newState newState
+         * @param flags flags
+         */
         @Override
         public void setApplicationEnabledSetting(String packageName, int newState, int flags) {
             this.mHostPackageManager.setApplicationEnabledSetting(packageName, newState, flags);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param packageName packageName
+         * @return int
+         */
         @Override
         public int getApplicationEnabledSetting(String packageName) {
             return this.mHostPackageManager.getApplicationEnabledSetting(packageName);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @return boolean
+         */
         @Override
         public boolean isSafeMode() {
             return this.mHostPackageManager.isSafeMode();
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @return PackageInstaller
+         */
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         public PackageInstaller getPackageInstaller() {
@@ -1609,12 +2188,28 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param s s
+         * @param i i
+         * @return int[]
+         * @throws NameNotFoundException NameNotFoundException
+         */
         @TargetApi(24)
         public int[] getPackageGids(String s, int i) throws NameNotFoundException {
             return mHostPackageManager.getPackageGids(s);
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param s s
+         * @param i i
+         * @return int
+         * @throws NameNotFoundException NameNotFoundException
+         */
         public int getPackageUid(String s, int i) throws NameNotFoundException {
             Object uid = ReflectUtil.invokeNoException(PackageManager.class, mHostPackageManager,
                 "getPackageUid",
@@ -1633,6 +2228,13 @@ public final class LoadedPlugin {
         }
 
 
+        /**
+         * 接入 宿主 的调用逻辑
+         *
+         * @param s s
+         * @param i i
+         * @return boolean
+         */
         @TargetApi(24)
         public boolean hasSystemFeature(String s, int i) {
             return mHostPackageManager.hasSystemFeature(s);
@@ -1640,26 +2242,13 @@ public final class LoadedPlugin {
 
 
         /**
-         * Retrieve overall information about an application package that is
-         * installed on the system. This method can be used for retrieving
-         * information about packages for which multiple versions can be installed
-         * at the time. Currently only packages hosting static shared libraries can
-         * have multiple installed versions. The method can also be used to get info
-         * for a package that has a single version installed by passing
-         * {@link #VERSION_CODE_HIGHEST} in the {@link VersionedPackage}
-         * constructor.
+         * 有 插件 就返回插件的
+         * 没 插件 就返回宿主的
          *
-         * @param versionedPackage The versioned package for which to query.
-         * @param flags Additional option flags to modify the data returned.
-         * @return A PackageInfo object containing information about the package. If
-         * flag {@code MATCH_UNINSTALLED_PACKAGES} is set and if the package
-         * is not found in the list of installed applications, the package
-         * information is retrieved from the list of uninstalled
-         * applications (which includes installed applications as well as
-         * applications with data directory i.e. applications which had been
-         * deleted with {@code DONT_DELETE_DATA} flag set).
-         * @throws NameNotFoundException if a package with the given name cannot be
-         * found on the system.
+         * @param versionedPackage versionedPackage
+         * @param flags flags
+         * @return PackageInfo
+         * @throws NameNotFoundException NameNotFoundException
          */
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
@@ -1674,13 +2263,9 @@ public final class LoadedPlugin {
 
 
         /**
-         * Gets whether this application is an instant app.
+         * 接入 宿主 的调用逻辑
          *
-         * @return Whether caller is an instant app.
-         * @see #isInstantApp(String)
-         * @see #updateInstantAppCookie(byte[])
-         * @see #getInstantAppCookie()
-         * @see #getInstantAppCookieMaxBytes()
+         * @return boolean
          */
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
@@ -1690,15 +2275,10 @@ public final class LoadedPlugin {
 
 
         /**
-         * Gets whether the given package is an instant app.
+         * 接入 宿主 的调用逻辑
          *
-         * @param packageName The package to check
-         * @return Whether the given package is an instant app.
-         * @see #isInstantApp()
-         * @see #updateInstantAppCookie(byte[])
-         * @see #getInstantAppCookie()
-         * @see #getInstantAppCookieMaxBytes()
-         * @see #clearInstantAppCookie()
+         * @param packageName packageName
+         * @return boolean
          */
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
@@ -1708,15 +2288,9 @@ public final class LoadedPlugin {
 
 
         /**
-         * Gets the maximum size in bytes of the cookie data an instant app
-         * can store on the device.
+         * 接入 宿主 的调用逻辑
          *
-         * @return The max cookie size in bytes.
-         * @see #isInstantApp()
-         * @see #isInstantApp(String)
-         * @see #updateInstantAppCookie(byte[])
-         * @see #getInstantAppCookie()
-         * @see #clearInstantAppCookie()
+         * @return int
          */
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
@@ -1726,19 +2300,9 @@ public final class LoadedPlugin {
 
 
         /**
-         * Gets the instant application cookie for this app. Non
-         * instant apps and apps that were instant but were upgraded
-         * to normal apps can still access this API. For instant apps
-         * this cookie is cached for some time after uninstall while for
-         * normal apps the cookie is deleted after the app is uninstalled.
-         * The cookie is always present while the app is installed.
+         * 接入 宿主 的调用逻辑
          *
-         * @return The cookie.
-         * @see #isInstantApp()
-         * @see #isInstantApp(String)
-         * @see #updateInstantAppCookie(byte[])
-         * @see #getInstantAppCookieMaxBytes()
-         * @see #clearInstantAppCookie()
+         * @return byte[]
          */
         @RequiresApi(api = Build.VERSION_CODES.O)
         @NonNull
@@ -1749,13 +2313,7 @@ public final class LoadedPlugin {
 
 
         /**
-         * Clears the instant application cookie for the calling app.
-         *
-         * @see #isInstantApp()
-         * @see #isInstantApp(String)
-         * @see #getInstantAppCookieMaxBytes()
-         * @see #getInstantAppCookie()
-         * @see #clearInstantAppCookie()
+         * 接入 宿主 的调用逻辑
          */
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
@@ -1765,23 +2323,9 @@ public final class LoadedPlugin {
 
 
         /**
-         * Updates the instant application cookie for the calling app. Non
-         * instant apps and apps that were instant but were upgraded
-         * to normal apps can still access this API. For instant apps
-         * this cookie is cached for some time after uninstall while for
-         * normal apps the cookie is deleted after the app is uninstalled.
-         * The cookie is always present while the app is installed. The
-         * cookie size is limited by {@link #getInstantAppCookieMaxBytes()}.
-         * Passing <code>null</code> or an empty array clears the cookie.
-         * </p>
+         * 接入 宿主 的调用逻辑
          *
-         * @param cookie The cookie data.
-         * @throws IllegalArgumentException if the array exceeds max cookie size.
-         * @see #isInstantApp()
-         * @see #isInstantApp(String)
-         * @see #getInstantAppCookieMaxBytes()
-         * @see #getInstantAppCookie()
-         * @see #clearInstantAppCookie()
+         * @param cookie cookie
          */
         @Override
         public void updateInstantAppCookie(@Nullable byte[] cookie) {
@@ -1790,11 +2334,10 @@ public final class LoadedPlugin {
 
 
         /**
-         * Get a list of shared libraries on the device.
+         * 接入 宿主 的调用逻辑
          *
-         * @param flags To filter the libraries to return.
-         * @return The shared library list.
-         * @see #MATCH_UNINSTALLED_PACKAGES
+         * @param flags flags
+         * @return List<SharedLibraryInfo>
          */
         @RequiresApi(api = Build.VERSION_CODES.O)
         @NonNull
@@ -1805,15 +2348,10 @@ public final class LoadedPlugin {
 
 
         /**
-         * Returns the names of the packages that have been changed
-         * [eg. added, removed or updated] since the given sequence
-         * number.
-         * <p>If no packages have been changed, returns <code>null</code>.
-         * <p>The sequence number starts at <code>0</code> and is
-         * reset every boot.
+         * 接入 宿主 的调用逻辑
          *
-         * @param sequenceNumber The first sequence number for which to retrieve package changes.
-         * @see Settings.Global#BOOT_COUNT
+         * @param sequenceNumber sequenceNumber
+         * @return ChangedPackages
          */
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Nullable
@@ -1824,14 +2362,10 @@ public final class LoadedPlugin {
 
 
         /**
-         * Provide a hint of what the {@link ApplicationInfo#category} value should
-         * be for the given package.
-         * <p>
-         * This hint can only be set by the app which installed this package, as
-         * determined by {@link #getInstallerPackageName(String)}.
+         * 接入 宿主 的调用逻辑
          *
-         * @param packageName the package to change the category hint for.
-         * @param categoryHint the category hint to set.
+         * @param packageName packageName
+         * @param categoryHint categoryHint
          */
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
@@ -1841,23 +2375,9 @@ public final class LoadedPlugin {
 
 
         /**
-         * Checks whether the calling package is allowed to request package installs through
-         * package
-         * installer. Apps are encouraged to call this API before launching the package installer
-         * via
-         * intent {@link Intent#ACTION_INSTALL_PACKAGE}. Starting from Android O, the
-         * user can explicitly choose what external sources they trust to install apps on the
-         * device.
-         * If this API returns false, the install request will be blocked by the package installer
-         * and
-         * a dialog will be shown to the user with an option to launch settings to change their
-         * preference. An application must target Android O or higher and declare permission
-         * {link Manifest.permission#REQUEST_INSTALL_PACKAGES} in order to use this API.
+         * 接入 宿主 的调用逻辑
          *
-         * @return true if the calling package is trusted by the user to request install packages on
-         * the device, false otherwise.
-         * @see Intent#ACTION_INSTALL_PACKAGE
-         * @see Settings#ACTION_MANAGE_UNKNOWN_APP_SOURCES
+         * @return boolean
          */
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
