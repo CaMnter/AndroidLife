@@ -50,27 +50,64 @@ import java.util.zip.ZipFile;
 
 public class PluginUtil {
 
+    /**
+     * 用于从 intent 抽取出 插件 activity class full name
+     *
+     * @param intent intent
+     * @return String
+     */
     public static String getTargetActivity(Intent intent) {
         return intent.getStringExtra(Constants.KEY_TARGET_ACTIVITY);
     }
 
 
+    /**
+     * 根据 intent 信息，构造一个 插件 Activity ComponentName
+     *
+     * @param intent intent
+     * @return ComponentName
+     */
     public static ComponentName getComponent(Intent intent) {
         return new ComponentName(intent.getStringExtra(Constants.KEY_TARGET_PACKAGE),
             intent.getStringExtra(Constants.KEY_TARGET_ACTIVITY));
     }
 
 
+    /**
+     * 判断是否是插件 intent
+     *
+     * @param intent intent
+     * @return boolean
+     */
     public static boolean isIntentFromPlugin(Intent intent) {
         return intent.getBooleanExtra(Constants.KEY_IS_PLUGIN, false);
     }
 
 
+    /**
+     * 获取插件 Theme
+     *
+     * @param context context
+     * @param intent intent
+     * @return int
+     */
     public static int getTheme(Context context, Intent intent) {
         return PluginUtil.getTheme(context, PluginUtil.getComponent(intent));
     }
 
 
+    /**
+     * 获取插件 Theme
+     *
+     * 尝试从 LoadedPlugin 中取
+     *
+     * 不行
+     * 就自己创建一个 默认 Theme
+     *
+     * @param context context
+     * @param component component
+     * @return int
+     */
     public static int getTheme(Context context, ComponentName component) {
         LoadedPlugin loadedPlugin = PluginManager.getInstance(context).getLoadedPlugin(component);
 
@@ -96,6 +133,16 @@ public class PluginUtil {
     }
 
 
+    /**
+     * 选择 系统 theme
+     *
+     * 用于在没有找到插件 theme 的时候
+     * 根据版本，选择系统 theme 作为代替
+     *
+     * @param curTheme curTheme
+     * @param targetSdkVersion targetSdkVersion
+     * @return int
+     */
     public static int selectDefaultTheme(final int curTheme, final int targetSdkVersion) {
         return selectSystemTheme(curTheme, targetSdkVersion,
             android.R.style.Theme,
@@ -105,6 +152,25 @@ public class PluginUtil {
     }
 
 
+    /**
+     * 选择 系统 theme
+     *
+     * 用于在没有找到插件 theme 的时候
+     * 根据版本，选择系统 theme 作为代替
+     *
+     * 2.3 以下 时，选择 android.R.style.Theme
+     * 4.0 以下 时，选择 android.R.style.Theme_Holo
+     * 7.0 以下 时，选择 android.R.style.Theme_DeviceDefault
+     * 7.0 以上 时，选择 Theme_DeviceDefault_Light_DarkActionBar
+     *
+     * @param curTheme curTheme
+     * @param targetSdkVersion targetSdkVersion
+     * @param orig orig
+     * @param holo holo
+     * @param dark dark
+     * @param deviceDefault deviceDefault
+     * @return int
+     */
     private static int selectSystemTheme(final int curTheme, final int targetSdkVersion, final int orig, final int holo, final int dark, final int deviceDefault) {
         if (curTheme != 0) {
             return curTheme;
@@ -126,6 +192,15 @@ public class PluginUtil {
     }
 
 
+    /**
+     * 原先用于 hook Activity 中的
+     * mResources
+     * mThemeResource
+     * mTheme
+     *
+     * @param activity activity
+     * @param packageName packageName
+     */
     public static void hookActivityResources(Activity activity, String packageName) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
             isVivo(activity.getResources())) {
@@ -158,6 +233,12 @@ public class PluginUtil {
     }
 
 
+    /**
+     * 判断插件 service 是不是本进程
+     *
+     * @param serviceInfo serviceInfo
+     * @return boolean
+     */
     public static final boolean isLocalService(final ServiceInfo serviceInfo) {
         return TextUtils.isEmpty(serviceInfo.processName) ||
             serviceInfo.applicationInfo.packageName.equals(serviceInfo.processName);
@@ -169,6 +250,16 @@ public class PluginUtil {
     }
 
 
+    /**
+     * 适配 Binder 的 put 方法
+     *
+     * 4.3 以上 时，直接调用 putBinder(...)
+     * 4.3 以下 时，反射调用 putIBinder(...)
+     *
+     * @param bundle bundle
+     * @param key key
+     * @param value value
+     */
     public static void putBinder(Bundle bundle, String key, IBinder value) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             bundle.putBinder(key, value);
@@ -182,6 +273,16 @@ public class PluginUtil {
     }
 
 
+    /**
+     * 适配 Binder 的 get 方法
+     *
+     * 4.3 以上 时，直接调用 getBinder(...)
+     * 4.3 以下 时，反射调用 "getIBinder"(...)
+     *
+     * @param bundle bundle
+     * @param key key
+     * @return IBinder
+     */
     public static IBinder getBinder(Bundle bundle, String key) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             return bundle.getBinder(key);
@@ -196,6 +297,14 @@ public class PluginUtil {
     }
 
 
+    /**
+     * copy so lib
+     *
+     * @param apk apk
+     * @param context context
+     * @param packageInfo packageInfo
+     * @param nativeLibDir nativeLibDir
+     */
     public static void copyNativeLib(File apk, Context context, PackageInfo packageInfo, File nativeLibDir) {
         try {
             String cpuArch;
