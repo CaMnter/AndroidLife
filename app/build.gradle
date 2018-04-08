@@ -181,7 +181,6 @@ dependencies {
     compile project(':volley')
     compile project(':agera-1.0.0')
     compile project(':stackblur')
-    compile project(':hotfix')
     compile project(':rxjava2')
     compile project(':databinding')
     compile project(':databinding-rxjava')

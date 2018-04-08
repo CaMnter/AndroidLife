@@ -7,10 +7,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import com.camnter.newlife.ui.activity.smartrouter.CustomRouterActivity;
+import com.camnter.newlife.utils.fix.HotFix;
 import com.camnter.smartrouter.SmartRouters;
 import com.camnter.smartrouter.core.Router;
 import com.camnter.utils.AssetsUtils;
-import dodola.hotfix.HotFix;
 import java.io.File;
 import java.util.Map;
 

@@ -1,7 +1,4 @@
-/*
- * Copyright (C) 2015 Baidu, Inc. All Rights Reserved.
- */
-package dodola.hotfix;
+package com.camnter.newlife.utils.fix;
 
 import android.annotation.TargetApi;
 import android.content.Context;
