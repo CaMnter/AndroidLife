@@ -2,6 +2,7 @@ AndroidLife
 ==
 
 <br>
+<br>
 
 - [源码](https://github.com/CaMnter/AndroidLife#sourceCode)    
     - [agera-1.0.0 源代码笔记](https://github.com/CaMnter/AndroidLife/tree/master/agera-1.0.0/src/main/java/com/google/android/agera)   
@@ -56,7 +57,7 @@ AndroidLife
     - [ContentProvider 插件化（主流版方案）](https://github.com/CaMnter/AndroidLife/tree/master/plugin-life/content-provider-plugin)
     - [Android hide api（源自 VirtualApk）](https://github.com/CaMnter/AndroidLife/tree/master/android-hide-api-library/src/main)
 - [算法练习](https://github.com/CaMnter/BasicExercises)
-- [其他效果展示](https://github.com/CaMnter/AndroidLife/MORE_README.md)
+- [其他效果展示](https://github.com/CaMnter/AndroidLife/blob/master/MORE_README.md)
 
 <br>
 <br>
