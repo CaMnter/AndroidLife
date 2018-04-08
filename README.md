@@ -1,412 +1,62 @@
 AndroidLife
-===========
-
-
-<br/>
-<br/>
-
-
-**The Android's life is very interesting and rich.**
-
-<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36u099qk5j31401z4drv.jpg" width="320x"/>     
-
-
-
-
-## 1. ImageScaleTypesActivity
-Introduce the ImageView scale properties      
-介绍ImageView scale属性  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/48424095)  
-**Screenshot:**    
-<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36tricmftj31401z415b.jpg" width="320x"/>        
-
-
-## 2.AsyncTaskActivity
-Analysis of AsyncTask, and provide an AsyncTask template  
-分析AsyncTask，并提供一个AsyncTask的模板  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/48525013)  
-**Screenshot:**    
-<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36ts31c6rj31401z4di2.jpg" width="320x"/>   
-
-
-
-## 3.TextInputLayoutActivity
-Show the TextInputLayout of support design  
-展示 support design 的 TextInputLayout  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/48808005)   
-**Screenshot:**    
-<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f36tsnou5mj31401z4mzo.jpg" width="320x"/>   	   
-
-
-
-## 4.RefreshUIActivity
-Introduced the Android UI refresh four ways  
-介绍 Android UI 刷新的四种方式  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/48629073)   
-**Screenshot:**    
-<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36tt4bqamj31401z4417.jpg" width="320x"/>    
-
-
-
-## 5.LaunchModeActivity
-Show the singleTask launchmode effect  
-展示 singleTask launchmode 效果  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/48682525)   
-**Screenshot:**    
-<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f36tto6mooj31401z4k3k.jpg" width="320x"/>       
-
-
-
-## 6.NavigationViewActivity
-Show the NavigationView of support design  
-展示 support design 的 NavigationView  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49106163)    
-**Screenshot:**    
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f36tuf0tqij31401z4qct.jpg" width="320x"/>       
-
-
-
-## 7.DeviceUtilActivity
-Introduce the DeviceUtil  
-介绍 DeviceUtil  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49126033)   
-**Screenshot:**    
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f36tuttddtj31401z47ay.jpg" width="320x"/>       	  
-
-
-
-## 8.FloatingActionButtonActivity
-Show the FloatingActionButton of support design  
-展示 support design 的 FloatingActionButton  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49133395)    
-**Screenshot:**     
-<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f36tvb4jz9j31401z4adm.jpg" width="320x"/>     
-
-
-
-## 9.SnackbarActivity
-Show the Snackbar of support design  
-展示 support design 的 Snackbar  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49161233)   
-**Screenshot:**    
-<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f36tvscfemj31401z4q5l.jpg" width="320x"/>    
-
-
-
-## 10.DateUtilActivity
-Introduce the DateUtil  
-介绍 DateUtil  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49181669)   
-**Screenshot:**      
-<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f36tw79vpfj31401z4ajg.jpg" width="320x"/>        
-
-
-
-## 11.EasySlidingTabsActivity
-Introduce the [EasySlidingTabs](https://github.com/CaMnter/EasySlidingTabs)  
-介绍 [EasySlidingTabs](https://github.com/CaMnter/EasySlidingTabs)      
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49229189)   
-**Screenshot:**     
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f36tx5p0j0j31401z4q5n.jpg" width="320x"/>       
-
-
-
-## 12.AutoAdjustSizeEditTextActivity
-Show the AutoAdjustSizeEditText  
-展示 AutoAdjustSizeEditText  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49666243)   
-**Screenshot:**      
-<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f36txnotfmj31401z4qad.jpg" width="320x"/>      
-
-
-
-## 13.AutoAdjustSizeTextViewActivity
-Show the AutoAdjustSizeTextView  
-展示 AutoAdjustSizeTextView  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49666243)   
-**Screenshot:**      
-<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f36ty1zbicj31401z4n4c.jpg" width="320x"/>       
-
-
-
-## 14.DownloadImageToGalleryActivity
-Small functions: download the pictures, and save the Android album.This involves a util - [ImageUtil](https://github.com/CaMnter/AndroidLife/blob/master/app/src/main/java/com/camnter/newlife/utils/ImageUtil.java)  
-小功能：下载图片，并且保存到Android相册里。这里涉及到一个util -  [ImageUtil](https://github.com/CaMnter/AndroidLife/blob/master/app/src/main/java/com/camnter/newlife/utils/ImageUtil.java)  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49285919)   
-**Screenshot:**    
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f36tynxa22j31401z4ao5.jpg"  width="320x"/>       
-
----
-
-
-## 15.EasyRecyclerViewActivity
-Introduce the [EasyRecyclerView](https://github.com/CaMnter/EasyRecyclerView)  
-介绍 [EasyRecyclerView](https://github.com/CaMnter/EasyRecyclerView)  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49341563)   
-**Screenshot:**    
-<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f36tznbbehj31401z4h6u.jpg"  width="320x"/>       
-
-
-
-
-## 16.NormalTabLayoutActivity & SetIconTabLayoutActivity & ImageSpanTabLayoutActivity & CustomViewTabLayoutActivity
-Show the TabLayout of support design and four kinds of style design  
-展示 support design 中的 TabLayout ，及其四种设计样式  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49404537)    
-**Screenshot:**    
-<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f371cwq66ij31401z4h1x.jpg" width="320x"/> <img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f371f0izfmj31401z418t.jpg" width="320x"/>   
-<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f371ghj0hbj31401z4qja.jpg" width="320x"/> <img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f371h4zb86j31401z4h2g.jpg" width="320x"/>
-
-
-
-##  17.CoordinatorLayoutActivity
-
-Introduce the CoordinatorLayout of support design   
-Here only including: `app:layout_scrollFlags` and `app:layout_behavior`  
-介绍 support design 中的 CoordinatorLayout  
-这里仅仅包括：`app:layout_scrollFlags` 和 `app:layout_behavior`      
-**Screenshot:**    
-<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f371jk9ri1j31401z4k8w.jpg" width="320x"/>      
-
-
-
-
-## 18.SensorManagerActivity
-Show the Android sensors  
-展示Android中的传感器  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49498567)   
-**Screenshot:**    
-<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f371kb0slbj31401z47ij.jpg" width="320x"/>  
-
-
-
-## 19.MvpActivity
-Introduce the MVP design patterns  
-介绍MVP设计模式  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49620017)
-
-
-
-## 20.SQLiteActivity
-A demo of SQLite  
-一个关于SQLite的demo  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49641519)    
-**Screenshot:**    
-<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f371l5rg7mj31401z443y.jpg" width="320x"/>   
-
-
-
-## 21.CustomContentProviderActivity
-A about custom contentprovicer demo  
-一个关于自定义contentprovicer的demo  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49849663)    
- **Screenshot:**    
-<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f371nk7m51j31401z4afr.jpg" width="320x"/>         
-
-
-
-### 22.DownloadServiceActivity & AIDLActivity
-A demo of Android Service,introduces the remote Service (AIDL) and local Service  
-一个关于Android Service的demo，介绍了远程Service（AIDL）和本地Service  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49910627)    
- **Screenshot:**    
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f371p8kzvej31401z416a.jpg"  width="320x"/>           
-
-
-
-## 23.ReflectionUtilActivity
-Introduce the ReflectionUtil  
-介绍ReflectionUtil  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49962997)    
- **Screenshot:**    
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f371q6b00pj31401z4qfl.jpg" width="320x"/>         
-
-
-
-
-## 24.StaticReceiverActivity & DynamicReceiverActivity & DownloadReceiverActivity
-Broadcastreceiver demo  
-Broadcastreceiver的demo  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/49995443)     
- **Screenshot:**    
-<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f371r6qis6j31401z4tey.jpg" width="320x"/> <img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f371roet3rj31401z4wks.jpg" width="320x"/>      
-<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f371saaut1j31401z4gzv.jpg" width="320x"/>  
-
-
-
-
-## 25.ResourcesUtilActivity
-Introduce the ResourcesUtil  
-介绍ResourcesUtil  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50056747)    
-
-
-
-
-
-## 26.LocationManagerActivity
-Introduce the LocationManager  
-介绍LocationManager  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50097333)  
-
-
-
-## 27.RxSyncActivity & RxAsyncActivity & RxMapActivity
-Introduce the [RxAndroid](https://github.com/ReactiveX/RxAndroid)  
-介绍RxAndroid    
- **Screenshot:**    
-<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f371uj7dkfj31401z4tj0.jpg" width="320x"/> <img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f371ve4g70j31401z4tpd.jpg" width="320x"/>     
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f371vp3h7bj31401z40vd.jpg" width="320x"/>
-
-
-
-### 28.DialogActivity
-Provide two sets of custom Dialog template.  
-The first kind, prompt Dialog, have disappeared.  
-Second, the menu Dialog for user interaction.  
-提供两套自定义Dialog模板。  
-第一种，提示Dialog，有消失时间。  
-第二种，菜单Dialog，用于用户交互。  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50283987)     
- **Screenshot:**    
-<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f371w4aqx2j31401z4dil.jpg" width="320x"/>   
-
-
-
-
-## 29.PopupWindowActivity
-A scalable, easy-to-use PopupWindow.  
-一个可扩展的、好用的PopupWindow。  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50380802)    
- **Screenshot:**    
-<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f371wt7ztpj31401z478e.jpg" width="320x"/>   
-
-
-
-
-## 30.TagTextViewActivity
-
-Rich text textview with a clickable label  
-有可点击的标签的富文本textview  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50386502)    
- **Screenshot:**    
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f371xlcynzj31401z4aet.jpg" width="320x"/>     
-
-
-
-
-
-## 31.EasyFlowLayout  
-
-Use and rewrite it again the [FlowLayout](https://github.com/hongyangAndroid/FlowLayout)    
-使用和重写了一遍 [FlowLayout](https://github.com/hongyangAndroid/FlowLayout)    
- **Screenshot:**    
- <img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f371y323qsj31401z4ah5.jpg" width="320x"/>       
-
-
-
-
-
-## 32.SpanActivity  
-
-Show the effect of various Span  
-展示各种Span的效果  
-[Detailed introduction](http://blog.csdn.net/qq_16430735/article/details/50427978)    
- **Screenshot:**    
-<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f371yw7s7oj31401z4dlo.jpg" width="320x"/>        
-
-
-
-
-## 33.OttoActivity
-
-Demo Otto subscribe mechanism   
-演示Otto的订阅机制     
- **Screenshot:**   
-<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f372196bvsj31401z4tb7.jpg" width="320x"/>      
-
-
-## 34.AnimatorActivity
-
-Android animation     
-Android动画      
- **Screenshot:**     
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f3725cqq7aj31401z4jxk.jpg" width="320x"/>     
-
-
-
-## 35.CanvasClipViewActivity
-
- **Screenshot:**     
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f37260i3gmj31401z4tcr.jpg" width="320x"/>      
-
-
-
-
-## 36.RoundImageSectionActivity
-
- **Screenshot:**     
-<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f37281o2t8j31401z4aew.jpg" width="320x"/>     
-
-
-
-
-## 37.XfermodesActivity
-
-Google Xfermodes Demo     
- **Screenshot:**      
-<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f372915jmwj31401z4n91.jpg" width="320x"/>     
-
-
-
-
-## 38.EasyArcLoadingActivity
-
-[EasyArcLoading](https://github.com/CaMnter/EasyArcLoading)   
- **Screenshot:**      
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f372anv2lvj31401z477q.jpg" width="320x"/>      
-
-
-
-## 39.RxBusActivity
-
- **drakeet Life**     
- **Screenshot:**     
-<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f372cjf7jtj31401z4djx.jpg" width="320x"/>     
-
-
-
-##  40.EasyLikeAreaTopicActivity && EasyLikeAreaQZoneActivity && EasyLikeAreaStyleActivity
-
-[EasyLikeArea](https://github.com/CaMnter/EasyLikeArea)          
- **Screenshot:**        
-<img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f372g13x48j31401z47aw.jpg" width="320x"/> <img src="http://ww4.sinaimg.cn/large/006lPEc9jw1f372g9s467j31401z4gsj.jpg" width="320x"/>   
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f372go81pdj31401z4gvj.jpg" width="320x"/>     
-
-
-
-## 41.LetterSectionActivity && CircleImageSectionActivity && RoundImageSectionActivity
-
-[EasyRecyclerViewSidebar](https://github.com/CaMnter/EasyRecyclerViewSidebar)     
- **Screenshot:**      
-<img src="http://ww3.sinaimg.cn/large/006lPEc9jw1f372j1xu2ij31401z479w.jpg" width="320x"/> <img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f372j84o0bj31401z4qa1.jpg" width="320x"/>  
-<img src="http://ww2.sinaimg.cn/large/006lPEc9jw1f372jig9qrj31401z4jyj.jpg" width="320x"/>      
-
-
-
-
-
-## 42.LruCacheActivity
-
-LruCache source code analysis  
-LruCache的源码解析  
-[LruCache analysis](http://blog.csdn.net/qq_16430735/article/details/49534159)    
- **Screenshot:**    
-<img src="http://ww1.sinaimg.cn/large/006lPEc9jw1f372kh2x5tj31401z4dn4.jpg" width="320x"/>
-
-
-## 43. VolleyActivity
-
-volley framework
-volley 框架
-
+==
+
+<br>
+
+- [源码](https://github.com/CaMnter/AndroidLife#sourceCode)    
+    - [agera-1.0.0 源代码笔记](https://github.com/CaMnter/AndroidLife/tree/master/agera-1.0.0/src/main/java/com/google/android/agera)   
+    - [ARouter-1.1.3 源代码笔记](https://github.com/CaMnter/AndroidLife/tree/master/arouter-1.1.3)
+    - [Butterknife-8.6.0 源代码笔记](https://github.com/CaMnter/AndroidLife/tree/master/butterknife-8.6.0)
+    - [Dex-method-counts 源代码笔记](https://github.com/CaMnter/AndroidLife/tree/master/dex-method-counts/src/main/java)
+    - [Otto 源代码笔记](https://github.com/CaMnter/AndroidLife/tree/master/otto/src/main/java/com/camnter/otto)
+    - [Volley 源代码笔记](https://github.com/CaMnter/AndroidLife/tree/master/volley/src/main/java/com/android/volley)
+    - [VirtualApk 源代码笔记](https://github.com/CaMnter/AndroidLife/tree/master/virtualapk-core-library/src/main/java/com/didi/virtualapk)
+    - [Instant Run（16.11 版）源代码笔记](https://github.com/CaMnter/AndroidLife/tree/master/instant-run)
+- [APT](https://github.com/CaMnter/AndroidLife#apt)
+    - [练习 annotation](https://github.com/CaMnter/AndroidLife/tree/master/annotation-processor-annotation/src/main/java/com/camnter/annotation/processor/annotation)
+    - [练习 compiler](https://github.com/CaMnter/AndroidLife/tree/master/annotation-processor-compiler/src/main/java/com/camnter/annotation/processor/compiler)
+    - [简版资源注解 annotation](https://github.com/CaMnter/AndroidLife/tree/master/smartsave-annotation/src/main/java/com/camnter/smartsave/annotation)
+    - [简版资源注解 compiler](https://github.com/CaMnter/AndroidLife/tree/master/smartsave-compiler/src/main/java/com/camnter/smartsave/compiler)
+    - [简版资源注解](https://github.com/CaMnter/AndroidLife/tree/master/smartsave/src/main/java/com/camnter/smartsave)
+    - [简版组件化路由 annotation](https://github.com/CaMnter/AndroidLife/tree/master/smartrouter-annotation/src/main/java/com/camnter/smartrouter)
+    - [简版组件化路由 compiler](https://github.com/CaMnter/AndroidLife/tree/master/smartrouter-compiler/src/main/java/com/camnter/smartrounter/complier)
+    - [简版组件化路由](https://github.com/CaMnter/AndroidLife/tree/master/smartrouter/src/main/java/com/camnter/smartrouter)
+- [RxJava2.0 + DataBinding](https://github.com/CaMnter/AndroidLife#rxJava2.0AndDataBinding)
+    - [DataBinding 简版封装](https://github.com/CaMnter/AndroidLife/tree/master/databinding/src/main/java/com/camnter/databinding)
+    - [RxJava-2.0 + DataBinding 简版封装](https://github.com/CaMnter/AndroidLife/tree/master/databinding-rxjava/src/main/java/com/camnter/databinding/rxjava)
+    - [RxJava-2.0 简版工具](https://github.com/CaMnter/AndroidLife/tree/master/rxjava2/src/main/java/com/camnter/rxjava2)
+- [小仓库](https://github.com/CaMnter/AndroidLife#smallWarehouse)    
+    - [工具库](https://github.com/CaMnter/AndroidLife/tree/master/utils/src/main/java/com/camnter/utils)
+    - [控件库](https://github.com/CaMnter/AndroidLife/tree/master/widget/src/main/java/com/camnter/newlife/widget)
+- [Gradle + Groovy](https://github.com/CaMnter/AndroidLife#gradleAndGroovy)
+    - [Groovy 课程练习](https://github.com/CaMnter/AndroidLife/tree/master/groovy-life/src/main/groovy)
+    - [Gradle 课程练习](https://github.com/CaMnter/AndroidLife/tree/master/gradle-plugin-course)
+    - [Gradle 插件](https://github.com/CaMnter/AndroidLife/tree/master/gradle-plugin-life)
+        - [Gradle 插件练习](https://github.com/CaMnter/AndroidLife/tree/master/gradle-plugin-life/life-plugin/src/main/groovy/com/camnter/gradle/plugin/life)
+        - [Gradle 插件一些工具类](https://github.com/CaMnter/AndroidLife/tree/master/gradle-plugin-life/magic-plugin-kit/src/main/groovy/com/camnter/gradle/magic/plugin/kit)
+        - [Javassist 练习](https://github.com/CaMnter/AndroidLife/tree/master/gradle-plugin-life/life-javassist-plugin/src/main/groovy/com/camnter/life/javassist/plugin)
+        - [Trace 文件分析插件](https://github.com/CaMnter/AndroidLife/tree/master/buildSrc/src/main/groovy/com/camnter/gradle/plugin/method/trace)
+        - [R2（android library 下的 final R）插件](https://github.com/CaMnter/AndroidLife/tree/master/buildSrc/src/main/groovy/com/camnter/gradle/plugin/r2)
+        - [Gradle task 耗时计算插件（适配了 gradle 4.4）](https://github.com/CaMnter/AndroidLife/tree/master/buildSrc/src/main/groovy/com/camnter/gradle/plugin/toytime)
+        - [编译过程中的资源优化插件（非 AAPT2）](https://github.com/CaMnter/AndroidLife/tree/master/buildSrc/src/main/groovy/com/camnter/gradle/plugin/resources)
+        - [插件依赖优化插件（关于插件化）](https://github.com/CaMnter/AndroidLife/tree/master/buildSrc/src/main/groovy/com/camnter/gradle/plugin/reduce/dependency/packaging)
+- [插件化](https://github.com/CaMnter/AndroidLife#plugin)
+    - [简版加载插件 class](https://github.com/CaMnter/AndroidLife/tree/master/plugin-life/load-simple-plugin)
+    - [打开已注册插件 Activity](https://github.com/CaMnter/AndroidLife/tree/master/plugin-life/register-activity-plugin)
+    - [打开已注册插件 Service](https://github.com/CaMnter/AndroidLife/tree/master/plugin-life/load-service-plugin)
+    - [加载插件资源（插件 Resources 替换宿主 Resources）](https://github.com/CaMnter/AndroidLife/tree/master/plugin-life/load-plugin-resources)
+    - [宿主插件资源合并 + Small 的插件资源指定 PP 段（防止 Id 冲突）](https://github.com/CaMnter/AndroidLife/blob/master/plugin-life/single-resources/single-resources-plugin/app/src/main/java/com/camnter/single/resources/plugin/SingleResourcesPluginActivity.java)
+    - [多 classloader 加载插件](https://github.com/CaMnter/AndroidLife/tree/master/plugin-life/multi-classloader-plugin)
+    - [Hook binder](https://github.com/CaMnter/AndroidLife/tree/master/plugin-life/hook-binder/src/main/java/com/camnter/hook/binder)
+    - [Hook AMS and PMS](https://github.com/CaMnter/AndroidLife/tree/master/plugin-life/hook-ams-and-pms/src/main/java/com/camnter/hook/ams/and/pms)
+    - [Hook AMS 实现 Activity 插件化（主流版方案）](https://github.com/CaMnter/AndroidLife/tree/master/plugin-life/hook-ams-for-activity-plugin)
+    - [Hook LoadedApk 加载组件 class](https://github.com/CaMnter/AndroidLife/tree/master/plugin-life/hook-loadedapk-classloader)
+    - [Hook AMS 实现 Service 插件化（主流版方案）](https://github.com/CaMnter/AndroidLife/tree/master/plugin-life/hook-ams-for-service-plugin)
+    - [BroadcastReceiver 插件化（主流版方案）](https://github.com/CaMnter/AndroidLife/tree/master/plugin-life/broadcast-receiver-plugin)
+    - [ContentProvider 插件化（主流版方案）](https://github.com/CaMnter/AndroidLife/tree/master/plugin-life/content-provider-plugin)
+    - [Android hide api（源自 VirtualApk）](https://github.com/CaMnter/AndroidLife/tree/master/android-hide-api-library/src/main)
+- [算法练习](https://github.com/CaMnter/BasicExercises)
+- [其他效果展示](https://github.com/CaMnter/AndroidLife/MORE_README.md)
+
+<br>
+<br>
