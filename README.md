@@ -41,6 +41,7 @@ AndroidLife
         - [R2（android library 下的 final R）插件](https://github.com/CaMnter/AndroidLife/tree/master/buildSrc/src/main/groovy/com/camnter/gradle/plugin/r2)
         - [Gradle task 耗时计算插件（适配了 gradle 4.4）](https://github.com/CaMnter/AndroidLife/tree/master/buildSrc/src/main/groovy/com/camnter/gradle/plugin/toytime)
         - [编译过程中的资源优化插件（非 AAPT2）](https://github.com/CaMnter/AndroidLife/tree/master/buildSrc/src/main/groovy/com/camnter/gradle/plugin/resources)
+        - [Dex-method-counts 插件](https://github.com/CaMnter/AndroidLife/tree/master/buildSrc/src/main/groovy/com/camnter/gradle/plugin/dex/method/counts)
         - [插件依赖优化插件（关于插件化）](https://github.com/CaMnter/AndroidLife/tree/master/buildSrc/src/main/groovy/com/camnter/gradle/plugin/reduce/dependency/packaging)
 - [插件化](https://github.com/CaMnter/AndroidLife#plugin)
     - [简版加载插件 class](https://github.com/CaMnter/AndroidLife/tree/master/plugin-life/load-simple-plugin)
