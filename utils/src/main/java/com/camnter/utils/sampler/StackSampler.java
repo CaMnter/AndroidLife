@@ -1,9 +1,7 @@
 package com.camnter.utils.sampler;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 
 /**
  * AndroidPerformanceMonitor 摘抄并修改的源码
@@ -19,10 +17,6 @@ class StackSampler extends AbstractSampler {
 
     private static final int DEFAULT_MAX_ENTRY_COUNT = 100;
     private static final LinkedHashMap<Long, String> STACK_MAP = new LinkedHashMap<>();
-
-    public static final String SEPARATOR = "\r\n";
-    public static final SimpleDateFormat TIME_FORMATTER =
-        new SimpleDateFormat("MM-dd HH:mm:ss.SSS", Locale.US);
 
     private int maxEntryCount = DEFAULT_MAX_ENTRY_COUNT;
     private Thread currentThread;

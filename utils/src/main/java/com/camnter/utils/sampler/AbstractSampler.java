@@ -2,6 +2,8 @@ package com.camnter.utils.sampler;
 
 import android.os.Handler;
 import com.camnter.utils.thread.HandlerThreadFactory;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -20,6 +22,10 @@ abstract class AbstractSampler {
 
     protected AtomicBoolean shouldSample = new AtomicBoolean(false);
     protected long sampleInterval;
+
+    public static final String SEPARATOR = "\r\n";
+    public static final SimpleDateFormat TIME_FORMATTER =
+        new SimpleDateFormat("MM-dd HH:mm:ss.SSS", Locale.US);
 
     private Runnable runnable = new Runnable() {
         @Override
