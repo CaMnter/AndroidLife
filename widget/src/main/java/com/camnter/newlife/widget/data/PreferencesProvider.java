@@ -11,9 +11,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import android.text.TextUtils;
+import android.util.Pair;
 
 /**
- * 跨进程 SharedPreferences
+ * PreferencesProvider
  *
  * @author CaMnter
  */
@@ -29,38 +30,65 @@ public class PreferencesProvider extends ContentProvider {
 
     private static final int CODE_PREFERENCES_STRING = 0x01;
     private static final String KET_PREFERENCES_STRING = "preferences/string";
-    private static final String MIME_PREFERENCES_STRING = MIME_SINGLE + KET_PREFERENCES_STRING;
-    public static final Uri URI_PREFERENCES_STRING = Uri.parse(
-        "content://" + AUTHORITY + "/" + KET_PREFERENCES_STRING);
+    public static final String MIME_PREFERENCES_STRING = MIME_SINGLE + KET_PREFERENCES_STRING;
+    public static final String URI_PATH_PREFERENCES_STRING = "content://" + AUTHORITY + "/" +
+        KET_PREFERENCES_STRING;
+    public static final Pair<String, Uri> URI_PAIR_STRING = new Pair<>(
+        URI_PATH_PREFERENCES_STRING,
+        Uri.parse(URI_PATH_PREFERENCES_STRING)
+    );
 
     private static final int CODE_PREFERENCES_INT = 0x02;
     private static final String KET_PREFERENCES_INT = "preferences/int";
-    private static final String MIME_PREFERENCES_INT = MIME_SINGLE + KET_PREFERENCES_INT;
-    public static final Uri URI_PREFERENCES_INT = Uri.parse(
-        "content://" + AUTHORITY + "/" + KET_PREFERENCES_INT);
+    public static final String MIME_PREFERENCES_INT = MIME_SINGLE + KET_PREFERENCES_INT;
+    public static final String URI_PATH_PREFERENCES_INT = "content://" + AUTHORITY + "/" +
+        KET_PREFERENCES_INT;
+    public static final Pair<String, Uri> URI_PAIR_INT = new Pair<>(
+        URI_PATH_PREFERENCES_INT,
+        Uri.parse(URI_PATH_PREFERENCES_INT)
+    );
 
     private static final int CODE_PREFERENCES_FLOAT = 0x03;
     private static final String KET_PREFERENCES_FLOAT = "preferences/float";
-    private static final String MIME_PREFERENCES_FLOAT = MIME_SINGLE + KET_PREFERENCES_FLOAT;
-    public static final Uri URI_PREFERENCES_FLOAT = Uri.parse(
-        "content://" + AUTHORITY + "/" + KET_PREFERENCES_FLOAT);
+    public static final String MIME_PREFERENCES_FLOAT = MIME_SINGLE + KET_PREFERENCES_FLOAT;
+    public static final String URI_PATH_PREFERENCES_FLOAT =
+        "content://" + AUTHORITY + "/" + KET_PREFERENCES_FLOAT;
+    public static final Pair<String, Uri> URI_PAIR_FLOAT = new Pair<>(
+        URI_PATH_PREFERENCES_FLOAT,
+        Uri.parse(URI_PATH_PREFERENCES_FLOAT)
+    );
 
     private static final int CODE_PREFERENCES_LONG = 0x04;
     private static final String KET_PREFERENCES_LONG = "preferences/long";
-    private static final String MIME_PREFERENCES_LONG = MIME_SINGLE + KET_PREFERENCES_LONG;
-    public static final Uri URI_PREFERENCES_LONG = Uri.parse(
-        "content://" + AUTHORITY + "/" + KET_PREFERENCES_LONG);
+    public static final String MIME_PREFERENCES_LONG = MIME_SINGLE + KET_PREFERENCES_LONG;
+    public static final String URI_PATH_PREFERENCES_LONG =
+        "content://" + AUTHORITY + "/" + KET_PREFERENCES_LONG;
+    public static final Pair<String, Uri> URI_PAIR_LONG = new Pair<>(
+        URI_PATH_PREFERENCES_LONG,
+        Uri.parse(URI_PATH_PREFERENCES_LONG)
+    );
 
     private static final int CODE_PREFERENCES_BOOLEAN = 0x05;
     private static final String KET_PREFERENCES_BOOLEAN = "preferences/boolean";
-    private static final String MIME_PREFERENCES_BOOLEAN = MIME_SINGLE + KET_PREFERENCES_BOOLEAN;
-    public static final Uri URI_PREFERENCES_BOOLEAN = Uri.parse(
-        "content://" + AUTHORITY + "/" + KET_PREFERENCES_BOOLEAN);
+    public static final String MIME_PREFERENCES_BOOLEAN = MIME_SINGLE + KET_PREFERENCES_BOOLEAN;
+    public static final String URI_PATH_PREFERENCES_BOOLEAN =
+        "content://" + AUTHORITY + "/" + KET_PREFERENCES_BOOLEAN;
+    public static final Pair<String, Uri> URI_PAIR_BOOLEAN = new Pair<>(
+        URI_PATH_PREFERENCES_BOOLEAN,
+        Uri.parse(URI_PATH_PREFERENCES_BOOLEAN)
+    );
 
 
     @StringDef({ MIME_PREFERENCES_STRING, MIME_PREFERENCES_INT, MIME_PREFERENCES_FLOAT,
                    MIME_PREFERENCES_LONG, MIME_PREFERENCES_BOOLEAN })
     public @interface PreferencesMime {
+
+    }
+
+
+    @StringDef({ URI_PATH_PREFERENCES_STRING, URI_PATH_PREFERENCES_INT, URI_PATH_PREFERENCES_FLOAT,
+                   URI_PATH_PREFERENCES_LONG, URI_PATH_PREFERENCES_BOOLEAN })
+    public @interface UriPath {
 
     }
 
@@ -170,22 +198,24 @@ public class PreferencesProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         if (TextUtils.isEmpty(selection)) return null;
+        if (selectionArgs == null || selectionArgs.length == 0) return null;
         final PreferencesCursor cursor = new PreferencesCursor();
+        final String key = selectionArgs[0];
         switch (selection) {
             case MIME_PREFERENCES_STRING:
-                cursor.setStringValue(this.stringPreferences.getString(selection, null));
+                cursor.setStringValue(this.stringPreferences.getString(key, null));
                 break;
             case MIME_PREFERENCES_INT:
-                cursor.setIntValue(this.intPreferences.getInt(selection, 0));
+                cursor.setIntValue(this.intPreferences.getInt(key, 0));
                 break;
             case MIME_PREFERENCES_FLOAT:
-                cursor.setFloatValue(this.floatPreferences.getFloat(selection, 0.0f));
+                cursor.setFloatValue(this.floatPreferences.getFloat(key, 0.0f));
                 break;
             case MIME_PREFERENCES_LONG:
-                cursor.setLongValue(this.longPreferences.getLong(selection, 0L));
+                cursor.setLongValue(this.longPreferences.getLong(key, 0L));
                 break;
             case MIME_PREFERENCES_BOOLEAN:
-                cursor.setBooleanValue(this.booleanPreferences.getBoolean(selection, false));
+                cursor.setBooleanValue(this.booleanPreferences.getBoolean(key, false));
                 break;
         }
         return cursor;
