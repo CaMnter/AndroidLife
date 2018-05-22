@@ -8,6 +8,19 @@ import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * AndroidPerformanceMonitor 摘抄并修改的源码
+ * CPU 信息采集器
+ *
+ * 在 子线程 读取
+ * /proc/stat
+ * /proc/${pid}/stat
+ * 拿到的 各种时间，计算差值
+ *
+ * https://github.com/markzhai/AndroidPerformanceMonitor/blob/master/blockcanary-analyzer/src/main/java/com/github/moduth/blockcanary/CpuSampler.java
+ *
+ * @author CaMnter
+ */
 class CpuSampler extends AbstractSampler {
 
     private static final String TAG = "CpuSampler";
