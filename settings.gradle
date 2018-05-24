@@ -1,5 +1,7 @@
 include ':app',
 
+        ':anr-watchdog',
+
         ':plugin-life:content-provider-plugin:content-provider-plugin-host',
         ':plugin-life:content-provider-plugin:content-provider-plugin-plugin',
 
