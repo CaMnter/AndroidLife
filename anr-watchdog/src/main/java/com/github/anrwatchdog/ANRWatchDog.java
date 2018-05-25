@@ -30,22 +30,46 @@ import android.util.Log;
 
 /**
  * A watchdog timer thread that detects when the UI thread has frozen.
+ *
+ * 自定义的检测 ANR 的 Thread
+ *
+ * {@link ANRWatchDog#run()}
+ * 1. 如果线程没中断，一直循环
+ * 2. 记录开始 tick，并且向主线程 post message
+ * 3. 线程睡 5s
+ * 4. 判断 tick 是不是没变
+ * 5. 是的话，认为有 ANR，因为 主线程没处理刚才 post 的消息
+ * 6. 然后生成 ANRError，ANRError 中出 dump 对应的 主线程 Thread stack 信息
+ * 7. 调用 ANR 回调接口，回传 ANRError，跳出循环
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ANRWatchDog extends Thread {
 
+    /**
+     * ANR 回调接口
+     * 返回 ANRError
+     */
     public interface ANRListener {
         public void onAppNotResponding(ANRError error);
     }
 
 
+    /**
+     * InterruptedException 回调接口
+     */
     public interface InterruptionListener {
         public void onInterrupted(InterruptedException exception);
     }
 
 
+    /**
+     * post message 的间隔时间
+     */
     private static final int DEFAULT_ANR_TIMEOUT = 5000;
 
+    /**
+     * 默认 ANR 回调接口
+     */
     private static final ANRListener DEFAULT_ANR_LISTENER = new ANRListener() {
         @Override
         public void onAppNotResponding(ANRError error) {
@@ -53,6 +77,9 @@ public class ANRWatchDog extends Thread {
         }
     };
 
+    /**
+     * 默认 InterruptedException 回调接口
+     */
     private static final InterruptionListener DEFAULT_INTERRUPTION_LISTENER
         = new InterruptionListener() {
         @Override
@@ -64,6 +91,10 @@ public class ANRWatchDog extends Thread {
     private ANRListener _anrListener = DEFAULT_ANR_LISTENER;
     private InterruptionListener _interruptionListener = DEFAULT_INTERRUPTION_LISTENER;
 
+    /**
+     * 主线程 Handler
+     * 时间间隔
+     */
     private final Handler _uiHandler = new Handler(Looper.getMainLooper());
     private final int _timeoutInterval;
 
@@ -71,8 +102,15 @@ public class ANRWatchDog extends Thread {
     private boolean _logThreadsWithoutStackTrace = false;
     private boolean _ignoreDebugger = false;
 
+    /**
+     * 计数器，向主线程 post 消息
+     * 被处理的话，_tick 会 + 1
+     */
     private volatile int _tick = 0;
 
+    /**
+     * 向主线程 post 消息
+     */
     private final Runnable _ticker = new Runnable() {
         @Override
         public void run() {
@@ -193,6 +231,15 @@ public class ANRWatchDog extends Thread {
     }
 
 
+    /**
+     * 1. 如果线程没中断，一直循环
+     * 2. 记录开始 tick，并且向主线程 post message
+     * 3. 线程睡 5s
+     * 4. 判断 tick 是不是没变
+     * 5. 是的话，认为有 ANR，因为 主线程没处理刚才 post 的消息
+     * 6. 然后生成 ANRError，ANRError 中出 dump 对应的 主线程 Thread stack 信息
+     * 7. 调用 ANR 回调接口，回传 ANRError，跳出循环
+     */
     @Override
     public void run() {
         setName("|ANR-WatchDog|");
