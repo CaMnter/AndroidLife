@@ -14,6 +14,7 @@ AndroidLife
     - [Volley 源代码笔记](https://github.com/CaMnter/AndroidLife/tree/master/volley/src/main/java/com/android/volley)
     - [VirtualApk 源代码笔记](https://github.com/CaMnter/AndroidLife/tree/master/virtualapk-core-library/src/main/java/com/didi/virtualapk)
     - [Instant Run（16.11 版）源代码笔记](https://github.com/CaMnter/AndroidLife/tree/master/instant-run)
+    - [ANR-WatchDog 源代码笔记](https://github.com/CaMnter/AndroidLife/tree/master/anr-watchdog)
 - [APT](https://github.com/CaMnter/AndroidLife#apt)
     - [练习 annotation](https://github.com/CaMnter/AndroidLife/tree/master/annotation-processor-annotation/src/main/java/com/camnter/annotation/processor/annotation)
     - [练习 compiler](https://github.com/CaMnter/AndroidLife/tree/master/annotation-processor-compiler/src/main/java/com/camnter/annotation/processor/compiler)
