@@ -42,6 +42,7 @@ import java.lang.reflect.Proxy;
  *
  * @author johnsonlee
  */
+@SuppressWarnings("DanglingJavadoc")
 public class ActivityManagerProxy implements InvocationHandler {
 
     private static final String TAG = "IActivityManagerProxy";
@@ -71,6 +72,17 @@ public class ActivityManagerProxy implements InvocationHandler {
 
     /**
      * 动态代理
+     *
+     * 在 hook ams 过程中，调用动态代理调用 远程 binder 代理类的时候，可能会出现异常。
+     * 这个异常叫做 DeadObjectException，因为 ams 所在的进程 system-server 可能会因为什么事情
+     * 被干掉重启。然而，此时在 ActivityThread 内拿到的 system-server 远程 binder 代理类，就是被
+     * 干掉的 system-server 进程的远程 binder 代理类，访问的话就会出现 DeadObjectException
+     *
+     * VirtualApk 做的是二次刷新 远程 binder 代理类缓存。
+     * 比如初始化 动态代理的时候 第一次拿到的是 ActivityThread 内拿到的 system-server 远程 binder 代理类
+     * 然后如果出现 DeadObjectException 异常，就通过调用 ServiceManager.getService(Context.ACTIVITY_SERVICE)
+     * 尝试连接 system-server 进程，重新 拿到 ActivityManager 的远程 Binder 代理类（因为 ActivityThread 的那份失效了）
+     * 刷新了动态代理内的 远程 Binder 代理类
      *
      * IActivityManager # startService
      * IActivityManager # stopService
@@ -136,6 +148,19 @@ public class ActivityManagerProxy implements InvocationHandler {
             // sometimes system binder has problems.
             return method.invoke(this.mActivityManager, args);
         } catch (Throwable th) {
+            /**
+             * 在 hook ams 过程中，调用动态代理调用 远程 binder 代理类的时候，可能会出现异常。
+             * 这个异常叫做 DeadObjectException，因为 ams 所在的进程 system-server 可能会因为什么事情
+             * 被干掉重启。然而，此时在 ActivityThread 内拿到的 system-server 远程 binder 代理类，就是被
+             * 干掉的 system-server 进程的远程 binder 代理类，访问的话就会出现 DeadObjectException
+             *
+             * VirtualApk 做的是二次刷新 远程 binder 代理类缓存。
+             * 比如初始化 动态代理的时候 第一次拿到的是 ActivityThread 内拿到的 system-server 远程 binder 代理类
+             * 然后如果出现 DeadObjectException 异常，就通过调用 ServiceManager.getService(Context.ACTIVITY_SERVICE)
+             * 尝试连接 system-server 进程，重新 拿到 ActivityManager 的远程 Binder 代理类（因为 ActivityThread 的那份失效了）
+             * 刷新了动态代理内的 远程 Binder 代理类
+             *
+             */
             Throwable c = th.getCause();
             if (c != null && c instanceof DeadObjectException) {
                 // retry connect to system binder
