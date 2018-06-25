@@ -1,5 +1,6 @@
 include ':app',
 
+        ':compressor',
         ':anr-watchdog',
 
         ':plugin-life:content-provider-plugin:content-provider-plugin-host',
