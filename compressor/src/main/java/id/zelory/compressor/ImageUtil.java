@@ -21,6 +21,19 @@ class ImageUtil {
     }
 
 
+    /**
+     * decodeSampledBitmapFromFile(...) 方法压一遍 得到 bitmap
+     * 然后在通过 bitmap 再选择 Bitmap.CompressFormat 和 压质量
+     *
+     * @param imageFile imageFile
+     * @param reqWidth reqWidth
+     * @param reqHeight reqHeight
+     * @param compressFormat compressFormat
+     * @param quality quality
+     * @param destinationPath destinationPath
+     * @return File
+     * @throws IOException IOException
+     */
     static File compressImage(File imageFile, int reqWidth, int reqHeight, Bitmap.CompressFormat compressFormat, int quality, String destinationPath)
         throws IOException {
         FileOutputStream fileOutputStream = null;
@@ -44,6 +57,20 @@ class ImageUtil {
     }
 
 
+    /**
+     * 压缩图片
+     *
+     * 1.尝试获取 File 的宽高
+     * 2.根据  File 的宽高，通过 calculateInSampleSize(...) 计算合适的 inSampleSize
+     * 3.根据 inSampleSize 采样 压缩加载 bitmap
+     * 4.根据 ExifInterface 获取到图片是否旋转了，然后用 Matrix 调整回来
+     *
+     * @param imageFile imageFile
+     * @param reqWidth reqWidth
+     * @param reqHeight reqHeight
+     * @return Bitmap
+     * @throws IOException IOException
+     */
     static Bitmap decodeSampledBitmapFromFile(File imageFile, int reqWidth, int reqHeight)
         throws IOException {
         // First decode with inJustDecodeBounds=true to check dimensions
@@ -77,6 +104,18 @@ class ImageUtil {
     }
 
 
+    /**
+     * 获取合适的 inSampleSize
+     *
+     * 根据 inJustDecodeBounds = true 计算好图片的 宽高
+     * 然后根据期望 宽高 计算对应的
+     * inSampleSize 值
+     *
+     * @param options options
+     * @param reqWidth reqWidth
+     * @param reqHeight reqHeight
+     * @return inSampleSize
+     */
     private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
@@ -98,4 +137,5 @@ class ImageUtil {
 
         return inSampleSize;
     }
+
 }
