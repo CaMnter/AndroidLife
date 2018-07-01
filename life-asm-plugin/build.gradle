@@ -1,0 +1,49 @@
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+buildscript {
+    dependencies {
+        classpath rootProject.ext.plugin["groovy"]
+    }
+    repositories {
+        mavenCentral()
+        google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+
+dependencies {
+    compileOnly gradleApi()
+    compileOnly localGroovy()
+    implementation rootProject.ext.plugin["javassist"]
+    implementation rootProject.ext.plugin["android-gradle-plugin"]
+}
+
+group = 'com.camnter.gradle.plugin'
+version = '1.0.0'
+
+sourceSets {
+    main {
+        groovy {
+            srcDir 'src/main/groovy'
+        }
+
+        java {
+            srcDir 'src/main/java'
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../repository'))
+        }
+    }
+}
