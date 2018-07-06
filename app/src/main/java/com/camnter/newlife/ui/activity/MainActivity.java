@@ -19,6 +19,7 @@ import com.camnter.load.simple.plugin.LoadSimplePluginActivity;
 import com.camnter.newlife.R;
 import com.camnter.newlife.core.activity.BaseAppCompatActivity;
 import com.camnter.newlife.ui.activity.agera.AgeraActivity;
+import com.camnter.newlife.ui.activity.asm.AsmActivity;
 import com.camnter.newlife.ui.activity.classloader.ClassLoaderActivity;
 import com.camnter.newlife.ui.activity.classloader.ExternalLoadSoActivity;
 import com.camnter.newlife.ui.activity.classloader.InternalLoadSoActivity;
@@ -234,6 +235,7 @@ public class MainActivity extends BaseAppCompatActivity
         this.classes.add(SmartRouterActivity.class);
         this.classes.add(LoadSimplePluginActivity.class);
         this.classes.add(JavassistActivity.class);
+        this.classes.add(AsmActivity.class);
     }
 
 
