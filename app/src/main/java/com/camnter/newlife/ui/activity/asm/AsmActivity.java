@@ -28,9 +28,6 @@ public class AsmActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        ActivityTimeManger.onCreateStart(this);
-        System.out.println("「AsmActivity」   「onCreate」");
-        ActivityTimeManger.onCreateEnd(this);
     }
 
 
