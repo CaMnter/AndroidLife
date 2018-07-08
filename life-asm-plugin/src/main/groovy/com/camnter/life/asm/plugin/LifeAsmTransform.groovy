@@ -86,12 +86,12 @@ class LifeAsmTransform extends Transform {
             throws TransformException, InterruptedException, IOException {
         def input = transformInvocation.inputs
         if (input == null) return
-        // TODO Inject
+        AsmActivityInject asmActivityInject = new AsmActivityInject(project)
         input.each {
             // 文件夹
             it.directoryInputs.each {
                 // 注入代码
-                // TODO Inject
+                asmActivityInject.inject(it)
                 def output = transformInvocation.outputProvider.getContentLocation(it.name,
                         it.contentTypes,
                         it.scopes, Format.DIRECTORY)
@@ -101,8 +101,7 @@ class LifeAsmTransform extends Transform {
 
             // jar 文件
             it.jarInputs.each {
-                // TODO Inject
-                def md5Name = "TODO"
+                def md5Name = asmActivityInject.inject(it)
                 def output = transformInvocation.outputProvider.getContentLocation(md5Name,
                         it.contentTypes,
                         it.scopes, Format.JAR)

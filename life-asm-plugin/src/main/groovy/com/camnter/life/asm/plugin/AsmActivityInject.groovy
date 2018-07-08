@@ -13,8 +13,6 @@ import org.objectweb.asm.commons.AdviceAdapter
 
 class AsmActivityInject extends BaseInject {
 
-    private static final String TAG = AsmActivityInject.simpleName
-
     AsmActivityInject(Project project) {
         super(project)
     }
@@ -211,4 +209,5 @@ class AsmActivityInject extends BaseInject {
         }
         return md5Name
     }
+
 }
