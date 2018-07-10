@@ -15,10 +15,6 @@ class LifeAsmPlugin implements Plugin<Project> {
     void apply(Project project) {
         if (!project.plugins.hasPlugin(AppPlugin.class)) return
         AppExtension android = project.extensions.findByType(AppExtension.class)
-        android.applicationVariants.all {
-            project.afterEvaluate {
-                android.registerTransform(new LifeAsmTransform(project))
-            }
-        }
+        android.registerTransform(new LifeAsmTransform(project))
     }
 }
