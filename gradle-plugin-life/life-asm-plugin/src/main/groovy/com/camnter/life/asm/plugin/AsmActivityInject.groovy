@@ -25,7 +25,7 @@ class AsmActivityInject extends BaseInject {
             dirFile.eachFileRecurse {
                 def filePath = it.absolutePath
                 if (it.name == 'AsmActivity.class') {
-                    File optClass = new File(file.getParent(), file.getName() + ".opt")
+                    File optClass = new File(it.getParent(), it.getName() + ".opt")
                     FileInputStream inputStream = null
                     FileOutputStream outputStream = null
                     try {
@@ -77,6 +77,7 @@ class AsmActivityInject extends BaseInject {
     static class AsmActivityVisitor extends ClassVisitor {
 
         private String owner
+        private ActivityAnnotationVisitor fileAnnotationVisitor
 
         AsmActivityVisitor(ClassVisitor classVisitor) {
             super(Opcodes.ASM5, classVisitor)
@@ -87,6 +88,17 @@ class AsmActivityInject extends BaseInject {
                 String[] interfaces) {
             super.visit(version, access, name, signature, superName, interfaces)
             this.owner = name
+        }
+
+        @Override
+        AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+            AnnotationVisitor annotationVisitor = super.visitAnnotation(desc, visible)
+            if (desc != null) {
+                fileAnnotationVisitor =
+                        new ActivityAnnotationVisitor(Opcodes.ASM5, annotationVisitor, desc)
+                return fileAnnotationVisitor
+            }
+            return annotationVisitor
         }
 
         @Override
@@ -209,5 +221,4 @@ class AsmActivityInject extends BaseInject {
         }
         return md5Name
     }
-
 }
