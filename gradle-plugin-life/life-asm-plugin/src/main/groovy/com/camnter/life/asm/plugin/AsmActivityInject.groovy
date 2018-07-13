@@ -77,7 +77,6 @@ class AsmActivityInject extends BaseInject {
     static class AsmActivityVisitor extends ClassVisitor {
 
         private String owner
-        private ActivityAnnotationVisitor fileAnnotationVisitor
 
         AsmActivityVisitor(ClassVisitor classVisitor) {
             super(Opcodes.ASM5, classVisitor)
@@ -91,40 +90,14 @@ class AsmActivityInject extends BaseInject {
         }
 
         @Override
-        AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-            AnnotationVisitor annotationVisitor = super.visitAnnotation(desc, visible)
-            if (desc != null) {
-                fileAnnotationVisitor =
-                        new ActivityAnnotationVisitor(Opcodes.ASM5, annotationVisitor, desc)
-                return fileAnnotationVisitor
-            }
-            return annotationVisitor
-        }
-
-        @Override
         MethodVisitor visitMethod(int access, String name, String desc, String signature,
                 String[] exceptions) {
             MethodVisitor mv = this.cv.visitMethod(access, name, desc, signature, exceptions)
-            if (fileAnnotationVisitor != null) {
+            println "[AsmActivityInject]   [visitMethod]   [name] = ${name}   [desc] = ${desc}   [signature] = ${signature}"
+            if (name == "initViews") {
                 return new AsmActivityAdviceAdapter(mv, access, owner, name, desc)
             }
             return mv
-        }
-    }
-
-    static class ActivityAnnotationVisitor extends AnnotationVisitor {
-        public String desc
-        public String name
-        public String value
-
-        ActivityAnnotationVisitor(int api, AnnotationVisitor av, String paramDesc) {
-            super(api, av)
-            this.desc = paramDesc
-        }
-
-        void visit(String paramName, Object paramValue) {
-            this.name = paramName
-            this.value = paramValue.toString()
         }
     }
 
@@ -159,9 +132,9 @@ class AsmActivityInject extends BaseInject {
      * Code:
      * 0: return
      * */
-    class AsmActivityAdviceAdapter extends AdviceAdapter {
+    static class AsmActivityAdviceAdapter extends AdviceAdapter {
 
-        ActivityAnnotationVisitor activityAnnotationVisitor
+        String owner
 
         protected AsmActivityAdviceAdapter(MethodVisitor mv, int access, String className,
                 String name, String desc) {
@@ -170,43 +143,26 @@ class AsmActivityInject extends BaseInject {
         }
 
         @Override
-        AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-            AnnotationVisitor annotationVisitor = super.visitAnnotation(desc, visible);
-            if (desc != null) {
-                activityAnnotationVisitor =
-                        new ActivityAnnotationVisitor(Opcodes.ASM5, annotationVisitor, desc);
-                return activityAnnotationVisitor
-            }
-            return annotationVisitor
-        }
-
-        @Override
         protected void onMethodEnter() {
-            if (activityAnnotationVisitor == null) {
-                return
-            }
             super.onMethodEnter()
             // aload_0
             mv.visitVarInsn(ALOAD, 0)
             // invokestatic  #4 // Method com/camnter/newlife/ui/activity/asm/ActivityTimeManger.onCreateStart:(Landroid/app/Activity;)V
             mv.visitMethodInsn(INVOKESTATIC,
                     "com/camnter/newlife/ui/activity/asm/ActivityTimeManger",
-                    activityAnnotationVisitor.value + "Start",
+                    "onCreateStart",
                     "(Landroid/app/Activity;)V")
         }
 
         @Override
         protected void onMethodExit(int opcode) {
-            if (activityAnnotationVisitor == null) {
-                return
-            }
             super.onMethodExit(opcode)
             // aload_0
             mv.visitVarInsn(ALOAD, 0)
             // invokestatic  #8 // Method com/camnter/newlife/ui/activity/asm/ActivityTimeManger.onCreateEnd:(Landroid/app/Activity;)V
             mv.visitMethodInsn(INVOKESTATIC,
                     "com/camnter/newlife/ui/activity/asm/ActivityTimeManger",
-                    activityAnnotationVisitor.value + "End",
+                    "onCreateEnd",
                     "(Landroid/app/Activity;)V")
         }
     }
