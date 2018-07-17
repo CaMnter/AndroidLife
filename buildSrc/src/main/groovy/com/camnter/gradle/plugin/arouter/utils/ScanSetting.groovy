@@ -1,6 +1,9 @@
 package com.camnter.gradle.plugin.arouter.utils
 
 /**
+ * 配置类
+ * 一些写死的路径 和 配置
+ *
  * register setting
  * @author billy.qi email: qiyilike@163.com
  * @since 17/3/28 11:48

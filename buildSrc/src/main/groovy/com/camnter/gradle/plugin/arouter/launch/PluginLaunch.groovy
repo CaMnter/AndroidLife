@@ -8,6 +8,10 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 /**
+ * ARouter 插件
+ * application 的话注册 RegisterTransform
+ * RegisterTransform 设置扫描 IRouteRoot、IInterceptorGroup 和 IProviderGroup
+ *
  * Simple version of AutoRegister plugin for ARouter
  * @author billy.qi email: qiyilike@163.com
  * @since 17/12/06 15:35

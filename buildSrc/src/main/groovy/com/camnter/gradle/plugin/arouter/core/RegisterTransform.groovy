@@ -3,11 +3,15 @@ package com.camnter.gradle.plugin.arouter.core
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.camnter.gradle.plugin.arouter.utils.ScanSetting
+import com.camnter.gradle.plugin.arouter.utils.ScanUtil
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 
 /**
+ * 扫描 ARouter 生成的 IRouteRoot IInterceptorGroup 和 IProviderGroup 实现类
+ * 然后在 com/alibaba/android/arouter/core/LogisticsCenter.class 生成注册方法
+ *
  * transform api
  * <p>
  *     1. Scan all classes to find which classes implement the specified interface
@@ -19,7 +23,7 @@ class RegisterTransform extends Transform {
 
     Project project
     static ArrayList<ScanSetting> registerList
-    static File fileContainsInitClass;
+    static File fileContainsInitClass
 
     RegisterTransform(Project project) {
         this.project = project
@@ -53,6 +57,29 @@ class RegisterTransform extends Transform {
         return false
     }
 
+    /**
+     * Jar 方面
+     * 根据不包含 "com.android.support" 或 "/android/m2repository"
+     * 判断出是不是本项目 class，是的话扫描 jar 中的 class
+     * 这些 class 是否是 IRouteRoot IInterceptorGroup 和 IProviderGroup 实现类
+     * 是的话，记录 该 class
+     *
+     * File 方面
+     * 判断 File 是否是 IRouteRoot IInterceptorGroup 和 IProviderGroup 实现类
+     * 是的话，记录 该 class
+     *
+     * 如果存在 com/alibaba/android/arouter/core/LogisticsCenter.class
+     * 则开始生成 对应注册方法「用刚才记录的 class」
+     *
+     * @param context context
+     * @param inputs inputs
+     * @param referencedInputs referencedInputs
+     * @param outputProvider outputProvider
+     * @param isIncremental isIncremental
+     * @throws IOException IOException
+     * @throws TransformException TransformException
+     * @throws InterruptedException InterruptedException
+     */
     @Override
     void transform(Context context, Collection<TransformInput> inputs
             , Collection<TransformInput> referencedInputs
@@ -64,8 +91,15 @@ class RegisterTransform extends Transform {
         long startTime = System.currentTimeMillis()
         boolean leftSlash = File.separator == '/'
 
+
         inputs.each { TransformInput input ->
 
+            /**
+             * Jar 方面
+             * 根据不包含 "com.android.support" 或 "/android/m2repository"
+             * 判断出是不是本项目 class，是的话扫描 jar 中的 class
+             * 这些 class 是否是 IRouteRoot IInterceptorGroup 和 IProviderGroup 实现类
+             * 是的话，记录 该 class*/
             // scan all jars
             input.jarInputs.each { JarInput jarInput ->
                 String destName = jarInput.name
@@ -86,6 +120,11 @@ class RegisterTransform extends Transform {
                 }
                 FileUtils.copyFile(src, dest)
             }
+
+            /**
+             * File 方面
+             * 判断 File 是否是 IRouteRoot IInterceptorGroup 和 IProviderGroup 实现类
+             * 是的话，记录 该 class*/
             // scan class files
             input.directoryInputs.each { DirectoryInput directoryInput ->
                 File dest = outputProvider.getContentLocation(directoryInput.name,
@@ -110,6 +149,9 @@ class RegisterTransform extends Transform {
         Logger.i(
                 'Scan finish, current cost time ' + (System.currentTimeMillis() - startTime) + "ms")
 
+        /**
+         * 如果存在 com/alibaba/android/arouter/core/LogisticsCenter.class
+         * 则开始生成 对应注册方法「用刚才记录的 class」*/
         if (fileContainsInitClass) {
             registerList.each { ext ->
                 Logger.i('Insert register code to file ' + fileContainsInitClass.absolutePath)

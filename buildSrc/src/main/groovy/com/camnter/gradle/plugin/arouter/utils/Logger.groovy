@@ -3,6 +3,8 @@ package com.camnter.gradle.plugin.arouter.utils
 import org.gradle.api.Project
 
 /**
+ * Log 类
+ *
  * Format log
  *
  * @author zhilong <a href="mailto:zhilong.lzl@alibaba-inc.com">Contact me.</a>
