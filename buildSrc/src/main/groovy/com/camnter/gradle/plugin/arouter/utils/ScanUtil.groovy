@@ -10,6 +10,8 @@ import java.util.jar.JarEntry
 import java.util.jar.JarFile
 
 /**
+ * 扫描工具类
+ *
  * Scan all class in the package: com/alibaba/android/arouter/
  * find out all routers,interceptors and providers
  * @author billy.qi email: qiyilike@163.com
@@ -18,6 +20,10 @@ import java.util.jar.JarFile
 class ScanUtil {
 
     /**
+     * 扫描 jar 中的 class
+     * 这些 class 是否是 IRouteRoot IInterceptorGroup 和 IProviderGroup 实现类
+     * 是的话，记录 该 class
+     *
      * scan jar file
      * @param jarFile All jar files that are compiled into apk
      * @param destFile dest file after this transform
@@ -43,10 +49,23 @@ class ScanUtil {
         }
     }
 
+    /**
+     * 根据不包含 "com.android.support" 或 "/android/m2repository"
+     * 判断出是不是本项目 class，是的话扫描 jar 中的 class
+     *
+     * @param path path
+     * @return boolean
+     */
     static boolean shouldProcessPreDexJar(String path) {
         return !path.contains("com.android.support") && !path.contains("/android/m2repository")
     }
 
+    /**
+     * 是否是 APT 生成目录
+     *
+     * @param entryName entryName
+     * @return boolean
+     */
     static boolean shouldProcessClass(String entryName) {
         return entryName != null && entryName.startsWith(ScanSetting.ROUTER_CLASS_PACKAGE_NAME)
     }
@@ -59,6 +78,11 @@ class ScanUtil {
         scanClass(new FileInputStream(file))
     }
 
+    /**
+     * ASM 扫描类
+     *
+     * @param inputStream
+     */
     static void scanClass(InputStream inputStream) {
         ClassReader cr = new ClassReader(inputStream)
         ClassWriter cw = new ClassWriter(cr, 0)
@@ -67,6 +91,12 @@ class ScanUtil {
         inputStream.close()
     }
 
+    /**
+     * 扫描 class 归类
+     * 归类到对应的 ScanSetting 内
+     *
+     * 比如 IRouteRoot class 就归类到对应 ScanSetting 内中的 List 内
+     */
     static class ScanClassVisitor extends ClassVisitor {
 
         ScanClassVisitor(int api, ClassVisitor cv) {
@@ -87,4 +117,5 @@ class ScanUtil {
             }
         }
     }
+
 }

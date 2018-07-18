@@ -99,7 +99,8 @@ class RegisterTransform extends Transform {
              * 根据不包含 "com.android.support" 或 "/android/m2repository"
              * 判断出是不是本项目 class，是的话扫描 jar 中的 class
              * 这些 class 是否是 IRouteRoot IInterceptorGroup 和 IProviderGroup 实现类
-             * 是的话，记录 该 class*/
+             * 是的话，记录 该 class
+             * */
             // scan all jars
             input.jarInputs.each { JarInput jarInput ->
                 String destName = jarInput.name
@@ -124,7 +125,8 @@ class RegisterTransform extends Transform {
             /**
              * File 方面
              * 判断 File 是否是 IRouteRoot IInterceptorGroup 和 IProviderGroup 实现类
-             * 是的话，记录 该 class*/
+             * 是的话，记录 该 class
+             * */
             // scan class files
             input.directoryInputs.each { DirectoryInput directoryInput ->
                 File dest = outputProvider.getContentLocation(directoryInput.name,
@@ -151,7 +153,8 @@ class RegisterTransform extends Transform {
 
         /**
          * 如果存在 com/alibaba/android/arouter/core/LogisticsCenter.class
-         * 则开始生成 对应注册方法「用刚才记录的 class」*/
+         * 则开始生成 对应注册方法「用刚才记录的 class」
+         * */
         if (fileContainsInitClass) {
             registerList.each { ext ->
                 Logger.i('Insert register code to file ' + fileContainsInitClass.absolutePath)
