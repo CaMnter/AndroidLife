@@ -10,6 +10,9 @@ import java.util.jar.JarOutputStream
 import java.util.zip.ZipEntry
 
 /**
+ * 为 扫描 ARouter 生成的 IRouteRoot IInterceptorGroup 和 IProviderGroup 实现类
+ * 生成对应的 注册代码
+ *
  * generate register code into LogisticsCenter.class
  * @author billy.qi email: qiyilike@163.com
  */
@@ -20,6 +23,12 @@ class RegisterCodeGenerator {
         this.extension = extension
     }
 
+    /**
+     * 找到 LogisticsCenter.class
+     * 插入 注册代码
+     *
+     * @param registerSetting registerSetting
+     */
     static void insertInitCodeTo(ScanSetting registerSetting) {
         if (registerSetting != null && !registerSetting.classList.isEmpty()) {
             RegisterCodeGenerator processor = new RegisterCodeGenerator(registerSetting)
@@ -29,9 +38,15 @@ class RegisterCodeGenerator {
     }
 
     /**
+     * 解 jar
+     * 拿出一个一个 class
+     * 然后得到对应的 InputStream
+     * 然后进行 ASM 操作
+     * 在 LogisticsCenter 的 loadRouterMap 方法内添加 注册代码
+     *
      * generate code into jar file
      * @param jarFile the jar file which contains LogisticsCenter.class
-     * @return
+     * @return File
      */
     private File insertInitCodeIntoJarFile(File jarFile) {
         if (jarFile) {
@@ -70,7 +85,15 @@ class RegisterCodeGenerator {
         return jarFile
     }
 
-    //refer hack class when object init
+    /**
+     * refer hack class when object init
+     *
+     * ASM 操作
+     * 在 LogisticsCenter 的 loadRouterMap 方法内添加 注册代码
+     *
+     * @param inputStream inputStream
+     * @return byte[]
+     */
     private byte[] referHackWhenInit(InputStream inputStream) {
         ClassReader cr = new ClassReader(inputStream)
         ClassWriter cw = new ClassWriter(cr, 0)
@@ -79,6 +102,13 @@ class RegisterCodeGenerator {
         return cw.toByteArray()
     }
 
+    /**
+     * 自定义 ClassVisitor
+     * 主要覆写 visitMethod 方法
+     *
+     * 然后，当遇到 loadRouterMap 方法的时候
+     * return 一个自定义 MethodVisitor
+     */
     class MyClassVisitor extends ClassVisitor {
 
         MyClassVisitor(int api, ClassVisitor cv) {
@@ -94,7 +124,7 @@ class RegisterCodeGenerator {
         MethodVisitor visitMethod(int access, String name, String desc,
                 String signature, String[] exceptions) {
             MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions)
-            //generate code into this method
+            // generate code into this method
             if (name == ScanSetting.GENERATE_TO_METHOD_NAME) {
                 mv = new RouteMethodVisitor(Opcodes.ASM5, mv)
             }
@@ -102,6 +132,10 @@ class RegisterCodeGenerator {
         }
     }
 
+    /**
+     * 自定义 MethodVisitor
+     * 用来给 loadRouterMap 方法添加 注册代码
+     */
     class RouteMethodVisitor extends MethodVisitor {
 
         RouteMethodVisitor(int api, MethodVisitor mv) {
@@ -110,7 +144,7 @@ class RegisterCodeGenerator {
 
         @Override
         void visitInsn(int opcode) {
-            //generate code before return
+            // generate code before return
             if ((opcode >= Opcodes.IRETURN && opcode <= Opcodes.RETURN)) {
                 extension.classList.each { name ->
                     name = name.replaceAll("/", ".")
