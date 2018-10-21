@@ -1,5 +1,10 @@
 include ':app',
 
+        ':uetool-source:uetool',
+        ':uetool-source:uetool-base',
+        ':uetool-source:uetool-no-op',
+        ':uetool-source:uetool-fresco',
+
         ':compressor',
         ':anr-watchdog',
 
