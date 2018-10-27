@@ -2,6 +2,9 @@ package me.ele.uetool.base.item;
 
 import me.ele.uetool.base.Element;
 
+/**
+ * uetool「文本条目」
+ */
 public class ElementItem extends TitleItem {
 
     private Element element;

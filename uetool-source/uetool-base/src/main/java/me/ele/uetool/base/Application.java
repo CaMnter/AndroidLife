@@ -10,6 +10,12 @@ public class Application {
     private Application() {
     }
 
+
+    /**
+     * 反射 ApplicationThread 拿 Application
+     *
+     * @return Application
+     */
     public static Context getApplicationContext() {
         if (CONTEXT != null) {
             return CONTEXT;

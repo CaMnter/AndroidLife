@@ -2,6 +2,9 @@ package me.ele.uetool.base.item;
 
 import android.graphics.Bitmap;
 
+/**
+ * uetool「图片条目」
+ */
 public class BitmapItem extends Item {
 
     private String name;

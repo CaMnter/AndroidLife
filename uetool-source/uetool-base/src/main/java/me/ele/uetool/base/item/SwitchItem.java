@@ -9,6 +9,9 @@ import static me.ele.uetool.base.item.SwitchItem.Type.TYPE_IS_BOLD;
 import static me.ele.uetool.base.item.SwitchItem.Type.TYPE_MOVE;
 import static me.ele.uetool.base.item.SwitchItem.Type.TYPE_SHOW_VALID_VIEWS;
 
+/**
+ * uetool「选择条目」
+ */
 public class SwitchItem extends ElementItem {
 
     @Type

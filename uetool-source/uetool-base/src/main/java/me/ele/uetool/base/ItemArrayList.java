@@ -5,6 +5,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import me.ele.uetool.base.item.Item;
 
+/**
+ * 泛型 条目 数组
+ * 因为条目实现类很多
+ *
+ * @param <T>
+ */
 public class ItemArrayList<T extends Item> extends ArrayList<T> {
 
     @Override

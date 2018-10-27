@@ -2,6 +2,9 @@ package me.ele.uetool.base.item;
 
 import android.text.TextUtils;
 
+/**
+ * uetool「文本条目」
+ */
 public class TextItem extends TitleItem {
 
     private String detail;

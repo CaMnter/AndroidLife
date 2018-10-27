@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.TypedValue;
 
+/**
+ * 「尺寸工具」
+ */
 public class DimenUtil {
 
     private static final Context CONTEXT = Application.getApplicationContext();

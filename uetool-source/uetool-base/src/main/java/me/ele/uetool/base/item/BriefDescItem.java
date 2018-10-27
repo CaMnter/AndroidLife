@@ -2,6 +2,9 @@ package me.ele.uetool.base.item;
 
 import me.ele.uetool.base.Element;
 
+/**
+ * uetool「简述条目」
+ */
 public class BriefDescItem extends ElementItem {
 
     private boolean isSelected;

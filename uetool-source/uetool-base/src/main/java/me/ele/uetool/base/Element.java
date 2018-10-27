@@ -4,6 +4,10 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.view.View;
 
+/**
+ * 「元素」
+ * 一般以 View 为单位，可以拿到一些关于这个 View 的信息
+ */
 public class Element {
 
     private View view;
@@ -30,6 +34,11 @@ public class Element {
         return originRect;
     }
 
+
+    /**
+     * 拿到这个 View 所在屏幕上的 矩形大小
+     * 也包含这个 View 的实际坐标
+     */
     public void reset() {
         view.getLocationOnScreen(location);
         int width = view.getWidth();
@@ -46,6 +55,12 @@ public class Element {
         rect.set(left, top, right, bottom);
     }
 
+
+    /**
+     * 取 父元素
+     *
+     * @return Element
+     */
     public Element getParentElement() {
         if (parentElement == null) {
             Object parentView = view.getParent();
