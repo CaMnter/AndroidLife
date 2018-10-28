@@ -45,6 +45,17 @@ public class UETFresco implements IAttrs {
         return items;
     }
 
+
+    /**
+     * 圆角半径「dp」
+     *
+     * 通过「Fresco」的 ImageView「DraweeView」
+     * 先拿到 层级「GenericDraweeHierarchy」
+     * 再获取圆角的 半径「dp」
+     *
+     * @param draweeView draweeView
+     * @return String
+     */
     private String getCornerRadius(DraweeView draweeView) {
         GenericDraweeHierarchy hierarchy = getGenericDraweeHierarchy(draweeView);
         if (hierarchy != null) {
@@ -63,6 +74,17 @@ public class UETFresco implements IAttrs {
         return null;
     }
 
+
+    /**
+     * 「scaleType」
+     *
+     * 通过「Fresco」的 ImageView「DraweeView」
+     * 先拿到 层级「GenericDraweeHierarchy」
+     * 再获取 scaleType
+     *
+     * @param draweeView draweeView
+     * @return String
+     */
     private String getScaleType(DraweeView draweeView) {
         GenericDraweeHierarchy hierarchy = getGenericDraweeHierarchy(draweeView);
         if (hierarchy != null) {
@@ -71,6 +93,17 @@ public class UETFresco implements IAttrs {
         return null;
     }
 
+
+    /**
+     * 「uri」
+     *
+     * 通过「Fresco」的 ImageView「DraweeView」
+     * 先拿到 ImageView「DraweeView」 的 builder「PipelineDraweeControllerBuilder」
+     * 再获取 uri
+     *
+     * @param draweeView draweeView
+     * @return String
+     */
     private String getImageURI(DraweeView draweeView) {
         PipelineDraweeControllerBuilder builder = getFrescoControllerBuilder(draweeView);
         if (builder != null) {
@@ -79,6 +112,17 @@ public class UETFresco implements IAttrs {
         return "";
     }
 
+
+    /**
+     * 「gif」判断
+     *
+     * 通过「Fresco」的 ImageView「DraweeView」
+     * 先拿到 ImageView「DraweeView」 的 builder「PipelineDraweeControllerBuilder」
+     * 再获取 是否支持动画「gif」
+     *
+     * @param draweeView draweeView
+     * @return String
+     */
     private String isSupportAnimation(DraweeView draweeView) {
         PipelineDraweeControllerBuilder builder = getFrescoControllerBuilder(draweeView);
         if (builder != null) {
@@ -87,6 +131,18 @@ public class UETFresco implements IAttrs {
         return "";
     }
 
+
+    /**
+     *「占位图」
+     *
+     * 「1」反射拿「GenericDraweeHierarchy # FadeDrawable mFadeDrawable」
+     * 「2」反射拿「FadeDrawable # Drawable[] mLayers」
+     * 「3」因为「GenericDraweeHierarchy # int PLACEHOLDER_IMAGE_INDEX = 1」
+     * 「4」取 「FadeDrawable # Drawable[] mLayers」中的 1
+     *
+     * @param draweeView draweeView
+     * @return Bitmap
+     */
     private Bitmap getPlaceHolderBitmap(DraweeView draweeView) {
         GenericDraweeHierarchy hierarchy = getGenericDraweeHierarchy(draweeView);
         if (hierarchy != null && hierarchy.hasPlaceholderImage()) {
@@ -107,6 +163,17 @@ public class UETFresco implements IAttrs {
         return null;
     }
 
+
+    /**
+     * 「渐进时间」
+     *
+     * 通过「Fresco」的 ImageView「DraweeView」
+     * 先拿到 层级「GenericDraweeHierarchy」
+     * 再获取 渐进时间
+     *
+     * @param draweeView draweeView
+     * @return String
+     */
     private String getFadeDuration(DraweeView draweeView) {
         int duration = 0;
         GenericDraweeHierarchy hierarchy = getGenericDraweeHierarchy(draweeView);
@@ -116,6 +183,16 @@ public class UETFresco implements IAttrs {
         return duration + "ms";
     }
 
+
+    /**
+     * 「Fresco 层级」
+     *
+     * 通过「Fresco」的 ImageView「DraweeView」
+     * 拿到 层级「GenericDraweeHierarchy」
+     *
+     * @param draweeView draweeView
+     * @return GenericDraweeHierarchy
+     */
     private GenericDraweeHierarchy getGenericDraweeHierarchy(DraweeView draweeView) {
         if (draweeView instanceof GenericDraweeView) {
             return ((GenericDraweeView) draweeView).getHierarchy();
@@ -123,15 +200,37 @@ public class UETFresco implements IAttrs {
         return null;
     }
 
+
+    /**
+     * 通过「Fresco」的 ImageView「DraweeView」
+     * 获取到这个 ImageView「DraweeView」对应的 builder「Builder 模式中的 builder，用于存储数据」
+     *
+     * 大致步骤：
+     * 「1」先反射获取「PipelineDraweeController # Supplier<DataSource<CloseableReference<CloseableImage>>>
+     * mDataSourceSupplier
+     * mDataSourceSupplier」
+     * 「2」com.facebook.drawee.controller.AbstractDraweeControllerBuilder$2「这个就有意思了」
+     * 在「Fresco 1.4.0」代码的面板中，顺位第 2 个创建的 匿名内部类是 new Supplier<DataSource<IMAGE>>(){...}
+     * 也就是说反射这个拿 Supplier<DataSource<IMAGE>>，而这个 Supplier<DataSource<IMAGE>> 中的泛型
+     * IMAGE 的 field 就是 下面的 mAutoField
+     *
+     * @param draweeView draweeView
+     * @return PipelineDraweeControllerBuilder
+     */
     private PipelineDraweeControllerBuilder getFrescoControllerBuilder(DraweeView draweeView) {
         try {
-            PipelineDraweeController controller = (PipelineDraweeController) draweeView.getController();
-            Field mDataSourceSupplierFiled = PipelineDraweeController.class.getDeclaredField("mDataSourceSupplier");
+            PipelineDraweeController controller
+                = (PipelineDraweeController) draweeView.getController();
+            Field mDataSourceSupplierFiled = PipelineDraweeController.class.getDeclaredField(
+                "mDataSourceSupplier");
             mDataSourceSupplierFiled.setAccessible(true);
             Supplier supplier = (Supplier) mDataSourceSupplierFiled.get(controller);
-            Field mAutoField = Class.forName("com.facebook.drawee.controller.AbstractDraweeControllerBuilder$2").getDeclaredField("this$0");
+            Field mAutoField = Class.forName(
+                "com.facebook.drawee.controller.AbstractDraweeControllerBuilder$2")
+                .getDeclaredField("this$0");
             mAutoField.setAccessible(true);
-            PipelineDraweeControllerBuilder builder = (PipelineDraweeControllerBuilder) mAutoField.get(supplier);
+            PipelineDraweeControllerBuilder builder
+                = (PipelineDraweeControllerBuilder) mAutoField.get(supplier);
             return builder;
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,6 +238,14 @@ public class UETFresco implements IAttrs {
         return null;
     }
 
+
+    /**
+     * 获取 bitmap
+     * 兼容了 「Fresco bitmap」的情况
+     *
+     * @param drawable drawable
+     * @return bitmap
+     */
     private Bitmap getFrescoDrawableBitmap(Drawable drawable) {
         try {
             if (drawable instanceof ScaleTypeDrawable) {
