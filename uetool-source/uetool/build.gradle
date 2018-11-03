@@ -24,4 +24,5 @@ android {
 dependencies {
     compile project(':uetool-source:uetool-base')
     compile rootProject.ext.denpendencies["support-v7"]
+    compile rootProject.ext.denpendencies["recyclerview-v7"]
 }

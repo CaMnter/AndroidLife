@@ -28,6 +28,7 @@ import static me.ele.uetool.base.DimenUtil.getScreenWidth;
 import static me.ele.uetool.base.DimenUtil.px2dip;
 import static me.ele.uetool.base.DimenUtil.sp2px;
 
+@SuppressWarnings("DanglingJavadoc")
 public class CollectViewsLayout extends View {
 
     private final int halfEndPointWidth = dip2px(2.5f);
@@ -60,22 +61,60 @@ public class CollectViewsLayout extends View {
             setAntiAlias(true);
             setColor(0x90FF0000);
             setStyle(Style.STROKE);
-            setPathEffect(new DashPathEffect(new float[]{dip2px(4), dip2px(8)}, 0));
+            setPathEffect(new DashPathEffect(new float[] { dip2px(4), dip2px(8) }, 0));
         }
     };
+
 
     public CollectViewsLayout(Context context) {
         super(context);
     }
 
+
     public CollectViewsLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
+
 
     public CollectViewsLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
+
+    /**
+     * 通过反射 WindowManagerImpl，拿到一堆 Activity 对应的 DecorView
+     * 然后逐个遍历这些 DecorView，拿到一颗颗 View tree。保存下来，收集信息
+     *
+     * API > 4.1:
+     * - 反射「WindowManagerImpl # WindowManagerGlobal mGlobal」
+     * - API > 4.1 && API <= 6.0
+     * -   - 反射「WindowManagerImpl # WindowManagerGlobal mGlobal」
+     * -   - 反射「WindowManagerGlobal # ArrayList<View> mViews」
+     * -   -   - API >= 4.4 && API <= 6.0
+     * -   -   -   - 「WindowManagerGlobal # ArrayList<View> mViews」
+     * -   -   - API > 4.1 && API < 4.3
+     * -   -   -   - 「WindowManagerGlobal # View[] mViews」
+     * -   -   - 这里的每个 View，对应着一个个 DecorView，就是每个 Activity 的最顶层布局
+     * -   -   - 先拿到每个 DecorView
+     * -   -   - 然后 DecorView 开始，递归遍历整个 View tree，拿到一颗颗 View tree
+     * - API > 6.0
+     * -   - 反射「WindowManagerGlobal # ArrayList<ViewRootImpl> mRoots」
+     * -   - 获取每个 ViewRootImpl
+     * -   - 反射获取
+     * -   - 「ViewRootImpl # WindowManager.LayoutParams mWindowAttributes」
+     * -   - 「ViewRootImpl # View mView」这个其实是「DecorView」
+     * -   - 先拿到每个 DecorView
+     * -   - 然后 DecorView 开始，递归遍历整个 View tree，拿到一颗颗 View tree
+     *
+     * API <= 4.1:
+     * - 反射
+     * - 「WindowManagerImpl # CompatModeWrapper # WindowManagerImpl mWindowManager」
+     * - 「WindowManagerImpl # View[] mViews」
+     * -  第一则反射 先拿到 WindowManagerImpl 实例
+     * -  然后再拿到「WindowManagerImpl # View[] mViews」
+     * -  这里面每个 View 都是 DecorView
+     * -  然后 DecorView 开始，递归遍历整个 View tree，拿到一颗颗 View tree
+     */
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -83,20 +122,49 @@ public class CollectViewsLayout extends View {
             Activity targetActivity = UETool.getInstance().getTargetActivity();
             WindowManager windowManager = targetActivity.getWindowManager();
 
+            /**
+             * API > 4.1
+             */
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
-                Field mGlobalField = Class.forName("android.view.WindowManagerImpl").getDeclaredField("mGlobal");
+
+                /**
+                 * 反射「WindowManagerImpl # WindowManagerGlobal mGlobal」
+                 */
+                Field mGlobalField = Class.forName("android.view.WindowManagerImpl")
+                    .getDeclaredField("mGlobal");
                 mGlobalField.setAccessible(true);
 
+                /**
+                 * API <= 6.0
+                 */
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-                    Field mViewsField = Class.forName("android.view.WindowManagerGlobal").getDeclaredField("mViews");
+                    /**
+                     * 反射「WindowManagerGlobal # ArrayList<View> mViews」
+                     */
+                    Field mViewsField = Class.forName("android.view.WindowManagerGlobal")
+                        .getDeclaredField("mViews");
                     mViewsField.setAccessible(true);
                     List<View> views;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+
+                    /**
+                     * API >= 4.4
+                     * 「WindowManagerGlobal # ArrayList<View> mViews」
+                     *
+                     * API < 4.3
+                     * 「WindowManagerGlobal # View[] mViews」
+                     */
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         views = (List<View>) mViewsField.get(mGlobalField.get(windowManager));
-                    }else {
-                        views = Arrays.asList((View[]) mViewsField.get(mGlobalField.get(windowManager)));
+                    } else {
+                        views = Arrays.asList(
+                            (View[]) mViewsField.get(mGlobalField.get(windowManager)));
                     }
 
+                    /**
+                     * 这里的每个 View，对应着一个个 DecorView，就是每个 Activity 的最顶层布局
+                     * 先拿到每个 DecorView
+                     * 然后 DecorView 开始，递归遍历整个 View tree，拿到一颗颗 View tree
+                     */
                     for (int i = views.size() - 1; i >= 0; i--) {
                         View targetView = getTargetDecorView(targetActivity, views.get(i));
                         if (targetView != null) {
@@ -105,10 +173,27 @@ public class CollectViewsLayout extends View {
                         }
                     }
                 } else {
-                    Field mRootsField = Class.forName("android.view.WindowManagerGlobal").getDeclaredField("mRoots");
+                    /**
+                     * API > 6.0
+                     */
+
+                    /**
+                     * 反射「WindowManagerGlobal # ArrayList<ViewRootImpl> mRoots」
+                     */
+                    Field mRootsField = Class.forName("android.view.WindowManagerGlobal")
+                        .getDeclaredField("mRoots");
                     mRootsField.setAccessible(true);
                     List viewRootImpls;
                     viewRootImpls = (List) mRootsField.get(mGlobalField.get(windowManager));
+                    /**
+                     * 获取每个 ViewRootImpl
+                     * 反射获取
+                     * 「ViewRootImpl # WindowManager.LayoutParams mWindowAttributes」
+                     * 「ViewRootImpl # View mView」这个其实是「DecorView」
+                     *
+                     * 先拿到每个 DecorView
+                     * 然后 DecorView 开始，递归遍历整个 View tree，拿到一颗颗 View tree
+                     */
                     for (int i = viewRootImpls.size() - 1; i >= 0; i--) {
                         Class clazz = Class.forName("android.view.ViewRootImpl");
                         Object object = viewRootImpls.get(i);
@@ -117,21 +202,44 @@ public class CollectViewsLayout extends View {
                         Field mViewField = clazz.getDeclaredField("mView");
                         mViewField.setAccessible(true);
                         View decorView = (View) mViewField.get(object);
-                        WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) mWindowAttributesField.get(object);
-                        if (layoutParams.getTitle().toString().contains(targetActivity.getClass().getName())
-                                || getTargetDecorView(targetActivity, decorView) != null) {
+                        WindowManager.LayoutParams layoutParams
+                            = (WindowManager.LayoutParams) mWindowAttributesField.get(object);
+                        if (layoutParams.getTitle()
+                            .toString()
+                            .contains(targetActivity.getClass().getName())
+                            || getTargetDecorView(targetActivity, decorView) != null) {
                             traverse(decorView);
                             break;
                         }
                     }
                 }
             } else {
+                /**
+                 * API <= 4.1
+                 */
+
                 // http://androidxref.com/4.1.1/xref/frameworks/base/core/java/android/view/WindowManagerImpl.java
-                Field mWindowManagerField = Class.forName("android.view.WindowManagerImpl$CompatModeWrapper").getDeclaredField("mWindowManager");
+
+                /**
+                 * 反射
+                 * 「WindowManagerImpl # CompatModeWrapper # WindowManagerImpl mWindowManager」
+                 * 「WindowManagerImpl # View[] mViews」
+                 *
+                 * 第一则反射 先拿到 WindowManagerImpl 实例
+                 * 然后再拿到「WindowManagerImpl # View[] mViews」
+                 * 这里面每个 View 都是 DecorView
+                 *
+                 * 然后 DecorView 开始，递归遍历整个 View tree，拿到一颗颗 View tree
+                 */
+                Field mWindowManagerField = Class.forName(
+                    "android.view.WindowManagerImpl$CompatModeWrapper")
+                    .getDeclaredField("mWindowManager");
                 mWindowManagerField.setAccessible(true);
-                Field mViewsField = Class.forName("android.view.WindowManagerImpl").getDeclaredField("mViews");
+                Field mViewsField = Class.forName("android.view.WindowManagerImpl")
+                    .getDeclaredField("mViews");
                 mViewsField.setAccessible(true);
-                List<View> views = Arrays.asList((View[]) mViewsField.get(mWindowManagerField.get(windowManager)));
+                List<View> views = Arrays.asList(
+                    (View[]) mViewsField.get(mWindowManagerField.get(windowManager)));
                 for (int i = views.size() - 1; i >= 0; i--) {
                     View targetView = getTargetDecorView(targetActivity, views.get(i));
                     if (targetView != null) {
@@ -145,6 +253,7 @@ public class CollectViewsLayout extends View {
         }
     }
 
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
@@ -153,6 +262,13 @@ public class CollectViewsLayout extends View {
         parentElement = null;
     }
 
+
+    /**
+     * 从 Activity 的 DecorView 开始，递归遍历整个 View tree
+     * 这种递归方式不好... 可以用「树的深度算法」「前序遍历非递归法」去优化...
+     *
+     * @param view view
+     */
     private void traverse(View view) {
         if (UETool.getInstance().getFilterClasses().contains(view.getClass().getName())) return;
         if (view.getAlpha() == 0 || view.getVisibility() != View.VISIBLE) return;
@@ -168,6 +284,14 @@ public class CollectViewsLayout extends View {
         }
     }
 
+
+    /**
+     * 拿到 Activity 的 DecorView
+     *
+     * @param targetActivity targetActivity
+     * @param decorView decorView
+     * @return View
+     */
     private View getTargetDecorView(Activity targetActivity, View decorView) {
         View targetView = null;
         Context context = decorView.getContext();
@@ -185,6 +309,7 @@ public class CollectViewsLayout extends View {
         }
         return targetView;
     }
+
 
     protected Element getTargetElement(float x, float y) {
         Element target = null;
@@ -205,22 +330,26 @@ public class CollectViewsLayout extends View {
             }
         }
         if (target == null) {
-            Toast.makeText(getContext(), getResources().getString(R.string.uet_target_element_not_found, x, y), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(),
+                getResources().getString(R.string.uet_target_element_not_found, x, y),
+                Toast.LENGTH_SHORT).show();
         }
         return target;
     }
+
 
     private boolean isParentNotVisible(Element parent) {
         if (parent == null) {
             return false;
         }
         if (parent.getRect().left >= DimenUtil.getScreenWidth()
-                || parent.getRect().top >= DimenUtil.getScreenHeight()) {
+            || parent.getRect().top >= DimenUtil.getScreenHeight()) {
             return true;
         } else {
             return isParentNotVisible(parent.getParentElement());
         }
     }
+
 
     protected List<Element> getTargetElements(float x, float y) {
         List<Element> validList = new ArrayList<>();
@@ -262,20 +391,27 @@ public class CollectViewsLayout extends View {
         canvas.drawText(text, left + textBgFillingSpace, bottom - textBgFillingSpace, textPaint);
     }
 
+
     private void drawLineWithEndPoint(Canvas canvas, int startX, int startY, int endX, int endY) {
         canvas.drawLine(startX, startY, endX, endY, textPaint);
         if (startX == endX) {
-            canvas.drawLine(startX - halfEndPointWidth, startY, endX + halfEndPointWidth, startY, textPaint);
-            canvas.drawLine(startX - halfEndPointWidth, endY, endX + halfEndPointWidth, endY, textPaint);
+            canvas.drawLine(startX - halfEndPointWidth, startY, endX + halfEndPointWidth, startY,
+                textPaint);
+            canvas.drawLine(startX - halfEndPointWidth, endY, endX + halfEndPointWidth, endY,
+                textPaint);
         } else if (startY == endY) {
-            canvas.drawLine(startX, startY - halfEndPointWidth, startX, endY + halfEndPointWidth, textPaint);
-            canvas.drawLine(endX, startY - halfEndPointWidth, endX, endY + halfEndPointWidth, textPaint);
+            canvas.drawLine(startX, startY - halfEndPointWidth, startX, endY + halfEndPointWidth,
+                textPaint);
+            canvas.drawLine(endX, startY - halfEndPointWidth, endX, endY + halfEndPointWidth,
+                textPaint);
         }
     }
+
 
     protected void drawLineWithText(Canvas canvas, int startX, int startY, int endX, int endY) {
         drawLineWithText(canvas, startX, startY, endX, endY, 0);
     }
+
 
     protected void drawLineWithText(Canvas canvas, int startX, int startY, int endX, int endY, int endPointSpace) {
 
@@ -295,21 +431,27 @@ public class CollectViewsLayout extends View {
         }
 
         if (startX == endX) {
-            drawLineWithEndPoint(canvas, startX, startY + endPointSpace, endX, endY - endPointSpace);
+            drawLineWithEndPoint(canvas, startX, startY + endPointSpace, endX,
+                endY - endPointSpace);
             String text = px2dip(endY - startY, true);
-            drawText(canvas, text, startX + textLineDistance, startY + (endY - startY) / 2 + getTextHeight(text) / 2);
+            drawText(canvas, text, startX + textLineDistance,
+                startY + (endY - startY) / 2 + getTextHeight(text) / 2);
         } else if (startY == endY) {
-            drawLineWithEndPoint(canvas, startX + endPointSpace, startY, endX - endPointSpace, endY);
+            drawLineWithEndPoint(canvas, startX + endPointSpace, startY, endX - endPointSpace,
+                endY);
             String text = px2dip(endX - startX, true);
-            drawText(canvas, text, startX + (endX - startX) / 2 - getTextWidth(text) / 2, startY - textLineDistance);
+            drawText(canvas, text, startX + (endX - startX) / 2 - getTextWidth(text) / 2,
+                startY - textLineDistance);
         }
     }
+
 
     protected float getTextHeight(String text) {
         Rect rect = new Rect();
         textPaint.getTextBounds(text, 0, text.length(), rect);
         return rect.height();
     }
+
 
     protected float getTextWidth(String text) {
         return textPaint.measureText(text);

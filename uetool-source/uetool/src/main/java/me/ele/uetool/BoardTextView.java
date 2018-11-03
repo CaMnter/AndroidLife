@@ -6,6 +6,10 @@ import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import me.ele.uetool.base.DimenUtil;
 
+/**
+ * 定制了文案格式的 TextView
+ * 用于展示
+ */
 public class BoardTextView extends AppCompatTextView {
 
     private final String defaultInfo = getResources().getString(R.string.uet_name) + " / " + UETool.getInstance().getTargetActivity().getClass().getName();
