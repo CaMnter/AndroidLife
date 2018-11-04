@@ -311,6 +311,15 @@ public class CollectViewsLayout extends View {
     }
 
 
+    /**
+     * 根据 x y
+     * 获取对应的 Element
+     * 「当然要在之前遍历各个 Activity view tree 的时候缓存下来的 Element 数组里」
+     *
+     * @param x x
+     * @param y y
+     * @return Element
+     */
     protected Element getTargetElement(float x, float y) {
         Element target = null;
         for (int i = elements.size() - 1; i >= 0; i--) {
@@ -338,6 +347,18 @@ public class CollectViewsLayout extends View {
     }
 
 
+    /**
+     * 判断这个 Element 是否在屏幕上
+     *
+     * 不是的话，递归往上走找 父 Element 继续判
+     * 要么，找到屏幕上的父 Element。然后，返回 true
+     * 要么找到头，都没有返回 false
+     *
+     * 是的话，true
+     *
+     * @param parent parent
+     * @return boolean
+     */
     private boolean isParentNotVisible(Element parent) {
         if (parent == null) {
             return false;
@@ -351,6 +372,16 @@ public class CollectViewsLayout extends View {
     }
 
 
+    /**
+     * 根据 x y
+     * 获取对应的 Element
+     * 返回一个数组
+     * 「当然要在之前遍历各个 Activity view tree 的时候缓存下来的 Element 数组里」
+     *
+     * @param x x
+     * @param y y
+     * @return List<Element>
+     */
     protected List<Element> getTargetElements(float x, float y) {
         List<Element> validList = new ArrayList<>();
         for (int i = elements.size() - 1; i >= 0; i--) {
@@ -363,6 +394,14 @@ public class CollectViewsLayout extends View {
     }
 
 
+    /**
+     * 绘制 文本
+     *
+     * @param canvas canvas
+     * @param text text
+     * @param x x
+     * @param y y
+     */
     protected void drawText(Canvas canvas, String text, float x, float y) {
         float left = x - textBgFillingSpace;
         float top = y - getTextHeight(text);
@@ -392,6 +431,15 @@ public class CollectViewsLayout extends View {
     }
 
 
+    /**
+     * 绘制 行 和 点
+     *
+     * @param canvas canvas
+     * @param startX startX
+     * @param startY startY
+     * @param endX endX
+     * @param endY endY
+     */
     private void drawLineWithEndPoint(Canvas canvas, int startX, int startY, int endX, int endY) {
         canvas.drawLine(startX, startY, endX, endY, textPaint);
         if (startX == endX) {
@@ -413,6 +461,16 @@ public class CollectViewsLayout extends View {
     }
 
 
+    /**
+     * 绘制 行 和 文本
+     *
+     * @param canvas canvas
+     * @param startX startX
+     * @param startY startY
+     * @param endX endX
+     * @param endY endY
+     * @param endPointSpace endPointSpace
+     */
     protected void drawLineWithText(Canvas canvas, int startX, int startY, int endX, int endY, int endPointSpace) {
 
         if (startX == endX && startY == endY) {
@@ -446,6 +504,13 @@ public class CollectViewsLayout extends View {
     }
 
 
+    /**
+     * 根据文字
+     * 拿文本高度「得有画笔才行」
+     *
+     * @param text text
+     * @return float
+     */
     protected float getTextHeight(String text) {
         Rect rect = new Rect();
         textPaint.getTextBounds(text, 0, text.length(), rect);
@@ -453,6 +518,13 @@ public class CollectViewsLayout extends View {
     }
 
 
+    /**
+     * 根据文字
+     * 拿文本宽度「得有画笔才行」
+     *
+     * @param text text
+     * @return float
+     */
     protected float getTextWidth(String text) {
         return textPaint.measureText(text);
     }

@@ -13,6 +13,12 @@ import static me.ele.uetool.base.DimenUtil.dip2px;
 import static me.ele.uetool.base.DimenUtil.getScreenHeight;
 import static me.ele.uetool.base.DimenUtil.getScreenWidth;
 
+/**
+ * 网格 View
+ *
+ * 就是简单绘制网格的 View
+ * 5 dp 边
+ */
 public class GriddingLayout extends View {
 
     public static final int LINE_INTERVAL = dip2px(5);
