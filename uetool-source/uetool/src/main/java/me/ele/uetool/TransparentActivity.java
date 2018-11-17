@@ -18,6 +18,10 @@ import static me.ele.uetool.TransparentActivity.Type.TYPE_RELATIVE_POSITION;
 import static me.ele.uetool.TransparentActivity.Type.TYPE_SHOW_GRIDDING;
 import static me.ele.uetool.TransparentActivity.Type.TYPE_UNKNOWN;
 
+/**
+ * 用于承载「捕捉控件」「相对位置」「网格栅栏」三个功能
+ * 对应的「RelativePositionLayout」「RelativePositionLayout」「GriddingLayout」
+ */
 public class TransparentActivity extends AppCompatActivity {
 
     public static final String EXTRA_TYPE = "extra_type";
@@ -71,12 +75,20 @@ public class TransparentActivity extends AppCompatActivity {
         vContainer.addView(board, params);
     }
 
+
+    /**
+     * 关掉各种转场
+     */
     @Override
     public void finish() {
         super.finish();
         overridePendingTransition(0, 0);
     }
 
+
+    /**
+     * 释放 静态引用
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
