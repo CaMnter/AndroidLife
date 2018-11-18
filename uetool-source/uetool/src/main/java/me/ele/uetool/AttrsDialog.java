@@ -52,15 +52,20 @@ import static me.ele.uetool.base.DimenUtil.dip2px;
 import static me.ele.uetool.base.DimenUtil.getScreenHeight;
 import static me.ele.uetool.base.DimenUtil.getScreenWidth;
 
+/**
+ * 属性编辑 dialog
+ */
 public class AttrsDialog extends Dialog {
 
     private RecyclerView vList;
     private Adapter adapter = new Adapter();
     private RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
 
+
     public AttrsDialog(Context context) {
         super(context, R.style.uet_Theme_Holo_Dialog_background_Translucent);
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +75,7 @@ public class AttrsDialog extends Dialog {
         vList.setAdapter(adapter);
         vList.setLayoutManager(layoutManager);
     }
+
 
     public void show(Element element) {
         show();
@@ -85,6 +91,18 @@ public class AttrsDialog extends Dialog {
         layoutManager.scrollToPosition(0);
     }
 
+
+    /**
+     * 一般情况下是按了「ValidViews」开关后
+     * dialog 需要显示该元素的 view tree
+     *
+     * 这里添加一组 BriefDescItem「简述条目」
+     * recycler view 用的 item
+     *
+     * @param positionStart positionStart
+     * @param validElements validElements
+     * @param targetElement targetElement
+     */
     public void notifyValidViewItemInserted(int positionStart, List<Element> validElements, Element targetElement) {
         List<Item> validItems = new ArrayList<>();
         for (int i = 0, N = validElements.size(); i < N; i++) {
@@ -94,14 +112,30 @@ public class AttrsDialog extends Dialog {
         adapter.notifyValidViewItemInserted(positionStart, validItems);
     }
 
+
+    /**
+     * 关闭「ValidViews」
+     *
+     * @param positionStart positionStart
+     */
     public final void notifyItemRangeRemoved(int positionStart) {
         adapter.notifyValidViewItemRemoved(positionStart);
     }
 
+
+    /**
+     * 设置 recycler view adapter 回调
+     *
+     * @param callback callback
+     */
     public void setAttrDialogCallback(AttrDialogCallback callback) {
         adapter.setAttrDialogCallback(callback);
     }
 
+
+    /**
+     * recycler view adapter 回调
+     */
     public interface AttrDialogCallback {
         void enableMove();
 
@@ -110,16 +144,32 @@ public class AttrsDialog extends Dialog {
         void selectView(Element element);
     }
 
+
+    /**
+     * recycler view adapter
+     */
     public static class Adapter extends RecyclerView.Adapter {
 
         private List<Item> items = new ItemArrayList<>();
         private List<Item> validItems = new ArrayList<>();
         private AttrDialogCallback callback;
 
+
+        /**
+         * 设置 recycler view adapter 回调
+         *
+         * @param callback callback
+         */
         public void setAttrDialogCallback(AttrDialogCallback callback) {
             this.callback = callback;
         }
 
+
+        /**
+         * 更新关于这个元素的 属性列表「可编辑功能列表」
+         *
+         * @param element element
+         */
         public void notifyDataSetChanged(Element element) {
             items.clear();
             for (String attrsProvider : UETool.getInstance().getAttrsProvider()) {
@@ -133,16 +183,28 @@ public class AttrsDialog extends Dialog {
             notifyDataSetChanged();
         }
 
+
+        /**
+         * 展开关于这个元素的 view tree
+         *
+         * @param positionStart positionStart
+         * @param validItems validItems
+         */
         public void notifyValidViewItemInserted(int positionStart, List<Item> validItems) {
             this.validItems.addAll(validItems);
             items.addAll(positionStart, validItems);
             notifyItemRangeInserted(positionStart, validItems.size());
         }
 
+
+        /**
+         * 关闭关于这个元素的 view tree
+         */
         public void notifyValidViewItemRemoved(int positionStart) {
             items.removeAll(validItems);
             notifyItemRangeRemoved(positionStart, validItems.size());
         }
+
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -165,6 +227,7 @@ public class AttrsDialog extends Dialog {
             throw new RuntimeException(viewType + " is an unknown view type!");
         }
 
+
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             if (holder.getClass() == TitleViewHolder.class) {
@@ -183,6 +246,7 @@ public class AttrsDialog extends Dialog {
                 ((BriefDescViewHolder) holder).bindView((BriefDescItem) getItem(position));
             }
         }
+
 
         @Override
         public int getItemViewType(int position) {
@@ -205,10 +269,12 @@ public class AttrsDialog extends Dialog {
             throw new RuntimeException("Unknown item type.");
         }
 
+
         @Override
         public int getItemCount() {
             return items.size();
         }
+
 
         @Nullable
         @SuppressWarnings("unchecked")
@@ -219,15 +285,16 @@ public class AttrsDialog extends Dialog {
             return (T) items.get(adapterPosition);
         }
 
+
         @IntDef({
-                TYPE_TITLE,
-                TYPE_TEXT,
-                TYPE_EDIT_TEXT,
-                TYPE_SWITCH,
-                TYPE_ADD_MINUS_EDIT,
-                TYPE_BITMAP,
-                TYPE_BRIEF_DESC,
-        })
+                    TYPE_TITLE,
+                    TYPE_TEXT,
+                    TYPE_EDIT_TEXT,
+                    TYPE_SWITCH,
+                    TYPE_ADD_MINUS_EDIT,
+                    TYPE_BITMAP,
+                    TYPE_BRIEF_DESC,
+                })
         @Retention(RetentionPolicy.SOURCE)
         @interface ViewType {
             int TYPE_TITLE = 1;
@@ -239,31 +306,43 @@ public class AttrsDialog extends Dialog {
             int TYPE_BRIEF_DESC = 7;
         }
 
-        public static abstract class BaseViewHolder<T extends Item> extends RecyclerView.ViewHolder {
+
+        public static abstract class BaseViewHolder<T extends Item>
+            extends RecyclerView.ViewHolder {
 
             protected T item;
+
 
             public BaseViewHolder(View itemView) {
                 super(itemView);
             }
+
 
             public void bindView(T t) {
                 item = t;
             }
         }
 
+
+        /**
+         * 标题 cell
+         */
         public static class TitleViewHolder extends BaseViewHolder<TitleItem> {
 
             private TextView vTitle;
+
 
             public TitleViewHolder(View itemView) {
                 super(itemView);
                 vTitle = itemView.findViewById(R.id.title);
             }
 
+
             public static TitleViewHolder newInstance(ViewGroup parent) {
-                return new TitleViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.uet_cell_title, parent, false));
+                return new TitleViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.uet_cell_title, parent, false));
             }
+
 
             @Override
             public void bindView(TitleItem titleItem) {
@@ -272,10 +351,16 @@ public class AttrsDialog extends Dialog {
             }
         }
 
+
+        /**
+         * 文本 cell
+         * 「class」信息等
+         */
         public static class TextViewHolder extends BaseViewHolder<TextItem> {
 
             private TextView vName;
             private TextView vDetail;
+
 
             public TextViewHolder(View itemView) {
                 super(itemView);
@@ -283,9 +368,12 @@ public class AttrsDialog extends Dialog {
                 vDetail = itemView.findViewById(R.id.detail);
             }
 
+
             public static TextViewHolder newInstance(ViewGroup parent) {
-                return new TextViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.uet_cell_text, parent, false));
+                return new TextViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.uet_cell_text, parent, false));
             }
+
 
             @Override
             public void bindView(final TextItem textItem) {
@@ -303,8 +391,16 @@ public class AttrsDialog extends Dialog {
             }
         }
 
+
+        /**
+         * 可编辑属性的 cell
+         * 「文案」「文案大小」「颜色」「宽度」
+         * 「高度」「Padding left right top bottom」
+         *
+         * @param <T> T
+         */
         public static class EditTextViewHolder<T extends EditTextItem>
-                extends BaseViewHolder<T> {
+            extends BaseViewHolder<T> {
 
             protected TextView vName;
             protected EditText vDetail;
@@ -316,6 +412,7 @@ public class AttrsDialog extends Dialog {
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                 }
+
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -356,25 +453,29 @@ public class AttrsDialog extends Dialog {
                             View view = item.getElement().getView();
                             int paddingLeft = dip2px(Integer.valueOf(s.toString()));
                             if (Math.abs(paddingLeft - view.getPaddingLeft()) >= dip2px(1)) {
-                                view.setPadding(paddingLeft, view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
+                                view.setPadding(paddingLeft, view.getPaddingTop(),
+                                    view.getPaddingRight(), view.getPaddingBottom());
                             }
                         } else if (item.getType() == EditTextItem.Type.TYPE_PADDING_RIGHT) {
                             View view = item.getElement().getView();
                             int paddingRight = dip2px(Integer.valueOf(s.toString()));
                             if (Math.abs(paddingRight - view.getPaddingRight()) >= dip2px(1)) {
-                                view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), paddingRight, view.getPaddingBottom());
+                                view.setPadding(view.getPaddingLeft(), view.getPaddingTop(),
+                                    paddingRight, view.getPaddingBottom());
                             }
                         } else if (item.getType() == EditTextItem.Type.TYPE_PADDING_TOP) {
                             View view = item.getElement().getView();
                             int paddingTop = dip2px(Integer.valueOf(s.toString()));
                             if (Math.abs(paddingTop - view.getPaddingTop()) >= dip2px(1)) {
-                                view.setPadding(view.getPaddingLeft(), paddingTop, view.getPaddingRight(), view.getPaddingBottom());
+                                view.setPadding(view.getPaddingLeft(), paddingTop,
+                                    view.getPaddingRight(), view.getPaddingBottom());
                             }
                         } else if (item.getType() == EditTextItem.Type.TYPE_PADDING_BOTTOM) {
                             View view = item.getElement().getView();
                             int paddingBottom = dip2px(Integer.valueOf(s.toString()));
                             if (Math.abs(paddingBottom - view.getPaddingBottom()) >= dip2px(1)) {
-                                view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), paddingBottom);
+                                view.setPadding(view.getPaddingLeft(), view.getPaddingTop(),
+                                    view.getPaddingRight(), paddingBottom);
                             }
                         }
                     } catch (Exception e) {
@@ -382,11 +483,13 @@ public class AttrsDialog extends Dialog {
                     }
                 }
 
+
                 @Override
                 public void afterTextChanged(Editable s) {
 
                 }
             };
+
 
             public EditTextViewHolder(View itemView) {
                 super(itemView);
@@ -396,9 +499,12 @@ public class AttrsDialog extends Dialog {
                 vDetail.addTextChangedListener(textWatcher);
             }
 
+
             public static EditTextViewHolder newInstance(ViewGroup parent) {
-                return new EditTextViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.uet_cell_edit_text, parent, false));
+                return new EditTextViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.uet_cell_edit_text, parent, false));
             }
+
 
             @Override
             public void bindView(final T editTextItem) {
@@ -416,10 +522,17 @@ public class AttrsDialog extends Dialog {
             }
         }
 
+
+        /**
+         * 加减号编辑 cell，同时具备 可编辑属性 的功能
+         * 「文案」「文案大小」「颜色」「宽度」
+         * 「高度」「Padding left right top bottom」
+         */
         public static class AddMinusEditViewHolder extends EditTextViewHolder<AddMinusEditItem> {
 
             private View vAdd;
             private View vMinus;
+
 
             public AddMinusEditViewHolder(View itemView) {
                 super(itemView);
@@ -451,10 +564,12 @@ public class AttrsDialog extends Dialog {
                 });
             }
 
+
             public static AddMinusEditViewHolder newInstance(ViewGroup parent) {
                 return new AddMinusEditViewHolder(LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.uet_cell_add_minus_edit, parent, false));
             }
+
 
             @Override
             public void bindView(AddMinusEditItem editTextItem) {
@@ -462,10 +577,16 @@ public class AttrsDialog extends Dialog {
             }
         }
 
+
+        /**
+         * 开关 cell
+         * 「Move」「ValidViews」「isBold」
+         */
         public static class SwitchViewHolder extends BaseViewHolder<SwitchItem> {
 
             private TextView vName;
             private SwitchCompat vSwitch;
+
 
             public SwitchViewHolder(View itemView, final AttrDialogCallback callback) {
                 super(itemView);
@@ -491,7 +612,8 @@ public class AttrsDialog extends Dialog {
                             if (item.getElement().getView() instanceof TextView) {
                                 TextView textView = ((TextView) (item.getElement().getView()));
                                 if (item.getType() == SwitchItem.Type.TYPE_IS_BOLD) {
-                                    textView.setTypeface(null, isChecked ? Typeface.BOLD : Typeface.NORMAL);
+                                    textView.setTypeface(null,
+                                        isChecked ? Typeface.BOLD : Typeface.NORMAL);
                                 }
                             }
                         } catch (Exception e) {
@@ -501,9 +623,12 @@ public class AttrsDialog extends Dialog {
                 });
             }
 
+
             public static SwitchViewHolder newInstance(ViewGroup parent, AttrDialogCallback callback) {
-                return new SwitchViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.uet_cell_switch, parent, false), callback);
+                return new SwitchViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.uet_cell_switch, parent, false), callback);
             }
+
 
             @Override
             public void bindView(SwitchItem switchItem) {
@@ -514,6 +639,11 @@ public class AttrsDialog extends Dialog {
             }
         }
 
+
+        /**
+         * bitmap cell
+         * 「color」「background」
+         */
         public static class BitmapInfoViewHolder extends BaseViewHolder<BitmapItem> {
 
             private final int imageHeight = dip2px(58);
@@ -521,6 +651,7 @@ public class AttrsDialog extends Dialog {
             private TextView vName;
             private ImageView vImage;
             private TextView vInfo;
+
 
             public BitmapInfoViewHolder(View itemView) {
                 super(itemView);
@@ -530,9 +661,12 @@ public class AttrsDialog extends Dialog {
                 vInfo = itemView.findViewById(R.id.info);
             }
 
+
             public static BitmapInfoViewHolder newInstance(ViewGroup parent) {
-                return new BitmapInfoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.uet_cell_bitmap_info, parent, false));
+                return new BitmapInfoViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.uet_cell_bitmap_info, parent, false));
             }
+
 
             @Override
             public void bindView(BitmapItem bitmapItem) {
@@ -552,9 +686,15 @@ public class AttrsDialog extends Dialog {
             }
         }
 
+
+        /**
+         * 描述 cell
+         * 只有一个 text
+         */
         public static class BriefDescViewHolder extends BaseViewHolder<BriefDescItem> {
 
             private TextView vDesc;
+
 
             public BriefDescViewHolder(View itemView, final AttrDialogCallback callback) {
                 super(itemView);
@@ -569,9 +709,12 @@ public class AttrsDialog extends Dialog {
                 });
             }
 
+
             public static BriefDescViewHolder newInstance(ViewGroup parent, AttrDialogCallback callback) {
-                return new BriefDescViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.uet_cell_brief_view_desc, parent, false), callback);
+                return new BriefDescViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.uet_cell_brief_view_desc, parent, false), callback);
             }
+
 
             @Override
             public void bindView(BriefDescItem briefDescItem) {

@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import static me.ele.uetool.base.DimenUtil.dip2px;
 
+/**
+ * 功能子菜单
+ */
 public class UETSubMenu extends LinearLayout {
 
     private final int padding = dip2px(5);
