@@ -13,6 +13,12 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import me.ele.uetool.base.Application;
 
+/**
+ * 「1」记录接入方，过滤的类
+ * 「2」记录属性列表「可编辑功能列表」
+ * 「3」显示 UEtool 的版本兼容
+ * 「4」UEtool 的权限检查
+ */
 public class UETool {
 
     private static volatile UETool instance;

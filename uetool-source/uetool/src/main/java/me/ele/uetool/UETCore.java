@@ -20,6 +20,10 @@ import me.ele.uetool.base.item.TitleItem;
 import static me.ele.uetool.base.DimenUtil.px2dip;
 import static me.ele.uetool.base.DimenUtil.px2sp;
 
+/**
+ * 实现了「IAttrs」
+ * 不过也大致描述了 UEtool 会有什么功能
+ */
 public class UETCore implements IAttrs {
 
     @Override
@@ -71,6 +75,11 @@ public class UETCore implements IAttrs {
         }
     }
 
+
+    /**
+     * 关于 TextView 上
+     * UEtool 回提供的功能
+     */
     static class UETTextView implements IAttrs {
 
         @Override
@@ -90,6 +99,11 @@ public class UETCore implements IAttrs {
         }
     }
 
+
+    /**
+     * 关于 ImageView 上
+     * UEtool 回提供的功能
+     */
     static class UETImageView implements IAttrs {
 
         @Override
