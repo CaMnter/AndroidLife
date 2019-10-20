@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -22,20 +21,18 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile(rootProject.ext.denpendencies["espresso-core"], {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestApi(rootProject.ext.denpendencies["espresso-core"], {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'support-v7'
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.google.code.findbugs'
     })
-    testCompile rootProject.ext.denpendencies["junit"]
-    provided rootProject.ext.denpendencies["butterknife"]
-    annotationProcessor rootProject.ext.annotationProcessor["butterknife-compiler"]
-    provided rootProject.ext.denpendencies["recyclerview-v7"]
-    provided rootProject.ext.denpendencies["support-v7"]
-    provided project(':utils')
+    testApi rootProject.ext.denpendencies["junit"]
+    compileOnly rootProject.ext.denpendencies["recyclerview-v7"]
+    compileOnly rootProject.ext.denpendencies["support-v7"]
+    compileOnly project(':utils')
 }
 
 /*********************

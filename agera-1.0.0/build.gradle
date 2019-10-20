@@ -22,7 +22,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile rootProject.ext.denpendencies["junit"]
-    provided rootProject.ext.denpendencies["support-v7"]
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    implementation rootProject.ext.denpendencies["support-v7"]
 }

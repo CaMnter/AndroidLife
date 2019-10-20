@@ -24,20 +24,20 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile(rootProject.ext.denpendencies["espresso-core"], {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestApi(rootProject.ext.denpendencies["espresso-core"], {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'support-v7'
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.google.code.findbugs'
     })
-    provided rootProject.ext.denpendencies["support-v7"]
-    provided rootProject.ext.denpendencies["rxjava2"]
-    provided rootProject.ext.denpendencies["rxandroid2"]
-    testProvided rootProject.ext.denpendencies["junit"]
-    provided project(':databinding')
-    provided project(':rxjava2')
-    provided project(':widget')
-    provided project(':utils')
+    compileOnly rootProject.ext.denpendencies["support-v7"]
+    compileOnly rootProject.ext.denpendencies["rxjava2"]
+    compileOnly rootProject.ext.denpendencies["rxandroid2"]
+    testCompileOnly rootProject.ext.denpendencies["junit"]
+    compileOnly project(':databinding')
+    compileOnly project(':rxjava2')
+    compileOnly project(':widget')
+    compileOnly project(':utils')
 }

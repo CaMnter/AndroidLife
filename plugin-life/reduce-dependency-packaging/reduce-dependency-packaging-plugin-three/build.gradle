@@ -21,8 +21,8 @@ android {
 
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile rootProject.ext.denpendencies["support-v7"]
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api rootProject.ext.denpendencies["support-v7"]
 }
 
 ///**

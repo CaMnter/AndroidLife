@@ -22,6 +22,6 @@ android {
 
 
 dependencies {
-    compile project(':uetool-source:uetool-base')
-    provided rootProject.ext.denpendencies["fresco"]
+    api project(':uetool-source:uetool-base')
+    compileOnly rootProject.ext.denpendencies["fresco"]
 }

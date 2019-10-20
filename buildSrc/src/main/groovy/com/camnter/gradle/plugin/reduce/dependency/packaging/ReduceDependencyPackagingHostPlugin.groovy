@@ -101,12 +101,13 @@ class ReduceDependencyPackagingHostPlugin implements Plugin<Project> {
         final ProcessAndroidResources aaptTask = this.project.tasks.getByName(
                 "process${variant.name.capitalize()}Resources")
         final File textSymbolOutputFile
-        if (aaptTask instanceof LinkApplicationAndroidResourcesTask) {
-            textSymbolOutputFile =
-                    (aaptTask as LinkApplicationAndroidResourcesTask).textSymbolOutputFile
-        } else if (aaptTask instanceof GenerateLibraryRFileTask) {
-            textSymbolOutputFile = (aaptTask as GenerateLibraryRFileTask).textSymbolOutputFile
-        }
+        // AGP 3.0.0
+//        if (aaptTask instanceof LinkApplicationAndroidResourcesTask) {
+//            textSymbolOutputFile =
+//                    (aaptTask as LinkApplicationAndroidResourcesTask).textSymbolOutputFile
+//        } else if (aaptTask instanceof GenerateLibraryRFileTask) {
+//            textSymbolOutputFile = (aaptTask as GenerateLibraryRFileTask).textSymbolOutputFile
+//        }
         aaptTask.doLast {
             project.copy {
                 from textSymbolOutputFile
