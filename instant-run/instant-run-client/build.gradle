@@ -18,8 +18,8 @@ apply plugin: 'java'
 apply plugin: 'jacoco'
 
 dependencies {
-    api project(':instant-run:instant-run-common')
-    api 'com.google.guava:guava:18.0'
+    compile project(':instant-run:instant-run-common')
+    compile 'com.google.guava:guava:18.0'
 //    compile project(':instant-run:ddmlib')
-    testApi rootProject.ext.denpendencies["junit"]
+    testCompile rootProject.ext.denpendencies["junit"]
 }

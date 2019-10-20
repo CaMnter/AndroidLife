@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -31,8 +30,6 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
     })
     testApi rootProject.ext.denpendencies["junit"]
-    compileOnly rootProject.ext.denpendencies["butterknife"]
-    annotationProcessor rootProject.ext.annotationProcessor["butterknife-compiler"]
     compileOnly rootProject.ext.denpendencies["recyclerview-v7"]
     compileOnly rootProject.ext.denpendencies["support-v7"]
     compileOnly project(':utils')

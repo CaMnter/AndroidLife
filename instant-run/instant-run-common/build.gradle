@@ -21,5 +21,5 @@ sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
 
 dependencies {
-    api project(':instant-run:annotations')
+    compile project(':instant-run:annotations')
 }

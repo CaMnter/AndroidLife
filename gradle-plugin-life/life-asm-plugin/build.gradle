@@ -21,8 +21,8 @@ buildscript {
 dependencies {
     compileOnly gradleApi()
     compileOnly localGroovy()
-    api 'org.ow2.asm:asm:5.1'
-    api 'org.ow2.asm:asm-commons:5.1'
+    compile 'org.ow2.asm:asm:5.1'
+    compile 'org.ow2.asm:asm-commons:5.1'
     implementation rootProject.ext.plugin["android-gradle-plugin"]
 }
 
