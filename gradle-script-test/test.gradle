@@ -1,0 +1,200 @@
+apply plugin: 'com.android.application'
+
+repositories {
+    // 一个相对靠谱的maven仓库中心
+    maven { url 'http://uk.maven.org/maven2' }
+    // 友盟在git上提交的maven库
+    maven { url 'https://raw.githubusercontent.com/umeng/mvn-repo-umeng/master/repository' }
+    // Bintary’s JCenter Maven 仓库
+    jcenter()
+    // Central Maven 2 仓库
+    mavenCentral()
+}
+
+dependencies {
+    // 关联libs下的jar包
+    compile fileTree(dir: 'libs', include: '*.jar')
+
+    // 关联maven项目
+    compile 'com.qiniu:qiniu-android-sdk:7.0.3'
+    compile 'com.umeng.analytics:analytics:5.4.2'
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.android.support:support-v4:23.0.1'
+    compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
+    compile 'com.j256.ormlite:ormlite-android:4.48'
+    compile 'com.github.bumptech.glide:glide:3.6.1'
+
+    // 关联项目的模块(widget、scrollercalendar、umeng、mutiphotochoser等模块Moudule)
+    compile project(':widget')
+    compile project(':scrollercalendar')
+    compile project(':umeng')
+    compile project(':mutiphotochoser')
+}
+
+android {
+    // 编译SDK的版本
+    compileSdkVersion 22
+    // build tools的版本
+    buildToolsVersion "21.1.2"
+    // 设置资源
+    sourceSets {
+        main {
+            // 设置so包
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    defaultConfig {
+        // 应用的包名
+        applicationId "xxx.xxx.xxx"
+        // SDK最低版本
+        minSdkVersion 9
+        // 目标版本
+        targetSdkVersion 22
+        // 项目版本号，用于更新项目
+        versionCode 50
+        // 项目版本名，用于更新项目
+        versionName "1.1"
+
+        /**
+         * manifest文件变量配置：
+         * EASEMOB_APPKEY的值赋值到mainfest文件中的${EASEMOB_APPKEY}中
+         * UMENG_APPKEY的值赋值到mainfest文件中的${UMENG_APPKEY}中
+         * JPUSH_APPKEY的值赋值到mainfest文件中的${JPUSH_APPKEY}中
+         * DEBUG的值赋值到mainfest文件中的${DEBUG}中
+         */
+        manifestPlaceholders = [PACKAGE_NANE  : "xxx.xxx.xxx",
+                                EASEMOB_APPKEY: "EASEMOB_APPKEY",
+                                UMENG_APPKEY  : "UMENG_APPKEY",
+                                JPUSH_APPKEY  : "JPUSH_APPKEY",
+                                DEBUG         : "DEBUG"]
+    }
+
+    //签名配置。这里建议将签名配置到环境变量中。相关配置方法在 1.中有介绍。
+    signingConfigs {
+        // debug的签名
+        debug {
+            storeFile file("./snail.keystore")
+            storePassword "123456"
+            keyAlias "snail"
+            keyPassword "123456"
+        }
+        // release的签名
+        release {
+            storeFile file("./snail.keystore")
+            storePassword "123456"
+            keyAlias "snail"
+            keyPassword "123456"
+        }
+    }
+
+    buildTypes {
+        debug {
+            //开启或者关闭 混淆 。
+//            minifyEnabled true
+//            shrinkResources true
+
+            // 混淆文件指定
+            proguardFiles file('proguard-rules.pro')
+            //使用上述debug签名信息
+            signingConfig signingConfigs.debug
+        }
+
+        release {
+            //开启或者关闭 混淆
+            minifyEnabled true
+            shrinkResources true
+            // 混淆文件指定
+            proguardFiles file('proguard-rules.pro')
+            //使用上述release签名信息
+            signingConfig signingConfigs.release  //使用上述签名信息
+
+        }
+    }
+
+    //渠道Flavors
+    productFlavors {
+        /**
+         * 如果渠道重写了以上的：
+         * applicationId、manifestPlaceholders
+         * 那么会覆盖applicationId、manifestPlaceholders
+         * 优先选择这里配置的
+         */
+        APPTest {
+            applicationId "xxx.xxx.xxx.test"
+            manifestPlaceholders = [PACKAGE_NANE  : "xxx.xxx.xxx.test",
+                                    CHANNEL_NAME  : "APPTest",
+                                    EASEMOB_APPKEY: "haoyayi#EASEMOB_APPKEY",
+                                    UMENG_APPKEY  : "UMENG_APPKEY",
+                                    JPUSH_APPKEY  : "JPUSH_APPKEY",
+                                    DEBUG         : "DEBUG"]
+        }
+        beta {
+            manifestPlaceholders = [CHANNEL_NAME: "beta"]
+        }
+//        comp {
+//            manifestPlaceholders = [CHANNEL_NAME: "comp"]
+//        }
+//        fir {
+//            manifestPlaceholders = [CHANNEL_NAME: "Fir"]
+//        }
+//        GooglePlay {
+//            manifestPlaceholders = [CHANNEL_NAME: "GooglePlay"]
+//        }
+//        Store360 {
+//            manifestPlaceholders = [CHANNEL_NAME: "Store360"]
+//        }
+//        QQ {
+//            manifestPlaceholders = [CHANNEL_NAME: "QQ"]
+//        }
+//        taobao {
+//            manifestPlaceholders = [CHANNEL_NAME: "TaoBao"]
+//        }
+//        wandoujia {
+//            manifestPlaceholders = [CHANNEL_NAME: "WanDouJia"]
+//        }
+//        anzhuo {
+//            manifestPlaceholders = [CHANNEL_NAME: "AnZhuo"]
+//        }
+//        anzhi {
+//            manifestPlaceholders = [CHANNEL_NAME: "AnZhi"]
+//        }
+//        baidu {
+//            manifestPlaceholders = [CHANNEL_NAME: "Baidu"]
+//        }
+//        Store163 {
+//            manifestPlaceholders = [CHANNEL_NAME: "Store163"]
+//        }
+//        GFeng {
+//            manifestPlaceholders = [CHANNEL_NAME: "GFeng"]
+//        }
+//        AppChina {
+//            manifestPlaceholders = [CHANNEL_NAME: "AppChina"]
+//        }
+//        EoeMarket {
+//            manifestPlaceholders = [CHANNEL_NAME: "EoeMarket"]
+//        }
+//        Store91 {
+//            manifestPlaceholders = [CHANNEL_NAME: "Store91"]
+//        }
+//        XiaoMi {
+//            manifestPlaceholders = [CHANNEL_NAME: "XiaoMi"]
+//        }
+//        StoreT {
+//            manifestPlaceholders = [CHANNEL_NAME: "StoreT"]
+//        }
+//        MeiZu {
+//            manifestPlaceholders = [CHANNEL_NAME: "MeiZu"]
+//        }
+//        HuaWei {
+//            manifestPlaceholders = [CHANNEL_NAME: "HuaWei"]
+//        }
+    }
+
+    //这个是解决lint报错的代码
+    lintOptions {
+        abortOnError false
+    }
+
+}
+

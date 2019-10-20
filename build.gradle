@@ -19,9 +19,10 @@ buildscript {
 
         // local repository
         maven { url uri('butterknife-8.6.0/repository') }
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0-alpha03'
+        classpath 'com.android.tools.build:gradle:3.5.1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.6.0'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.3-2'
@@ -55,7 +56,6 @@ allprojects {
     }
 }
 
-
 task cleanTask(type: Delete) {
     delete rootProject.buildDir
 }
@@ -64,8 +64,6 @@ ext {
     runnerVersion = "0.5"
     rulesVersion = "0.5"
 }
-
-
 
 println '>>>>>> AndroidLife >>>>>> build.gradle'
 task testA {
@@ -79,7 +77,7 @@ task testA {
  * 没有加 << ，闭包在 task 函数返回前会执行
  * 加了 << ，则变成调用 actionTask.doLast()，所以会等到 gradle actionTask 时执行
  */
-task testB << {
+task testB {
     println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testB]'
 }
 task testC {
@@ -94,23 +92,23 @@ task testC {
 
 
 // task 依赖
-task testD(dependsOn: 'testE') << {
+task testD(dependsOn: 'testE') {
     println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testD]'
 }
-task testE << {
+task testE {
     println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testE]'
 }
 
 // 动态 task
 4.times { int count ->
-    task "test$count" << {
+    task "test$count" {
         println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [task$count]"
     }
 }
 test1.dependsOn test2, test3
 
 // 加入行为
-task testF << {
+task testF {
     println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testF]'
 }
 testF.doFirst {
@@ -119,12 +117,12 @@ testF.doFirst {
 testF.doLast {
     println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testF] >>>>>> [doLast]'
 }
-testF << {
+testF {
     println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testF] >>>>>> [ testF << ]'
 }
 
 // task 作为属性
-task testG << {
+task testG {
     println '>>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testG]'
 }
 testG.doLast {
@@ -136,19 +134,18 @@ testG.doLast {
 task testH {
     ext.camnter = 'camnter'
 }
-task testI << {
+task testI {
     println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testI]: $testH.camnter"
 }
 
 // 默认 task，调用 :groovy-life:testI
 defaultTasks 'testI'
 
-task testJ << {
+task testJ {
     println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testJ]: '$buildFile.name' in '$buildFile.parentFile.name'"
 }
 
-
-task testK << {
+task testK {
     // Project 实例对象
     println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testK] >>>>>> [name]: $name"
     // 项目目录的名称
@@ -173,7 +170,7 @@ task testK << {
     println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testK] >>>>>> [rootAbsolutePath]: $rootAbsolutePath"
 }
 
-task testL << {
+task testL {
     println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testL] >>>>>> [gradle.gradle]: $gradle.gradle"
     println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testL] >>>>>> [gradle.gradleHomeDir]: $gradle.gradleHomeDir"
     println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testL] >>>>>> [gradle.gradleUserHomeDir]: $gradle.gradleUserHomeDir"
@@ -197,7 +194,7 @@ ext {
     camnter = 'camnter'
     sign = 'Save you from anything'
 }
-task testM << {
+task testM {
     println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testM] >>>>>> [ext.camnter]: $camnter"
     println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testM] >>>>>> [ext.sign]: $sign"
 }
@@ -206,7 +203,7 @@ task testM << {
 File volleyIgnoreFile = file('volley/.gitignore')
 File volleyIgnoreAbsoluteFile = volleyIgnoreFile.absoluteFile
 File volleyIgnoreFileByFile = file(new File('volley/.gitignore'))
-task testN << {
+task testN {
     println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testN] >>>>>> [volley/.gitignore]: $volleyIgnoreFile"
     println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testN] >>>>>> [volley/.gitignore - AbsoluteFile]: $volleyIgnoreAbsoluteFile"
     println ">>>>>> AndroidLife >>>>>> build.gradle >>>>>> [testN] >>>>>> [volley/.gitignore - ByFile]: $volleyIgnoreFileByFile"
@@ -275,7 +272,7 @@ FileTree treeB = treeA.matching {
 
 FileTree treeC = treeA + fileTree(dir: 'agera-1.0.0/src/test')
 
-task testP << {
+task testP {
     fileTreeEach(treeA)
     fileTreeEach.call(treeB)
     fileTreeEach.call(treeC)
@@ -301,7 +298,7 @@ def makeWriteTree = { String baseDir, String... pathArray ->
 }
 final String zipTreeName = 'gradle-script-test/gradle-test.zip'
 final String tarTreeName = 'gradle-script-test/gradle-test.tar'
-task testQ << {
+task testQ {
     // 创建 zip
     FileTree zipTree = zipTree(zipTreeName)
     // 创建 tar
@@ -340,7 +337,7 @@ task testS(type: Copy) {
     into 'gradle-script-test'
 }
 
-task testT << {
+task testT {
     copy {
         from 'app'
         into 'gradle-script-test'
@@ -378,5 +375,3 @@ task testW(type: Zip) {
 // apply from: 'save.gradle'            脚本插件
 // apply plugin: 'groovy'               二进制插件
 // apply plugin: "com.jfrog.bintray"    路径
-
-
