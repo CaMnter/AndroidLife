@@ -1,10 +1,10 @@
 apply plugin: 'java'
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.google.auto.service:auto-service:1.0-rc2'
-    compile 'com.squareup:javapoet:1.7.0'
-    compile project(path: ':smartrouter-annotation')
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api 'com.google.auto.service:auto-service:1.0-rc2'
+    api 'com.squareup:javapoet:1.7.0'
+    api project(path: ':smartrouter-annotation')
 }
 
 sourceCompatibility = "1.8"

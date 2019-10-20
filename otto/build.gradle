@@ -22,6 +22,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile rootProject.ext.denpendencies["junit"]
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    testApi rootProject.ext.denpendencies["junit"]
 }

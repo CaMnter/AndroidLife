@@ -19,20 +19,20 @@ android {
 }
 
 dependencies {
-    compile project(':butterknife-8.6.0:butterknife-annotations')
-    compile 'com.android.support:support-annotations:25.3.0'
-    compile 'com.android.support:support-compat:25.3.0'
+    api project(':butterknife-8.6.0:butterknife-annotations')
+    api 'com.android.support:support-annotations:25.3.0'
+    api 'com.android.support:support-compat:25.3.0'
 
-    androidTestCompile 'junit:junit:4.12'
-    androidTestCompile 'com.google.truth:truth:0.34'
-    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestApi 'junit:junit:4.12'
+    androidTestApi 'com.google.truth:truth:0.34'
+    androidTestApi 'com.android.support.test:runner:0.5'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'com.google.truth:truth:0.34'
-    testCompile 'com.google.testing.compile:compile-testing:0.11'
-    testCompile files(getRuntimeJar())
-    testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
-    testCompile project(':butterknife-8.6.0:butterknife-compiler')
+    testApi 'junit:junit:4.12'
+    testApi 'com.google.truth:truth:0.34'
+    testApi 'com.google.testing.compile:compile-testing:0.11'
+    testApi files(getRuntimeJar())
+    testApi files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
+    testApi project(':butterknife-8.6.0:butterknife-compiler')
 }
 
 def getRuntimeJar() {

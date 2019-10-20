@@ -130,14 +130,14 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    testCompile rootProject.ext.denpendencies["junit"]
+    testApi rootProject.ext.denpendencies["junit"]
     // 如果要使用 Mockito，你需要添加此条依赖库
-    testCompile rootProject.ext.denpendencies["mockito-core"]
+    testApi rootProject.ext.denpendencies["mockito-core"]
     // 如果你要使用 Mockito 用于 Android instrumentation tests，那么需要你添加以下三条依赖库
-    androidTestCompile rootProject.ext.denpendencies["mockito-core"]
-    androidTestCompile rootProject.ext.denpendencies["dexmaker"]
-    androidTestCompile rootProject.ext.denpendencies["dexmaker-mockito"]
-    androidTestCompile(rootProject.ext.denpendencies["espresso-core"], {
+    androidTestApi rootProject.ext.denpendencies["mockito-core"]
+    androidTestApi rootProject.ext.denpendencies["dexmaker"]
+    androidTestApi rootProject.ext.denpendencies["dexmaker-mockito"]
+    androidTestApi(rootProject.ext.denpendencies["espresso-core"], {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'support-v7'
@@ -146,52 +146,52 @@ dependencies {
     })
 
     // Google
-    compile rootProject.ext.denpendencies["support-v4"]
-    compile rootProject.ext.denpendencies["support-v7"]
-    compile rootProject.ext.denpendencies["recyclerview-v7"]
-    compile rootProject.ext.denpendencies["design"]
-    compile rootProject.ext.denpendencies["gson"]
-    compile rootProject.ext.denpendencies["guava"]
+    api rootProject.ext.denpendencies["support-v4"]
+    api rootProject.ext.denpendencies["support-v7"]
+    api rootProject.ext.denpendencies["recyclerview-v7"]
+    api rootProject.ext.denpendencies["design"]
+    api rootProject.ext.denpendencies["gson"]
+    api rootProject.ext.denpendencies["guava"]
     // camnter
-    compile rootProject.ext.denpendencies["easyslidingtabs"]
-    compile rootProject.ext.denpendencies["easyrecyclerview"]
-    compile rootProject.ext.denpendencies["easyarcloading"]
-    compile rootProject.ext.denpendencies["easylikearea"]
-    compile rootProject.ext.denpendencies["easyrecyclerviewsidebar"]
+    api rootProject.ext.denpendencies["easyslidingtabs"]
+    api rootProject.ext.denpendencies["easyrecyclerview"]
+    api rootProject.ext.denpendencies["easyarcloading"]
+    api rootProject.ext.denpendencies["easylikearea"]
+    api rootProject.ext.denpendencies["easyrecyclerviewsidebar"]
     // ReactiveX
-    compile rootProject.ext.denpendencies["rxandroid2"]
-    compile rootProject.ext.denpendencies["rxjava2"]
+    api rootProject.ext.denpendencies["rxandroid2"]
+    api rootProject.ext.denpendencies["rxjava2"]
     // Square
-    compile rootProject.ext.denpendencies["retrofit"]
-    compile rootProject.ext.denpendencies["picasso"]
+    api rootProject.ext.denpendencies["retrofit"]
+    api rootProject.ext.denpendencies["picasso"]
     // Alibaba
-    compile rootProject.ext.denpendencies["fastjson"]
+    api rootProject.ext.denpendencies["fastjson"]
     // Glide
-    compile rootProject.ext.denpendencies["glide"]
+    api rootProject.ext.denpendencies["glide"]
 
     // databinding
     annotationProcessor rootProject.ext.annotationProcessor["databinding-compiler"]
     // butterknife
-    compile rootProject.ext.denpendencies["butterknife"]
+    api rootProject.ext.denpendencies["butterknife"]
     annotationProcessor rootProject.ext.annotationProcessor["butterknife-compiler"]
 
-    compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.0'
+    api group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.0'
 
-    compile project(':otto')
-    compile project(':volley')
+    api project(':otto')
+    api project(':volley')
     api project(':agera-1.0.0')
-    compile project(':stackblur')
-    compile project(':rxjava2')
-    compile project(':databinding')
-    compile project(':databinding-rxjava')
-    compile project(':widget')
-    compile project(':utils')
-    compile project(':smartsave')
-    compile project(':annotation-processor-annotation')
-    compile project(':smartrouter')
-    compile project(':plugin-life:load-simple-plugin:load-simple-plugin-host')
+    api project(':stackblur')
+    api project(':rxjava2')
+    api project(':databinding')
+    api project(':databinding-rxjava')
+    api project(':widget')
+    api project(':utils')
+    api project(':smartsave')
+    api project(':annotation-processor-annotation')
+    api project(':smartrouter')
+    api project(':plugin-life:load-simple-plugin:load-simple-plugin-host')
 
-    testCompile project(':utils')
+    testApi project(':utils')
 
     // annotation-processor-compiler
     annotationProcessor project(':annotation-processor-compiler')

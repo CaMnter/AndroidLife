@@ -22,7 +22,7 @@ android {
 
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile rootProject.ext.denpendencies["support-v7"]
-    compile project(':android-hide-api-library')
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api rootProject.ext.denpendencies["support-v7"]
+    api project(':android-hide-api-library')
 }

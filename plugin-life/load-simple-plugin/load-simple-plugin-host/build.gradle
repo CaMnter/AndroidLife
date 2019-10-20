@@ -9,7 +9,6 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
-
     }
     buildTypes {
         release {
@@ -19,8 +18,7 @@ android {
     }
 }
 
-
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    provided rootProject.ext.denpendencies["support-v7"]
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly rootProject.ext.denpendencies["support-v7"]
 }

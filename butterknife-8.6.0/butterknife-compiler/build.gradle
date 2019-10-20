@@ -13,10 +13,10 @@ targetCompatibility = JavaVersion.VERSION_1_7
 //}
 
 dependencies {
-    compile project(':butterknife-8.6.0:butterknife-annotations')
-    compile 'com.google.auto:auto-common:0.8'
-    compile 'com.squareup:javapoet:1.9.0'
-    compile 'com.google.auto.service:auto-service:1.0-rc3'
+    api project(':butterknife-8.6.0:butterknife-annotations')
+    api 'com.google.auto:auto-common:0.8'
+    api 'com.squareup:javapoet:1.9.0'
+    api 'com.google.auto.service:auto-service:1.0-rc3'
     compileOnly files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 
 //    testCompile 'junit:junit:4.12'

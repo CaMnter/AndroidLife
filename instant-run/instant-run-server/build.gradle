@@ -60,8 +60,8 @@ configurations {
 }
 
 dependencies {
-    compile project(':instant-run:instant-run-runtime')
-    provided files(androidJar)
+    api project(':instant-run:instant-run-runtime')
+    testApi files(androidJar)
 }
 
 sourceSets {

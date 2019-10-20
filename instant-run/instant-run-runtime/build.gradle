@@ -21,10 +21,10 @@ sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
 
 dependencies {
-    compile project(':instant-run:instant-run-common')
+    api project(':instant-run:instant-run-common')
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'com.google.truth:truth:0.28'
-    testCompile 'org.mockito:mockito-all:1.9.5'
-    testCompile project(':instant-run:instant-run-client')
+    testApi 'junit:junit:4.12'
+    testApi 'com.google.truth:truth:0.28'
+    testApi 'org.mockito:mockito-all:1.9.5'
+    testApi project(':instant-run:instant-run-client')
 }
