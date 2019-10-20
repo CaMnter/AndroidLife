@@ -20,7 +20,7 @@ include ':app',
         ':plugin-life:hook-ams-for-activity-plugin:hook-ams-for-activity-plugin-host',
         ':plugin-life:hook-ams-for-activity-plugin:hook-ams-for-activity-plugin-plugin',
 
-        ':virtualapk-core-library',
+        // ':virtualapk-core-library',
         ':android-hide-api-library',
 
         ':plugin-life:hook-binder',
@@ -31,10 +31,11 @@ include ':app',
 
         'buildSrc',
 
-        ':plugin-life:reduce-dependency-packaging:reduce-dependency-packaging-plugin-host',
-        ':plugin-life:reduce-dependency-packaging:reduce-dependency-packaging-plugin-one',
-        ':plugin-life:reduce-dependency-packaging:reduce-dependency-packaging-plugin-two',
-        ':plugin-life:reduce-dependency-packaging:reduce-dependency-packaging-plugin-three',
+        // TODO APG 3.0.0
+        // ':plugin-life:reduce-dependency-packaging:reduce-dependency-packaging-plugin-host',
+        // ':plugin-life:reduce-dependency-packaging:reduce-dependency-packaging-plugin-one',
+        // ':plugin-life:reduce-dependency-packaging:reduce-dependency-packaging-plugin-two',
+        // ':plugin-life:reduce-dependency-packaging:reduce-dependency-packaging-plugin-three',
 
         ':plugin-life:multi-classloader-plugin:multi-classloader-plugin-host',
         ':plugin-life:multi-classloader-plugin:multi-classloader-plugin-one',
