@@ -238,16 +238,16 @@ buildscript {
  * Life plugin *
  ***************/
 
-apply plugin: 'com.camnter.gradle.plugin.life'
+// apply plugin: 'com.camnter.gradle.plugin.life'
 
-lifeExtension {
-    id = "[App Module]   [CaMnter]"
-    save = "[App Module]   [Save you from anything]"
-    //    nestLifeExtension {
-    //        home = "[App Module]   [https://camnter.com]"
-    //        email = "[App Module]   [yuanyu.camnter@gmail.com]"
-    //    }
-}
+//lifeExtension {
+//    id = "[App Module]   [CaMnter]"
+//    save = "[App Module]   [Save you from anything]"
+//    //    nestLifeExtension {
+//    //        home = "[App Module]   [https://camnter.com]"
+//    //        email = "[App Module]   [yuanyu.camnter@gmail.com]"
+//    //    }
+//}
 
 /******************
  * ToyTime plugin *
@@ -264,7 +264,7 @@ toyTimeExtension {
  * R2 plugin *
  *************/
 
-apply plugin: 'com.camnter.gradle.plugin.r2'
+//apply plugin: 'com.camnter.gradle.plugin.r2'
 
 /****************
  * Method trace *
@@ -309,23 +309,23 @@ resourcesOptimizeL2Extension {
  * Dex method counts *
  *********************/
 
-apply plugin: 'com.camnter.gradle.plugin.dex.method.counts'
-
-dexMethodCountsExtension {
-    countFields = false
-    includeClasses = false
-    printAble = true
-    packageFilter = ""
-}
+//apply plugin: 'com.camnter.gradle.plugin.dex.method.counts'
+//
+//dexMethodCountsExtension {
+//    countFields = false
+//    includeClasses = false
+//    printAble = true
+//    packageFilter = ""
+//}
 
 /******************
  * Life javassist *
  ******************/
 
-apply plugin: 'com.camnter.gradle.plugin.life.javassist'
+// apply plugin: 'com.camnter.gradle.plugin.life.javassist'
 
-lifeJavassistExtension {
-    sign = 'Save you from anything'
-}
+//lifeJavassistExtension {
+//    sign = 'Save you from anything'
+//}
 
 apply plugin: 'com.camnter.gradle.plugin.life.asm'

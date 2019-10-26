@@ -29,7 +29,7 @@ class ThreeZeroProvider extends BaseProvider {
                     task.variantOutput = it
                     task.isBuildTools3 = true
                 }
-                addDexCountTaskToGraph(it.packageApplication, dexMethodCountsTask)
+                // addDexCountTaskToGraph(it.packageApplication, dexMethodCountsTask)
             } else {
                 throw IllegalArgumentException(
                         "[DexMethodCountsPlugin]   Unexpected output type for variant ${variant.name}: ${it.class.name}")

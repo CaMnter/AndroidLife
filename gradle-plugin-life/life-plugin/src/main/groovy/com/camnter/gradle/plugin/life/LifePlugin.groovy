@@ -7,7 +7,7 @@ public class LifePlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        project.task('lifePlugin') << {
+        project.task('lifePlugin')doLast {
             println "[LifePlugin]   [apply]   [Save you from anything]"
         }
 

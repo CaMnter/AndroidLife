@@ -38,14 +38,14 @@ class LifeJavassistPlugin implements Plugin<Project> {
             }
 
             // 寻找生成 BuildConfig 的 Task
-            def buildConfigTaskName = scope.getGenerateBuildConfigTask().name
-            final Task buildConfigTask = project.tasks.getByName(buildConfigTaskName)
-
-            // 生成任务滞后于 buildConfigTask
-            if (buildConfigTask) {
-                task.dependsOn buildConfigTask
-                buildConfigTask.finalizedBy task
-            }
+//            def buildConfigTaskName = scope.getGenerateBuildConfigTask().name
+//            final Task buildConfigTask = project.tasks.getByName(buildConfigTaskName)
+//
+//            // 生成任务滞后于 buildConfigTask
+//            if (buildConfigTask) {
+//                task.dependsOn buildConfigTask
+//                buildConfigTask.finalizedBy task
+//            }
         }
     }
 
