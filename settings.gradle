@@ -1,5 +1,7 @@
 include ':app',
 
+        ':kotlin-life',
+
         ':uetool-source:uetool',
         ':uetool-source:uetool-base',
         ':uetool-source:uetool-no-op',
