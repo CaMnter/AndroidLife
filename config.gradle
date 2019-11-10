@@ -42,6 +42,5 @@ ext {
               "android-gradle-plugin": 'com.android.tools.build:gradle:3.5.1',
               "javassist"            : 'org.javassist:javassist:3.20.0-GA']
 
-    annotationProcessor = ["butterknife-compiler": 'com.jakewharton:butterknife-compiler:8.4.0',
-                           "databinding-compiler": 'com.android.databinding:compiler:3.1.4']
+    annotationProcessor = ["butterknife-compiler": 'com.jakewharton:butterknife-compiler:8.4.0']
 }

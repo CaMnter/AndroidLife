@@ -23,9 +23,9 @@ dependencies {
     api 'com.android.support:support-annotations:25.3.0'
     api 'com.android.support:support-compat:25.3.0'
 
-    androidTestApi 'junit:junit:4.12'
-    androidTestApi 'com.google.truth:truth:0.34'
-    androidTestApi 'com.android.support.test:runner:0.5'
+    androidTestImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.google.truth:truth:0.34'
+    androidTestImplementation 'com.android.support.test:runner:0.5'
 
     testApi 'junit:junit:4.12'
     testApi 'com.google.truth:truth:0.34'

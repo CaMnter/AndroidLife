@@ -111,7 +111,7 @@ android {
     }
 
     dataBinding {
-        enabled = true
+        enabled = false
     }
 
     /**
@@ -134,10 +134,10 @@ dependencies {
     // 如果要使用 Mockito，你需要添加此条依赖库
     testApi rootProject.ext.denpendencies["mockito-core"]
     // 如果你要使用 Mockito 用于 Android instrumentation tests，那么需要你添加以下三条依赖库
-    androidTestApi rootProject.ext.denpendencies["mockito-core"]
-    androidTestApi rootProject.ext.denpendencies["dexmaker"]
-    androidTestApi rootProject.ext.denpendencies["dexmaker-mockito"]
-    androidTestApi(rootProject.ext.denpendencies["espresso-core"], {
+    androidTestImplementation rootProject.ext.denpendencies["mockito-core"]
+    androidTestImplementation rootProject.ext.denpendencies["dexmaker"]
+    androidTestImplementation rootProject.ext.denpendencies["dexmaker-mockito"]
+    androidTestImplementation(rootProject.ext.denpendencies["espresso-core"], {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'support-v7'
@@ -169,8 +169,6 @@ dependencies {
     // Glide
     api rootProject.ext.denpendencies["glide"]
 
-    // databinding
-    annotationProcessor rootProject.ext.annotationProcessor["databinding-compiler"]
     // butterknife
     api rootProject.ext.denpendencies["butterknife"]
     annotationProcessor rootProject.ext.annotationProcessor["butterknife-compiler"]
@@ -182,8 +180,6 @@ dependencies {
     api project(':agera-1.0.0')
     api project(':stackblur')
     api project(':rxjava2')
-    // api project(':databinding')
-    // api project(':databinding-rxjava')
     api project(':widget')
     api project(':utils')
     api project(':smartsave')

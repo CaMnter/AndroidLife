@@ -4,305 +4,302 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.camnter.newlife">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_camnter_round"
         android:label="@string/app_name"
-        android:hardwareAccelerated="false"
         android:theme="@style/AppTheme">
         <activity
             android:name="com.camnter.newlife.ui.activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".ui.activity.ImageScaleTypesActivity"
-            android:label="ImageScaleTypesActivity"/>
+            android:label="ImageScaleTypesActivity" />
         <activity
             android:name=".ui.activity.AsyncTaskActivity"
-            android:label="AsyncTaskActivity"/>
+            android:label="AsyncTaskActivity" />
         <activity
             android:name=".ui.activity.design.TextInputLayoutActivity"
-            android:label="TextInputLayoutActivity"/>
+            android:label="TextInputLayoutActivity" />
         <activity
             android:name=".ui.activity.RefreshUIActivity"
-            android:label="RefreshUIActivity"/>
+            android:label="RefreshUIActivity" />
         <activity
             android:name=".ui.activity.design.NavigationViewActivity"
-            android:label="NavigationViewActivity"/>
+            android:label="NavigationViewActivity" />
         <activity
             android:name=".ui.activity.util.DeviceUtilActivity"
-            android:label="DeviceUtilActivity"/>
+            android:label="DeviceUtilActivity" />
         <activity
             android:name=".ui.activity.design.FloatingActionButtonActivity"
-            android:label="FloatingActionButtonActivity"/>
+            android:label="FloatingActionButtonActivity" />
         <activity
             android:name=".ui.activity.design.SnackbarActivity"
-            android:label="SnackbarActivity"/>
+            android:label="SnackbarActivity" />
         <activity
             android:name=".ui.activity.util.DateUtilActivity"
-            android:label="DateUtilActivity"/>
+            android:label="DateUtilActivity" />
         <activity
             android:name=".ui.activity.EasySlidingTabsActivity"
-            android:label="EasySlidingTabsActivity"/>
+            android:label="EasySlidingTabsActivity" />
         <activity
             android:name=".ui.activity.AutoAdjustSizeEditTextActivity"
-            android:label="AutoAdjustSizeEditTextActivity"/>
+            android:label="AutoAdjustSizeEditTextActivity" />
         <activity
             android:name=".ui.activity.AutoAdjustSizeTextViewActivity"
-            android:label="AutoAdjustSizeTextViewActivity"/>
+            android:label="AutoAdjustSizeTextViewActivity" />
         <activity
             android:name=".ui.activity.DownloadImageToGalleryActivity"
-            android:label="DownloadImageToGalleryActivity"/>
+            android:label="DownloadImageToGalleryActivity" />
         <activity
             android:name=".ui.activity.SensorManagerActivity"
-            android:label="SensorManagerActivity"/>
+            android:label="SensorManagerActivity" />
         <activity
             android:name=".ui.activity.EasyRecyclerViewActivity"
-            android:label="EasyRecyclerViewActivity"/>
+            android:label="EasyRecyclerViewActivity" />
         <activity
             android:name=".ui.activity.design.tablayout.NormalTabLayoutActivity"
-            android:label="NormalTabLayoutActivity"/>
+            android:label="NormalTabLayoutActivity" />
         <activity
             android:name=".ui.activity.design.tablayout.SetIconTabLayoutActivity"
-            android:label="SetIconTabLayoutActivity"/>
+            android:label="SetIconTabLayoutActivity" />
         <activity
             android:name=".ui.activity.design.tablayout.ImageSpanTabLayoutActivity"
-            android:label="ImageSpanTabLayoutActivity"/>
+            android:label="ImageSpanTabLayoutActivity" />
         <activity
             android:name=".ui.activity.design.tablayout.CustomViewTabLayoutActivity"
-            android:label="CustomViewTabLayoutActivity"/>
+            android:label="CustomViewTabLayoutActivity" />
         <activity
             android:name=".ui.activity.design.CoordinatorLayoutActivity"
-            android:label="CoordinatorLayoutActivity"/>
+            android:label="CoordinatorLayoutActivity" />
         <activity
             android:name=".ui.activity.singletask.LaunchModeActivity"
-            android:label="LaunchModeActivity"/>
+            android:label="LaunchModeActivity" />
         <activity
             android:name=".ui.activity.singletask.VActivity"
-            android:label="VActivity"/>
+            android:label="VActivity" />
         <activity
             android:name=".ui.activity.singletask.LActivity"
-            android:label="LActivity"/>
+            android:label="LActivity" />
         <activity
             android:name=".ui.activity.singletask.MActivity"
-            android:label="MActivity"/>
+            android:label="MActivity" />
         <activity
             android:name=".ui.activity.singletask.SingleTaskActivity"
             android:label="SingleTaskActivity"
             android:launchMode="singleTask"
-            android:taskAffinity=""/>
+            android:taskAffinity="" />
         <activity
             android:name=".ui.activity.SQLiteActivity"
-            android:label="SQLiteActivity"/>
+            android:label="SQLiteActivity" />
         <activity
             android:name=".ui.activity.CustomContentProviderActivity"
-            android:label="CustomContentProviderActivity"/>
+            android:label="CustomContentProviderActivity" />
         <activity
             android:name=".ui.activity.DownloadServiceActivity"
-            android:label="DownloadServiceActivity"/>
+            android:label="DownloadServiceActivity" />
         <activity
             android:name=".ui.activity.ipc.AIDLActivity"
-            android:label="AIDLActivity"/>
+            android:label="AIDLActivity" />
         <activity
             android:name=".ui.activity.ipc.MessengerActivity"
-            android:label="AIDLActivity"/>
+            android:label="AIDLActivity" />
         <activity
             android:name=".ui.activity.util.ReflectionUtilActivity"
-            android:label="ReflectionUtilActivity"/>
+            android:label="ReflectionUtilActivity" />
         <activity
             android:name=".ui.activity.StaticReceiverActivity"
-            android:label="StaticReceiverActivity"/>
+            android:label="StaticReceiverActivity" />
         <activity
             android:name=".ui.activity.DynamicReceiverActivity"
-            android:label="DynamicReceiverActivity"/>
+            android:label="DynamicReceiverActivity" />
         <activity
             android:name=".ui.activity.DownloadReceiverActivity"
-            android:label="DownloadReceiverActivity"/>
+            android:label="DownloadReceiverActivity" />
         <activity
             android:name=".ui.activity.util.ResourcesUtilActivity"
-            android:label="ResourcesUtilActivity"/>
+            android:label="ResourcesUtilActivity" />
         <activity
             android:name=".ui.activity.LocationManagerActivity"
-            android:label="LocationManagerActivity"/>
+            android:label="LocationManagerActivity" />
         <activity
             android:name=".ui.activity.DialogActivity"
-            android:label="DialogActivity"/>
+            android:label="DialogActivity" />
         <activity
             android:name=".ui.activity.PopupWindowActivity"
-            android:label="PopupWindowActivity"/>
+            android:label="PopupWindowActivity" />
         <activity
             android:name=".ui.activity.TagTextViewActivity"
-            android:label="TagTextViewActivity"/>
+            android:label="TagTextViewActivity" />
         <activity
             android:name=".ui.activity.EasyFlowLayoutActivity"
-            android:label="EasyFlowLayoutActivity"/>
+            android:label="EasyFlowLayoutActivity" />
         <activity
             android:name=".ui.activity.SpanActivity"
             android:hardwareAccelerated="false"
             android:label="SpanActivity"
-            tools:ignore="UnusedAttribute"/>
+            tools:ignore="UnusedAttribute" />
         <activity
             android:name=".ui.activity.OttoActivity"
-            android:label="OttoActivity"/>
+            android:label="OttoActivity" />
         <activity
             android:name=".ui.activity.AnimatorActivity"
-            android:label="AnimatorActivity"/>
+            android:label="AnimatorActivity" />
         <activity
             android:name=".ui.activity.CanvasClipViewActivity"
-            android:label="CanvasClipViewActivity"/>
+            android:label="CanvasClipViewActivity" />
         <activity
             android:name=".ui.activity.RoundImageViewActivity"
-            android:label="RoundImageViewActivity"/>
+            android:label="RoundImageViewActivity" />
         <activity
             android:name=".ui.activity.EasyArcLoadingActivity"
-            android:label="EasyArcLoadingActivity"/>
+            android:label="EasyArcLoadingActivity" />
         <activity
             android:name=".ui.activity.VolleyActivity"
-            android:label="VolleyActivity"/>
+            android:label="VolleyActivity" />
         <activity
             android:name=".ui.activity.RemoteViewsActivity"
-            android:label="RemoteViewsActivity"/>
+            android:label="RemoteViewsActivity" />
 
         <activity
             android:name=".ui.activity.jsbridge.JsBridgeActivity"
             android:hardwareAccelerated="false"
-            android:label="JsBridgeActivity"/>
+            android:label="JsBridgeActivity" />
 
         <activity
             android:name=".ui.activity.classloader.ClassLoaderActivity"
-            android:label="ClassLoaderActivity"/>
+            android:label="ClassLoaderActivity" />
 
         <activity
             android:name=".ui.activity.classloader.ExternalLoadSoActivity"
-            android:label="ExternalLoadSoActivity"/>
+            android:label="ExternalLoadSoActivity" />
 
         <activity
             android:name=".ui.activity.classloader.InternalLoadSoActivity"
-            android:label="InternalLoadSoActivity"/>
+            android:label="InternalLoadSoActivity" />
 
         <activity
             android:name=".ui.activity.hotfix.HotFixActivity"
-            android:label="HotFixActivity"/>
+            android:label="HotFixActivity" />
 
         <activity
             android:name=".ui.activity.xfermode.XfermodesActivity"
-            android:label="XfermodesActivity"/>
+            android:label="XfermodesActivity" />
         <activity
             android:name=".ui.activity.rxjava.RxJavaAsyncActivity"
-            android:label="RxAsyncActivity"/>
+            android:label="RxAsyncActivity" />
         <activity
             android:name=".ui.activity.rxjava.RxJavaMapActivity"
-            android:label="RxMapActivity"/>
+            android:label="RxMapActivity" />
         <activity
             android:name=".ui.activity.easylikearea.EasyLikeAreaTopicActivity"
-            android:label="EasyLikeAreaTopicActivity"/>
+            android:label="EasyLikeAreaTopicActivity" />
         <activity
             android:name=".ui.activity.easylikearea.EasyLikeAreaQZoneActivity"
-            android:label="EasyLikeAreaQZoneActivity"/>
+            android:label="EasyLikeAreaQZoneActivity" />
         <activity
             android:name=".ui.activity.easylikearea.EasyLikeAreaStyleActivity"
-            android:label="EasyLikeAreaStyleActivity"/>
+            android:label="EasyLikeAreaStyleActivity" />
         <activity
             android:name=".ui.activity.easyrecyclerviewsidebar.LetterSectionActivity"
-            android:label="LetterSectionActivity"/>
+            android:label="LetterSectionActivity" />
         <activity
             android:name=".ui.activity.easyrecyclerviewsidebar.CircleImageSectionActivity"
-            android:label="CircleImageSectionActivity"/>
+            android:label="CircleImageSectionActivity" />
         <activity
             android:name=".ui.activity.easyrecyclerviewsidebar.RoundImageSectionActivity"
-            android:label="RoundImageSectionActivity"/>
+            android:label="RoundImageSectionActivity" />
         <activity
             android:name=".ui.activity.lrucache.LruCacheActivity"
-            android:label="LruCacheActivity"/>
+            android:label="LruCacheActivity" />
         <activity
             android:name=".ui.activity.agera.AgeraActivity"
-            android:label="AgeraActivity"/>
+            android:label="AgeraActivity" />
         <activity
             android:name=".ui.activity.agera.AgeraSimpleActivity"
-            android:label="AgeraSimpleActivity"/>
+            android:label="AgeraSimpleActivity" />
         <activity
             android:name=".ui.activity.agera.AgeraClickActivity"
-            android:label="AgeraClickActivity"/>
+            android:label="AgeraClickActivity" />
         <activity
             android:name=".ui.activity.agera.AgeraBroadcastActivity"
-            android:label="AgeraBroadcastActivity"/>
-        <activity
-            android:name=".ui.databinding.view.RatingRankActivity"
-            android:label="RatingRankActivity"/>
+            android:label="AgeraBroadcastActivity" />
         <activity
             android:name=".ui.activity.tabalphaview.TabAlphaViewActivity"
-            android:label="TabAlphaViewActivity"/>
+            android:label="TabAlphaViewActivity" />
         <activity
             android:name=".ui.activity.smartsave.SmartSaveExampleActivity"
-            android:label="SmartSaveExampleActivity"/>
+            android:label="SmartSaveExampleActivity" />
         <activity
             android:name=".ui.activity.smartrouter.SmartRouterActivity"
-            android:label="SmartRouterActivity"/>
+            android:label="SmartRouterActivity" />
         <activity
             android:name=".ui.activity.smartrouter.SmartRouterSampleActivity"
-            android:label="SmartRouterActivity"/>
+            android:label="SmartRouterActivity" />
         <activity
             android:name=".ui.activity.smartrouter.CustomRouterActivity"
-            android:label="CustomRouterActivity"/>
+            android:label="CustomRouterActivity" />
         <activity
             android:name="com.camnter.load.simple.plugin.LoadSimplePluginActivity"
-            android:label="LoadSimplePluginActivity"/>
+            android:label="LoadSimplePluginActivity" />
         <activity
             android:name="com.camnter.newlife.ui.activity.javassist.JavassistActivity"
-            android:label="JavassistActivity"/>
+            android:label="JavassistActivity" />
         <activity
             android:name="com.camnter.newlife.ui.activity.asm.AsmActivity"
-            android:label="AsmActivity"/>
+            android:label="AsmActivity" />
         <activity
             android:name="com.camnter.smartrouter.RouterCenterActivity"
             android:label="RouterCenterActivity">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
                     android:host="router"
-                    android:scheme="smart-routers"/>
+                    android:scheme="smart-routers" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="smart-routers"/>
+                <data android:scheme="smart-routers" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="smart-router"/>
+                <data android:scheme="smart-router" />
             </intent-filter>
         </activity>
 
-        <service android:name=".component.service.DownloadService"/>
-        <service android:name=".component.service.DownloadIntentService"/>
+        <service android:name=".component.service.DownloadService" />
+        <service android:name=".component.service.DownloadIntentService" />
 
         <!-- action 写上 aidl生成类的所在包 -->
         <service
@@ -310,60 +307,60 @@
             android:enabled="true"
             android:process=":remote">
             <intent-filter>
-                <action android:name="com.camnter.newlife.aidl.IPushMessage"/>
+                <action android:name="com.camnter.newlife.aidl.IPushMessage" />
             </intent-filter>
         </service>
 
         <service
             android:name="com.camnter.newlife.utils.ipc.MessengerService"
-            android:process=":remote"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:process=":remote">
             <intent-filter>
-                <action android:name="com.camnter.ipc.messenger"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.camnter.ipc.messenger" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
 
         <provider
             android:name=".component.contentprovider.MessageContentProvider"
-            android:authorities="com.camnter.content.provider"/>
+            android:authorities="com.camnter.content.provider" />
 
         <receiver
             android:name=".component.broadcastreceiver.StaticReceiver"
             android:exported="true"
             android:process=":remotereceiver">
             <intent-filter>
-                <action android:name="com.camnter.android.intent.static"/>
+                <action android:name="com.camnter.android.intent.static" />
             </intent-filter>
         </receiver>
 
         <receiver android:name=".widget.RemoteViewsAppWidgetProvider">
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/appwidget_provider_info"/>
+                android:resource="@xml/appwidget_provider_info" />
             <intent-filter>
-                <action android:name="com.camnter.newlife.widget.RemoteViewsAppWidgetProvider"/>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.camnter.newlife.widget.RemoteViewsAppWidgetProvider" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
         </receiver>
 
         <meta-data
             android:name="DEBUG"
             android:label="@string/app_label"
-            android:value="${DEBUG}"/>
+            android:value="${DEBUG}" />
 
         <activity-alias
             android:name=".icon.round"
             android:enabled="false"
-            android:label="DoubleLife"
             android:icon="@mipmap/ic_camnter_second_round"
+            android:label="DoubleLife"
             android:targetActivity=".ui.activity.easyrecyclerviewsidebar.RoundImageSectionActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
 

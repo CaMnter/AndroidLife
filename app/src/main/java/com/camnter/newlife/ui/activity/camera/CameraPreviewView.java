@@ -299,7 +299,7 @@ public class CameraPreviewView extends SurfaceView implements SurfaceHolder.Call
                 if (drawMode == DRAW_MODE_BY_DRAWABLE) {
                     canvas.save();
                     drawProxy.drawIdCardContourProxy(canvas);
-                    canvas.save(Canvas.ALL_SAVE_FLAG);
+                    canvas.save();
                     canvas.restore();
                 }
 

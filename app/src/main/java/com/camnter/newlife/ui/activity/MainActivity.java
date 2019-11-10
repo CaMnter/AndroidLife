@@ -97,7 +97,11 @@ public class MainActivity extends BaseAppCompatActivity
     @Override
     protected void initViews(Bundle savedInstanceState) {
         // SmartSave
-        SmartSave.save(this);
+        try {
+            SmartSave.save(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.menuRecyclerView = this.findView(R.id.menu_list);
         this.menuRecyclerView.addItemDecoration(
             new EasyDividerItemDecoration(this, EasyDividerItemDecoration.VERTICAL_LIST));

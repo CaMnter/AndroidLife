@@ -86,12 +86,8 @@ include ':app',
 
         ':rxjava2',
 
-        // ':databinding',
-        // ':databinding-rxjava',
-
         ':utils',
         ':widget',
-        // ':databinding',
 
         // ':instant-run:annotations',
         // ':instant-run:instant-run-annotations',

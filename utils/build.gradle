@@ -22,7 +22,7 @@ android {
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestApi(rootProject.ext.denpendencies["espresso-core"], {
+    androidTestImplementation(rootProject.ext.denpendencies["espresso-core"], {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'support-v7'
