@@ -43,5 +43,5 @@ ext {
               "javassist"            : 'org.javassist:javassist:3.20.0-GA']
 
     annotationProcessor = ["butterknife-compiler": 'com.jakewharton:butterknife-compiler:8.4.0',
-                           "databinding-compiler": 'com.android.databinding:compiler:2.3.0']
+                           "databinding-compiler": 'com.android.databinding:compiler:3.1.4']
 }

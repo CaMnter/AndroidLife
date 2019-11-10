@@ -548,7 +548,7 @@ public final class CameraManager {
 
         canvas.drawBitmap(markBitmap, marginLeft, marginTop, null);
 
-        canvas.save(Canvas.ALL_SAVE_FLAG);
+        canvas.save();
         canvas.restore();
 
         return backgroundBitmap;

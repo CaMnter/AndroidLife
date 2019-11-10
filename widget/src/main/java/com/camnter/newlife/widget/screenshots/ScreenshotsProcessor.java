@@ -255,7 +255,7 @@ public class ScreenshotsProcessor {
             withoutNavigationBitmap.recycle();
             qrBitmap.recycle();
 
-            canvas.save(Canvas.ALL_SAVE_FLAG);
+            canvas.save();
             canvas.restore();
 
             // bitmap2Bytes

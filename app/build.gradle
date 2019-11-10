@@ -128,7 +128,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    api fileTree(include: ['*.jar'], dir: 'libs')
 
     testApi rootProject.ext.denpendencies["junit"]
     // 如果要使用 Mockito，你需要添加此条依赖库
@@ -182,8 +182,8 @@ dependencies {
     api project(':agera-1.0.0')
     api project(':stackblur')
     api project(':rxjava2')
-    api project(':databinding')
-    api project(':databinding-rxjava')
+    // api project(':databinding')
+    // api project(':databinding-rxjava')
     api project(':widget')
     api project(':utils')
     api project(':smartsave')
@@ -292,18 +292,18 @@ resourcesSizeExtension {
  * Resources optimize l2 *
  *************************/
 
-apply plugin: 'com.camnter.gradle.plugin.resources.optimize.l2'
-
-// sample
-resourcesOptimizeL2Extension {
-    webpConvert = false
-    debugResourcesOptimize = true
-    // 100 kb
-    maxSize = 50
-    cwebpPath = ''
-    guetzliPath = ''
-    pngquantPath = ''
-}
+//apply plugin: 'com.camnter.gradle.plugin.resources.optimize.l2'
+//
+//// sample
+//resourcesOptimizeL2Extension {
+//    webpConvert = false
+//    debugResourcesOptimize = true
+//    // 100 kb
+//    maxSize = 50
+//    cwebpPath = ''
+//    guetzliPath = ''
+//    pngquantPath = ''
+//}
 
 /*********************
  * Dex method counts *

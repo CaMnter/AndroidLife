@@ -55,7 +55,6 @@ import com.camnter.newlife.ui.activity.util.DeviceUtilActivity;
 import com.camnter.newlife.ui.activity.util.ReflectionUtilActivity;
 import com.camnter.newlife.ui.activity.util.ResourcesUtilActivity;
 import com.camnter.newlife.ui.activity.xfermode.XfermodesActivity;
-import com.camnter.newlife.ui.databinding.view.RatingRankActivity;
 import com.camnter.newlife.utils.permissions.AppSettingsDialog;
 import com.camnter.newlife.utils.permissions.EasyPermissions;
 import com.camnter.newlife.widget.autoresizetextview.Log;
@@ -229,7 +228,6 @@ public class MainActivity extends BaseAppCompatActivity
         this.classes.add(HotFixActivity.class);
         this.classes.add(RemoteViewsActivity.class);
         this.classes.add(JsBridgeActivity.class);
-        this.classes.add(RatingRankActivity.class);
         this.classes.add(TabAlphaViewActivity.class);
         this.classes.add(SmartSaveExampleActivity.class);
         this.classes.add(SmartRouterActivity.class);

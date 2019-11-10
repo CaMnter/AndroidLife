@@ -101,11 +101,7 @@ public class XfermodeRoundImageView extends android.support.v7.widget.AppCompatI
         }
         if (bitmap != null) {
             @SuppressLint("WrongConstant") int sc = canvas.saveLayer(0, 0, this.getWidth(), this.getHeight(), null,
-                Canvas.MATRIX_SAVE_FLAG |
-                    Canvas.CLIP_SAVE_FLAG |
-                    Canvas.HAS_ALPHA_LAYER_SAVE_FLAG |
-                    Canvas.FULL_COLOR_LAYER_SAVE_FLAG |
-                    Canvas.CLIP_TO_LAYER_SAVE_FLAG);
+                Canvas.ALL_SAVE_FLAG);
             this.mBitmapPaint.reset();
             this.mBitmapPaint.setFilterBitmap(false);
             canvas.drawBitmap(this.mMaskBitmap, 0.0f, 0.0f, this.mBitmapPaint);
