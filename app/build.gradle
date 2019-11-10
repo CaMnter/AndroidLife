@@ -234,6 +234,14 @@ buildscript {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force rootProject.ext.denpendencies["support-v4"]
+        force rootProject.ext.denpendencies["support-v7"]
+    }
+}
+
+
 /***************
  * Life plugin *
  ***************/
