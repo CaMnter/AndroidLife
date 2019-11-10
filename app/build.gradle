@@ -176,15 +176,16 @@ dependencies {
     api group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.0'
 
     api project(':otto')
-    api project(':volley')
-    api project(':agera-1.0.0')
-    api project(':stackblur')
-    api project(':rxjava2')
-    api project(':widget')
     api project(':utils')
+    api project(':volley')
+    api project(':widget')
+    api project(':rxjava2')
     api project(':smartsave')
-    api project(':annotation-processor-annotation')
+    api project(':stackblur')
+    api project(':kotlin-life')
+    api project(':agera-1.0.0')
     api project(':smartrouter')
+    api project(':annotation-processor-annotation')
     api project(':plugin-life:load-simple-plugin:load-simple-plugin-host')
 
     testApi project(':utils')
@@ -232,6 +233,8 @@ buildscript {
 
 configurations.all {
     resolutionStrategy {
+        force rootProject.ext.denpendencies["rxjava2"]
+        force rootProject.ext.denpendencies["rxandroid2"]
         force rootProject.ext.denpendencies["support-v4"]
         force rootProject.ext.denpendencies["support-v7"]
     }
